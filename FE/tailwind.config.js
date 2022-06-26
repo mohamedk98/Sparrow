@@ -5,7 +5,14 @@ module.exports = {
     './node_modules/tw-elements/dist/js/**/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        facebook: {
+          blue: '#1877f2',
+          green: '#42b72a',
+        },
+      },
+    },
   },
   plugins: [require('tw-elements/dist/plugin')],
 };
