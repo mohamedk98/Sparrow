@@ -1,12 +1,13 @@
 import React from 'react';
 
-const LoginInput = ({ placeholder, type }) => {
+const LoginInput = ({ placeholder, type, name, className }) => {
   return (
     <div>
       <input
         type={type}
         placeholder={placeholder}
-        className="border-2 rounded-md p-3 mb-2 w-full outline-indigo-400"
+        className={className}
+        name={name}
       />
     </div>
   );

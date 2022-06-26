@@ -26,10 +26,17 @@ const LoginForm = () => {
             {formic => (
               <Form className="flex flex-col">
                 <LoginInput
+                  name="email"
                   type="text"
-                  placeholder="Email address or phone number"
+                  placeholder="Email address"
+                  className="border-2 rounded-md p-3 mb-2 w-full outline-indigo-400"
                 />
-                <LoginInput type="text" placeholder="Password" />
+                <LoginInput
+                  type="text"
+                  placeholder="Password"
+                  name="password"
+                  className="border-2 rounded-md p-3 mb-2 w-full outline-indigo-400"
+                />
                 <LoginButton
                   name="Log In"
                   type="submit"

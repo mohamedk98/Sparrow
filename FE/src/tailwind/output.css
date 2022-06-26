@@ -4018,6 +4018,10 @@ textarea.form-control.is-invalid {
   margin-top: 2.5rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -4028,10 +4032,6 @@ textarea.form-control.is-invalid {
 
 .mt-3 {
   margin-top: 0.75rem;
-}
-
-.mb-2 {
-  margin-bottom: 0.5rem;
 }
 
 .block {
@@ -4247,13 +4247,13 @@ textarea.form-control.is-invalid {
           filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.hover\:bg-facebook-greenHover:hover {
-  background-color: #349421db;
-}
-
 .hover\:bg-facebook-blueHover:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 97 197 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-facebook-greenHover:hover {
+  background-color: #349421db;
 }
 
 @media (min-width: 640px) {
