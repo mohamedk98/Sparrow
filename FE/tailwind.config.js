@@ -9,7 +9,9 @@ module.exports = {
       colors: {
         facebook: {
           blue: '#1877f2',
+          blueHover: '#1561c5',
           green: '#42b72a',
+          greenHover: '#349421db',
         },
       },
     },

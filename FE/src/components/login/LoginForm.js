@@ -2,6 +2,8 @@ import { Formik, Form } from 'formik';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import facebook from '../../assets/icons/facebook.svg';
+import LoginInput from '../../pages/login/LoginInput';
+import LoginButton from './LoginButton';
 
 const LoginForm = () => {
   return (
@@ -23,22 +25,16 @@ const LoginForm = () => {
           <Formik className="p-6">
             {formic => (
               <Form className="flex flex-col">
-                <input
-                  className="border-2 rounded-md border-gray-150 p-3 mb-2"
-                  text="text"
+                <LoginInput
+                  type="text"
                   placeholder="Email address or phone number"
                 />
-                <input
-                  className="border-2 rounded-md border-gray-150 p-3 mb-2"
-                  text="text"
-                  placeholder="Password"
-                />
-                <button
-                  className="bg-facebook-blue text-white border-2 rounded-md border-facebook-blue py-3"
+                <LoginInput type="text" placeholder="Password" />
+                <LoginButton
+                  name="Log In"
                   type="submit"
-                >
-                  Log In
-                </button>
+                  className="bg-facebook-blue text-white border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-3"
+                />
               </Form>
             )}
           </Formik>
@@ -46,12 +42,11 @@ const LoginForm = () => {
             <Link to="/forget">Forgot password?</Link>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
-            <button
-              className="bg-facebook-green text-white border-2 rounded-md border-facebook-green py-3 px-16 mt-3"
+            <LoginButton
+              name="Create Account"
               type="submit"
-            >
-              Create Account
-            </button>
+              className="bg-facebook-green text-white border-2 rounded-md border-facebook-green py-3 px-16 mt-3 hover:bg-facebook-greenHover"
+            />
           </div>
         </div>
       </div>
