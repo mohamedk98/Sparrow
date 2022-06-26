@@ -11,6 +11,7 @@ const redis = require("redis");
 const { authentication } = require("./middlwares/authentication");
 const app = express();
 
+//Redis Connect
 let redisClient = redis.createClient({
   url: process.env.REDIS_HOST,
   password: process.env.REDIS_PASSWORD,
@@ -36,12 +37,13 @@ app.use(authenticationRouter);
 
 app.get("/", (req, res) => {
   res.send("hello");
-  console.log(req.headers["authorization"]);
+
 });
 
 //testing authneitcation route
 app.get("/books", authentication, (req, res) => {
   res.send("you are authenticated");
+  console.log(req.username,req.email,req.userId)
 });
 
 //Change  "yourDbName" with your database name
