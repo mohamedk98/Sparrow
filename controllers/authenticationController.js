@@ -1,7 +1,11 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const { createToken } = require("../middlwares/authentication");
+const {
+  createToken,
+  createRefreshToken,
+} = require("../middlwares/authentication");
+const { createRedisRefreshToken } = require("../middlwares/redisClient");
 
 const signup = (req, res, next) => {
   const email = req.body.email;
@@ -48,7 +52,7 @@ const signup = (req, res, next) => {
 const login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const TOKEN = process.env.TOKEN;
+  const hasExpiry = req.body.hasExpiry;
   //if the user is found and the password is correct, add a jwt token to the
   //cookie with a certain expiry date
   User.findOne({ email }).then((user) => {
@@ -63,18 +67,28 @@ const login = (req, res, next) => {
           req.email = user.email;
 
           let accessToken = createToken(user.username, user.email, user.userId);
+          let refreshToken = createRefreshToken(
+            user.username,
+            user.email,
+            user.userId
+          );
 
-          res
-            .cookie("access_token", accessToken, {
-              httpOnly: true,
-              secure: false,
-              expires: new Date(Date.now() + 9000000),
-            })
-            .send({
-              userId: user.userId,
-              username: user.username,
-              email: user.email,
-            });
+          createRedisRefreshToken({
+            username: user.username,
+            email: user.email,
+            userId: user.userId,
+            refreshToken: refreshToken,
+          }).then(() => {
+            res
+              .cookie("access_token", accessToken, {
+                httpOnly: true,
+                secure: false,
+                expires: hasExpiry ? new Date(Date.now() + 9000000) : 0,
+              })
+              .send({
+                refreshToken: refreshToken,
+              });
+          });
         } else {
           res.status(400).send({ message: "Incorrect email or Password" });
         }
@@ -85,10 +99,17 @@ const login = (req, res, next) => {
 
 //clear the access_token cookie to logout
 const logout = (req, res, next) => {
-  res
-    .clearCookie("access_token")
-    .status(200)
-    .send({ message: "Successfully logged out 😏 🍀" });
+  const refreshToken = req.body.refreshToken;
+  if (refreshToken) {
+    redisClient.get({ equals: refreshToken }, "refreshToken").then((data) => {
+      redisClient.set("refreshToken", null).then(() => {
+        res
+          .clearCookie("access_token")
+          .status(200)
+          .send({ message: "Successfully logged out 😏 🍀" });
+      });
+    });
+  }
 };
 
 exports.login = login;
