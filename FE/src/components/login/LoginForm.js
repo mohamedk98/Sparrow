@@ -69,12 +69,12 @@ const LoginForm = () => {
             enableReinitialize // To inforce it to teset form input values when initialValues changes.
             initialValues={{ email, password, hasExpiry }}
             validationSchema={loginValidation}
-            onSubmit={async values => {
+            onSubmit={values => {
               // console.log(values);
 
               setFormError('');
 
-              await axiosInstance
+              axiosInstance
                 .post('/login', {
                   email: values.email,
                   password: values.password,
