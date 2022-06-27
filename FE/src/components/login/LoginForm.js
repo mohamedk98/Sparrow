@@ -36,7 +36,7 @@ const LoginForm = () => {
 
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1">
-      <div className="mt-28 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto">
+      <div className="mt-24 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto">
         <img
           className="max-w-xs lg:ml-14 mx-auto"
           src={facebook}
@@ -59,7 +59,7 @@ const LoginForm = () => {
                   name="email"
                   type="text"
                   placeholder="Email address"
-                  className="border-2 rounded-md p-3 mb-2 w-full"
+                  className="border-2 rounded-md p-3 mb-3 w-full"
                   onChange={loginHandler}
                 />
                 <div className="relative">
@@ -82,19 +82,19 @@ const LoginForm = () => {
                 <LoginButton
                   name="Log In"
                   type="submit"
-                  className="bg-facebook-blue text-white border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-3"
+                  className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-2 mt-3"
                 />
               </Form>
             )}
           </Formik>
-          <div className="text-blue-500 mt-4 mb-5">
+          <div className="text-blue-500 mt-4 mb-5 hover:underline">
             <Link to="/forget">Forgot password?</Link>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
             <LoginButton
-              name="Create Account"
+              name="Create New Account"
               type="submit"
-              className="bg-facebook-green text-white border-2 rounded-md border-facebook-green py-3 px-16 mt-3 hover:bg-facebook-greenHover"
+              className="bg-facebook-green text-white font-bold text-lg border-2 rounded-md border-facebook-green py-2 px-5 mt-3 hover:bg-facebook-greenHover"
             />
           </div>
         </div>
