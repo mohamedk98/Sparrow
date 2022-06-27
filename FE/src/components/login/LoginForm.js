@@ -35,20 +35,18 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="grid md:grid-cols-2 grid-cols-1">
-      <div className="flex flex-col md:ml-10 px-36 md:px-0 mt-20">
-        <div>
-          <img
-            className="md:max-w-xs md:px-0 md:ml-3"
-            src={facebook}
-            alt="facebook logo"
-          />
-        </div>
-        <p className="sm:text-2xl text-xl ml-5 md:ml-9 sm:ml-7">
+    <div className="grid lg:grid-cols-2 grid-cols-1">
+      <div className="mt-28 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto">
+        <img
+          className="max-w-xs lg:ml-14 mx-auto"
+          src={facebook}
+          alt="facebook logo"
+        />
+        <span className="lg:ml-20">
           Facebook helps you connect and share with the people in your life.
-        </p>
+        </span>
       </div>
-      <div className="lg:ml-24 md:ml-20 mx-auto mt-10 w-3/4 text-center">
+      <div className="lg:ml-24 mx-auto mt-10 w-3/4 text-center">
         <div className="block rounded-lg shadow-lg bg-white p-4">
           <Formik
             enableReinitialize // To inforce it to teset form input values when initialValues changes.
@@ -72,12 +70,14 @@ const LoginForm = () => {
                     className="border-2 rounded-md p-3 mb-2 w-full"
                     onChange={loginHandler}
                   />
-                  <img
-                    onClick={togglePassword}
-                    src={showPassword ? eyeShow : eyeHide}
-                    alt="eye icon"
-                    className="w-5 absolute top-4 right-5 cursor-pointer"
-                  />
+                  {formic.getFieldMeta('password').value && (
+                    <img
+                      onClick={togglePassword}
+                      src={showPassword ? eyeShow : eyeHide}
+                      alt="eye icon"
+                      className="w-5 absolute top-4 right-5 cursor-pointer"
+                    />
+                  )}
                 </div>
                 <LoginButton
                   name="Log In"
