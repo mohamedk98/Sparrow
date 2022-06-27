@@ -1,34 +1,51 @@
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import facebook from '../../assets/icons/facebook.svg';
 import eyeShow from '../../assets/icons/eye-password-show.svg';
 import eyeHide from '../../assets/icons/eye-password-hide.svg';
 import LoginInput from './LoginInput';
 import LoginButton from './LoginButton';
+import axiosInstance from '../../network/axiosInstance';
 
+// User intial info:
 const loginInfo = {
   email: '',
   password: '',
+  remember: false,
 };
 
 const LoginForm = () => {
+  // To redirect to home page after submitting form:
+  let navigate = useNavigate();
+
+  // To show form submition error if exists:
+  const [formError, setFormError] = useState('');
+
+  // For password Eye hide/show:
   const [showPassword, setShowPassword] = useState(false);
-  const [login, setLogin] = useState(loginInfo);
-  const { email, password } = login;
-  // console.log(email, password);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
+  // To handle rember me:
+  const [remember, setRemember] = useState(false);
+
+  // For form validation:
+  const [login, setLogin] = useState(loginInfo);
+  const { email, password } = login;
+  // console.log(email, password);
+
+  // To get input data:
   const loginHandler = e => {
-    // console.log(e.target.name);
+    // console.log(e.target.name, e.target.value);
     const { name, value } = e.target;
     setLogin({ ...login, [name]: value });
   };
 
+  // Validation schema:
   const loginValidation = Yup.object({
     email: Yup.string().required('Email address is required').email().max(100),
     password: Yup.string().required('Password is required'),
@@ -50,11 +67,30 @@ const LoginForm = () => {
         <div className="block rounded-lg shadow-lg bg-white p-4">
           <Formik
             enableReinitialize // To inforce it to teset form input values when initialValues changes.
-            initialValues={{ email, password }}
+            initialValues={{ email, password, remember }}
             validationSchema={loginValidation}
+            onSubmit={async values => {
+              // console.log(values);
+
+              setFormError('');
+
+              await axiosInstance
+                .post('/login', {
+                  email: values.email,
+                  password: values.password,
+                })
+                .then(response => {
+                  console.log(response);
+                  navigate('/');
+                })
+                .catch(error => {
+                  // console.log(error.response.data.message);
+                  setFormError(error.response.data.message || 'Network Error');
+                });
+            }}
           >
             {formic => (
-              <Form className="flex flex-col">
+              <Form onSubmit={formic.handleSubmit} className="flex flex-col">
                 <LoginInput
                   name="email"
                   type="text"
@@ -79,6 +115,25 @@ const LoginForm = () => {
                     />
                   )}
                 </div>
+
+                <div>
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    name="remember"
+                    onClick={() => {
+                      setRemember(!remember);
+                    }}
+                    onChange={loginHandler}
+                  />
+                  <label htmlFor="remember">Remember me</label>
+                </div>
+
+                {formError && (
+                  <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md">
+                    {formError}
+                  </div>
+                )}
                 <LoginButton
                   name="Log In"
                   type="submit"
@@ -93,8 +148,10 @@ const LoginForm = () => {
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
             <LoginButton
               name="Create New Account"
-              type="submit"
+              type="button"
               className="bg-facebook-green text-white font-bold text-lg border-2 rounded-md border-facebook-green py-2 px-5 mt-3 hover:bg-facebook-greenHover"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModalCenter"
             />
           </div>
         </div>
