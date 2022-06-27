@@ -26,13 +26,34 @@ const authentication = (req, res, next) => {
 };
 
 //function to create tokens
-const createToken = (username, email) => {
+const createToken = (username, email, userId) => {
   const TOKEN = process.env.TOKEN;
 
-  const accessToken = jwt.sign({ username: username, email: email }, TOKEN,{expiresIn:"2h"});
-  return accessToken
-
+  const accessToken = jwt.sign(
+    { username: username, email: email, userId: userId },
+    TOKEN,
+    {
+      expiresIn: "2h",
+      algorithm: "HS256",
+    }
+  );
+  return accessToken;
 };
 
+//function to create tokens
+const createRefreshToken = (username, email, userId) => {
+  const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+
+  const refreshToken = jwt.sign(
+    { username: username, email: email, userId: userId },
+    REFRESH_TOKEN,
+    {
+      expiresIn: "30d",
+      algorithm: "HS256",
+    }
+  );
+  return refreshToken;
+};
 exports.authentication = authentication;
 exports.createToken = createToken;
+exports.createRefreshToken = createRefreshToken;
