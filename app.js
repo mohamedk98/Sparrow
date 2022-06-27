@@ -27,7 +27,15 @@ const MONGOO_URL = process.env.MONGOO_URL;
 const PORT = process.env.PORT || 3000;
 
 //Middlewares
-app.use(cors({ origin: ["http://localhost:3001"] }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3001",
+      "https://zombie-hat.herokuapp.com",
+      "http://localhost:3000",
+    ],
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -37,7 +45,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use(authenticationRouter);
 
 app.get("/", (req, res) => {
-  res.send("hello")
+  res.send("hello");
 });
 
 //testing authneitcation route
