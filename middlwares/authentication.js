@@ -10,15 +10,15 @@ const jwt = require("jsonwebtoken");
 const authentication = (req, res, next) => {
   const userToken = req.cookies.access_token;
   const TOKEN = process.env.TOKEN;
-  console.log(userToken)
   if (!userToken) {
     return res.sendStatus(403);
   }
 
   try {
     const data = jwt.verify(userToken, TOKEN);
-    req.username = data.username;
+    req.userId = data.userId;
     req.email = data.email;
+    req.username = data.username;
     next();
   } catch {
     return res.sendStatus(403);
