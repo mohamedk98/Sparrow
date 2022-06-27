@@ -1,32 +1,28 @@
-import React, { Fragment } from 'react';
-import { useField } from 'formik';
+import React from 'react';
+import { useField, ErrorMessage } from 'formik';
 
 const LoginInput = ({ placeholder, className, ...props }) => {
   const [field, meta] = useField(props);
+
   return (
-    <Fragment>
+    <div className="flex flex-col">
+      <div className="text-center text-red-500">
+        <ErrorMessage name={field.name} />
+      </div>
       <input
         type={field.type}
         name={field.name}
-        placeholder={
-          (placeholder =
-            meta.touched && meta.error
-              ? field.name === 'email'
-                ? 'Email address is required'
-                : 'Password is required'
-              : placeholder)
-        }
+        placeholder={placeholder}
         className={
           (className =
             meta.touched && meta.error
-              ? className +
-                ' outline-red-500 border-red-500 placeholder-red-500 placeholder:text-red-700'
+              ? className + ' outline-red-500 border-red-500'
               : className + ' outline-indigo-400')
         }
         {...field}
         {...props}
       />
-    </Fragment>
+    </div>
   );
 };
 

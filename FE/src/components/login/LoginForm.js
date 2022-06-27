@@ -1,12 +1,13 @@
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import facebook from '../../assets/icons/facebook.svg';
 import eyeShow from '../../assets/icons/eye-password-show.svg';
 import eyeHide from '../../assets/icons/eye-password-hide.svg';
 import LoginInput from './LoginInput';
 import LoginButton from './LoginButton';
+import axiosInstance from '../../network/axiosInstance';
 
 const loginInfo = {
   email: '',
@@ -14,6 +15,9 @@ const loginInfo = {
 };
 
 const LoginForm = () => {
+  let navigate = useNavigate();
+  const [formError, setFormError] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState(loginInfo);
   const { email, password } = login;
@@ -52,9 +56,27 @@ const LoginForm = () => {
             enableReinitialize // To inforce it to teset form input values when initialValues changes.
             initialValues={{ email, password }}
             validationSchema={loginValidation}
+            onSubmit={values => {
+              // console.log(values);
+
+              setFormError('');
+
+              axiosInstance
+                .post('/login', {
+                  email: values.email,
+                  password: values.password,
+                })
+                .then(response => {
+                  navigate('/');
+                })
+                .catch(error => {
+                  // console.log(error.response.data.message);
+                  setFormError(error.response.data.message);
+                });
+            }}
           >
             {formic => (
-              <Form className="flex flex-col">
+              <Form onSubmit={formic.handleSubmit} className="flex flex-col">
                 <LoginInput
                   name="email"
                   type="text"
@@ -79,6 +101,11 @@ const LoginForm = () => {
                     />
                   )}
                 </div>
+                {formError && (
+                  <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md">
+                    {formError}
+                  </div>
+                )}
                 <LoginButton
                   name="Log In"
                   type="submit"
@@ -95,6 +122,8 @@ const LoginForm = () => {
               name="Create New Account"
               type="submit"
               className="bg-facebook-green text-white font-bold text-lg border-2 rounded-md border-facebook-green py-2 px-5 mt-3 hover:bg-facebook-greenHover"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModalCenter"
             />
           </div>
         </div>
