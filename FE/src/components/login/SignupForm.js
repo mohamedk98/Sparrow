@@ -117,12 +117,12 @@ const SignupForm = () => {
           gender,
         }}
         validationSchema={loginValidation}
-        onSubmit={values => {
+        onSubmit={async values => {
           // console.log(values);
 
           setFormError('');
 
-          axiosInstance
+          await axiosInstance
             .post('/signup', {
               firstName: values.firstName,
               lastName: values.lastName,

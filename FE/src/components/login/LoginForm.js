@@ -13,7 +13,7 @@ import axiosInstance from '../../network/axiosInstance';
 const loginInfo = {
   email: '',
   password: '',
-  remember: false,
+  hasExpiry: false,
 };
 
 const LoginForm = () => {
@@ -31,7 +31,7 @@ const LoginForm = () => {
   };
 
   // To handle rember me:
-  const [remember, setRemember] = useState(false);
+  const [hasExpiry, setHasExpiry] = useState(false);
 
   // For form validation:
   const [login, setLogin] = useState(loginInfo);
@@ -67,7 +67,7 @@ const LoginForm = () => {
         <div className="block rounded-lg shadow-lg bg-white p-4">
           <Formik
             enableReinitialize // To inforce it to teset form input values when initialValues changes.
-            initialValues={{ email, password, remember }}
+            initialValues={{ email, password, hasExpiry }}
             validationSchema={loginValidation}
             onSubmit={async values => {
               // console.log(values);
@@ -119,14 +119,15 @@ const LoginForm = () => {
                 <div>
                   <input
                     type="checkbox"
-                    id="remember"
-                    name="remember"
+                    id="hasExpiry"
+                    name="hasExpiry"
                     onClick={() => {
-                      setRemember(!remember);
+                      setHasExpiry(!hasExpiry);
                     }}
                     onChange={loginHandler}
+                    className="mr-2"
                   />
-                  <label htmlFor="remember">Remember me</label>
+                  <label htmlFor="hasExpiry">Remember me</label>
                 </div>
 
                 {formError && (
