@@ -4,7 +4,7 @@ const express = require("express");
 const crypto = require("crypto");
 const path = require("path");
 const jwt = require("jsonwebtoken");
-
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const redis = require("redis");
@@ -27,6 +27,7 @@ const MONGOO_URL = process.env.MONGOO_URL;
 const PORT = process.env.PORT || 3000;
 
 //Middlewares
+app.use(cors({ origin: ["http://localhost:3001"] }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,14 +37,14 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use(authenticationRouter);
 
 app.get("/", (req, res) => {
-  res.send("hello");
-
+  res.send("hello")
 });
 
 //testing authneitcation route
 app.get("/books", authentication, (req, res) => {
   res.send("you are authenticated");
-  console.log(req.username,req.email,req.userId)
+
+  console.log(req.username, req.email, req.userId);
 });
 
 //Change  "yourDbName" with your database name

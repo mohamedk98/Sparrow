@@ -37,10 +37,10 @@ const signup = (req, res, next) => {
           gender: gender,
         });
         user.save();
-        res.send("Successfully registered");
+        res.status(200).send({ message: "Successfully registered" });
       });
     } else {
-      res.send("User registered before");
+      res.status(400).send({ message: "User Already Registered" });
     }
   });
 };
@@ -53,7 +53,7 @@ const login = (req, res, next) => {
   //cookie with a certain expiry date
   User.findOne({ email }).then((user) => {
     if (!user) {
-      res.send("Incorrect email or Password");
+      res.status(400).send({message:"Incorrect email or Password"});
     } else {
       //Hashed password comparison
       bcrypt.compare(password, user.password).then((passwordIsTrue) => {
@@ -71,10 +71,9 @@ const login = (req, res, next) => {
               sameSite: "strict",
               expires: new Date(Date.now() + 900000),
             })
-            .send("Login Successfully");
-          console.log(req.username, req.email, req.userId);
+            .send({message:"Login Successfully"});
         } else {
-          res.send("Incorrect email or Password");
+          res.status(400).send({message:"Incorrect email or Password"});
         }
       });
     }
@@ -86,7 +85,7 @@ const logout = (req, res, next) => {
   res
     .clearCookie("access_token")
     .status(200)
-    .json({ message: "Successfully logged out 😏 🍀" });
+    .send({ message: "Successfully logged out 😏 🍀" });
 };
 
 exports.login = login;
