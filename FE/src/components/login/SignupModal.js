@@ -1,5 +1,4 @@
 import React from 'react';
-import LoginButton from './LoginButton';
 import SignupForm from './SignupForm';
 
 const SignupModal = () => {
@@ -28,13 +27,6 @@ const SignupModal = () => {
           </div>
           <div className="modal-body relative p-4">
             <SignupForm />
-          </div>
-          <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-            <LoginButton
-              name="Sign Up"
-              type="submit"
-              className="bg-facebook-green text-white font-bold text-lg border-2 rounded-md border-facebook-green py-1 px-14 mt-3 mx-auto hover:bg-facebook-greenHover"
-            />
           </div>
         </div>
       </div>

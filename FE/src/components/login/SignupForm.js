@@ -6,44 +6,51 @@ import eyeShow from '../../assets/icons/eye-password-show.svg';
 import eyeHide from '../../assets/icons/eye-password-hide.svg';
 import LoginInput from './LoginInput';
 import SelectInput from './SelectInput';
+import axiosInstance from '../../network/axiosInstance';
+import LoginButton from './LoginButton';
+import { useNavigate } from 'react-router-dom';
 
+// user intial info:
 const userInfo = {
   firstName: '',
   lastName: '',
   email: '',
   password: '',
-  currentYear: new Date().getFullYear(),
-  currentMonth: new Date().getMonth() + 1,
-  currentDay: new Date().getDay,
+  year: new Date().getFullYear(),
+  month: new Date().getMonth() + 1,
+  day: new Date().getDate(),
   gender: '',
 };
 
 const SignupForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  // To redirect to home page after submitting form:
+  let navigate = useNavigate();
+
+  // To show form submition error if exists:
+  const [formError, setFormError] = useState('');
+
+  // For form validation:
   const [user, setUser] = useState(userInfo);
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    currentYear,
-    currentMonth,
-    currentDay,
-    gender,
-  } = user;
+
+  const { firstName, lastName, email, password, year, month, day, gender } =
+    user;
   //   console.log(firstName, lastName, email, password);
+
+  // To show form submition error if exists:
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
+  // To get input data:
   const signupHandler = e => {
-    // console.log(e.target.name);
+    // console.log(e.target.name, e.target.value);
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const years = Array.from(new Array(92), (_, index) => currentYear - index);
+  const years = Array.from(new Array(92), (_, index) => year - index);
   //   console.log(years);
 
   const months = [
@@ -66,6 +73,7 @@ const SignupForm = () => {
     22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
   ];
 
+  // Validation schema:
   const loginValidation = Yup.object({
     firstName: Yup.string()
       .required('First Name is required')
@@ -103,15 +111,40 @@ const SignupForm = () => {
           lastName,
           email,
           password,
-          currentYear,
-          currentMonth,
-          currentDay,
+          year,
+          month,
+          day,
           gender,
         }}
         validationSchema={loginValidation}
+        onSubmit={values => {
+          // console.log(values);
+
+          setFormError('');
+
+          axiosInstance
+            .post('/signup', {
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: values.email,
+              password: values.password,
+              year: values.year,
+              month: values.month,
+              day: values.day,
+              gender: values.gender,
+            })
+            .then(response => {
+              console.log(response);
+              navigate('/login');
+            })
+            .catch(error => {
+              console.log(error, error.message);
+              setFormError(error.response.data.message || error.message);
+            });
+        }}
       >
         {formic => (
-          <Form className="flex flex-col">
+          <Form onSubmit={formic.handleSubmit} className="flex flex-col">
             <LoginInput
               name="firstName"
               type="text"
@@ -148,7 +181,7 @@ const SignupForm = () => {
                   alt="eye icon"
                   className={
                     formic.errors.password
-                      ? 'w-5 absolute top-10 right-5 cursor-pointer'
+                      ? 'w-5 absolute top-16 right-5 cursor-pointer'
                       : 'w-5 absolute top-4 right-5 cursor-pointer'
                   }
                 />
@@ -157,7 +190,12 @@ const SignupForm = () => {
 
             <div className="text-xs my-1">
               Date of birth
-              <SelectInput years={years} months={months} days={days} />
+              <SelectInput
+                years={years}
+                months={months}
+                days={days}
+                signupHandler={signupHandler}
+              />
             </div>
 
             <div className="text-xs my-1">
@@ -176,6 +214,7 @@ const SignupForm = () => {
                     name="gender"
                     id="male"
                     value="male"
+                    onChange={signupHandler}
                   />
                 </div>
                 <div className="form-check form-check-inline border border-solid border-gray-300 w-1/3 py-2 flex justify-around rounded">
@@ -191,10 +230,23 @@ const SignupForm = () => {
                     name="gender"
                     id="female"
                     value="female"
+                    onChange={signupHandler}
                   />
                 </div>
               </div>
             </div>
+            <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+              <LoginButton
+                name="Sign Up"
+                type="submit"
+                className="bg-facebook-green text-white font-bold text-lg border-2 rounded-md border-facebook-green py-1 px-14 mt-3 mx-auto hover:bg-facebook-greenHover"
+              />
+            </div>
+            {formError && (
+              <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md">
+                {formError}
+              </div>
+            )}
           </Form>
         )}
       </Formik>
