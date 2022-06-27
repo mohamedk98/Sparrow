@@ -4316,8 +4316,8 @@ textarea.form-control.is-invalid {
   right: 1.25rem;
 }
 
-.top-10 {
-  top: 2.5rem;
+.top-16 {
+  top: 4rem;
 }
 
 .top-0 {
@@ -4328,24 +4328,26 @@ textarea.form-control.is-invalid {
   left: 0px;
 }
 
-.top-1 {
-  top: 0.25rem;
-}
-
-.top-20 {
-  top: 5rem;
-}
-
-.top-16 {
-  top: 4rem;
-}
-
 .float-left {
   float: left;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .m-0 {
   margin: 0px;
+}
+
+.my-16 {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mx-auto {
@@ -4564,14 +4566,14 @@ textarea.form-control.is-invalid {
   border-radius: 0px;
 }
 
-.rounded-t-md {
-  border-top-left-radius: 0.375rem;
-  border-top-right-radius: 0.375rem;
-}
-
 .rounded-b-md {
   border-bottom-right-radius: 0.375rem;
   border-bottom-left-radius: 0.375rem;
+}
+
+.rounded-t-md {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
 }
 
 .border-2 {
@@ -4621,6 +4623,11 @@ textarea.form-control.is-invalid {
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
+
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
 
 .bg-white {
@@ -4676,6 +4683,11 @@ textarea.form-control.is-invalid {
   padding: 0.25rem;
 }
 
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 .px-12 {
   padding-left: 3rem;
   padding-right: 3rem;
@@ -4721,6 +4733,10 @@ textarea.form-control.is-invalid {
   padding-right: 3.5rem;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .pt-24 {
   padding-top: 6rem;
 }
@@ -4733,14 +4749,19 @@ textarea.form-control.is-invalid {
   vertical-align: top;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-base {
@@ -4803,6 +4824,15 @@ textarea.form-control.is-invalid {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+.underline {
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
+}
+
+.underline-offset-2 {
+  text-underline-offset: 2px;
 }
 
 .opacity-50 {
@@ -4880,6 +4910,10 @@ textarea.form-control.is-invalid {
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
+.hover\:cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .hover\:bg-facebook-blueHover:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 97 197 / var(--tw-bg-opacity));
@@ -4949,6 +4983,10 @@ textarea.form-control.is-invalid {
 
   .lg\:ml-24 {
     margin-left: 6rem;
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-2 {
