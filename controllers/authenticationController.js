@@ -23,7 +23,7 @@ const signup = (req, res, next) => {
       bcrypt.hash(password, 12).then((hashedPassword) => {
         const user = new User({
           //generate Random userID
-          userID: crypto.randomBytes(16).toString("hex"),
+          userId: crypto.randomBytes(16).toString("hex"),
           //generate unique username by adding firstName-lastName-random number
           username: `${firstName}-${lastName}-${crypto
             .randomBytes(12)
@@ -53,27 +53,30 @@ const login = (req, res, next) => {
   //cookie with a certain expiry date
   User.findOne({ email }).then((user) => {
     if (!user) {
-      res.status(400).send({message:"Incorrect email or Password"});
+      res.status(400).send({ message: "Incorrect email or Password" });
     } else {
       //Hashed password comparison
       bcrypt.compare(password, user.password).then((passwordIsTrue) => {
         if (passwordIsTrue) {
-          req.userId = user.userID;
+          req.userId = user.userId;
           req.username = user.username;
           req.email = user.email;
 
-          let accessToken = createToken(user.username, user.email);
+          let accessToken = createToken(user.username, user.email, user.userId);
 
           res
             .cookie("access_token", accessToken, {
               httpOnly: true,
               secure: false,
-              sameSite: "strict",
-              expires: new Date(Date.now() + 900000),
+              expires: new Date(Date.now() + 9000000),
             })
-            .send({message:"Login Successfully"});
+            .send({
+              userId: user.userId,
+              username: user.username,
+              email: user.email,
+            });
         } else {
-          res.status(400).send({message:"Incorrect email or Password"});
+          res.status(400).send({ message: "Incorrect email or Password" });
         }
       });
     }

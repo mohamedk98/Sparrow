@@ -34,6 +34,7 @@ app.use(
       "https://zombie-hat.herokuapp.com",
       "http://localhost:3000",
     ],
+    credentials:true
   })
 );
 app.use(cookieParser());
@@ -43,10 +44,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use(authenticationRouter);
-
+app.use(usersRouter)
 app.get("/", (req, res) => {
   res.send("hello");
 });
+
+
 
 //testing authneitcation route
 app.get("/books", authentication, (req, res) => {
