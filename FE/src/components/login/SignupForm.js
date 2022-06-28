@@ -23,6 +23,9 @@ const userInfo = {
 };
 
 const SignupForm = () => {
+  // Spineer:
+  const [showSinner, setShowSpinner] = useState(false);
+
   // To redirect to home page after submitting form:
   let navigate = useNavigate();
 
@@ -122,6 +125,8 @@ const SignupForm = () => {
 
           setFormError('');
 
+          setShowSpinner(!showSinner);
+
           axiosInstance
             .post('/signup', {
               firstName: values.firstName,
@@ -134,12 +139,17 @@ const SignupForm = () => {
               gender: values.gender,
             })
             .then(response => {
-              console.log(response);
+              // console.log(response);
+
+              if (response.data) setShowSpinner(showSinner);
+
               navigate('/');
             })
             .catch(error => {
-              console.log(error, error.message);
+              // console.log(error, error.message);
               setFormError(error.response.data.message || error.message);
+
+              if (error.response) setShowSpinner(showSinner);
             });
         }}
       >
@@ -237,7 +247,16 @@ const SignupForm = () => {
             </div>
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <LoginButton
-                name="Sign Up"
+                name={
+                  showSinner ? (
+                    <div
+                      className="spinner-border animate-spin w-8 h-8 border-4 rounded-full text-green-100 mx-auto"
+                      role="status"
+                    ></div>
+                  ) : (
+                    'Sign Up'
+                  )
+                }
                 type="submit"
                 className="bg-facebook-green text-white font-bold text-lg border-2 rounded-md border-facebook-green py-1 px-14 mt-3 mx-auto hover:bg-facebook-greenHover"
               />

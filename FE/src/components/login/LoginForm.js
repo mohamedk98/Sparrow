@@ -1,7 +1,7 @@
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import facebook from '../../assets/icons/facebook.svg';
 import eyeShow from '../../assets/icons/eye-password-show.svg';
 import eyeHide from '../../assets/icons/eye-password-hide.svg';
@@ -17,6 +17,9 @@ const loginInfo = {
 };
 
 const LoginForm = () => {
+  // Spineer:
+  const [showSinner, setShowSpinner] = useState(false);
+
   // To redirect to home page after submitting form:
   let navigate = useNavigate();
 
@@ -74,6 +77,8 @@ const LoginForm = () => {
 
               setFormError('');
 
+              setShowSpinner(!showSinner);
+
               axiosInstance
                 .post('/login', {
                   email: values.email,
@@ -81,11 +86,13 @@ const LoginForm = () => {
                 })
                 .then(response => {
                   console.log(response);
+                  if (response.data) setShowSpinner(showSinner);
                   navigate('/');
                 })
                 .catch(error => {
                   // console.log(error.response.data.message);
                   setFormError(error.response.data.message || 'Network Error');
+                  if (error.response) setShowSpinner(showSinner);
                 });
             }}
           >
@@ -131,12 +138,21 @@ const LoginForm = () => {
                 </div>
 
                 {formError && (
-                  <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md">
+                  <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mt-3 mb-2">
                     {formError}
                   </div>
                 )}
                 <LoginButton
-                  name="Log In"
+                  name={
+                    showSinner ? (
+                      <div
+                        className="spinner-border animate-spin w-8 h-8 border-4 rounded-full text-cyan-200 mx-auto"
+                        role="status"
+                      ></div>
+                    ) : (
+                      'Log In'
+                    )
+                  }
                   type="submit"
                   className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-2 mt-3"
                 />
