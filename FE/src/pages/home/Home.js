@@ -1,7 +1,13 @@
-import React from 'react';
+import React from "react";
+import LeftSideBar from "../../components/home/LeftSideBar/LeftSideBar";
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+
+     
+      <LeftSideBar />
+
+  );
 };
 
 export default Home;

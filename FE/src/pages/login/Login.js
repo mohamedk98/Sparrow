@@ -1,5 +1,5 @@
 import React from 'react';
-import Footer from '../../components/login/Footer';
+import Footer from '../../components/login/footer';
 
 import LoginForm from '../../components/login/LoginForm';
 import SignupModal from '../../components/login/SignupModal';

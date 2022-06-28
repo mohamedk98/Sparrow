@@ -12,6 +12,8 @@ module.exports = {
           blueHover: '#1561c5',
           green: '#42b72a',
           greenHover: '#349421db',
+          grey:'#F2F3F5',
+          greyHover:'#CCCCCC'
         },
       },
     },
