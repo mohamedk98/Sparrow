@@ -1,7 +1,6 @@
 import React from 'react';
-import SignupForm from './SignupForm';
 
-const SignupModal = () => {
+const SignupModal = ({ SignupOrResetLoginFormComponent, h1, h6 }) => {
   return (
     <div
       className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -15,8 +14,8 @@ const SignupModal = () => {
         <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
           <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
             <div>
-              <h1 className=" font-bold text-3xl">Sign Up</h1>
-              <h6 className="">It's quick and easy.</h6>
+              <h1 className=" font-bold text-3xl">{h1}</h1>
+              <h6 className="">{h6}</h6>
             </div>
             <button
               type="button"
@@ -26,7 +25,7 @@ const SignupModal = () => {
             ></button>
           </div>
           <div className="modal-body relative p-4">
-            <SignupForm />
+            {SignupOrResetLoginFormComponent}
           </div>
         </div>
       </div>
