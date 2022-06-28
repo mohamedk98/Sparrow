@@ -1,22 +1,16 @@
 require("dotenv").config();
 
 const express = require("express");
-const crypto = require("crypto");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const redis = require("redis");
+
 const { authentication } = require("./middlwares/authentication");
 const app = express();
 
 //Redis Connect
-let redisClient = redis.createClient({
-  url: process.env.REDIS_HOST,
-  password: process.env.REDIS_PASSWORD,
-  name: "tokens",
-});
+const {connectToRedis} = require("./middlwares/redisClient");
 
 //Routes
 const authenticationRouter = require("./routes/authentication");
@@ -34,7 +28,7 @@ app.use(
       "https://zombie-hat.herokuapp.com",
       "http://localhost:3000",
     ],
-    credentials:true
+    credentials: true,
   })
 );
 app.use(cookieParser());
@@ -44,18 +38,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use(authenticationRouter);
-app.use(usersRouter)
+app.use(usersRouter);
 app.get("/", (req, res) => {
   res.send("hello");
 });
 
-
-
 //testing authneitcation route
-app.get("/books", authentication, (req, res) => {
-  res.send("you are authenticated");
-
-  console.log(req.username, req.email, req.userId);
+app.get("/getKeys", (req, res) => {
+res.send("")
 });
 
 //Change  "yourDbName" with your database name
@@ -73,9 +63,7 @@ app.listen(PORT, () => {
     .connect(MONGOO_URL, { dbName: "yourDbName" })
     .then(() => {
       console.log("Connected Successfully to the Database");
-      redisClient.connect().then(() => {
-        console.log("Connected to Redis Cache");
-      });
+      connectToRedis()
     })
     .catch((error) => console.log(error));
 });
