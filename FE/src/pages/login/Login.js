@@ -1,6 +1,8 @@
 import React from 'react';
 import LoginForm from '../../components/login/LoginForm';
 import Footer from '../../components/login/Footer';
+import SignupModal from '../../components/login/SignupModal';
+
 
 const Login = () => {
   return (
