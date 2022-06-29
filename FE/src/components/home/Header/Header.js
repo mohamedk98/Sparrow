@@ -11,10 +11,10 @@ const Header = () => {
       <div className="flex">
         <FaFacebook className="text-facebook-blue text-4xl mr-5" />
 
-        <div class="relative mb-4">
+        <div className="relative mb-4">
           <input
             type="text"
-            class="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
+            className="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
             placeholder="Search"
           />
           <FaSearch className="absolute top-1/4 right-3 md:right-5" />
@@ -56,10 +56,10 @@ const Header = () => {
             aria-labelledby="dropdownMenuButton1"
           >
             <li>
-              <div class="relative dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
+              <div className="relative dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
                 <input
                   type="text"
-                  class="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none"
+                  className="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none"
                   placeholder="Search"
                 />
                 <FaSearch className="absolute right-7 top-1/3" />
