@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-// import { Link } from 'react-router-dom';
-import eyeShow from '../../assets/icons/eye-password-show.svg';
-import eyeHide from '../../assets/icons/eye-password-hide.svg';
+import { AiFillEye } from 'react-icons/ai';
+import { AiFillEyeInvisible } from 'react-icons/ai';
 import LoginInput from './LoginInput';
 import SelectInput from './SelectInput';
 import axiosInstance from '../../network/axiosInstance';
@@ -93,7 +92,10 @@ const SignupForm = () => {
       .matches(/^[a-z ]+$/i, 'Numbers and special characters are not allowed'),
     email: Yup.string()
       .required('Email address is required when resetting password')
-      .email('Enter a valid email 🤨')
+      .matches(
+        /\w+@\w+.(com|net|org)$/gi,
+        'Enter a valid email with the end of (com | net | org)'
+      )
       .max(100),
     password: Yup.string()
       .required('Password is required')
@@ -184,18 +186,20 @@ const SignupForm = () => {
                 className="border-2 rounded-md p-3 mb-2 w-full"
                 onChange={signupHandler}
               />
-              {formic.getFieldMeta('password').value && (
-                <img
-                  onClick={togglePassword}
-                  src={showPassword ? eyeShow : eyeHide}
-                  alt="eye icon"
-                  className={
-                    formic.errors.password
-                      ? 'w-5 absolute top-16 right-5 cursor-pointer'
-                      : 'w-5 absolute top-4 right-5 cursor-pointer'
-                  }
-                />
-              )}
+
+              <span
+                onClick={togglePassword}
+                className={
+                  formic.errors.firstName ||
+                  formic.errors.lastName ||
+                  formic.errors.email ||
+                  formic.errors.password
+                    ? 'hidden'
+                    : 'absolute right-7 top-5'
+                }
+              >
+                {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+              </span>
             </div>
 
             <div className="text-xs my-1">

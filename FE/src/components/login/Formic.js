@@ -5,8 +5,8 @@ import * as Yup from 'yup';
 import axiosInstance from '../../network/axiosInstance';
 import LoginFormInput from './LoginFormInput';
 import LoginButton from './LoginButton';
-import eyeShow from '../../assets/icons/eye-password-show.svg';
-import eyeHide from '../../assets/icons/eye-password-hide.svg';
+import { AiFillEye } from 'react-icons/ai';
+import { AiFillEyeInvisible } from 'react-icons/ai';
 
 // User intial info:
 const loginInfo = {
@@ -96,8 +96,8 @@ const Formic = () => {
               showPassword={showPassword}
               formic={formic}
               togglePassword={togglePassword}
-              eyeShow={eyeShow}
-              eyeHide={eyeHide}
+              eyeShow={<AiFillEye />}
+              eyeHide={<AiFillEyeInvisible />}
               loginInputEmailClassName="border-2 rounded-md p-3 mb-3 w-full"
               loginInputPasswordClassName="border-2 rounded-md p-3 mb-2 w-full"
             />

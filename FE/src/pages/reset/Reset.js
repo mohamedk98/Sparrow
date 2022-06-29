@@ -27,7 +27,11 @@ const Reset = () => {
     <div className="bg-gray-200 h-screen">
       <nav className="relative w-full flex justify-between items-center bg-white shadow">
         <span className="container-fluid">
-          <img className="h-14" src={facebook} alt="facebook logo" />
+          <img className="h-14 mb-2" src={facebook} alt="facebook logo" />
+        </span>
+
+        <span className="text-sky-700 font-bold md:text-lg mr-4 md:mr-0">
+          Don't forget the real life
         </span>
 
         <button
@@ -91,6 +95,7 @@ const Reset = () => {
                   <Field
                     name="email"
                     type="email"
+                    placeholder="Email address"
                     className={
                       errors.email && touched.email
                         ? 'border-2 rounded-md p-3 mb-3 w-full outline-red-500 border-red-500'
@@ -129,7 +134,7 @@ const Reset = () => {
                     />
                   </div>
                   {formError && (
-                    <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mt-3 mb-2">
+                    <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mt-5 mb-2">
                       {formError}
                     </div>
                   )}
