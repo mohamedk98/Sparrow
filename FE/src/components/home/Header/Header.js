@@ -21,10 +21,10 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex">
-        <TiHome className="hover:text-facebook-blue text-4xl mr-1 md:mr-10" />
+      <div className="flex mt-1">
+        <TiHome className="hover:text-facebook-blue text-3xl mr-1 md:mr-10" />
 
-        <RiGroupFill className="hover:text-facebook-blue text-4xl ml-1 md:ml-10" />
+        <RiGroupFill className="hover:text-facebook-blue text-3xl ml-1 md:ml-10" />
 
         {
           //   <HiUserGroup className="hover:text-facebook-blue text-4xl ml-1 md:ml-20" />

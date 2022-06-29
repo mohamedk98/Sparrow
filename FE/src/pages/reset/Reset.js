@@ -96,11 +96,11 @@ const Reset = () => {
                     name="email"
                     type="email"
                     placeholder="Email address"
-                    className={
+                    className={`border-2 rounded-md p-3 mb-3 w-full ${
                       errors.email && touched.email
-                        ? 'border-2 rounded-md p-3 mb-3 w-full outline-red-500 border-red-500'
-                        : 'border-2 rounded-md p-3 mb-3 w-full outline-indigo-400'
-                    }
+                        ? 'outline-red-500 border-red-500'
+                        : 'outline-indigo-400'
+                    }`}
                   />
                   {errors.email && touched.email ? (
                     <div className="text-center text-red-500">
