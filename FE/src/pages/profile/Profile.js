@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axiosInstance from '../../network/axiosInstance';
+// import axiosInstance from '../../network/axiosInstance';
 import cover from '../../assets/stories/2.png'
 
 function Profile() {
