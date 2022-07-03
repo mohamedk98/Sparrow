@@ -1,5 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 //authentication and refresh token data reducers
+
+// const getStorageData = () => {
+//   let storageRefreshToken = localStorage.getItem("refreshToken");
+//   let storageHasExpiry = localStorage.getItem("hasExpiry");
+
+//   if (storageRefreshToken === undefined || storageHasExpiry === undefined) {
+//     return {};
+//   }
+
+//   return { refreshToken: storageRefreshToken, hasExpiry: storageHasExpiry };
+// };
 const initialState = {
   authenticationData: {},
 };
@@ -11,7 +22,10 @@ export const userSlice = createSlice({
     //add data to the store and local storage
     addAuthentication: (state, action) => {
       state.authenticationData = { ...action.payload };
-      localStorage.setItem("refreshToken", state.authenticationData.refreshToken);
+      localStorage.setItem(
+        "refreshToken",
+        state.authenticationData.refreshToken
+      );
       localStorage.setItem("hasExpiry", state.authenticationData.hasExpiry);
     },
     //remove data from storage (used in logout)
@@ -20,7 +34,6 @@ export const userSlice = createSlice({
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("hasExpiry");
     },
-
   },
 });
 

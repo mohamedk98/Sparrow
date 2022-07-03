@@ -78,12 +78,13 @@ const login = async (req, res, next) => {
           req.username = user.username;
           req.email = user.email;
           //Create jwt token
-          let accessToken = createToken(user.username, user.email, user.userId);
+          let accessToken = createToken(user.username, user.email, user.userId,hasExpiry);
           //Create refresh token
           let refreshToken = createRefreshToken(
             user.username,
             user.email,
-            user.userId
+            user.userId,
+    
           );
           /**if the user chose remember me option, it will create a remember token to be used 
          in auto login */
@@ -146,43 +147,38 @@ const logout = (req, res, next) => {
 
 //Auto login controller
 const autoLogin = async (req, res) => {
-  const rememberToken = req.cookies.remember_token;
-  let rememberTokenData;
-  if (rememberToken === undefined) {
-    return res.sendStatus(401);
-  } else {
-    rememberTokenData = jwt.verify(rememberToken, process.env.REMEMBER_TOKEN);
-  }
+  const userAccessToken = req.cookies.access_token;
 
-  if (rememberTokenData === null) {
+  if (userAccessToken === null || userAccessToken === undefined) {
     return res.sendStatus(401);
   }
+  const accessTokenData = jwt.verify(userAccessToken, process.env.TOKEN);
 
-  req.userId = rememberTokenData.userId;
-  req.username = rememberTokenData.username;
-  req.email = rememberTokenData.email;
+  if (accessTokenData === null) {
+    return res.sendStatus(401);
+  }
+
+  req.userId = accessTokenData.userId;
+  req.username = accessTokenData.username;
+  req.email = accessTokenData.email;
 
   const accessToken = createToken(
-    rememberTokenData.username,
-    rememberTokenData.email,
-    rememberTokenData.userId
+    accessTokenData.username,
+    accessTokenData.email,
+    accessTokenData.userId,
+    accessTokenData.hasExpiry
   );
   const refreshToken = createRefreshToken(
-    rememberTokenData.username,
-    rememberTokenData.email,
-    rememberTokenData.userId
+    accessTokenData.username,
+    accessTokenData.email,
+    accessTokenData.userId
   );
-  createRememberToken({
-    username: rememberTokenData.username,
-    email: rememberTokenData.email,
-    userId: rememberTokenData.userId,
-  });
 
-  await checkRedisRefreshToken(rememberTokenData.email);
+  await checkRedisRefreshToken(accessTokenData.email);
   await createRedisRefreshToken({
-    username: rememberTokenData.username,
-    email: rememberTokenData.email,
-    userId: rememberTokenData.userId,
+    username: accessTokenData.username,
+    email: accessTokenData.email,
+    userId: accessTokenData.userId,
     refreshToken: refreshToken,
   });
 
@@ -191,17 +187,11 @@ const autoLogin = async (req, res) => {
       httpOnly: true,
       secure: false,
       //1 day token
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    })
-    .cookie("remember_token", rememberToken, {
-      httpOnly: true,
-      secure: false,
-      //30 days token
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      expires: accessTokenData.hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000):0,
     })
     .send({
       refreshToken: refreshToken,
-      hasExpiry: true,
+      hasExpiry: accessTokenData.hasExpiry,
     });
 };
 

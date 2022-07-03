@@ -16,14 +16,13 @@ import {
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authenticationData = useSelector(
-    (state) => state.user.authenticationData
-  );
+
   //DON"T UNCOMMENT, USED IN TESTING AUTHENTICATION ONLY
 
   useEffect(() => {
     //if there is data, just refresh the token and add it to the the store
     //otherwise navigate to the login page
+
     axiosInstance
       .get("/autologin")
       .then((response) => {
@@ -31,12 +30,8 @@ function App() {
         navigate("/");
       })
       .catch((error) => {
-        if (Object.keys(authenticationData).length === 0) {
-          dispatch(removeAuthentication());
-          navigate("/login");
-        } else {
-          navigate("/");
-        }
+        dispatch(removeAuthentication());
+        navigate("/login");
       });
   }, [dispatch]);
 

@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken");
 const { redisClient, connectToRedis } = require("./redisClient.service");
 const { userDataRepository } = require("../models/RedisRefreshToken");
 //function to create tokens
-const createToken = (username, email, userId) => {
+const createToken = (username, email, userId, hasExpiry) => {
   const TOKEN = process.env.TOKEN;
   const accessToken = jwt.sign(
-    { username: username, email: email, userId: userId },
+    { username: username, email: email, userId: userId, hasExpiry: hasExpiry },
     TOKEN,
     {
       expiresIn: "1d",
@@ -37,13 +37,13 @@ const createRedisRefreshToken = async (refreshTokenData) => {
     username: refreshTokenData.username,
     email: refreshTokenData.email,
     refreshToken: refreshTokenData.refreshToken,
-  })
+  });
 
   /** Token has expiry date of 7 days inside the database */
   await redisClient.execute([
     "EXPIRE",
     `UserEnitity:${redisUser.entityId}`,
-    (7 * 24 * 60 * 60),
+    7 * 24 * 60 * 60,
   ]);
 };
 

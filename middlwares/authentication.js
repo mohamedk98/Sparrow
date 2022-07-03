@@ -7,55 +7,54 @@ const { validateRefreshToken } = require("../services/token.service");
 const refreshToken = async (req, res, next) => {
   const refreshToken = req.body.refreshToken;
   const hasExpiry = req.body.hasExpiry;
-  const userCredentials = await validateRefreshToken(
-    refreshToken,
-    process.env.REFRESH_TOKEN
-  );
+  // let redisUser = null;
+
+  if (!refreshToken || Object.keys(redisUserData)?.length === 0) {
+    return res.sendStatus(401);
+  }
+
   const redisUser = await userDataRepository
     .search()
     .where("refreshToken")
     .equalTo(refreshToken)
     .returnAll();
-  const redisUserData = redisUser[0]?.entityData;
-  if (
-    !refreshToken ||
-    userCredentials == null ||
-    Object.keys(redisUserData)?.length === 0
-  ) {
-    res.sendStatus(401);
-  } else {
-    req.userId = redisUserData.userId;
-    req.username = redisUserData.username;
-    req.email = redisUserData.email;
 
-    const newJwtToken = jwt.sign(
-      {
-        userId: redisUserData.userId,
-        username: redisUserData.username,
-        email: redisUserData.email,
-      },
-      process.env.TOKEN
-    );
-
-    await userDataRepository.save(redisUser[0]);
-      //add expiry time to token of 7 days
-    await redisClient.execute([
-      "EXPIRE",
-      `UserEnitity:${redisUser[0].entityId}`,
-      7 * 24 * 60 * 60,
-    ]);
-    res
-      .cookie("access_token", newJwtToken, {
-        httpOnly: true,
-        secure: false,
-        //15 minutes token
-        expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
-      })
-      .send({
-        refreshToken: redisUserData.refreshToken,
-        hasExpiry: hasExpiry,
-      });
+  if (redisUser === null || redisUser === undefined) {
+    return res.sendStatus(401);
   }
+  const redisUserData = redisUser[0]?.entityData;
+
+  req.userId = redisUserData.userId;
+  req.username = redisUserData.username;
+  req.email = redisUserData.email;
+
+  const newJwtToken = jwt.sign(
+    {
+      userId: redisUserData.userId,
+      username: redisUserData.username,
+      email: redisUserData.email,
+    },
+    process.env.TOKEN
+  );
+
+  await userDataRepository.save(redisUser[0]);
+  //add expiry time to token of 7 days
+  await redisClient.execute([
+    "EXPIRE",
+    `UserEnitity:${redisUser[0].entityId}`,
+    7 * 24 * 60 * 60,
+  ]);
+  res
+    .cookie("access_token", newJwtToken, {
+      httpOnly: true,
+      secure: false,
+      //15 minutes token
+      expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
+    })
+    .send({
+      refreshToken: redisUserData.refreshToken,
+      hasExpiry: hasExpiry,
+    });
 };
 
 /**

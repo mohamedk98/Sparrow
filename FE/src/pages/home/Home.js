@@ -6,6 +6,7 @@ const Home = () => {
   const [profileData, setProfileData] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
+    //it will return user profile data
     axiosTokenInstance
       .get("/profile")
       .then((response) => {
@@ -18,7 +19,6 @@ const Home = () => {
   }, [navigate]);
   return (
     <>
-      {console.log(profileData)}
       <LeftSideBar />
     </>
   );
