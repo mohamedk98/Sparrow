@@ -206,4 +206,4 @@ const autoLogin = async (req, res) => {
     });
 };
 */
-module.exports = { autoLogin, logout, signup, login };
+module.exports = {  logout, signup, login };
