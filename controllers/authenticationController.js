@@ -145,6 +145,7 @@ const logout = (req, res, next) => {
 };
 
 //Auto login controller
+/*
 const autoLogin = async (req, res) => {
   const rememberToken = req.cookies.remember_token;
   let rememberTokenData;
@@ -204,5 +205,5 @@ const autoLogin = async (req, res) => {
       hasExpiry: true,
     });
 };
-
+*/
 module.exports = { autoLogin, logout, signup, login };
