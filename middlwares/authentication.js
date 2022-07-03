@@ -7,9 +7,9 @@ const { validateRefreshToken } = require("../services/token.service");
 const refreshToken = async (req, res, next) => {
   const refreshToken = req.body.refreshToken;
   const hasExpiry = req.body.hasExpiry;
-  // let redisUser = null;
 
-  if (!refreshToken || Object.keys(redisUserData)?.length === 0) {
+
+  if (refreshToken === null || refreshToken === undefined) {
     return res.sendStatus(401);
   }
 
