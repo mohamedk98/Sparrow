@@ -1,12 +1,20 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const {
+  createRedisRefreshToken,
   createToken,
   createRefreshToken,
-} = require("../middlwares/authentication");
-const { createRedisRefreshToken } = require("../middlwares/redisClient");
+  removeRefreshToken,
+  checkRedisRefreshToken,
+  updateRedisRefreshTokensIndex,
+  createRememberToken,
+} = require("../services/token.service");
 
+/**Singup controller
+ * it returns either success message or failure based on the error
+ */
 const signup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -49,10 +57,14 @@ const signup = (req, res, next) => {
   });
 };
 
-const login = (req, res, next) => {
+/**Login Controller */
+const login = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const hasExpiry = req.body.hasExpiry;
+  let rememberToken = null;
+  //incase of redis flushing (will be used in admin panel after flushing)
+  updateRedisRefreshTokensIndex();
   //if the user is found and the password is correct, add a jwt token to the
   //cookie with a certain expiry date
   User.findOne({ email }).then((user) => {
@@ -60,35 +72,58 @@ const login = (req, res, next) => {
       res.status(400).send({ message: "Incorrect email or Password" });
     } else {
       //Hashed password comparison
-      bcrypt.compare(password, user.password).then((passwordIsTrue) => {
+      bcrypt.compare(password, user.password).then(async (passwordIsTrue) => {
         if (passwordIsTrue) {
           req.userId = user.userId;
           req.username = user.username;
           req.email = user.email;
-
+          //Create jwt token
           let accessToken = createToken(user.username, user.email, user.userId);
+          //Create refresh token
           let refreshToken = createRefreshToken(
             user.username,
             user.email,
             user.userId
           );
-
-          createRedisRefreshToken({
+          /**if the user chose remember me option, it will create a remember token to be used 
+         in auto login */
+          if (hasExpiry) {
+            rememberToken = createRememberToken({
+              username: user.username,
+              email: user.email,
+              userId: user.userId,
+            });
+            res.cookie("remember_token", rememberToken, {
+              httpOnly: true,
+              secure: false,
+              //30 days token
+              expires: hasExpiry
+                ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                : 0,
+            });
+          }
+          //Check existing redis token
+          await checkRedisRefreshToken(user.email);
+          //Create redis refresh token
+          await createRedisRefreshToken({
             username: user.username,
             email: user.email,
             userId: user.userId,
             refreshToken: refreshToken,
-          }).then(() => {
-            res
-              .cookie("access_token", accessToken, {
-                httpOnly: true,
-                secure: false,
-                expires: hasExpiry ? new Date(Date.now() + 9000000) : 0,
-              })
-              .send({
-                refreshToken: refreshToken,
-              });
           });
+          res
+            .cookie("access_token", accessToken, {
+              httpOnly: true,
+              secure: false,
+              //1 day token
+              expires: hasExpiry
+                ? new Date(Date.now() + 24 * 60 * 60 * 1000)
+                : 0,
+            })
+            .send({
+              refreshToken: refreshToken,
+              hasExpiry: hasExpiry,
+            });
         } else {
           res.status(400).send({ message: "Incorrect email or Password" });
         }
@@ -97,21 +132,77 @@ const login = (req, res, next) => {
   });
 };
 
-//clear the access_token cookie to logout
+/** clear the access_token cookie to logout */
 const logout = (req, res, next) => {
-  const refreshToken = req.body.refreshToken;
-  if (refreshToken) {
-    redisClient.get({ equals: refreshToken }, "refreshToken").then((data) => {
-      redisClient.set("refreshToken", null).then(() => {
-        res
-          .clearCookie("access_token")
-          .status(200)
-          .send({ message: "Successfully logged out 😏 🍀" });
-      });
-    });
-  }
+  const refreshTokenId = req.body.refreshTokenId;
+  removeRefreshToken(refreshTokenId).then(() => {
+    res
+      .clearCookie("access_token")
+      .clearCookie("remember_token")
+      .status(200)
+      .send({ message: "Successfully logged out 😏 🍀" });
+  });
 };
 
-exports.login = login;
-exports.logout = logout;
-exports.signup = signup;
+//Auto login controller
+const autoLogin = async (req, res) => {
+  const rememberToken = req.cookies.remember_token;
+  let rememberTokenData;
+  if (rememberToken === undefined) {
+    return res.sendStatus(401);
+  } else {
+    rememberTokenData = jwt.verify(rememberToken, process.env.REMEMBER_TOKEN);
+  }
+
+  if (rememberTokenData === null) {
+    return res.sendStatus(401);
+  }
+
+  req.userId = rememberTokenData.userId;
+  req.username = rememberTokenData.username;
+  req.email = rememberTokenData.email;
+
+  const accessToken = createToken(
+    rememberTokenData.username,
+    rememberTokenData.email,
+    rememberTokenData.userId
+  );
+  const refreshToken = createRefreshToken(
+    rememberTokenData.username,
+    rememberTokenData.email,
+    rememberTokenData.userId
+  );
+  createRememberToken({
+    username: rememberTokenData.username,
+    email: rememberTokenData.email,
+    userId: rememberTokenData.userId,
+  });
+
+  await checkRedisRefreshToken(rememberTokenData.email);
+  await createRedisRefreshToken({
+    username: rememberTokenData.username,
+    email: rememberTokenData.email,
+    userId: rememberTokenData.userId,
+    refreshToken: refreshToken,
+  });
+
+  res
+    .cookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: false,
+      //1 day token
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    })
+    .cookie("remember_token", rememberToken, {
+      httpOnly: true,
+      secure: false,
+      //30 days token
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    })
+    .send({
+      refreshToken: refreshToken,
+      hasExpiry: true,
+    });
+};
+
+module.exports = { autoLogin, logout, signup, login };

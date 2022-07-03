@@ -6,7 +6,7 @@ import eyeShow from '../../assets/icons/eye-password-show.svg';
 import eyeHide from '../../assets/icons/eye-password-hide.svg';
 import LoginInput from './LoginInput';
 import SelectInput from './SelectInput';
-import axiosInstance from '../../network/axiosInstance';
+import {axiosInstance} from '../../network/axiosInstance';
 import LoginButton from './LoginButton';
 import { useNavigate } from 'react-router-dom';
 

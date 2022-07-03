@@ -4,20 +4,19 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
 
-const { authentication } = require("./middlwares/authentication");
 const app = express();
 
 //Redis Connect
-const {connectToRedis} = require("./middlwares/redisClient");
+const { connectToRedis } = require("./services/redisClient.service");
 
 //Routes
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
+const { authentication } = require("./middlwares/authentication");
+const connectToMongo = require("./services/mongoClient.service");
 
 //Connection to server and Database URL
-const MONGOO_URL = process.env.MONGOO_URL;
 const PORT = process.env.PORT || 3000;
 
 //Middlewares
@@ -39,13 +38,14 @@ app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use(authenticationRouter);
 app.use(usersRouter);
+
 app.get("/", (req, res) => {
   res.send("hello");
 });
 
-//testing authneitcation route
-app.get("/getKeys", (req, res) => {
-res.send("")
+app.use(authentication);
+app.get("/test", authentication, (req, res) => {
+  res.send("hello");
 });
 
 //Change  "yourDbName" with your database name
@@ -57,13 +57,8 @@ res.send("")
  * to the database causing production error on server initialization
  */
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is working on port ${PORT}`);
-  mongoose
-    .connect(MONGOO_URL, { dbName: "yourDbName" })
-    .then(() => {
-      console.log("Connected Successfully to the Database");
-      connectToRedis()
-    })
-    .catch((error) => console.log(error));
+  await connectToRedis();
+  await connectToMongo();
 });

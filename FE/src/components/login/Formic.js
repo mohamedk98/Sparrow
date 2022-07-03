@@ -1,29 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import axiosInstance from '../../network/axiosInstance';
-import LoginFormInput from './LoginFormInput';
-import LoginButton from './LoginButton';
-import eyeShow from '../../assets/icons/eye-password-show.svg';
-import eyeHide from '../../assets/icons/eye-password-hide.svg';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { axiosInstance } from "../../network/axiosInstance";
+import LoginFormInput from "./LoginFormInput";
+import LoginButton from "./LoginButton";
+import eyeShow from "../../assets/icons/eye-password-show.svg";
+import eyeHide from "../../assets/icons/eye-password-hide.svg";
+import { useDispatch } from "react-redux";
+import { addAuthentication } from "../../store/userSlice/UserSlice";
 
 // User intial info:
 const loginInfo = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
   hasExpiry: false,
 };
 
 const Formic = () => {
-  // Spineer:
+  //dispatching store event
+
+  const dispatch = useDispatch();
+  // Spinner:
   const [showSinner, setShowSpinner] = useState(false);
 
   // To redirect to home page after submitting form:
   let navigate = useNavigate();
 
   // To show form submition error if exists:
-  const [formError, setFormError] = useState('');
+  const [formError, setFormError] = useState("");
 
   // For password Eye hide/show:
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +46,7 @@ const Formic = () => {
   // console.log(email, password);
 
   // To get input data:
-  const loginHandler = e => {
+  const loginHandler = (e) => {
     // console.log(e.target.name, e.target.value);
     const { name, value } = e.target;
     setLogin({ ...login, [name]: value });
@@ -50,10 +55,10 @@ const Formic = () => {
   // Validation schema:
   const loginValidation = Yup.object({
     email: Yup.string()
-      .required('Email address is required')
-      .email('Invalid email')
+      .required("Email address is required")
+      .email("Invalid email")
       .max(100),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string().required("Password is required"),
   });
 
   return (
@@ -62,31 +67,34 @@ const Formic = () => {
         enableReinitialize // To inforce it to teset form input values when initialValues changes.
         initialValues={{ email, password, hasExpiry }}
         validationSchema={loginValidation}
-        onSubmit={values => {
+        onSubmit={(values) => {
           // console.log(values);
 
-          setFormError('');
+          setFormError("");
 
           setShowSpinner(!showSinner);
 
           axiosInstance
-            .post('/login', {
+            .post("/login", {
               email: values.email,
               password: values.password,
+              hasExpiry: values.hasExpiry,
             })
-            .then(response => {
-              console.log(response);
+            .then((response) => {
+              //Add the login data to store if the remember me is checked
+              dispatch(addAuthentication(response.data));
+
               if (response.data) setShowSpinner(showSinner);
-              navigate('/');
+              navigate("/");
             })
-            .catch(error => {
+            .catch((error) => {
               // console.log(error.response.data.message);
-              setFormError(error.response.data.message || 'Network Error');
+              setFormError(error.response.data.message || "Network Error");
               if (error.response) setShowSpinner(showSinner);
             });
         }}
       >
-        {formic => (
+        {(formic) => (
           <Form
             onSubmit={formic.handleSubmit}
             className="flex flex-col text-center"
@@ -131,7 +139,7 @@ const Formic = () => {
                     role="status"
                   ></div>
                 ) : (
-                  'Log In'
+                  "Log In"
                 )
               }
               type="submit"
