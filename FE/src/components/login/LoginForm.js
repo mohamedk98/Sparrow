@@ -7,7 +7,7 @@ import Formic from './Formic';
 const LoginForm = () => {
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1">
-      <div className="mt-24 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto">
+      <div className="lg:mt-20 -mt-16 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto">
         <img
           className="max-w-xs lg:ml-14 mx-auto"
           src={facebook}

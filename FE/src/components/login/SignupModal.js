@@ -3,7 +3,7 @@ import React from 'react';
 const SignupModal = ({ SignupOrResetLoginFormComponent, h1, h6 }) => {
   return (
     <div
-      className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+      className="modal fade fixed top-0 left-0 hidden w-3/4 ml-16 md:w-full md:ml-0 h-full outline-none overflow-x-hidden overflow-y-auto"
       id="exampleModalCenter"
       tabIndex="-1"
       aria-labelledby="exampleModalCenterTitle"

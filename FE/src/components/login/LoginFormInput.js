@@ -29,12 +29,12 @@ const LoginFormInput = ({
           onChange={loginHandler}
         />
         {formic.getFieldMeta('password').value && (
-          <img
+          <span
             onClick={togglePassword}
-            src={showPassword ? eyeShow : eyeHide}
-            alt="eye icon"
             className="w-5 absolute top-4 right-5 cursor-pointer"
-          />
+          >
+            {showPassword ? eyeShow : eyeHide}
+          </span>
         )}
       </div>
     </Fragment>
