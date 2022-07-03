@@ -146,6 +146,7 @@ const logout = (req, res, next) => {
 };
 
 //Auto login controller
+/*
 const autoLogin = async (req, res) => {
   const userAccessToken = req.cookies.access_token;
 
@@ -194,5 +195,5 @@ const autoLogin = async (req, res) => {
       hasExpiry: accessTokenData.hasExpiry,
     });
 };
-
-module.exports = { autoLogin, logout, signup, login };
+*/
+module.exports = {  logout, signup, login };

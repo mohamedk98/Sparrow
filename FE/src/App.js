@@ -8,6 +8,7 @@ import Error from "./pages/error/Error";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Reset from "./pages/reset/Reset";
+import Profile from "./pages/profile/Profile";
 import {
   addAuthentication,
   removeAuthentication,
@@ -18,7 +19,7 @@ function App() {
   const dispatch = useDispatch();
 
   //DON"T UNCOMMENT, USED IN TESTING AUTHENTICATION ONLY
-
+/*
   useEffect(() => {
     //if there is data, just refresh the token and add it to the the store
     //otherwise navigate to the login page
@@ -34,12 +35,13 @@ function App() {
         navigate("/login");
       });
   }, [dispatch]);
-
+*/
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset" element={<Reset />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="*" element={<Error />} />
     </Routes>
   );
