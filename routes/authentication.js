@@ -15,7 +15,7 @@ router.post("/token", refreshToken);
 //------------------------------------------------------------------\\
 //GET Routes
 //-------------------------------------\\
-router.get('/autologin',autoLogin) 
+/*router.get('/autologin',autoLogin) */
 
 
 module.exports = router;
