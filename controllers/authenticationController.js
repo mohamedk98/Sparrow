@@ -101,7 +101,7 @@ const login = async (req, res, next) => {
           res
             .cookie("access_token", accessToken, {
               httpOnly: true,
-              secure: false,
+              secure: true,
               sameSite:"lax",
               //1 day token
               expires: hasExpiry
@@ -171,7 +171,7 @@ const autoLogin = async (req, res) => {
   res
     .cookie("access_token", accessToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite:"lax",
       //1 day token
       expires: accessTokenData.hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000):0,
