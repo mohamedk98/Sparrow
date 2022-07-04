@@ -6,7 +6,7 @@ import { store } from "../store/store";
 
 //Normal instance for any request that doesn't need refresh token or authentication
 const axiosInstance = axios.create({
-  baseURL: "https://zombie-hat.herokuapp.com",
+  baseURL: "https://zombie-hat.herokuapp.com", //"https://zombie-hat.herokuapp.com"
   withCredentials: true,
 });
 

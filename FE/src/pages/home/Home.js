@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LeftSideBar from "../../components/home/LeftSideBar/LeftSideBar";
 import Feed from "../../components/home/Feed/Feed";
-import { axiosTokenInstance } from "../../network/axiosInstance";
+import { axiosInstance, axiosTokenInstance } from "../../network/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/home/Header/Header";
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
     //it will return user profile data
-    axiosTokenInstance
+    axiosInstance
       .get("/profile")
       .then((response) => {
         setProfileData(response.data);
@@ -22,7 +22,6 @@ const Home = () => {
   return (
     <div className="h-screen bg-facebook-grey overflow-hidden">
       <Header/>
-      {console.log(profileData)}
       <div className="flex">
         <LeftSideBar />
           <Feed/>
