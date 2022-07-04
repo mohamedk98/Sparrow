@@ -103,6 +103,7 @@ const login = async (req, res, next) => {
             .cookie("access_token", accessToken, {
               httpOnly: true,
               secure: false,
+              sameSite:"none",
               //1 day token
               expires: hasExpiry
                 ? new Date(Date.now() + 24 * 60 * 60 * 1000)
