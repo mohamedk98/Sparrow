@@ -9,7 +9,6 @@ const {
   removeRefreshToken,
   checkRedisRefreshToken,
   updateRedisRefreshTokensIndex,
-  createRememberToken,
 } = require("../services/token.service");
 
 /**Singup controller
@@ -78,31 +77,19 @@ const login = async (req, res, next) => {
           req.username = user.username;
           req.email = user.email;
           //Create jwt token
-          let accessToken = createToken(user.username, user.email, user.userId,hasExpiry);
+          let accessToken = createToken(
+            user.username,
+            user.email,
+            user.userId,
+            hasExpiry
+          );
           //Create refresh token
           let refreshToken = createRefreshToken(
             user.username,
             user.email,
-            user.userId,
-    
+            user.userId
           );
-          /**if the user chose remember me option, it will create a remember token to be used 
-         in auto login */
-          if (hasExpiry) {
-            rememberToken = createRememberToken({
-              username: user.username,
-              email: user.email,
-              userId: user.userId,
-            });
-            res.cookie("remember_token", rememberToken, {
-              httpOnly: true,
-              secure: false,
-              //30 days token
-              expires: hasExpiry
-                ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-                : 0,
-            });
-          }
+
           //Check existing redis token
           await checkRedisRefreshToken(user.email);
           //Create redis refresh token
@@ -123,7 +110,6 @@ const login = async (req, res, next) => {
             })
             .send({
               refreshToken: refreshToken,
-              hasExpiry: hasExpiry,
             });
         } else {
           res.status(400).send({ message: "Incorrect email or Password" });
@@ -139,14 +125,13 @@ const logout = (req, res, next) => {
   removeRefreshToken(refreshTokenId).then(() => {
     res
       .clearCookie("access_token")
-      .clearCookie("remember_token")
       .status(200)
       .send({ message: "Successfully logged out 😏 🍀" });
   });
 };
 
 //Auto login controller
-/*
+
 const autoLogin = async (req, res) => {
   const userAccessToken = req.cookies.access_token;
 
@@ -192,8 +177,7 @@ const autoLogin = async (req, res) => {
     })
     .send({
       refreshToken: refreshToken,
-      hasExpiry: accessTokenData.hasExpiry,
     });
 };
-*/
-module.exports = {  logout, signup, login };
+
+module.exports = {autoLogin, logout, signup, login };

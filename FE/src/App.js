@@ -19,7 +19,7 @@ function App() {
   const dispatch = useDispatch();
 
   //DON"T UNCOMMENT, USED IN TESTING AUTHENTICATION ONLY
-/*
+
   useEffect(() => {
     //if there is data, just refresh the token and add it to the the store
     //otherwise navigate to the login page
@@ -35,7 +35,7 @@ function App() {
         navigate("/login");
       });
   }, [dispatch]);
-*/
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

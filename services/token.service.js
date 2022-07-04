@@ -85,29 +85,28 @@ const updateRedisRefreshTokensIndex = async () => {
 };
 
 /**Create Remember Token that used in auto login */
-const createRememberToken = (userData) => {
-  const REMEMBER_TOKEN = process.env.REMEMBER_TOKEN;
-  const rememberToken = jwt.sign(
-    {
-      username: userData.username,
-      email: userData.email,
-      userId: userData.userId,
-    },
-    REMEMBER_TOKEN,
-    {
-      expiresIn: "30d",
-      algorithm: "HS256",
-    }
-  );
-  return rememberToken;
-};
+// const createRememberToken = (userData) => {
+//   const REMEMBER_TOKEN = process.env.REMEMBER_TOKEN;
+//   const rememberToken = jwt.sign(
+//     {
+//       username: userData.username,
+//       email: userData.email,
+//       userId: userData.userId,
+//     },
+//     REMEMBER_TOKEN,
+//     {
+//       expiresIn: "30d",
+//       algorithm: "HS256",
+//     }
+//   );
+//   return rememberToken;
+// };
 
-const removeRememberToken = () => {};
+
 
 module.exports = {
   createRefreshToken,
   createToken,
-  createRememberToken,
   createRedisRefreshToken,
   checkRedisRefreshToken,
   validateRefreshToken,
