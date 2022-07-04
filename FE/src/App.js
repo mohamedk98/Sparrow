@@ -34,7 +34,7 @@ function App() {
         dispatch(removeAuthentication());
         navigate("/login");
       });
-  }, [dispatch]);
+  }, []);
 
   return (
     <Routes>

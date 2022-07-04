@@ -6,13 +6,13 @@ import { store } from "../store/store";
 
 //Normal instance for any request that doesn't need refresh token or authentication
 const axiosInstance = axios.create({
-  baseURL: "https://zombie-hat.herokuapp.com", //"https://zombie-hat.herokuapp.com"
+  baseURL: "http://localhost:4000", //"https://zombie-hat.herokuapp.com"
   withCredentials: true,
 });
 
 //Enhanced axios instance with interceptors to work with token refreshment
 const axiosTokenInstance = axios.create({
-  baseURL: "https://zombie-hat.herokuapp.com",
+  baseURL: "http://localhost:4000",
   withCredentials: true,
 });
 

@@ -61,9 +61,8 @@ const login = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const hasExpiry = req.body.hasExpiry;
-  let rememberToken = null;
   //incase of redis flushing (will be used in admin panel after flushing)
-  updateRedisRefreshTokensIndex();
+  await updateRedisRefreshTokensIndex();
   //if the user is found and the password is correct, add a jwt token to the
   //cookie with a certain expiry date
   User.findOne({ email }).then((user) => {
@@ -103,6 +102,7 @@ const login = async (req, res, next) => {
             .cookie("access_token", accessToken, {
               httpOnly: true,
               secure: false,
+              sameSite:"lax",
               //1 day token
               expires: hasExpiry
                 ? new Date(Date.now() + 24 * 60 * 60 * 1000)
@@ -172,6 +172,7 @@ const autoLogin = async (req, res) => {
     .cookie("access_token", accessToken, {
       httpOnly: true,
       secure: false,
+      sameSite:"lax",
       //1 day token
       expires: accessTokenData.hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000):0,
     })
