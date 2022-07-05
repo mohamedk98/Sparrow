@@ -19,14 +19,9 @@ const signup = (req, res, next) => {
   const password = req.body.password;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
-  // const day = req.body.day;
-  // const month = req.body.month;
-  // const year = req.body.year;
   const gender = req.body.gender;
   const date = req.body.date;
-  // const dateOfBirth = new Date(`${day}/${month}/${year}`)
-  //   .toLocaleString()
-  //   .split(",")[0];
+
   //if the email or username was already used,don't create account
   //else,create a new account
 
@@ -45,7 +40,7 @@ const signup = (req, res, next) => {
           firstName: firstName,
           lastName: lastName,
           dateOfBirth: date,
-          age: new Date().getFullYear() - new Date(date).getFullYear(),
+          age: new Date().getFullYear() - date.slice(0,4),
           gender: gender,
         });
         try {
@@ -56,7 +51,9 @@ const signup = (req, res, next) => {
             .send({ message: "An error has occured , please try again later" });
         }
         res.status(200).send({ message: "Successfully registered" });
-      });
+      }).catch((error)=>{
+        res.status(400).send({message: "Please Enter a valid data"})
+      })
     } else {
       res.status(400).send({ message: "User Already Registered" });
     }
