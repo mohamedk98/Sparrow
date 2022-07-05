@@ -29,31 +29,37 @@ const signup = (req, res, next) => {
   //if the email or username was already used,don't create account
   //else,create a new account
 
-  User.findOne({ email }).then((user) => {
-    if (!user) {
-      bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new User({
-          //generate Random userID
-          userId: crypto.randomBytes(16).toString("hex"),
-          //generate unique username by adding firstName-lastName-random number
-          username: `${firstName}-${lastName}-${crypto
-            .randomBytes(12)
-            .toString("hex")}`,
-          email: email,
-          password: hashedPassword,
-          firstName: firstName,
-          lastName: lastName,
-          dateOfBirth: dateOfBirth,
-          age: new Date().getFullYear() - new Date(dateOfBirth).getFullYear(),
-          gender: gender,
+  try {
+    User.findOne({ email }).then((user) => {
+      if (!user) {
+        bcrypt.hash(password, 12).then((hashedPassword) => {
+          const user = new User({
+            //generate Random userID
+            userId: crypto.randomBytes(16).toString("hex"),
+            //generate unique username by adding firstName-lastName-random number
+            username: `${firstName}-${lastName}-${crypto
+              .randomBytes(12)
+              .toString("hex")}`,
+            email: email,
+            password: hashedPassword,
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: dateOfBirth,
+            age: new Date().getFullYear() - new Date(dateOfBirth).getFullYear(),
+            gender: gender,
+          });
+          user.save();
+          res.status(200).send({ message: "Successfully registered" });
         });
-        user.save();
-        res.status(200).send({ message: "Successfully registered" });
-      });
-    } else {
-      res.status(400).send({ message: "User Already Registered" });
-    }
-  });
+      } else {
+        res.status(400).send({ message: "User Already Registered" });
+      }
+    });
+  } catch {
+    res
+      .send(400)
+      .send({ message: "An error has occured , please try again later" });
+  }
 };
 
 /**Login Controller */
@@ -102,7 +108,7 @@ const login = async (req, res, next) => {
             .cookie("access_token", accessToken, {
               httpOnly: true,
               secure: false,
-              sameSite:"lax",
+              sameSite: "lax",
               //1 day token
               expires: hasExpiry
                 ? new Date(Date.now() + 24 * 60 * 60 * 1000)
@@ -172,13 +178,15 @@ const autoLogin = async (req, res) => {
     .cookie("access_token", accessToken, {
       httpOnly: true,
       secure: false,
-      sameSite:"lax",
+      sameSite: "lax",
       //1 day token
-      expires: accessTokenData.hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000):0,
+      expires: accessTokenData.hasExpiry
+        ? new Date(Date.now() + 24 * 60 * 60 * 1000)
+        : 0,
     })
     .send({
       refreshToken: refreshToken,
     });
 };
 
-module.exports = {autoLogin, logout, signup, login };
+module.exports = { autoLogin, logout, signup, login };

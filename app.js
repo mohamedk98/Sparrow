@@ -4,8 +4,30 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const morgan = require("morgan");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const app = express();
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Zombie-hat Social Media App",
+      version: "1.0.0",
+      description: "A social media app made for youth",
+    },
+    servers: [
+      {
+        url: "http://localhost:4000",
+      },
+    ],
+  },
+  apis: ["./documentation/*.yaml"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs,{explorer:true}));
+
 
 //Redis Connect
 const { connectToRedis } = require("./services/redisClient.service");
@@ -35,7 +57,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
-
+app.use(morgan("dev"));
 app.use(authenticationRouter);
 app.use(usersRouter);
 

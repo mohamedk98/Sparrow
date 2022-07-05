@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon -e .yaml app.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.2",
@@ -21,6 +21,8 @@
     "react-redux": "^8.0.2",
     "redis": "^4.1.0",
     "redis-om": "^0.1.5",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0"
   }
 }
