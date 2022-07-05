@@ -45,7 +45,7 @@ const signup = (req, res, next) => {
           firstName: firstName,
           lastName: lastName,
           dateOfBirth: date,
-          age: new Date().getFullYear() - new Date(dateOfBirth).getFullYear(),
+          age: new Date().getFullYear() - new Date(date).getFullYear(),
           gender: gender,
         });
         try {
