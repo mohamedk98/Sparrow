@@ -4366,6 +4366,14 @@ textarea.form-control.is-invalid {
   top: 2.25rem;
 }
 
+.bottom-3 {
+  bottom: 0.75rem;
+}
+
+.bottom-16 {
+  bottom: 4rem;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -4376,6 +4384,10 @@ textarea.form-control.is-invalid {
 
 .m-0 {
   margin: 0px;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .my-4 {
@@ -4391,6 +4403,21 @@ textarea.form-control.is-invalid {
 .my-1 {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+}
+
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .mt-16 {
@@ -4758,6 +4785,10 @@ textarea.form-control.is-invalid {
   overflow-x: hidden;
 }
 
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -4889,6 +4920,11 @@ textarea.form-control.is-invalid {
   background-color: transparent;
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
 .bg-contain {
   background-size: contain;
 }
@@ -4927,6 +4963,10 @@ textarea.form-control.is-invalid {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-7 {
+  padding: 1.75rem;
 }
 
 .py-2 {
@@ -5002,6 +5042,11 @@ textarea.form-control.is-invalid {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.px-7 {
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
 }
 
 .pt-4 {

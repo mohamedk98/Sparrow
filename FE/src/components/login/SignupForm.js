@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import LoginInput from './LoginInput';
-import SelectInput from './SelectInput';
 import axiosInstance from '../../network/axiosInstance';
 import LoginButton from './LoginButton';
 import { useNavigate } from 'react-router-dom';
@@ -15,9 +14,7 @@ const userInfo = {
   lastName: '',
   email: '',
   password: '',
-  year: new Date().getFullYear(),
-  month: new Date().getMonth() + 1,
-  day: new Date().getDate(),
+  date: '', // Month/Day/Year
   gender: '',
 };
 
@@ -34,8 +31,7 @@ const SignupForm = () => {
   // For form validation:
   const [user, setUser] = useState(userInfo);
 
-  const { firstName, lastName, email, password, year, month, day, gender } =
-    user;
+  const { firstName, lastName, email, password, date, gender } = user;
   //   console.log(firstName, lastName, email, password);
 
   // To show form submition error if exists:
@@ -52,29 +48,6 @@ const SignupForm = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const years = Array.from(new Array(92), (_, index) => year - index);
-  //   console.log(years);
-
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  const days = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-  ];
-
   // Validation schema:
   const loginValidation = Yup.object({
     firstName: Yup.string()
@@ -85,18 +58,21 @@ const SignupForm = () => {
         /^[a-z]+$/i,
         'Numbers and special characters are not allowed 🤨'
       ),
+
     lastName: Yup.string()
       .required('Last Name is required')
       .min(3, 'Last Name length is 3 characters at least 🤨')
       .max(16, 'Last Name length is 16 characters as max.🤨')
       .matches(/^[a-z ]+$/i, 'Numbers and special characters are not allowed'),
     email: Yup.string()
+
       .required('Email address is required when resetting password')
       .matches(
         /\w+@\w+.(com|net|org)$/gi,
         'Enter a valid email with the end of (com | net | org)'
       )
       .max(100),
+
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Password length must be 8 at least')
@@ -105,6 +81,10 @@ const SignupForm = () => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
         'password must contain at least one upper case, one lower case, one number, and one special charcter (! @ # $ % ^ & *)'
       ),
+
+    date: Yup.string().required('Date is required'),
+
+    gender: Yup.string().required('Gender is required'),
   });
 
   return (
@@ -116,9 +96,7 @@ const SignupForm = () => {
           lastName,
           email,
           password,
-          year,
-          month,
-          day,
+          date,
           gender,
         }}
         validationSchema={loginValidation}
@@ -135,9 +113,7 @@ const SignupForm = () => {
               lastName: values.lastName,
               email: values.email,
               password: values.password,
-              year: values.year,
-              month: values.month,
-              day: values.day,
+              date: values.date,
               gender: values.gender,
             })
             .then(response => {
@@ -204,18 +180,43 @@ const SignupForm = () => {
 
             <div className="text-xs my-1">
               Date of birth
-              <SelectInput
-                years={years}
-                months={months}
-                days={days}
-                signupHandler={signupHandler}
+              {formic.errors.date ? (
+                <div className="text-center text-red-500">
+                  {formic.errors.date}
+                </div>
+              ) : (
+                ''
+              )}
+              <input
+                type="date"
+                name="date"
+                onChange={signupHandler}
+                // className="block text-center m-auto border border-gray-300 px-7 py-1 text-base"
+                className={`block text-center m-auto border border-gray-300 px-7 py-1 text-base rounded ${
+                  formic.errors.date
+                    ? ' outline-red-500 border-red-500'
+                    : ' outline-indigo-400'
+                }`}
               />
             </div>
 
-            <div className="text-xs my-1">
+            <div className="text-xs my-1 mb-5">
               Gender
-              <div className="flex justify-around text-base">
-                <div className="form-check form-check-inline border border-solid border-gray-300 w-1/3 py-2 flex justify-around rounded">
+              {formic.errors.gender ? (
+                <div className="text-center text-red-500">
+                  {formic.errors.gender}
+                </div>
+              ) : (
+                ''
+              )}
+              <div className="flex justify-around text-base mt-1">
+                <div
+                  className={`form-check form-check-inline border border-solid  w-1/3 py-2 flex justify-around rounded ${
+                    formic.errors.date
+                      ? ' outline-red-500 border-red-500'
+                      : ' outline-indigo-400'
+                  }`}
+                >
                   <label
                     className="form-check-label inline-block text-gray-800"
                     htmlFor="male"
@@ -231,7 +232,13 @@ const SignupForm = () => {
                     onChange={signupHandler}
                   />
                 </div>
-                <div className="form-check form-check-inline border border-solid border-gray-300 w-1/3 py-2 flex justify-around rounded">
+                <div
+                  className={`form-check form-check-inline border border-solid 00 w-1/3 py-2 flex justify-around rounded ${
+                    formic.errors.date
+                      ? ' outline-red-500 border-red-500'
+                      : ' outline-indigo-400'
+                  }`}
+                >
                   <label
                     className="form-check-label inline-block text-gray-800"
                     htmlFor="female"

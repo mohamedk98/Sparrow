@@ -9,7 +9,7 @@ import { BsStarFill } from 'react-icons/bs';
 import profileImg from '../../../assets/images/default_profile.png';
 
 const LeftSideBar = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const Menus = [
     { id: 1, title: 'Friends', icon: { iconTitle: FaUserAlt } },
     { id: 2, title: 'Groups', icon: { iconTitle: FaUserFriends } },

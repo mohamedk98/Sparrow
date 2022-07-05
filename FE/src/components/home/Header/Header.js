@@ -4,6 +4,7 @@ import { TiHome } from 'react-icons/ti';
 import { RiGroupFill } from 'react-icons/ri';
 // import { HiUserGroup } from 'react-icons/hi';
 import { BsBellFill } from 'react-icons/bs';
+import profileImg from '../../../assets/images/default_profile.png';
 
 const Header = () => {
   return (
@@ -143,7 +144,7 @@ const Header = () => {
           >
             <div className="w-10">
               <img
-                src="https://mdbootstrap.com/img/new/avatars/2.jpg"
+                src={profileImg}
                 className="rounded-full"
                 alt="profile img"
                 loading="lazy"

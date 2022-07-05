@@ -6,7 +6,7 @@ const LoginInput = ({ placeholder, className, ...props }) => {
 
   return (
     <div className="flex flex-col">
-      <div className="text-center text-red-500">
+      <div className="text-center text-red-500 text-sm">
         <ErrorMessage name={field.name} />
       </div>
       <input
