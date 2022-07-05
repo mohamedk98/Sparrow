@@ -1,5 +1,62 @@
 const jwt = require("jsonwebtoken");
 
+const { userDataRepository } = require("../models/RedisRefreshToken");
+const { redisClient } = require("../services/redisClient.service");
+const { validateRefreshToken } = require("../services/token.service");
+
+const refreshToken = async (req, res, next) => {
+  const refreshToken = req.body.refreshToken;
+  const hasExpiry = req.body.hasExpiry;
+
+
+  if (refreshToken === null || refreshToken === undefined) {
+    return res.sendStatus(401);
+  }
+
+  const redisUser = await userDataRepository
+    .search()
+    .where("refreshToken")
+    .equalTo(refreshToken)
+    .returnAll();
+
+  if (redisUser === null || redisUser === undefined) {
+    return res.sendStatus(401);
+  }
+  const redisUserData = redisUser[0]?.entityData;
+
+  req.userId = redisUserData.userId;
+  req.username = redisUserData.username;
+  req.email = redisUserData.email;
+
+  const newJwtToken = jwt.sign(
+    {
+      userId: redisUserData.userId,
+      username: redisUserData.username,
+      email: redisUserData.email,
+    },
+    process.env.TOKEN
+  );
+
+  await userDataRepository.save(redisUser[0]);
+  //add expiry time to token of 7 days
+  await redisClient.execute([
+    "EXPIRE",
+    `UserEnitity:${redisUser[0].entityId}`,
+    7 * 24 * 60 * 60,
+  ]);
+  res
+    .cookie("access_token", newJwtToken, {
+      httpOnly: true,
+      secure: false,
+      //15 minutes token
+      expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
+    })
+    .send({
+      refreshToken: redisUserData.refreshToken,
+      hasExpiry: hasExpiry,
+    });
+};
+
 /**
  * a middleware to handle authentcation and authorization:
  * if the request cookies contain access_token cookies then
@@ -11,7 +68,7 @@ const authentication = (req, res, next) => {
   const userToken = req.cookies.access_token;
   const TOKEN = process.env.TOKEN;
   if (!userToken) {
-    return res.sendStatus(403);
+    return res.sendStatus(401);
   }
 
   try {
@@ -21,39 +78,8 @@ const authentication = (req, res, next) => {
     req.username = data.username;
     next();
   } catch {
-    return res.sendStatus(403);
+    return res.sendStatus(401);
   }
 };
 
-//function to create tokens
-const createToken = (username, email, userId) => {
-  const TOKEN = process.env.TOKEN;
-
-  const accessToken = jwt.sign(
-    { username: username, email: email, userId: userId },
-    TOKEN,
-    {
-      expiresIn: "2h",
-      algorithm: "HS256",
-    }
-  );
-  return accessToken;
-};
-
-//function to create tokens
-const createRefreshToken = (username, email, userId) => {
-  const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
-
-  const refreshToken = jwt.sign(
-    { username: username, email: email, userId: userId },
-    REFRESH_TOKEN,
-    {
-      expiresIn: "30d",
-      algorithm: "HS256",
-    }
-  );
-  return refreshToken;
-};
-exports.authentication = authentication;
-exports.createToken = createToken;
-exports.createRefreshToken = createRefreshToken;
+module.exports = { authentication, refreshToken };

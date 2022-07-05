@@ -5,7 +5,7 @@ import LoginButton from '../../components/login/LoginButton';
 import SignupModal from '../../components/login/SignupModal';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import axiosInstance from '../../network/axiosInstance';
+import {axiosInstance} from '../../network/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 const Reset = () => {
   // To show form submition error if exists:

@@ -4,20 +4,41 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
-
-const { authentication } = require("./middlwares/authentication");
+const morgan = require("morgan");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const app = express();
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Zombie-hat Social Media App",
+      version: "1.0.0",
+      description: "A social media app made for youth",
+    },
+    servers: [
+      {
+        url: "http://localhost:4000",
+      },
+    ],
+  },
+  apis: ["./documentation/*.yaml"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs,{explorer:true}));
+
 
 //Redis Connect
-const {connectToRedis} = require("./middlwares/redisClient");
+const { connectToRedis } = require("./services/redisClient.service");
 
 //Routes
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
+const { authentication } = require("./middlwares/authentication");
+const connectToMongo = require("./services/mongoClient.service");
 
 //Connection to server and Database URL
-const MONGOO_URL = process.env.MONGOO_URL;
 const PORT = process.env.PORT || 3000;
 
 //Middlewares
@@ -36,16 +57,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
-
+app.use(morgan("dev"));
 app.use(authenticationRouter);
 app.use(usersRouter);
+
 app.get("/", (req, res) => {
   res.send("hello");
 });
 
-//testing authneitcation route
-app.get("/getKeys", (req, res) => {
-res.send("")
+app.use(authentication);
+app.get("/test", authentication, (req, res) => {
+  res.send("hello");
 });
 
 //Change  "yourDbName" with your database name
@@ -57,13 +79,8 @@ res.send("")
  * to the database causing production error on server initialization
  */
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is working on port ${PORT}`);
-  mongoose
-    .connect(MONGOO_URL, { dbName: "yourDbName" })
-    .then(() => {
-      console.log("Connected Successfully to the Database");
-      connectToRedis()
-    })
-    .catch((error) => console.log(error));
+  await connectToRedis();
+  await connectToMongo();
 });
