@@ -24,9 +24,9 @@ const signup = (req, res, next) => {
   // const year = req.body.year;
   const gender = req.body.gender;
   const date = req.body.date;
-  const dateOfBirth = new Date(`${day}/${month}/${year}`)
-    .toLocaleString()
-    .split(",")[0];
+  // const dateOfBirth = new Date(`${day}/${month}/${year}`)
+  //   .toLocaleString()
+  //   .split(",")[0];
   //if the email or username was already used,don't create account
   //else,create a new account
 
