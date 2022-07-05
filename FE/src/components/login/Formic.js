@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import axiosInstance from '../../network/axiosInstance';
+import { axiosInstance } from '../../network/axiosInstance';
 import LoginFormInput from './LoginFormInput';
 import LoginButton from './LoginButton';
 import { AiFillEye } from 'react-icons/ai';

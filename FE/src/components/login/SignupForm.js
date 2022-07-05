@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import LoginInput from './LoginInput';
-import axiosInstance from '../../network/axiosInstance';
+import { axiosInstance } from '../../network/axiosInstance';
 import LoginButton from './LoginButton';
 import { useNavigate } from 'react-router-dom';
 
