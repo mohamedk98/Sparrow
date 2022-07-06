@@ -28,8 +28,8 @@ const LeftSideBar = () => {
 
   //logout functionality
   const logoutHandler = () => {
+    dispatch(removeAuthentication());
     axiosInstance.post("/logout").then(() => {
-      dispatch(removeAuthentication());
       navigate("/login");
     });
   };
