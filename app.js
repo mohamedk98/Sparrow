@@ -35,7 +35,7 @@ const { connectToRedis } = require("./services/redisClient.service");
 //Routes
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
-const { authentication } = require("./middlwares/authentication");
+const { authorization } = require("./middlwares/authentication");
 const connectToMongo = require("./services/mongoClient.service");
 
 //Connection to server and Database URL
@@ -65,8 +65,8 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
-app.use(authentication);
-app.get("/test", authentication, (req, res) => {
+app.use(authorization);
+app.get("/test", authorization, (req, res) => {
   res.send("hello");
 });
 

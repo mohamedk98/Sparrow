@@ -10,11 +10,12 @@ const {
   checkRedisRefreshToken,
   updateRedisRefreshTokensIndex,
 } = require("../services/token.service");
+const AuthenticationApi = require("../datasources/authenticationApi");
 
 /**Singup controller
  * it returns either success message or failure based on the error
  */
-const signup = (req, res, next) => {
+const signup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const firstName = req.body.firstName;
@@ -22,119 +23,106 @@ const signup = (req, res, next) => {
   const gender = req.body.gender;
   const date = req.body.date;
 
-  //if the email or username was already used,don't create account
-  //else,create a new account
+  //Hashed password
+  const hashedPassword = await bcrypt.hash(password, 12);
+  //generate Random userID
+  const userId = crypto.randomBytes(16).toString("hex");
+  //generate unique username by adding firstName-lastName-random number
+  const username = `${firstName}-${lastName}-${crypto
+    .randomBytes(12)
+    .toString("hex")}`;
 
-  User.findOne({ email }).then((user) => {
-    if (!user) {
-      bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new User({
-          //generate Random userID
-          userId: crypto.randomBytes(16).toString("hex"),
-          //generate unique username by adding firstName-lastName-random number
-          username: `${firstName}-${lastName}-${crypto
-            .randomBytes(12)
-            .toString("hex")}`,
-          email: email,
-          password: hashedPassword,
-          firstName: firstName,
-          lastName: lastName,
-          dateOfBirth: date,
-          age: new Date().getFullYear() - date.slice(0,4),
-          gender: gender,
-        });
-        try {
-          user.save();
-        } catch {
-          res
-            .send(400)
-            .send({ message: "An error has occured , please try again later" });
-        }
-        res.status(200).send({ message: "Successfully registered" });
-      }).catch((error)=>{
-        res.status(400).send({message: "Please Enter a valid data"})
-      })
-    } else {
-      res.status(400).send({ message: "User Already Registered" });
-    }
-  });
+  AuthenticationApi.signup({
+    userId,
+    username,
+    firstName,
+    lastName,
+    email,
+    hashedPassword,
+    date,
+    gender,
+  })
+    .then((response) => {
+      res.status(response.httpStatusCode).send(response.message);
+    })
+    .catch((error) => {
+      res.status(error.httpStatusCode).send(error.message);
+    });
 };
 
-/**Login Controller */
+/**Login Controller
+ * if the user is found and the password is correct, add a jwt token to the
+ * cookie with a certain expiry date
+ */
 const login = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const hasExpiry = req.body.hasExpiry;
   //incase of redis flushing (will be used in admin panel after flushing)
   await updateRedisRefreshTokensIndex();
-  //if the user is found and the password is correct, add a jwt token to the
-  //cookie with a certain expiry date
-  User.findOne({ email }).then((user) => {
-    if (!user) {
-      res.status(400).send({ message: "Incorrect email or Password" });
-    } else {
-      //Hashed password comparison
-      bcrypt.compare(password, user.password).then(async (passwordIsTrue) => {
-        if (passwordIsTrue) {
-          req.userId = user.userId;
-          req.username = user.username;
-          req.email = user.email;
-          //Create jwt token
-          let accessToken = createToken(
-            user.username,
-            user.email,
-            user.userId,
-            hasExpiry
-          );
-          //Create refresh token
-          let refreshToken = createRefreshToken(
-            user.username,
-            user.email,
-            user.userId
-          );
 
-          //Check existing redis token
-          await checkRedisRefreshToken(user.email);
-          //Create redis refresh token
-          await createRedisRefreshToken({
-            username: user.username,
-            email: user.email,
-            userId: user.userId,
-            refreshToken: refreshToken,
-          });
-          res
-            .cookie("access_token", accessToken, {
-              httpOnly: true,
-              secure: true,
-              sameSite: "none",
-              //1 day token
-              expires: hasExpiry
-                ? new Date(Date.now() + 24 * 60 * 60 * 1000)
-                : 0,
-            })
-            .send({
-              refreshToken: refreshToken,
-            });
-        } else {
-          res.status(400).send({ message: "Incorrect email or Password" });
-        }
+  const userData = await AuthenticationApi.login(email);
+
+  try {
+    const passwordIsTrue = await bcrypt.compare(password, userData.password);
+    if (passwordIsTrue) {
+      req.userId = userData.userId;
+      req.username = userData.username;
+      req.email = userData.email;
+      //Create jwt token
+      let accessToken = createToken(
+        userData.username,
+        userData.email,
+        userData.userId,
+        hasExpiry
+      );
+      //Create refresh token
+      let refreshToken = createRefreshToken(
+        userData.username,
+        userData.email,
+        userData.userId
+      );
+      //Check existing redis token
+      await checkRedisRefreshToken(userData.email);
+      //Create redis refresh token
+      await createRedisRefreshToken({
+        username: userData.username,
+        email: userData.email,
+        userId: userData.userId,
+        refreshToken: refreshToken,
       });
+      res
+        .cookie("access_token", accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          //1 day token
+          expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
+        })
+        .send({
+          refreshToken: refreshToken,
+        });
+    } else {
+      return res.status(400).send({ message: "Incorrect email or Password" });
     }
-  });
+  } catch {
+    return res.status(400).send({ message: "Incorrect email or Password" });
+  }
 };
 
 /** clear the access_token cookie to logout */
-const logout = (req, res, next) => {
+const logout = async (req, res, next) => {
   const refreshTokenId = req.body.refreshTokenId;
-  removeRefreshToken(refreshTokenId).then(() => {
-    res
-      .clearCookie("access_token")
-      .status(200)
-      .send({ message: "Successfully logged out 😏 🍀" });
-  });
+  await removeRefreshToken(refreshTokenId);
+  res
+    .clearCookie("access_token")
+    .status(200)
+    .send({ message: "Successfully logged out 😏 🍀" });
 };
 
-//Auto login controller
+/**Auto login controller
+ *
+ */
 
 const autoLogin = async (req, res) => {
   const userAccessToken = req.cookies.access_token;
