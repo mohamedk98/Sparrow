@@ -50,13 +50,13 @@ const Footer = () => {
           </a>
         </div>
       </div>
-      <div className="flex justify-center text-sm mr-0 md:mr-16 lg:mr-10 mt-3">
+      <div className="flex justify-center text-sm mr-0 md:mr-11 lg:mr-10 mt-3">
         <p className="hover:cursor-pointer my-4 mr-24 hover:text-cyan-600">
           English
         </p>
         <p className="hover:cursor-pointer my-4 hover:text-cyan-600">عربي</p>
       </div>
-      <div className="text-center mt-3 text-cyan-600 mr-7 text-sm">
+      <div className="text-center mt-3 text-cyan-600 text-sm">
         Made by <span className="text-red-500">&hearts;</span>{' '}
         <a
           href="https://github.com/mohamedk98/Zombie-Hat-.git"

@@ -1,24 +1,26 @@
-import React, { Fragment, useState } from "react";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-import { AiFillEye } from "react-icons/ai";
-import { AiFillEyeInvisible } from "react-icons/ai";
-import LoginInput from "./LoginInput";
-import { axiosInstance } from "../../network/axiosInstance";
-import LoginButton from "./LoginButton";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useState } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import { AiFillEye } from 'react-icons/ai';
+import { AiFillEyeInvisible } from 'react-icons/ai';
+import LoginInput from './LoginInput';
+import { axiosInstance } from '../../network/axiosInstance';
+import LoginButton from './LoginButton';
+import { useNavigate } from 'react-router-dom';
 
 // user intial info:
 const userInfo = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  date: "", // Month/Day/Year
-  gender: "",
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  date: '', // Month/Day/Year
+  gender: '',
 };
 
 const SignupForm = () => {
+  // const dispatch = useDispatch();
+
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
 
@@ -26,7 +28,7 @@ const SignupForm = () => {
   let navigate = useNavigate();
 
   // To show form submition error if exists:
-  const [formError, setFormError] = useState("");
+  const [formError, setFormError] = useState('');
 
   // For form validation:
   const [user, setUser] = useState(userInfo);
@@ -42,7 +44,7 @@ const SignupForm = () => {
   };
 
   // To get input data:
-  const signupHandler = (e) => {
+  const signupHandler = e => {
     // console.log(e.target.name, e.target.value);
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -51,40 +53,40 @@ const SignupForm = () => {
   // Validation schema:
   const loginValidation = Yup.object({
     firstName: Yup.string()
-      .required("First Name is required")
-      .min(3, "First Name length is 3 characters at least 🤨")
-      .max(16, "First Name length is 16 characters as max 🤨")
+      .required('First Name is required')
+      .min(3, 'First Name length is 3 characters at least 🤨')
+      .max(16, 'First Name length is 16 characters as max 🤨')
       .matches(
         /^[a-z]+$/i,
-        "Numbers and special characters are not allowed 🤨"
+        'Numbers and special characters are not allowed 🤨'
       ),
 
     lastName: Yup.string()
-      .required("Last Name is required")
-      .min(3, "Last Name length is 3 characters at least 🤨")
-      .max(16, "Last Name length is 16 characters as max.🤨")
-      .matches(/^[a-z ]+$/i, "Numbers and special characters are not allowed"),
+      .required('Last Name is required')
+      .min(3, 'Last Name length is 3 characters at least 🤨')
+      .max(16, 'Last Name length is 16 characters as max.🤨')
+      .matches(/^[a-z ]+$/i, 'Numbers and special characters are not allowed'),
     email: Yup.string()
 
-      .required("Email address is required when resetting password")
+      .required('Email address is required when resetting password')
       .matches(
         /\w+@\w+.(com|net|org)$/gi,
-        "Enter a valid email with the end of (com | net | org)"
+        'Enter a valid email with the end of (com | net | org)'
       )
       .max(100),
 
     password: Yup.string()
-      .required("Password is required")
-      .min(8, "Password length must be 8 at least")
-      .max(36, "Password length max. is 36")
+      .required('Password is required')
+      .min(8, 'Password length must be 8 at least')
+      .max(36, 'Password length max. is 36')
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        "password must contain at least one upper case, one lower case, one number, and one special charcter (! @ # $ % ^ & *)"
+        'password must contain at least one upper case, one lower case, one number, and one special charcter (! @ # $ % ^ & *)'
       ),
 
-    date: Yup.string().required("Date is required"),
+    date: Yup.string().required('Date is required'),
 
-    gender: Yup.string().required("Gender is required"),
+    gender: Yup.string().required('Gender is required'),
   });
 
   return (
@@ -100,23 +102,23 @@ const SignupForm = () => {
           gender,
         }}
         validationSchema={loginValidation}
-        onSubmit={(values) => {
+        onSubmit={values => {
           // console.log(values);
 
-          setFormError("");
+          setFormError('');
 
           setShowSpinner(true);
           const userAge = new Date().getFullYear() - values.date.slice(0, 4);
 
           //Check if the user age is less than 18 years
           if (userAge < 18) {
-            setFormError(" Your age cannot be less than 18 years ");
+            setFormError(' Your age cannot be less than 18 years ');
             setShowSpinner(false);
             return;
           }
 
           axiosInstance
-            .post("/signup", {
+            .post('/signup', {
               firstName: values.firstName,
               lastName: values.lastName,
               email: values.email,
@@ -124,19 +126,20 @@ const SignupForm = () => {
               date: values.date,
               gender: values.gender,
             })
-            .then((response) => {
+            .then(response => {
               if (response.data) setShowSpinner(false);
-              navigate("/");
+
+              navigate('/');
             })
-            .catch((error) => {
+            .catch(error => {
               // console.log(error, error.message);
-              setFormError(error.response.data.message || error.message);
+              setFormError(error?.response?.data?.message || error?.message);
 
               if (error.response) setShowSpinner(false);
             });
         }}
       >
-        {(formic) => (
+        {formic => (
           <Form onSubmit={formic.handleSubmit} className="flex flex-col">
             <LoginInput
               name="firstName"
@@ -161,7 +164,7 @@ const SignupForm = () => {
             />
             <div className="relative">
               <LoginInput
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 name="password"
                 className="border-2 rounded-md p-3 mb-2 w-full"
@@ -175,8 +178,8 @@ const SignupForm = () => {
                   formic.errors.lastName ||
                   formic.errors.email ||
                   formic.errors.password
-                    ? "hidden"
-                    : "absolute right-7 top-5"
+                    ? 'hidden'
+                    : 'absolute right-7 top-5'
                 }
               >
                 {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
@@ -190,17 +193,16 @@ const SignupForm = () => {
                   {formic.errors.date}
                 </div>
               ) : (
-                ""
+                ''
               )}
               <input
                 type="date"
                 name="date"
                 onChange={signupHandler}
-                // className="block text-center m-auto border border-gray-300 px-7 py-1 text-base"
                 className={`block text-center m-auto border border-gray-300 px-7 py-1 text-base rounded ${
                   formic.errors.date
-                    ? " outline-red-500 border-red-500"
-                    : " outline-indigo-400"
+                    ? ' outline-red-500 border-red-500'
+                    : ' outline-indigo-400'
                 }`}
               />
             </div>
@@ -212,14 +214,14 @@ const SignupForm = () => {
                   {formic.errors.gender}
                 </div>
               ) : (
-                ""
+                ''
               )}
               <div className="flex justify-around text-base mt-1">
                 <div
                   className={`form-check form-check-inline border border-solid  w-1/3 py-2 flex justify-around rounded ${
                     formic.errors.date
-                      ? " outline-red-500 border-red-500"
-                      : " outline-indigo-400"
+                      ? ' outline-red-500 border-red-500'
+                      : ' outline-indigo-400'
                   }`}
                 >
                   <label
@@ -240,8 +242,8 @@ const SignupForm = () => {
                 <div
                   className={`form-check form-check-inline border border-solid 00 w-1/3 py-2 flex justify-around rounded ${
                     formic.errors.date
-                      ? " outline-red-500 border-red-500"
-                      : " outline-indigo-400"
+                      ? ' outline-red-500 border-red-500'
+                      : ' outline-indigo-400'
                   }`}
                 >
                   <label
@@ -270,7 +272,7 @@ const SignupForm = () => {
                       role="status"
                     ></div>
                   ) : (
-                    "Sign Up"
+                    'Sign Up'
                   )
                 }
                 type="submit"

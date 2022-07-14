@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import LeftSideBar from "../../components/home/LeftSideBar/LeftSideBar";
-import Feed from "../../components/home/Feed/Feed";
-import { axiosInstance, axiosTokenInstance } from "../../network/axiosInstance";
-import { useNavigate } from "react-router-dom";
-import Header from "../../components/home/Header/Header";
+import React, { useState, useEffect } from 'react';
+import LeftSideBar from '../../components/home/LeftSideBar/LeftSideBar';
+import Feed from '../../components/home/Feed/Feed';
+import { axiosInstance, axiosTokenInstance } from '../../network/axiosInstance';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../components/home/Header/Header';
 const Home = () => {
-  const [profileData, setProfileData] = useState("");
+  const [profileData, setProfileData] = useState('');
   const navigate = useNavigate();
   // useEffect(() => {
   //   //it will return user profile data
@@ -21,10 +21,10 @@ const Home = () => {
   // }, [navigate]);
   return (
     <div className="h-screen bg-facebook-grey overflow-hidden">
-      <Header/>
+      <Header />
       <div className="flex">
         <LeftSideBar />
-          <Feed/>
+        <Feed />
       </div>
     </div>
   );

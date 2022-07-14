@@ -81,7 +81,7 @@ const Formic = () => {
             })
             .catch(error => {
               // console.log(error.response.data.message);
-              setFormError(error.response.data.message || 'Network Error');
+              setFormError(error?.response?.data?.message || 'Network Error');
               if (error.response) setShowSpinner(showSinner);
             });
         }}
