@@ -14,7 +14,7 @@ import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
 
 const LeftSideBar = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const Menus = [
@@ -34,10 +34,10 @@ const LeftSideBar = () => {
     });
   };
   return (
-    <div className="hidden lg:flex fixed">
+    <div className="flex">
       <div
         className={`bg-facebook-grey h-screen p-5 pt-8 ${
-          open ? 'w-38' : 'w-20'
+          open ? 'w-72' : 'w-20'
         } duration-300  relative`}
       >
         <BsFillArrowLeftCircleFill
