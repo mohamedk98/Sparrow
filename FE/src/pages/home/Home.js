@@ -7,18 +7,18 @@ import Header from '../../components/home/Header/Header';
 const Home = () => {
   const [profileData, setProfileData] = useState('');
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   //it will return user profile data
-  //   axiosInstance
-  //     .get("/profile")
-  //     .then((response) => {
-  //       setProfileData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       navigate("/login");
-  //     });
-  // }, [navigate]);
+  useEffect(() => {
+    //it will return user profile data
+    axiosInstance
+      .get("/profile")
+      .then((response) => {
+        setProfileData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        navigate("/login");
+      });
+  }, [navigate]);
   return (
     <div className="h-screen bg-facebook-grey overflow-hidden">
       <Header />

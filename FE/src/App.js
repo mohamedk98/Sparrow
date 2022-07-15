@@ -28,6 +28,7 @@ function App() {
       .get("/autologin")
       .then((response) => {
         dispatch(addAuthentication(response.data));
+        navigate("/");
       })
       .catch((error) => {
         dispatch(removeAuthentication());
