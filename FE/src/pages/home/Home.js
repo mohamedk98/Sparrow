@@ -20,7 +20,7 @@ const Home = () => {
   //     });
   // }, [navigate]);
   return (
-    <div className="h-screen bg-facebook-grey overflow-hidden">
+    <div className="h-screen bg-facebook-grey">
       <Header />
       <div className="flex">
         <LeftSideBar />
