@@ -1,0 +1,34 @@
+tags:
+  name: Post
+  description: Managing CRUD releated to Posts collection
+      
+
+paths:
+  /posts:
+    get: 
+      summary: Returns a list of posts.
+      tags: [User]
+      description: 
+      responses:
+        "200": # status code
+          description: A JSON array of posts
+          content:
+            application/json:
+              schema:
+                # $ref: '#/documentation/Post'
+                items:
+                  type: string
+    /post:
+      get: 
+      summary: Returns a list of posts.
+      tags: [User]
+      description: 
+      responses:
+        "200": # status code
+          description: A JSON array of posts
+          content:
+            application/json:
+              schema:
+                # $ref: '#/documentation/Post'
+                items:
+                  type: string

@@ -1,0 +1,12 @@
+const User = require("../models/User");
+
+const getProfile = (req,res)=>{
+const userId = req.userID
+User.findOne({userId}).then((response)=>{
+    res.send(response)
+})
+}
+
+
+
+module.exports = {getProfile}

@@ -1,0 +1,78 @@
+import axios from "axios";
+
+const getRefreshTokenData = () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+  const refreshTokenId = localStorage.getItem("refreshTokenId");
+  const hasExpiry = localStorage.getItem("hasExpiry");
+
+  return {
+    refreshToken,
+    refreshTokenId,
+    hasExpiry,
+  };
+};
+
+const setRefreshTokenData = (data) => {
+  localStorage.setItem("refreshToken", data.refreshToken);
+  localStorage.setItem("refreshTokenId", data.refreshTokenId);
+  localStorage.setItem("hasExpiry", data.hasExpiry);
+};
+
+const axiosInstance = axios.create({
+  baseURL: "http://localhost:4000",
+  withCredentials: true,
+});
+
+const axiosTokenInstance = axios.create({
+  baseURL: "http://localhost:4000",
+  withCredentials: true,
+});
+
+axiosTokenInstance.interceptors.request.use(
+  function (config) {
+    const refreshTokenData = getRefreshTokenData();
+    if (refreshTokenData) {
+      config.data = { ...refreshTokenData };
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+axiosTokenInstance.interceptors.request.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalConfig = error.config;
+    if (error.response) {
+      if (
+        error.response.status === 401 ||
+        (error.response.status === 403 && !originalConfig._retry)
+      ) {
+        originalConfig._retry = true;
+        console.log("respoosne interce errr");
+        try {
+          const newRefreshToken = await axiosTokenInstance.post(
+            "/token",
+            getRefreshTokenData()
+          );
+          setRefreshTokenData(newRefreshToken.data);
+          return axiosTokenInstance(originalConfig);
+        } catch (_error) {
+          if (_error.response && _error.response.data) {
+            return Promise.reject(_error.response.data);
+          }
+          return Promise.reject(_error);
+        }
+      }
+      if (err.response.status === 403 && err.response.data) {
+        return Promise.reject(err.response.data);
+      }
+    }
+  }
+);
+
+export { axiosInstance, axiosTokenInstance };

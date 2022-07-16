@@ -5,6 +5,7 @@ import { RiGroupFill } from 'react-icons/ri';
 // import { HiUserGroup } from 'react-icons/hi';
 import { BsBellFill } from 'react-icons/bs';
 import profileImg from '../../../assets/images/default_profile.png';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -67,12 +68,12 @@ const Header = () => {
               </div>
             </li>
             <li>
-              <a
+              <Link
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="/"
+                to={"/profile"}
               >
-                Another action
-              </a>
+                Action
+              </Link>
             </li>
             <li>
               <a
@@ -107,12 +108,12 @@ const Header = () => {
             aria-labelledby="dropdownMenuButton3"
           >
             <li>
-              <a
+              <Link
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="1"
+                to={"/profile"}
               >
-                Action
-              </a>
+                Profile
+              </Link>
             </li>
             <li>
               <a
@@ -157,12 +158,12 @@ const Header = () => {
             aria-labelledby="dropdownMenuButton2"
           >
             <li>
-              <a
+              <Link
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="/"
+                to={"/profile"}
               >
-                Action
-              </a>
+                Profile
+              </Link>
             </li>
             <li>
               <a

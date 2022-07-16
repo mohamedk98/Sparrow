@@ -1,0 +1,25 @@
+{
+  "name": "authentication-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.2",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
+    "express": "~4.16.1",
+    "express-jwt": "^7.7.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.0",
+    "morgan": "~1.9.1",
+    "react-redux": "^8.0.2",
+    "redis": "^4.1.0",
+    "redis-om": "^0.1.5",
+    "redux-devtools-extension": "^2.13.9"
+  }
+}
