@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 //authentication and refresh token data reducers
 
 // const getStorageData = () => {
@@ -16,23 +16,23 @@ const initialState = {
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     //add data to the store and local storage
     addAuthentication: (state, action) => {
       state.authenticationData = { ...action.payload };
       localStorage.setItem(
-        "refreshToken",
+        'refreshToken',
         state.authenticationData.refreshToken
       );
-      localStorage.setItem("hasExpiry", state.authenticationData.hasExpiry);
+      localStorage.setItem('hasExpiry', state.authenticationData.hasExpiry);
     },
     //remove data from storage (used in logout)
-    removeAuthentication: (state) => {
+    removeAuthentication: state => {
       state.auth = {};
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("hasExpiry");
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('hasExpiry');
     },
   },
 });

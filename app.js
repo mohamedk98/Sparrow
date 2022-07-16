@@ -8,6 +8,7 @@ const morgan = require("morgan");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const app = express();
+//Swagger Options
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -26,6 +27,7 @@ const options = {
 };
 
 const specs = swaggerJsdoc(options);
+//Swagger initilization
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs,{explorer:true}));
 
 
@@ -35,7 +37,8 @@ const { connectToRedis } = require("./services/redisClient.service");
 //Routes
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
-const { authentication } = require("./middlwares/authentication");
+const postsRouter = require ("./routes/posts")
+const { authorization } = require("./middlwares/authentication");
 const connectToMongo = require("./services/mongoClient.service");
 
 //Connection to server and Database URL
@@ -55,6 +58,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
@@ -65,8 +69,11 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
-app.use(authentication);
-app.get("/test", authentication, (req, res) => {
+
+
+app.use(authorization);
+app.use('/posts',postsRouter)
+app.get("/test", authorization, (req, res) => {
   res.send("hello");
 });
 

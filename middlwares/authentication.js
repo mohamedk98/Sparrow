@@ -64,7 +64,7 @@ const refreshToken = async (req, res, next) => {
  * or whatever the data that will be used in the request body and send
  * it on each request. that will achieve authorization
  */
-const authentication = (req, res, next) => {
+const authorization = (req, res, next) => {
   const userToken = req.cookies.access_token;
   const TOKEN = process.env.TOKEN;
   if (!userToken) {
@@ -82,4 +82,4 @@ const authentication = (req, res, next) => {
   }
 };
 
-module.exports = { authentication, refreshToken };
+module.exports = { authorization, refreshToken };
