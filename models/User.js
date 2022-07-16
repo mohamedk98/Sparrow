@@ -16,10 +16,7 @@ const userSchema = new mongoose.Schema({
   friends: {
     data: [
       {
-        userId: String,
-        firstName: String,
-        lastName: String,
-        profileImage: String,
+        userId: { type: mongoose.Types.ObjectId, ref: "User" },
       },
     ],
     required: false,
@@ -27,20 +24,16 @@ const userSchema = new mongoose.Schema({
   },
   friendsRequests: [
     {
-      userId: String,
-      firstName: String,
-      lastName: String,
-      profileImage: String,
-      requestState: String,
+      userId: { type: mongoose.Types.ObjectId, ref: "User" },
     },
   ],
   blockList: [
     {
-      userId: String,
+      userId: { type: mongoose.Types.ObjectId, ref: "User" },
     },
   ],
   gallery: [],
-  sharedPosts: [{ postID: String }],
+  sharedPosts: [{ postID: { type: mongoose.Types.ObjectId, ref: "Post" } }],
   verification: { verified: String, verificationCode: String },
   resetPassword: { resetStatus: String, resetCode: String },
 });

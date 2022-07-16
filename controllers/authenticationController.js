@@ -62,33 +62,33 @@ const login = async (req, res, next) => {
   await updateRedisRefreshTokensIndex();
 
   const userData = await AuthenticationApi.login(email);
-
   try {
     const passwordIsTrue = await bcrypt.compare(password, userData.password);
     if (passwordIsTrue) {
-      req.userId = userData.userId;
+      req.userId = userData._id;
       req.username = userData.username;
       req.email = userData.email;
       //Create jwt token
       let accessToken = createToken(
         userData.username,
         userData.email,
-        userData.userId,
+        userData._id,
         hasExpiry
       );
       //Create refresh token
       let refreshToken = createRefreshToken(
         userData.username,
         userData.email,
-        userData.userId
+        userData._id.toString()
       );
+
       //Check existing redis token
       await checkRedisRefreshToken(userData.email);
       //Create redis refresh token
       await createRedisRefreshToken({
         username: userData.username,
         email: userData.email,
-        userId: userData.userId,
+        userId: userData._id.toString(),
         refreshToken: refreshToken,
       });
       res
@@ -105,8 +105,9 @@ const login = async (req, res, next) => {
     } else {
       return res.status(400).send({ message: "Incorrect email or Password" });
     }
-  } catch {
+  } catch  {
     return res.status(400).send({ message: "Incorrect email or Password" });
+
   }
 };
 

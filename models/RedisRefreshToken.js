@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { Entity, Schema, Repository } = require("redis-om");
 const {
   redisClient,

@@ -1,5 +1,8 @@
-const postsApi = require("../datasources/postsApi");
+const PostsApi =  require("../datasources/postsApi") ;
+const postsApi = new PostsApi()
 const User = require("../models/User");
+const UserApi = require("../datasources/userApi")
+const userApi = new UserApi()
 const crypto = require("crypto");
 const fileDeleteHandler = require("../utils/fileDelete");
 
@@ -17,7 +20,7 @@ const createPost = async (req, res) => {
     media.push(image.path);
   }
 
-  const userData = await User.findOne({ userId: userId }, "firstName lastName");
+  const userData = await User.findOne({ _id: userId }, "firstName lastName");
   const creatorName = `${userData.firstName} ${userData.lastName}`;
 
   const postData = {
@@ -49,6 +52,8 @@ const deletePost = async (req, res) => {
   if (!postData) {
     return res.status(404).send({ message: "Post is not found" });
   }
+
+  // const userData = await userApi.getUser(userId)
 
   //if the user is not authorised to delete, return an error
   if (postData.userId !== userId) {
@@ -102,6 +107,7 @@ const updatePost = async (req, res) => {
     return res.status(404).send({ message: "Post is not found" });
   }
 
+  // const userData = await userApi.getUser(userId)
   //if the user is not authorised to delete, return an error
   if (postData.userId !== userId) {
     return res

@@ -38,6 +38,7 @@ const { connectToRedis } = require("./services/redisClient.service");
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
 const postsRouter = require ("./routes/posts")
+const commentsRouter = require ("./routes/comments")
 const { authorization } = require("./middlwares/authentication");
 const connectToMongo = require("./services/mongoClient.service");
 
@@ -65,6 +66,7 @@ app.use(morgan("dev"));
 app.use(authenticationRouter);
 app.use(usersRouter);
 
+
 app.get("/", (req, res) => {
   res.send("hello");
 });
@@ -72,10 +74,9 @@ app.get("/", (req, res) => {
 
 
 app.use(authorization);
+app.use('/comments',commentsRouter)
 app.use('/posts',postsRouter)
-app.get("/test", authorization, (req, res) => {
-  res.send("hello");
-});
+
 
 //Change  "yourDbName" with your database name
 //Don't forget to add PORT and MONGOO_URL to .env file

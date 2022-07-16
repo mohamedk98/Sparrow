@@ -5,7 +5,12 @@ const { userDataRepository } = require("../models/RedisRefreshToken");
 const createToken = (username, email, userId, hasExpiry) => {
   const TOKEN = process.env.TOKEN;
   const accessToken = jwt.sign(
-    { username: username, email: email, userId: userId, hasExpiry: hasExpiry },
+    {
+      username: username,
+      email: email,
+      userId: userId,
+      hasExpiry: hasExpiry,
+    },
     TOKEN,
     {
       expiresIn: "1d",
@@ -32,30 +37,38 @@ const createRefreshToken = (username, email, userId) => {
 
 /**Create a refresh token and set it in the database */
 const createRedisRefreshToken = async (refreshTokenData) => {
-  const redisUser = await userDataRepository.createAndSave({
-    userId: refreshTokenData.userId,
-    username: refreshTokenData.username,
-    email: refreshTokenData.email,
-    refreshToken: refreshTokenData.refreshToken,
-  });
+  try {
+    const redisUser = await userDataRepository.createAndSave({
+      userId: refreshTokenData.userId,
+      username: refreshTokenData.username,
+      email: refreshTokenData.email,
+      refreshToken: refreshTokenData.refreshToken,
+    });
 
-  /** Token has expiry date of 7 days inside the database */
-  await redisClient.execute([
-    "EXPIRE",
-    `UserEnitity:${redisUser.entityId}`,
-    7 * 24 * 60 * 60,
-  ]);
+    /** Token has expiry date of 7 days inside the database */
+    await redisClient.execute([
+      "EXPIRE",
+      `UserEnitity:${redisUser.entityId}`,
+      7 * 24 * 60 * 60,
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 /**Check if the redis token exist and if it does, remove it */
-const checkRedisRefreshToken = async (userEmail, callbackFunction) => {
-  const redisRefreshTokenData = await userDataRepository
-    .search()
-    .where("email")
-    .equalTo(userEmail)
-    .returnAll();
-  if (redisRefreshTokenData.length > 0) {
-    await userDataRepository.remove(redisRefreshTokenData[0].entityId);
+const checkRedisRefreshToken = async (userEmail) => {
+  try {
+    const redisRefreshTokenData = await userDataRepository
+      .search()
+      .where("email")
+      .equalTo(userEmail)
+      .returnAll();
+    if (redisRefreshTokenData.length > 0) {
+      await userDataRepository.remove(redisRefreshTokenData[0].entityId);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -101,8 +114,6 @@ const updateRedisRefreshTokensIndex = async () => {
 //   );
 //   return rememberToken;
 // };
-
-
 
 module.exports = {
   createRefreshToken,

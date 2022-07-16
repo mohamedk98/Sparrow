@@ -9,23 +9,18 @@ const postSchema = new mongoose.Schema({
   reactions: [],
   comments: [
     {
-      name: String,
-      userId: String,
-      profileImageUrl: String,
+      userId: { type: mongoose.Types.ObjectId, ref: "User" },
       commentDate: String,
       content: String,
       reply: [
         {
-          name: String,
-          userId: String,
-          profileImageUrl: String,
+          userId: { type: mongoose.Types.ObjectId, ref: "User" },
           commentDate: String,
           content: String,
         },
       ],
       reactions: [],
       date: String,
-  
     },
   ],
   visiability: String,

@@ -21,7 +21,11 @@ class PostsApi {
   }
 
   async getPost(postId) {
-    const foundPost = await Post.findOne({ postId: postId });
+    const foundPost = await Post.findOne({ _id: postId }).populate(
+      "comments.userId",
+      "firstName lastName profileImage"
+    );
+
     if (foundPost === null) {
       const error = new Error("Post not found");
       error.httpStatusCode = 404;
@@ -31,9 +35,10 @@ class PostsApi {
     }
   }
 
+  
 
   async deletePost(postId) {
-    return Post.deleteOne({ postId: postId })
+    return Post.deleteOne({ _id: postId })
       .then(() => {
         return { message: "Post deleted", httpStatusCode: 200 };
       })
@@ -44,20 +49,20 @@ class PostsApi {
       });
   }
 
-  async updatePost({ postId, content, media, visiability }) {
+  async updatePost({ _id, content, media, visiability }) {
     try {
-      await Post.findOneAndUpdate(
-        { postId: postId },
+      await Post.findByIdAndUpdate(
+        _id,
         { content: content, media: media, visiability: visiability },
         { new: true }
       );
 
       return { message: "Post updated", httpStatusCode: 200 };
-    } catch{
-      const error = new Error("An Error has occured, please try again later");
-      error.httpStatusCode = 400;
+    } catch (error) {
+      // const error = new Error("An Error has occured, please try again later");
+      // error.httpStatusCode = 400;
       return error;
     }
   }
 }
-module.exports = new PostsApi();
+module.exports = PostsApi;
