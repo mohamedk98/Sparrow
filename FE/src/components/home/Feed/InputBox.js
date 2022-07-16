@@ -32,7 +32,6 @@ const InputBox = () => {
             {/* <button type='button'  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">click me</button> */}
           </form>
         </div>
-<<<<<<< HEAD
         <div className="flex justify-evenly p-3 border-t">
           <div className="inputIcon">
             <BsFillCameraReelsFill className="h-7 xl:w-10 md:w-6 text-red-500" />
@@ -48,33 +47,6 @@ const InputBox = () => {
           </div>
         </div>
       </div>
-=======
-        <div className='flex justify-evenly p-3 border-t'>
-        <div className='flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer'>
-            <BsFillCameraReelsFill className='h-7 xl:w-10 md:w-6 text-red-500'/>
-            <p className='text-xs sm:text-sm xl:text-base'>Live Video</p>
-        </div>
-        <div className='flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer'>
-            <AiFillCamera className='h-7 xl:w-10 md:w-6 text-green-400'/>
-            <p className='text-xs sm:text-sm xl:text-base'>Photo/Video</p>
-        </div>
-        <div className='flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer'>
-          <IoMdHappy className='h-7 xl:w-10 md:w-6 text-yellow-300'/>
-          <p className='text-xs sm:text-sm xl:text-base'>Feeling/Activity</p>
-        </div>
-        </div>
-    </div>
-  
-    {
-      
-      isOpen &&(
-        <CreatePostModal/>
-      )
-    }
-</>
-  );
-}
->>>>>>> 10c52bc7dc51adac145370b6164386e869db5632
 
       {isOpen && <CreatePostModal />}
     </>
