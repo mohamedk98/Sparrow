@@ -119,7 +119,6 @@ const updatePost = async (req, res) => {
     content: content,
     visiability: visiability,
   };
-  console.log(updatedPostData)
   await postsApi
     .updatePost(updatedPostData)
     .then((response) => {
