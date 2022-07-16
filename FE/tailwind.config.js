@@ -12,12 +12,10 @@ module.exports = {
           blueHover: '#1561c5',
           green: '#42b72a',
           greenHover: '#349421db',
+          grey: '#f0f2f5',
         },
       },
     },
   },
-  plugins: [
-    require('tw-elements/dist/plugin'),
-    require('tailwind-scrollbar-hide')
-  ],
+  plugins: [require('tw-elements/dist/plugin')],
 };

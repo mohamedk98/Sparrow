@@ -4503,12 +4503,12 @@ textarea.form-control.is-invalid {
   height: 100%;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .h-96 {
   height: 24rem;
+}
+
+.h-screen {
+  height: 100vh;
 }
 
 .h-14 {
@@ -4880,6 +4880,11 @@ textarea.form-control.is-invalid {
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
 
+.border-facebook-grey {
+  --tw-border-opacity: 1;
+  border-color: rgb(240 242 245 / var(--tw-border-opacity));
+}
+
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -4932,6 +4937,11 @@ textarea.form-control.is-invalid {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-facebook-grey {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 242 245 / var(--tw-bg-opacity));
 }
 
 .bg-contain {
@@ -5359,15 +5369,6 @@ textarea.form-control.is-invalid {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
 }
 
 /* Global style */

@@ -75,7 +75,7 @@ const Formic = () => {
               password: values.password,
             })
             .then(response => {
-              console.log(response);
+              // console.log(response);
               if (response.data) setShowSpinner(showSinner);
               navigate('/');
             })

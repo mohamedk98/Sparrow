@@ -108,6 +108,10 @@ const Post = () => {
                 <textarea
                   cols="75"
                   rows="1"
+                  onInput={e => {
+                    e.target.style.height = 'auto';
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
                   placeholder="Write a comment"
                   className="bg-gray-100 rounded-3xl px-5 py-1 outline-none w-full resize-none"
                 />
@@ -165,6 +169,10 @@ const Post = () => {
                     <textarea
                       cols="75"
                       rows="1"
+                      onInput={e => {
+                        e.target.style.height = 'auto';
+                        e.target.style.height = `${e.target.scrollHeight}px`;
+                      }}
                       placeholder="Reply to Malcolm Dosh"
                       className="bg-gray-100 rounded-3xl px-5 py-1 outline-none w-full resize-none"
                     />
