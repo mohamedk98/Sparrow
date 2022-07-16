@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-lg flex align-baseline justify-between">
+    <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-lg-top">
       <div className="flex">
         <FaFacebook className="text-facebook-blue text-4xl mr-5" />
 
@@ -70,7 +70,7 @@ const Header = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to={"/profile"}
+                to={'/profile'}
               >
                 Action
               </Link>
@@ -110,7 +110,7 @@ const Header = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to={"/profile"}
+                to={'/profile'}
               >
                 Profile
               </Link>
@@ -160,7 +160,7 @@ const Header = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to={"/profile"}
+                to={'/profile'}
               >
                 Profile
               </Link>
