@@ -77,6 +77,7 @@ const CreatePostModal = () => {
                   </button>
                   {showPicker ? (
                     <EmojiPicker
+                      positionClass="-top-32 right-0"
                       chosenEmoji={chosenEmoji}
                       onEmojiClick={onEmojiClick}
                     />

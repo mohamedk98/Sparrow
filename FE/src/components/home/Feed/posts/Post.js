@@ -5,10 +5,21 @@ import { FaCommentAlt } from 'react-icons/fa';
 import { RiShareForwardFill } from 'react-icons/ri';
 import profileImg from '../../../../assets/images/default_profile.png';
 
+import PostReactions from './PostReactions';
+
+// import '../Tooltip.module.css';
+import TextArea from './TextArea';
+
 const Post = () => {
   const [writeComment, setWriteComment] = useState(false);
 
   const [writeReply, setWriteReply] = useState(false);
+
+  const [visible, setVisible] = useState(false);
+
+  const reactHandler = e => {
+    // console.log(e);
+  };
 
   return (
     <div className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7">
@@ -49,7 +60,7 @@ const Post = () => {
       </div>
 
       <div className="">
-        <div className="flex justify-between my-3 border-b-2 pb-3 px-3">
+        <div className="flex justify-between mt-3 border-b-2 pb-3 px-3">
           <div>
             <a href="/">
               <AiFillLike className="text-blue-700 inline mr-1 -mt-1 text-xl" />
@@ -73,14 +84,34 @@ const Post = () => {
           </div>
         </div>
 
-        <div className="flex justify-between border-b-2 pb-3 mb-4 px-9">
-          <button type="button" className="btn flex">
+        <div className="flex justify-between border-b-2 mb-4 px-7 relative">
+          <PostReactions
+            className=""
+            visible={visible}
+            setVisible={setVisible}
+            reactHandler={reactHandler}
+          />
+          <button
+            type="button"
+            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-14 rounded-lg"
+            onMouseOver={() => {
+              setTimeout(() => {
+                setVisible(true);
+              }, 500);
+            }}
+            onMouseLeave={() => {
+              setTimeout(() => {
+                setVisible(false);
+              }, 500);
+            }}
+            // onClick={() => reactHandler(check ? check : 'like')}
+          >
             <AiFillLike className="mt-0.5 mr-2 text-xl" />
             Like
           </button>
           <button
             type="button"
-            className="btn flex"
+            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-10 rounded-lg"
             onClick={() => {
               setWriteComment(!writeComment);
             }}
@@ -88,7 +119,10 @@ const Post = () => {
             <FaCommentAlt className="mt-1.5 mr-2" />
             Comment
           </button>
-          <button type="button" className="btn flex">
+          <button
+            type="button"
+            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-14 rounded-lg"
+          >
             <RiShareForwardFill className="mt-0.5 mr-2 text-2xl" />
             Share
           </button>
@@ -96,27 +130,7 @@ const Post = () => {
 
         {writeComment && (
           <div>
-            <div className="flex mb-3">
-              <a href="/">
-                <img
-                  src={profileImg}
-                  className="rounded-full mr-2 h-8"
-                  alt="Avatar"
-                />
-              </a>
-              <div className="w-full">
-                <textarea
-                  cols="75"
-                  rows="1"
-                  onInput={e => {
-                    e.target.style.height = 'auto';
-                    e.target.style.height = `${e.target.scrollHeight}px`;
-                  }}
-                  placeholder="Write a comment"
-                  className="bg-gray-100 rounded-3xl px-5 py-1 outline-none w-full resize-none"
-                />
-              </div>
-            </div>
+            <TextArea placeholder="Write a comment" />
 
             <div className="flex my-3">
               <a href="/">
@@ -138,7 +152,7 @@ const Post = () => {
                   </a>
                 </div>
 
-                <div className="ml-3 text-sm mt-0.5">
+                <div className="ml-3 text-sm mt-0.5 mb-3">
                   <button type="button" className="btn">
                     Like
                   </button>
@@ -156,28 +170,7 @@ const Post = () => {
                   <span className="text-gray-500 text-xs">57m</span>
                 </div>
 
-                {writeReply && (
-                  <div className="flex mt-1">
-                    <a href="/">
-                      <img
-                        src={profileImg}
-                        className="rounded-full mr-2 h-8"
-                        alt="Avatar"
-                      />
-                    </a>
-
-                    <textarea
-                      cols="75"
-                      rows="1"
-                      onInput={e => {
-                        e.target.style.height = 'auto';
-                        e.target.style.height = `${e.target.scrollHeight}px`;
-                      }}
-                      placeholder="Reply to Malcolm Dosh"
-                      className="bg-gray-100 rounded-3xl px-5 py-1 outline-none w-full resize-none"
-                    />
-                  </div>
-                )}
+                {writeReply && <TextArea placeholder="Reply to Malcolm Dosh" />}
               </div>
             </div>
           </div>

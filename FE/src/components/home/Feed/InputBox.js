@@ -33,15 +33,15 @@ const InputBox = () => {
           </form>
         </div>
         <div className="flex justify-evenly p-3 border-t">
-          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer">
+          <div className="inputIcon">
             <BsFillCameraReelsFill className="h-7 xl:w-10 md:w-6 text-red-500" />
             <p className="text-xs sm:text-sm xl:text-base">Live Video</p>
           </div>
-          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer">
+          <div className="inputIcon">
             <AiFillCamera className="h-7 xl:w-10 md:w-6 text-green-400" />
             <p className="text-xs sm:text-sm xl:text-base">Photo/Video</p>
           </div>
-          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer">
+          <div className="inputIcon">
             <IoMdHappy className="h-7 xl:w-10 md:w-6 text-yellow-300" />
             <p className="text-xs sm:text-sm xl:text-base">Feeling/Activity</p>
           </div>
