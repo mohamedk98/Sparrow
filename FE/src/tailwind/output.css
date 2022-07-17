@@ -1712,16 +1712,6 @@ textarea.form-control.is-invalid {
   z-index: 1020;
 }
 
-.stretched-link::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  content: "";
-}
-
 .vr {
   display: inline-block;
   align-self: stretch;
@@ -1817,6 +1807,11 @@ textarea.form-control.is-invalid {
 .slide-out-right {
   -webkit-animation-name: _slide-out-right;
   animation-name: _slide-out-right;
+}
+
+.zoom-in {
+  -webkit-animation-name: _zoom-in;
+  animation-name: _zoom-in;
 }
 
 .ripple-surface {
@@ -4290,60 +4285,32 @@ textarea.form-control.is-invalid {
   top: 2.25rem;
 }
 
-.top-96 {
-  top: 24rem;
+.left-40 {
+  left: 10rem;
 }
 
-.top-20 {
-  top: 5rem;
-}
-
-.top-2 {
-  top: 0.5rem;
-}
-
-.bottom-0 {
-  bottom: 0px;
-}
-
-.bottom-6 {
-  bottom: 1.5rem;
-}
-
-.top-6 {
-  top: 1.5rem;
-}
-
-.top-24 {
-  top: 6rem;
-}
-
-.bottom-28 {
-  bottom: 7rem;
+.left-4 {
+  left: 1rem;
 }
 
 .z-50 {
   z-index: 50;
 }
 
-.z-20 {
-  z-index: 20;
-}
-
-.z-0 {
-  z-index: 0;
-}
-
-.-z-30 {
-  z-index: -30;
-}
-
 .z-10 {
   z-index: 10;
 }
 
-.-z-10 {
-  z-index: -10;
+.-z-50 {
+  z-index: -50;
+}
+
+.-z-0 {
+  z-index: 0;
+}
+
+.z-auto {
+  z-index: auto;
 }
 
 .float-left {
@@ -4356,14 +4323,6 @@ textarea.form-control.is-invalid {
 
 .m-0 {
   margin: 0px;
-}
-
-.-m-96 {
-  margin: -24rem;
-}
-
-.m-96 {
-  margin: 24rem;
 }
 
 .my-4 {
@@ -4399,16 +4358,6 @@ textarea.form-control.is-invalid {
 .mx-3 {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
-}
-
-.my-96 {
-  margin-top: 24rem;
-  margin-bottom: 24rem;
-}
-
-.my-48 {
-  margin-top: 12rem;
-  margin-bottom: 12rem;
 }
 
 .mt-16 {
@@ -4539,16 +4488,40 @@ textarea.form-control.is-invalid {
   margin-top: 0.375rem;
 }
 
-.-mt-12 {
-  margin-top: -3rem;
+.ml-96 {
+  margin-left: 24rem;
 }
 
-.mb-48 {
-  margin-bottom: 12rem;
+.ml-10 {
+  margin-left: 2.5rem;
 }
 
-.mt-48 {
-  margin-top: 12rem;
+.ml-auto {
+  margin-left: auto;
+}
+
+.mb-20 {
+  margin-bottom: 5rem;
+}
+
+.ml-14 {
+  margin-left: 3.5rem;
+}
+
+.ml-3\.5 {
+  margin-left: 0.875rem;
+}
+
+.ml-80 {
+  margin-left: 20rem;
+}
+
+.ml-72 {
+  margin-left: 18rem;
+}
+
+.ml-64 {
+  margin-left: 16rem;
 }
 
 .box-content {
@@ -4637,6 +4610,10 @@ textarea.form-control.is-invalid {
   height: 1.5rem;
 }
 
+.h-44 {
+  height: 11rem;
+}
+
 .h-max {
   height: -webkit-max-content;
   height: max-content;
@@ -4645,10 +4622,6 @@ textarea.form-control.is-invalid {
 .h-min {
   height: -webkit-min-content;
   height: min-content;
-}
-
-.max-h-96 {
-  max-height: 24rem;
 }
 
 .w-full {
@@ -4705,8 +4678,36 @@ textarea.form-control.is-invalid {
   width: 5rem;
 }
 
-.w-96 {
-  width: 24rem;
+.w-36 {
+  width: 9rem;
+}
+
+.w-40 {
+  width: 10rem;
+}
+
+.w-44 {
+  width: 11rem;
+}
+
+.w-48 {
+  width: 12rem;
+}
+
+.w-52 {
+  width: 13rem;
+}
+
+.w-1\/12 {
+  width: 8.333333%;
+}
+
+.w-6\/12 {
+  width: 50%;
+}
+
+.w-10\/12 {
+  width: 83.333333%;
 }
 
 .min-w-max {
@@ -4800,48 +4801,6 @@ textarea.form-control.is-invalid {
   resize: both;
 }
 
-.scroll-m-96 {
-  scroll-margin: 24rem;
-}
-
-.scroll-m-20 {
-  scroll-margin: 5rem;
-}
-
-.-scroll-mt-8 {
-  scroll-margin-top: -2rem;
-}
-
-.-scroll-mt-36 {
-  scroll-margin-top: -9rem;
-}
-
-.-scroll-mt-2\.5 {
-  scroll-margin-top: -0.625rem;
-}
-
-.-scroll-mt-2 {
-  scroll-margin-top: -0.5rem;
-}
-
-.-scroll-mt-80 {
-  scroll-margin-top: -20rem;
-}
-
-.scroll-mt-80 {
-  scroll-margin-top: 20rem;
-}
-
-.scroll-py-64 {
-  scroll-padding-top: 16rem;
-  scroll-padding-bottom: 16rem;
-}
-
-.scroll-py-6 {
-  scroll-padding-top: 1.5rem;
-  scroll-padding-bottom: 1.5rem;
-}
-
 .list-none {
   list-style-type: none;
 }
@@ -4869,6 +4828,10 @@ textarea.form-control.is-invalid {
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.content-center {
+  align-content: center;
 }
 
 .items-center {
@@ -4926,8 +4889,8 @@ textarea.form-control.is-invalid {
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
-.overflow-hidden {
-  overflow: hidden;
+.self-center {
+  align-self: center;
 }
 
 .overflow-y-auto {
@@ -5110,6 +5073,26 @@ textarea.form-control.is-invalid {
   background-color: rgb(240 242 245 / var(--tw-bg-opacity));
 }
 
+.bg-slate-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(71 85 105 / var(--tw-bg-opacity));
+}
+
+.bg-slate-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+}
+
 .bg-contain {
   background-size: contain;
 }
@@ -5150,8 +5133,8 @@ textarea.form-control.is-invalid {
   padding: 1.25rem;
 }
 
-.p-48 {
-  padding: 12rem;
+.p-10 {
+  padding: 2.5rem;
 }
 
 .py-2 {
@@ -5244,14 +5227,14 @@ textarea.form-control.is-invalid {
   padding-right: 2.25rem;
 }
 
-.py-10 {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+.py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
 }
 
-.py-48 {
-  padding-top: 12rem;
-  padding-bottom: 12rem;
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }
 
 .pt-4 {
@@ -5286,20 +5269,8 @@ textarea.form-control.is-invalid {
   padding-bottom: 0.75rem;
 }
 
-.pb-10 {
-  padding-bottom: 2.5rem;
-}
-
-.pt-10 {
-  padding-top: 2.5rem;
-}
-
-.pb-48 {
-  padding-bottom: 12rem;
-}
-
-.pt-48 {
-  padding-top: 12rem;
+.pb-20 {
+  padding-bottom: 5rem;
 }
 
 .text-left {
@@ -5312,6 +5283,10 @@ textarea.form-control.is-invalid {
 
 .text-right {
   text-align: right;
+}
+
+.text-end {
+  text-align: end;
 }
 
 .align-baseline {
@@ -5483,6 +5458,11 @@ textarea.form-control.is-invalid {
   color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 
+.text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -5514,14 +5494,35 @@ textarea.form-control.is-invalid {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.shadow-sm {
-  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+.shadow-xl {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-slate-400 {
   --tw-shadow-color: #94a3b8;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-gray-400 {
+  --tw-shadow-color: #9ca3af;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-gray-700 {
+  --tw-shadow-color: #374151;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-slate-900 {
+  --tw-shadow-color: #0f172a;
   --tw-shadow: var(--tw-shadow-colored);
 }
 
@@ -5544,6 +5545,12 @@ textarea.form-control.is-invalid {
 
 .blur {
   --tw-blur: blur(8px);
+  -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+          filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.drop-shadow-2xl {
+  --tw-drop-shadow: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
   -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
           filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
@@ -5651,6 +5658,11 @@ textarea.form-control.is-invalid {
 .hover\:text-gray-700:hover {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+.hover\:text-blue-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

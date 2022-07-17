@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-lg-top">
+    <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
       <div className="flex">
         <FaFacebook className="text-facebook-blue text-4xl mr-5" />
 

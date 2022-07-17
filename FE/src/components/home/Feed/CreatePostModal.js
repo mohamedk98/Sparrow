@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import profileImg from '../../../assets/images/default_profile.png';
 import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from './EmojiPicker';
+import './Tooltip.module.css';
 
 const CreatePostModal = () => {
   const [showPicker, setShowPicker] = useState(false);
@@ -65,12 +66,14 @@ const CreatePostModal = () => {
             </div>
 
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-gray-200 rounded-b-md">
-              <div className="flex ">
+              <div className="flex">
                 <div className="justify-end my-2 text-2xl text-gray-500 ">
                   {/* emoji picker */}
-                  <button onClick={() => setShowPicker(!showPicker)}>
-                    {' '}
-                    <VscSmiley />{' '}
+                  <button
+                    onClick={() => setShowPicker(!showPicker)}
+                    data-title={showPicker ? null : 'Emoji'}
+                  >
+                    <VscSmiley className={showPicker ? 'ml-64' : ''} />
                   </button>
                   {showPicker ? (
                     <EmojiPicker

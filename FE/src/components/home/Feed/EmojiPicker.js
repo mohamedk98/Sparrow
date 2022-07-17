@@ -4,14 +4,20 @@ import Picker from 'emoji-picker-react';
 
 const EmojiPicker = ({ chosenEmoji, onEmojiClick }) => {
   return (
-    <div className="flex justify-center items-center">
-      <div className="max-w-sm rounded shadow-lg bg-white text-sm">
+    <div className="flex justify-center items-center shadow-2xl">
+      <div className="max-w-sm rounded bg-white text-sm">
         {chosenEmoji ? (
-          <span>You chose: {chosenEmoji.emoji}</span>
+          <div className="text-center">You chosed: {chosenEmoji.emoji}</div>
         ) : (
-          <span className="text-sm">No emoji Chosen</span>
+          <div className="text-center">No emoji Chosen</div>
         )}
-        <Picker onEmojiClick={onEmojiClick} disableSearchBar className="h-2" />
+        <Picker
+          onEmojiClick={onEmojiClick}
+          className="h-2"
+          pickerStyle={{
+            boxShadow: '0.5px 0.5px 3px #222222',
+          }}
+        />
       </div>
     </div>
   );
