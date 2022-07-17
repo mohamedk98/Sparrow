@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsHeartFill } from 'react-icons/bs';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentAlt } from 'react-icons/fa';
@@ -7,19 +7,79 @@ import profileImg from '../../../../assets/images/default_profile.png';
 
 import PostReactions from './PostReactions';
 
-// import '../Tooltip.module.css';
 import TextArea from './TextArea';
+import LikeButton from './LikeButton';
+import ReplyLikeButton from './ReplyLikeButton';
+
+import { axiosInstance } from '../../../../network/axiosInstance';
 
 const Post = () => {
+  // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
 
+  // Hide and show reply in comments:
   const [writeReply, setWriteReply] = useState(false);
 
+  // Hide and show reactions:
   const [visible, setVisible] = useState(false);
 
-  const reactHandler = e => {
-    // console.log(e);
+  // Reactions type set:
+  const [reactType, setReactType] = useState('');
+
+  // Reactions clicked:
+  const [reactionClicked, setReactionClicked] = useState(false);
+
+  // Reactions className set:
+  const [reactClass, setReactClass] = useState('');
+
+  const reactHandler = name => {
+    // console.log(name);
+    // console.log(reactType);
+
+    setReactionClicked(true);
+    // console.log(reactionClicked);
+
+    setReactType(name);
+
+    let className = 'font-bold timepicker-clock-animation ';
+
+    switch (name) {
+      case 'Like':
+        className += 'text-facebook-blue';
+        break;
+
+      case 'Love':
+        className += 'text-red-500';
+        break;
+
+      case 'Care':
+      case 'Haha':
+      case 'Wow':
+      case 'Sad':
+        className += 'text-yellow-400';
+        break;
+
+      case 'Angry':
+        className += 'text-rose-500';
+        break;
+
+      default:
+        break;
+    }
+
+    setReactClass(className);
   };
+
+  useEffect(() => {
+    axiosInstance
+      .get('/posts/62d3101ce5f67816a3a49926')
+      .then(response => {
+        // console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  });
 
   return (
     <div className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7">
@@ -91,24 +151,14 @@ const Post = () => {
             setVisible={setVisible}
             reactHandler={reactHandler}
           />
-          <button
-            type="button"
-            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-14 rounded-lg"
-            onMouseOver={() => {
-              setTimeout(() => {
-                setVisible(true);
-              }, 500);
-            }}
-            onMouseLeave={() => {
-              setTimeout(() => {
-                setVisible(false);
-              }, 500);
-            }}
-            // onClick={() => reactHandler(check ? check : 'like')}
-          >
-            <AiFillLike className="mt-0.5 mr-2 text-xl" />
-            Like
-          </button>
+          <LikeButton
+            reactType={reactType}
+            setReactType={setReactType}
+            reactionClicked={reactionClicked}
+            reactClass={reactClass}
+            setReactClass={setReactClass}
+            setVisible={setVisible}
+          />
           <button
             type="button"
             className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-10 rounded-lg"
@@ -153,13 +203,26 @@ const Post = () => {
                 </div>
 
                 <div className="ml-3 text-sm mt-0.5 mb-3">
-                  <button type="button" className="btn">
-                    Like
-                  </button>
+                  {
+                    // <button type="button" className="btn">
+                    //   Like
+                    // </button>
+                  }
+
+                  <ReplyLikeButton
+                    reactType={reactType}
+                    setReactType={setReactType}
+                    reactionClicked={reactionClicked}
+                    reactClass={reactClass}
+                    setReactClass={setReactClass}
+                    setVisible={setVisible}
+                    visible={visible}
+                    reactHandler={reactHandler}
+                  />
 
                   <button
                     type="button"
-                    className="btn mx-3"
+                    className="btn mx-3 hover:underline underline-offset-2"
                     onClick={() => {
                       setWriteReply(true);
                     }}

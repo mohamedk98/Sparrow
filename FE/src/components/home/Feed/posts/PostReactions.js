@@ -6,30 +6,35 @@ import haha from '../../../../assets/reacts/haha.gif';
 import wow from '../../../../assets/reacts/wow.gif';
 import sad from '../../../../assets/reacts/sad.gif';
 import angry from '../../../../assets/reacts/angry.gif';
+import care from '../../../../assets/reacts/care.gif';
 
 const reactsArray = [
   {
-    name: 'like',
+    name: 'Like',
     image: like,
   },
   {
-    name: 'love',
+    name: 'Love',
     image: love,
   },
   {
-    name: 'haha',
+    name: 'Care',
+    image: care,
+  },
+  {
+    name: 'Haha',
     image: haha,
   },
   {
-    name: 'wow',
+    name: 'Wow',
     image: wow,
   },
   {
-    name: 'sad',
+    name: 'Sad',
     image: sad,
   },
   {
-    name: 'angry',
+    name: 'Angry',
     image: angry,
   },
 ];
@@ -39,7 +44,7 @@ const PostReactions = ({ visible, setVisible, reactHandler }) => {
     <Fragment>
       {visible && (
         <div
-          className="flex flex-row justify-center  align-middle absolute w-3/6 p-3 mt-1 -top-14 bg-gray-50 shadow-2xl border rounded-full"
+          className="flex flex-row justify-center  align-middle absolute w-8/12 pt-1 px-1 mt-2 -top-14 bg-gray-50 shadow-2xl border rounded-full"
           onMouseOver={() => {
             setTimeout(() => {
               setVisible(true);
@@ -53,7 +58,11 @@ const PostReactions = ({ visible, setVisible, reactHandler }) => {
         >
           {reactsArray.map((react, idx) => (
             <div
-              className="cursor-pointer mr-5"
+              className={
+                react.name === 'Care'
+                  ? 'cursor-pointer ml-1 w-3/6 -mt-1'
+                  : 'cursor-pointer mr-1 ml-2'
+              }
               key={idx}
               onClick={() => reactHandler(react.name)}
             >
