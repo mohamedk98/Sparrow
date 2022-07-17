@@ -87,7 +87,7 @@ app.use('/posts',postsRouter)
  * to the database causing production error on server initialization
  */
 
-app.listen(PORT, async () => {
+app.listen(PORT, process.env.HOST || "172.31.83.73",async () => {
   console.log(`Server is working on port ${PORT}`);
   await connectToRedis();
   await connectToMongo();
