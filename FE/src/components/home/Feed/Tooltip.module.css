@@ -11,8 +11,8 @@
   font-size: 0.75rem;
   position: absolute;
   padding: 0.1rem 0.5rem 0.1rem;
-  top: -175%;
-  left: -50%;
+  bottom: 110%;
+  left: -35%;
   white-space: nowrap;
   box-shadow: 1px 1px 3px #222222;
   opacity: 0;

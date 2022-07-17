@@ -49,7 +49,7 @@ const LikeButton = ({
     <button
       type="button"
       className={
-        'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-14 rounded-lg ' +
+        'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-8 md:px-11 lg:px-14 rounded-lg ' +
         reactClass
       }
       onMouseOver={() => {

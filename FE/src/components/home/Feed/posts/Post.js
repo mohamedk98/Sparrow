@@ -3,6 +3,7 @@ import { BsHeartFill } from 'react-icons/bs';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentAlt } from 'react-icons/fa';
 import { RiShareForwardFill } from 'react-icons/ri';
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import profileImg from '../../../../assets/images/default_profile.png';
 
 import PostReactions from './PostReactions';
@@ -83,7 +84,7 @@ const Post = () => {
 
   return (
     <div className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7">
-      <div className="card-body">
+      <div className="card-body relative">
         <div className="flex mb-3">
           <a href="/">
             <img
@@ -101,6 +102,28 @@ const Post = () => {
             <a href="/" className="text-gray-600 text-sm block">
               10h
             </a>
+            <div className="dropdown absolute right-1 top-1" data-title="more">
+              <a
+                className="dropdown-toggle flex items-center hidden-arrow"
+                href="/"
+                id="dropdownMenuButton2"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div className="w-10">
+                  <BiDotsHorizontalRounded className="hover:bg-zinc-100 w-9 h-9 rounded-full p-1" />
+                </div>
+              </a>
+              <ul
+                className="
+          dropdown-menu min-w-max absolute hidden bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-0"
+              >
+                <li className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer">
+                  Hide post
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -144,7 +167,7 @@ const Post = () => {
           </div>
         </div>
 
-        <div className="flex justify-between border-b-2 mb-4 px-7 relative">
+        <div className="flex justify-between border-b-2 mb-4 px- relative">
           <PostReactions
             className=""
             visible={visible}
@@ -161,7 +184,7 @@ const Post = () => {
           />
           <button
             type="button"
-            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-10 rounded-lg"
+            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-10 ml-3 md:ml-3 lg:ml-7 rounded-lg"
             onClick={() => {
               setWriteComment(!writeComment);
             }}
@@ -171,7 +194,7 @@ const Post = () => {
           </button>
           <button
             type="button"
-            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-14 rounded-lg"
+            className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 lg:px-14 rounded-lg"
           >
             <RiShareForwardFill className="mt-0.5 mr-2 text-2xl" />
             Share
