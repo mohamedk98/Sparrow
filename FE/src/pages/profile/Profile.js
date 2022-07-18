@@ -1,44 +1,53 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // import axiosInstance from '../../network/axiosInstance';
-import cover from "../../assets/stories/2.png";
+import Cover from "../../components/profile/Cover";
+import ProfilePic from "../../components/profile/ProfilePic";
+import ProfileMenu from "../../components/profile/ProfileMenu";
+import ProfilePhotos from "../../components/profile/ProfilePhotos";
+import ProfileFriends from "../../components/profile/ProfileFriends";
+import ProfileFooter from "../../components/profile/ProfileFooter";
+import CreatePost from "../../components/profile/CreatePost";
+import PostView from "../../components/profile/PostView";
 
 function Profile() {
-  const [showCoverMenu, setShowCoverMenu] = useState(true);
+  
   useEffect(() => {
     //axiosInstance.get('/profile').then(res=>console.log(res))
   });
   return (
     <div>
-      <div>
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-slate-100 relative w-full h-96 rounded-t-none rounded-b-md">
-            <img
-              className="relative w-full h-96 rounded-t-none rounded-b-md"
-              src={cover}
-              alt="cover"
-            ></img>
-            <div className="absolute bottom-4 right-4">
-              <div
-                className="bg-white p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer"
-                onClick={() => {
-                  setShowCoverMenu((prev) => !prev);
-                }}
-              >
-                <i></i>
-                Add Cover Photo
+      <div className="lg:w-10/12 sm:w-full m-auto">
+        {/* cover */}
+        <Cover/>
+        {/* profilePicture */}
+        <ProfilePic/>
+        {/* profile menu */}
+        <div className="relative px-10" style={{padding:"0 50px"}}>
+          <ProfileMenu/>
+        </div>
+      </div>
+      {/*bottom*/}
+      <div className="mt-5 bg-slate-200">
+        <div className="w-11/12">
+          <div className="py-2.5 px-9">
+            <div className="grid lg:grid-cols-2 sm:grid-col-1 gap-5">
+              {/* bottom left */}
+              <div className=" w-5/6 lg:ml-28">
+                {/* Profile Photos */}
+                <ProfilePhotos/>
+                {/* Profile friends */}
+                <ProfileFriends/>
+                {/* Profile footer */}
+                <ProfileFooter/>
               </div>
-              {showCoverMenu && (
-                <div className="bg-white p-2 rounded-lg absolute right-0 w-80 shadow shadow-slate-400">
-                  <div className="flex items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200">
-                    <i></i>
-                    Select Photo
-                  </div>
-                  <div className="flex items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200">
-                    <i></i>
-                    Upload Photo
-                  </div>
-                </div>
-              )}
+              {/* bottom right */}
+              <div>
+                {/* create post */}
+                <CreatePost/>
+                {/* post view */}
+                <PostView/>
+              </div>
             </div>
           </div>
         </div>
