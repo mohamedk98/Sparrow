@@ -5,6 +5,7 @@ import profileImg from '../../../../assets/images/default_profile.png';
 import { VscSmiley } from 'react-icons/vsc';
 
 import EmojiPicker from '../EmojiPicker';
+import More from './More';
 
 const TextArea = ({ placeholder }) => {
   // For textArea value:
@@ -95,6 +96,14 @@ const TextArea = ({ placeholder }) => {
           </div>
         </div>
       </div>
+      <More
+        text="edit"
+        text2="delete"
+        containerClassName="dropdown relative left-2 top-0.5"
+        iconClassName="w-7 h-7"
+        liNum1={1}
+        liNum2={2}
+      />
     </div>
   );
 };

@@ -60,11 +60,12 @@ const PostReactions = ({ visible, setVisible, reactHandler }) => {
             <div
               className={
                 react.name === 'Care'
-                  ? 'cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-3/6 -mt-0.5'
-                  : 'cursor-pointer mr-1 ml-2'
+                  ? 'cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-3/6 -mt-0.5 hover:w-10/12'
+                  : 'cursor-pointer relative mr-1 ml-2 hover:w-10/12'
               }
               key={idx}
               onClick={() => reactHandler(react.name)}
+              data-title={react.name}
             >
               <img src={react.image} alt={react.name} />
             </div>

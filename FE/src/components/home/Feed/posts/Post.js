@@ -13,6 +13,7 @@ import LikeButton from './LikeButton';
 import ReplyLikeButton from './ReplyLikeButton';
 
 import { axiosInstance } from '../../../../network/axiosInstance';
+import More from './More';
 
 const Post = () => {
   // Hide and show comments:
@@ -102,28 +103,12 @@ const Post = () => {
             <a href="/" className="text-gray-600 text-sm block">
               10h
             </a>
-            <div className="dropdown absolute right-1 top-1" data-title="more">
-              <a
-                className="dropdown-toggle flex items-center hidden-arrow"
-                href="/"
-                id="dropdownMenuButton2"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <div className="w-10">
-                  <BiDotsHorizontalRounded className="hover:bg-zinc-100 w-9 h-9 rounded-full p-1" />
-                </div>
-              </a>
-              <ul
-                className="
-          dropdown-menu min-w-max absolute hidden bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-0"
-              >
-                <li className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer">
-                  Hide post
-                </li>
-              </ul>
-            </div>
+            <More
+              text="Hide post"
+              containerClassName="dropdown absolute right-1 top-1"
+              iconClassName="w-9 h-9"
+              liNum1={1}
+            />
           </div>
         </div>
 
@@ -202,7 +187,7 @@ const Post = () => {
         </div>
 
         {writeComment && (
-          <div>
+          <div className="relative">
             <TextArea placeholder="Write a comment" />
 
             <div className="flex my-3">
@@ -226,12 +211,6 @@ const Post = () => {
                 </div>
 
                 <div className="ml-3 text-sm mt-0.5 mb-3">
-                  {
-                    // <button type="button" className="btn">
-                    //   Like
-                    // </button>
-                  }
-
                   <ReplyLikeButton
                     reactType={reactType}
                     setReactType={setReactType}
@@ -254,6 +233,13 @@ const Post = () => {
                   </button>
 
                   <span className="text-gray-500 text-xs">57m</span>
+
+                  <More
+                    text="Hide comment"
+                    containerClassName="dropdown absolute -right-2 top-16"
+                    iconClassName="w-7 h-7"
+                    liNum1={1}
+                  />
                 </div>
 
                 {writeReply && <TextArea placeholder="Reply to Malcolm Dosh" />}
