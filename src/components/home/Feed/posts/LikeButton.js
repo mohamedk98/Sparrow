@@ -16,6 +16,7 @@ const LikeButton = ({
   reactClass,
   setReactClass,
   setVisible,
+  setReactionClicked,
 }) => {
   // Reactions button clicked:
   const [btnClicked, setBtnClicked] = useState(false);
@@ -42,8 +43,42 @@ const LikeButton = ({
 
   useEffect(() => {
     reactionClicked && setReactTypeSRC(svgPicker?.svg);
-    console.log(reactType);
-  }, [reactType, reactionClicked, svgPicker]);
+
+    // console.log(btnClicked, reactType, reactTypeSRC);
+
+    if (
+      reactType === '' &&
+      reactClass === '' &&
+      reactTypeSRC === likePNG &&
+      btnClicked
+    ) {
+      setReactType('Like');
+      setReactTypeSRC(likeSVG);
+      setReactClass('text-facebook-blue font-bold');
+      setBtnClicked(!btnClicked);
+    }
+
+    if (
+      (reactType === 'Like' && reactTypeSRC === likeSVG && btnClicked) ||
+      (reactType !== '' && reactTypeSRC === svgPicker?.svg && btnClicked)
+    ) {
+      setReactTypeSRC(likePNG);
+      setReactType('');
+      setReactClass('');
+      setBtnClicked(!btnClicked);
+    }
+
+    // console.log(reactionClicked);
+  }, [
+    btnClicked,
+    reactClass,
+    reactType,
+    reactTypeSRC,
+    reactionClicked,
+    setReactClass,
+    setReactType,
+    svgPicker?.svg,
+  ]);
 
   return (
     <button
@@ -63,24 +98,14 @@ const LikeButton = ({
         }, 500);
       }}
       onClick={() => {
-        setReactType(!btnClicked ? 'Like' : '');
-        // console.log(btnClicked);
-        setReactTypeSRC(
-          reactType === 'Like' && (btnClicked || reactionClicked)
-            ? likePNG
-            : likeSVG
-        );
+        setReactionClicked(false);
         setBtnClicked(!btnClicked);
-
-        setReactClass(!btnClicked ? 'text-facebook-blue font-bold' : '');
+        console.log(btnClicked);
+        console.log(reactionClicked);
       }}
     >
       <div className="mt-0.5 mr-2 text-xl w-5">
-        <img
-          className="w-full"
-          src={reactTypeSRC ? reactTypeSRC : likePNG}
-          alt=""
-        />
+        <img className="w-full" src={reactTypeSRC} alt="" />
       </div>
       {reactType ? reactType : 'Like'}
     </button>

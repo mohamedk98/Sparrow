@@ -1,8 +1,8 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 
 import PostReactions from './PostReactions';
 
-const ReplyLikeButton = () => {
+const ReplyLikeButton = ({ setReactionClicked }) => {
   // Reactions type set:
   const [reactType, setReactType] = useState('');
 
@@ -50,6 +50,25 @@ const ReplyLikeButton = () => {
     setReactClass(className);
   };
 
+  useEffect(() => {
+    console.log(btnClicked, reactType, reactClass);
+
+    if (reactType === '' && reactClass === '' && btnClicked) {
+      setReactType('Like');
+      setReactClass('text-facebook-blue font-bold');
+      setBtnClicked(!btnClicked);
+    }
+
+    if (
+      (reactType === 'Like' && btnClicked) ||
+      (reactType !== '' && btnClicked)
+    ) {
+      setReactType('');
+      setReactClass('');
+      setBtnClicked(!btnClicked);
+    }
+  }, [btnClicked, reactClass, reactType]);
+
   return (
     <Fragment>
       <div className="flex justify-between mb-1 -ml-3  relative">
@@ -74,8 +93,8 @@ const ReplyLikeButton = () => {
           }, 500);
         }}
         onClick={() => {
+          setReactionClicked(false);
           setBtnClicked(!btnClicked);
-          setReactType(!btnClicked ? 'Like' : '');
           // console.log(btnClicked);
 
           setReactClass(!btnClicked ? 'text-facebook-blue font-bold' : '');

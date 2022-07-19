@@ -3,7 +3,6 @@ import { BsHeartFill } from 'react-icons/bs';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentAlt } from 'react-icons/fa';
 import { RiShareForwardFill } from 'react-icons/ri';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import profileImg from '../../../../assets/images/default_profile.png';
 
 import PostReactions from './PostReactions';
@@ -166,6 +165,7 @@ const Post = () => {
             reactClass={reactClass}
             setReactClass={setReactClass}
             setVisible={setVisible}
+            setReactionClicked={setReactionClicked}
           />
           <button
             type="button"
@@ -220,6 +220,7 @@ const Post = () => {
                     setVisible={setVisible}
                     visible={visible}
                     reactHandler={reactHandler}
+                    setReactionClicked={setReactionClicked}
                   />
 
                   <button
