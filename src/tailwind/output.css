@@ -4228,10 +4228,6 @@ textarea.form-control.is-invalid {
   visibility: visible;
 }
 
-.invisible {
-  visibility: hidden;
-}
-
 .static {
   position: static;
 }
@@ -4333,6 +4329,14 @@ textarea.form-control.is-invalid {
   top: 0.25rem;
 }
 
+.-right-2 {
+  right: -0.5rem;
+}
+
+.top-16 {
+  top: 4rem;
+}
+
 .-top-14 {
   top: -3.5rem;
 }
@@ -4345,100 +4349,12 @@ textarea.form-control.is-invalid {
   bottom: 3rem;
 }
 
-.left-3 {
-  left: 0.75rem;
-}
-
 .left-2 {
   left: 0.5rem;
 }
 
 .top-0\.5 {
   top: 0.125rem;
-}
-
-.top-3 {
-  top: 0.75rem;
-}
-
-.top-7 {
-  top: 1.75rem;
-}
-
-.bottom-1 {
-  bottom: 0.25rem;
-}
-
-.bottom-96 {
-  bottom: 24rem;
-}
-
-.bottom-32 {
-  bottom: 8rem;
-}
-
-.bottom-28 {
-  bottom: 7rem;
-}
-
-.bottom-24 {
-  bottom: 6rem;
-}
-
-.right-2 {
-  right: 0.5rem;
-}
-
-.right-96 {
-  right: 24rem;
-}
-
-.right-24 {
-  right: 6rem;
-}
-
-.left-24 {
-  left: 6rem;
-}
-
-.left-96 {
-  left: 24rem;
-}
-
-.left-9 {
-  left: 2.25rem;
-}
-
-.right-9 {
-  right: 2.25rem;
-}
-
-.right-12 {
-  right: 3rem;
-}
-
-.-right-0 {
-  right: -0px;
-}
-
-.-right-10 {
-  right: -2.5rem;
-}
-
-.-right-1 {
-  right: -0.25rem;
-}
-
-.-right-2 {
-  right: -0.5rem;
-}
-
-.top-12 {
-  top: 3rem;
-}
-
-.top-16 {
-  top: 4rem;
 }
 
 .z-10 {
@@ -4828,24 +4744,16 @@ textarea.form-control.is-invalid {
   width: 2.25rem;
 }
 
+.w-7 {
+  width: 1.75rem;
+}
+
 .w-8\/12 {
   width: 66.666667%;
 }
 
 .w-9\/12 {
   width: 75%;
-}
-
-.w-0 {
-  width: 0px;
-}
-
-.w-7 {
-  width: 1.75rem;
-}
-
-.w-3 {
-  width: 0.75rem;
 }
 
 .min-w-max {
@@ -5369,11 +5277,6 @@ textarea.form-control.is-invalid {
   padding-right: 0.25rem;
 }
 
-.py-9 {
-  padding-top: 2.25rem;
-  padding-bottom: 2.25rem;
-}
-
 .pt-4 {
   padding-top: 1rem;
 }
@@ -5420,10 +5323,6 @@ textarea.form-control.is-invalid {
 
 .pt-1 {
   padding-top: 0.25rem;
-}
-
-.pb-1 {
-  padding-bottom: 0.25rem;
 }
 
 .text-left {
@@ -5758,40 +5657,8 @@ textarea.form-control.is-invalid {
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
-.hover\:visible:hover {
-  visibility: visible;
-}
-
-.hover\:flex:hover {
-  display: flex;
-}
-
-.hover\:w-6:hover {
-  width: 1.5rem;
-}
-
-.hover\:w-5\/6:hover {
-  width: 83.333333%;
-}
-
-.hover\:w-6\/12:hover {
-  width: 50%;
-}
-
-.hover\:w-9\/12:hover {
-  width: 75%;
-}
-
 .hover\:w-10\/12:hover {
   width: 83.333333%;
-}
-
-.hover\:w-5\/12:hover {
-  width: 41.666667%;
-}
-
-.hover\:w-11\/12:hover {
-  width: 91.666667%;
 }
 
 .hover\:cursor-pointer:hover {
@@ -5938,10 +5805,6 @@ textarea.form-control.is-invalid {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.disabled\:invisible:disabled {
-  visibility: hidden;
 }
 
 @media (min-width: 640px) {
