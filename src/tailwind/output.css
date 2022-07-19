@@ -4704,10 +4704,6 @@ textarea.form-control.is-invalid {
   height: 2.5rem;
 }
 
-.h-0 {
-  height: 0px;
-}
-
 .w-full {
   width: 100%;
 }
@@ -4792,10 +4788,6 @@ textarea.form-control.is-invalid {
 
 .w-9\/12 {
   width: 75%;
-}
-
-.w-3 {
-  width: 0.75rem;
 }
 
 .min-w-max {
