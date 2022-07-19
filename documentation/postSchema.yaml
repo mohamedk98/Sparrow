@@ -1,0 +1,113 @@
+
+  components:
+     schemas:
+       User: 
+        type: object
+        required:
+          - userId
+          - username
+          - email
+          - password
+          - firstName
+          - lastName
+          - dateOfBirth
+          - age
+          - gender
+        properties:
+          userId:
+            type: string
+            description: auto generated user id
+          username: 
+            type: string
+            description: auto generated username , it's composed of user firstname-lastname-randomId
+          email: 
+            type: string
+            description: user email address
+          password: 
+            type: string
+            description: user's password
+          firstName: 
+            type: string
+            description: first name of the user
+          lastName: 
+            type: string
+            description: last name of the user
+          dateOfBirth: 
+            type: date
+            description: birthday date of the user
+          age: 
+            type: string
+            description: calculated age of the user
+          gender: 
+            type: string
+            description: user's gender
+          address: 
+            type: string
+            description: user's address
+          profileImage: 
+            type: string
+            description: url of the profile image of the user
+          coverImage: 
+            type: string
+            description: url of the cover image of the user
+          userDescription: 
+            type: string
+            description: description of the user
+          friends: 
+            type: array
+            description: array of JSON objects of user's friends
+          friendsRequests: 
+            type: array
+            description: array of JSON objects of user's friends requests
+          blockList: 
+            type: array
+            description: array of JSON objects of blocked user's
+          gallery: 
+            type: array
+            description: user's media (images and videos)
+          sharedPosts: 
+            type: array
+            description: JSON array that contain shared posts of the user
+          verification: 
+            type: array
+            description: contains the verification state and the verification code
+          resetPassword: 
+            type: array
+            description: contains the reset state and the reset code
+            
+            
+       Post:
+         type: object
+         required:
+           - postId
+           - userId
+           - creatorName
+           - content
+           - createdAt
+         properties:
+           postId:
+             type: string
+             description: The auto-generated id of the post.
+           userId:
+             type: string
+             description: ID of the user creating the post.
+           creatorName:
+             type: string
+             description: name of the post creator
+           content:
+             type: string
+             description: content of the post
+           createdAt:
+             type: string
+             format: date
+             description: The date of the post creation.
+           media:
+             type: array
+             description: contains media of the posts if exists.
+           reactions:
+             type: array
+             description: contains reactions on the post.
+           comments:
+             type: array
+             description: contains comments on the posts.
+               
