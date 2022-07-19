@@ -39,6 +39,7 @@ const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
 const postsRouter = require ("./routes/posts")
 const commentsRouter = require ("./routes/comments")
+const replysRouter = require ("./routes/replys")
 const { authorization } = require("./middlwares/authentication");
 const connectToMongo = require("./services/mongoClient.service");
 
@@ -67,15 +68,17 @@ app.use(authenticationRouter);
 app.use(usersRouter);
 
 
-app.get("/", (req, res) => {
-  res.send("hello");
-});
 
 
 
 app.use(authorization);
-app.use('/comments',commentsRouter)
+app.get("/",(req,res)=>{
+  res.send("hello it works")
+})
 app.use('/posts',postsRouter)
+app.use('/comments',commentsRouter)
+app.use('/replys',replysRouter)
+
 
 
 //Change  "yourDbName" with your database name
@@ -87,7 +90,7 @@ app.use('/posts',postsRouter)
  * to the database causing production error on server initialization
  */
 
-app.listen(PORT, process.env.HOST || "172.31.83.73",async () => {
+app.listen(PORT ,async () => {
   console.log(`Server is working on port ${PORT}`);
   await connectToRedis();
   await connectToMongo();

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { axiosInstance } from './network/axiosInstance';
+import { axiosInstance, axiosTokenInstance } from './network/axiosInstance';
 import Error from './pages/error/Error';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
@@ -24,7 +24,7 @@ function App() {
     //if there is data, just refresh the token and add it to the the store
     //otherwise navigate to the login page
 
-    axiosInstance
+    axiosTokenInstance
       .get('/autologin')
       .then(response => {
         dispatch(addAuthentication(response.data));

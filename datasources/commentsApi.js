@@ -7,9 +7,9 @@ class CommentsApi {
       foundPost.comments.push({ userId, commentDate, content });
       await foundPost.save();
       return { message: "comment added" };
-    } catch (error) {
-      // const error = new Error("An Error has occured, please try again later");
-      // error.httpStatusCode = 400;
+    } catch {
+      const error = new Error("An Error has occured, please try again later");
+      error.httpStatusCode = 400;
       return error;
     }
   }

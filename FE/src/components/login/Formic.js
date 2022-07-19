@@ -7,6 +7,8 @@ import LoginFormInput from './LoginFormInput';
 import LoginButton from './LoginButton';
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { addAuthentication } from '../../store/userSlice/UserSlice';
 
 // User intial info:
 const loginInfo = {
@@ -16,6 +18,8 @@ const loginInfo = {
 };
 
 const Formic = () => {
+
+  const dispatch = useDispatch()
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
 
@@ -77,6 +81,7 @@ const Formic = () => {
             .then(response => {
               // console.log(response);
               if (response.data) setShowSpinner(showSinner);
+              dispatch(addAuthentication(response.data))
               navigate('/');
             })
             .catch(error => {

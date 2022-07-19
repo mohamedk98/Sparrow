@@ -26,13 +26,14 @@ export const userSlice = createSlice({
         'refreshToken',
         state.authenticationData.refreshToken
       );
-      localStorage.setItem('hasExpiry', state.authenticationData.hasExpiry);
+      localStorage.setItem('accessToken', state.authenticationData.accessToken);
+
     },
     //remove data from storage (used in logout)
     removeAuthentication: state => {
       state.auth = {};
       localStorage.removeItem('refreshToken');
-      localStorage.removeItem('hasExpiry');
+      localStorage.removeItem('accessToken');
     },
   },
 });

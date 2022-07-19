@@ -15,7 +15,7 @@ const postSchema = new mongoose.Schema({
       reply: [
         {
           userId: { type: mongoose.Types.ObjectId, ref: "User" },
-          commentDate: String,
+          replyDate: String,
           content: String,
         },
       ],

@@ -91,23 +91,25 @@ const login = async (req, res, next) => {
         userId: userData._id.toString(),
         refreshToken: refreshToken,
       });
+
+      res.setHeader("Authorization", `Bearer ${accessToken}`);
       res
-        .cookie("access_token", accessToken, {
-          httpOnly: true,
-          // secure: false,
-          // sameSite: "none",
-          //1 day token
-          expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
-        })
+        // .cookie("access_token", accessToken, {
+        //   httpOnly: true,
+        //   // secure: false,
+        //   // sameSite: "none",
+        //   //1 day token
+        //   expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
+        // })
         .send({
-          refreshToken: refreshToken,
+          refreshToken,
+          accessToken,
         });
     } else {
       return res.status(400).send({ message: "Incorrect email or Password" });
     }
-  } catch  {
+  } catch {
     return res.status(400).send({ message: "Incorrect email or Password" });
-
   }
 };
 
@@ -126,11 +128,14 @@ const logout = async (req, res, next) => {
  */
 
 const autoLogin = async (req, res) => {
-  const userAccessToken = req.cookies.access_token;
+  let bearerHeader = req.headers.authorization;
 
-  if (userAccessToken === null || userAccessToken === undefined) {
+  if (bearerHeader === "Bearer undefined" || bearerHeader === "Bearer null") {
     return res.sendStatus(401);
   }
+  const userAccessToken = bearerHeader.split(" ")[1];
+
+  console.log(userAccessToken);
   const accessTokenData = jwt.verify(userAccessToken, process.env.TOKEN);
 
   if (accessTokenData === null) {
@@ -160,19 +165,21 @@ const autoLogin = async (req, res) => {
     userId: accessTokenData.userId,
     refreshToken: refreshToken,
   });
-
+  res.setHeader("Authorization", `Bearer ${accessToken}`);
   res
-    .cookie("access_token", accessToken, {
-      httpOnly: true,
-      // secure: true,
-      // sameSite: "none",
-      //1 day token
-      expires: accessTokenData.hasExpiry
-        ? new Date(Date.now() + 24 * 60 * 60 * 1000)
-        : 0,
-    })
+    // res
+    //   .cookie("access_token", accessToken, {
+    //     httpOnly: true,
+    //     // secure: true,
+    //     // sameSite: "none",
+    //     //1 day token
+    //     expires: accessTokenData.hasExpiry
+    //       ? new Date(Date.now() + 24 * 60 * 60 * 1000)
+    //       : 0,
+    //   })
     .send({
-      refreshToken: refreshToken,
+      refreshToken,
+      accessToken,
     });
 };
 

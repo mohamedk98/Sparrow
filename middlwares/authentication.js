@@ -44,16 +44,18 @@ const refreshToken = async (req, res, next) => {
     `UserEnitity:${redisUser[0].entityId}`,
     7 * 24 * 60 * 60,
   ]);
+  res.setHeader("Authorization", `Bearer ${newJwtToken}`);
   res
-    .cookie("access_token", newJwtToken, {
-      httpOnly: true,
-      secure: false,
-      //15 minutes token
-      expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
-    })
+    // .cookie("access_token", newJwtToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   //15 minutes token
+    //   expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
+    // })
     .send({
       refreshToken: redisUserData.refreshToken,
       hasExpiry: hasExpiry,
+      accessToken:newJwtToken
     });
 };
 
@@ -65,13 +67,16 @@ const refreshToken = async (req, res, next) => {
  * it on each request. that will achieve authorization
  */
 const authorization = (req, res, next) => {
-  const userToken = req.cookies.access_token;
+  // const userToken = req.cookies.access_token || req.headers["authorization"];
+  const bearerHeader = req.headers.authorization 
+
   const TOKEN = process.env.TOKEN;
-  if (!userToken) {
+  if (typeof bearerHeader === "undefined") {
     return res.sendStatus(401);
   }
 
   try {
+    const userToken = bearerHeader.split(" ")[1];
     const data = jwt.verify(userToken, TOKEN);
     req.userId = data.userId;
     req.email = data.email;
