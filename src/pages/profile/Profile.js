@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 // import axiosInstance from '../../network/axiosInstance';
 import Cover from "../../components/profile/Cover";
 import ProfilePic from "../../components/profile/ProfilePic";
@@ -9,6 +8,8 @@ import ProfileFriends from "../../components/profile/ProfileFriends";
 import ProfileFooter from "../../components/profile/ProfileFooter";
 import CreatePost from "../../components/profile/CreatePost";
 import PostView from "../../components/profile/PostView";
+import Post from "../../components/home/Feed/posts/Post";
+import Intro from "../../components/profile/Intro";
 
 function Profile() {
   
@@ -29,11 +30,12 @@ function Profile() {
       </div>
       {/*bottom*/}
       <div className="mt-5 bg-slate-200">
-        <div className="w-11/12">
+        <div className="w-11/12 m-auto">
           <div className="py-2.5 px-9">
-            <div className="grid lg:grid-cols-2 sm:grid-col-1 gap-5">
+            <div className="grid lg:grid-cols-2 grid-col-1 gap-1">
               {/* bottom left */}
-              <div className=" w-5/6 lg:ml-28">
+              <div className="lg:w-5/6 w-full xl:ml-20 lg:ml-14">
+                <Intro/>
                 {/* Profile Photos */}
                 <ProfilePhotos/>
                 {/* Profile friends */}
@@ -47,6 +49,11 @@ function Profile() {
                 <CreatePost/>
                 {/* post view */}
                 <PostView/>
+                {/* post */}
+                <Post/>
+                <Post/>
+                <Post/>
+                <Post/>
               </div>
             </div>
           </div>

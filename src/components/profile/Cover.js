@@ -8,7 +8,7 @@ function Cover() {
     const [showCoverMenu, setShowCoverMenu] = useState(false);
     return (
         <div className="cover max-w-5xl mx-auto">
-          <div className="bg-slate-200 relative w-full h-96 rounded-t-none rounded-b-md">
+          <div className="bg-slate-200 relative w-full h-96 rounded-t-none rounded-b-md cursor-pointer">
             {<img
               className="relative w-full h-96 rounded-t-none rounded-b-md"
               src={cover}
@@ -16,7 +16,7 @@ function Cover() {
             ></img>}
             <div className="absolute bottom-4 right-4">
               <div
-                className="bg-white p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer"
+                className="bg-white p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer hover:brightness-95"
                 onClick={() => {
                   setShowCoverMenu((prev) => !prev);
                 }}
