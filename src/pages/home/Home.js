@@ -4,6 +4,7 @@ import Feed from '../../components/home/Feed/Feed';
 import { axiosInstance, axiosTokenInstance } from '../../network/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/home/Header/Header';
+import RightSideBar from '../../components/home/RightSideBar/RightSideBar';
 const Home = () => {
   const [profileData, setProfileData] = useState('');
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Home = () => {
       <div className="flex">
         <LeftSideBar />
         <Feed />
+        <RightSideBar />
       </div>
     </div>
   );

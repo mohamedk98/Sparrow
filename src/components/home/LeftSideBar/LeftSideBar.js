@@ -23,6 +23,14 @@ const LeftSideBar = () => {
     navigate('/');
   };
 
+  //logout functionality
+  const logoutHandler = () => {
+    dispatch(removeAuthentication());
+    axiosInstance.post('/logout').then(() => {
+      navigate('/login');
+    });
+  };
+
   const Menus = [
     {
       id: 1,
@@ -66,17 +74,16 @@ const LeftSideBar = () => {
       icon: { iconTitle: BsStarFill },
       handler: profileHandler,
     },
+    {
+      id: 8,
+      title: 'Logout',
+      icon: { iconTitle: BiLogOut },
+      handler: logoutHandler,
+    },
   ];
 
-  //logout functionality
-  const logoutHandler = () => {
-    dispatch(removeAuthentication());
-    axiosInstance.post('/logout').then(() => {
-      navigate('/login');
-    });
-  };
   return (
-    <div className="hidden lg:flex fixed">
+    <div className="hidden lg:flex fixed z-10">
       <div
         className={`bg-facebook-grey h-screen p-5 pt-8 ${
           open ? 'w-38' : 'w-20'
@@ -84,7 +91,7 @@ const LeftSideBar = () => {
       >
         <BsFillArrowLeftCircleFill
           onClick={() => setOpen(!open)}
-          className={`bg-facebook-grey text-facebook-blue  text-3xl rounded-full cursor-pointer ${
+          className={`bg-facebook-grey text-facebook-blue text-3xl rounded-full cursor-pointer ${
             !open && 'rotate-180'
           } absolute -right-3 top-9 border border-facebook-grey`}
         />
@@ -120,22 +127,6 @@ const LeftSideBar = () => {
               </span>
             </li>
           ))}
-          {/* Logout menu item */}
-          <li
-            className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2"
-            onClick={logoutHandler}
-          >
-            <span className="text-2xl block float-left text-facebook-blue">
-              <BiLogOut />
-            </span>
-            <span
-              className={`text-base font-medium text-black flex-1 ${
-                !open && 'hidden'
-              }`}
-            >
-              Logout
-            </span>
-          </li>
         </ul>
       </div>
     </div>

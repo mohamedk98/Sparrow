@@ -48,7 +48,7 @@ const InputBox = () => {
         </div>
       </div>
 
-      {isOpen && <CreatePostModal />}
+      {isOpen && <CreatePostModal modelID="exampleModalCenter" />}
     </>
   );
 };

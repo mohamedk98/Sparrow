@@ -3,8 +3,18 @@ import profileImg from '../../../assets/images/default_profile.png';
 import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from './EmojiPicker';
 import './Tooltip.module.css';
+import PostHalfTop from './posts/PostHalfTop';
 
-const CreatePostModal = () => {
+const CreatePostModal = ({
+  modelID,
+  profileSRC,
+  profileName,
+  postDate,
+  hideMore,
+  postBody,
+  postImage,
+  reverseDirection,
+}) => {
   const [showPicker, setShowPicker] = useState(false);
   const [chosenEmoji, setChosenEmoji] = useState(null);
 
@@ -16,7 +26,7 @@ const CreatePostModal = () => {
     <>
       <div
         className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-        id="exampleModalCenter"
+        id={modelID}
         tabIndex="-1"
         aria-labelledby="exampleModalCenterTitle"
         aria-modal="true"
@@ -62,22 +72,44 @@ const CreatePostModal = () => {
                     placeholder="What's on your mind, Sarah?"
                   ></textarea>
                 </div>
+
+                {profileName && (
+                  <PostHalfTop
+                    profileSRC={profileSRC}
+                    profileName={profileName}
+                    postDate={postDate}
+                    hideMore={hideMore}
+                    postBody={postBody}
+                    postImage={postImage}
+                    reverseDirection={reverseDirection}
+                  />
+                )}
               </div>
             </div>
 
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-gray-200 rounded-b-md">
               <div className="flex">
-                <div className="justify-end my-2 text-2xl text-gray-500 ">
+                <div
+                  className={
+                    !profileName
+                      ? 'justify-end my-2 text-2xl text-gray-500'
+                      : 'justify-end my-2 text-2xl text-gray-500 relative bottom-96 -mt-32'
+                  }
+                >
                   {/* emoji picker */}
                   <button
                     onClick={() => setShowPicker(!showPicker)}
                     data-title={showPicker ? null : 'Emoji'}
                   >
-                    <VscSmiley className={showPicker ? 'ml-64' : ''} />
+                    <VscSmiley
+                      className={showPicker ? 'ml-64 text-blue-400' : ''}
+                    />
                   </button>
                   {showPicker ? (
                     <EmojiPicker
-                      positionClass="-top-32 right-0"
+                      positionClass={
+                        !profileName ? '-top-32 right-0' : 'top-9 right-0'
+                      }
                       chosenEmoji={chosenEmoji}
                       onEmojiClick={onEmojiClick}
                     />

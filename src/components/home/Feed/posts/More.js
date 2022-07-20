@@ -8,9 +8,10 @@ const More = ({
   iconClassName,
   liNum1,
   liNum2,
+  tooltipData,
 }) => {
   return (
-    <div className={containerClassName} data-title="more">
+    <div className={containerClassName} data-title={tooltipData}>
       <a
         className="dropdown-toggle flex items-center hidden-arrow"
         href="/"
