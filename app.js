@@ -8,7 +8,7 @@ const morgan = require("morgan");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const app = express();
-const aws = require("aws-sdk")
+app.disable("etag");
 
 //Swagger Options
 const options = {
@@ -30,8 +30,11 @@ const options = {
 
 const specs = swaggerJsdoc(options);
 //Swagger initilization
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs,{explorer:true}));
-
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 
 //Redis Connect
 const { connectToRedis } = require("./services/redisClient.service");
@@ -39,9 +42,9 @@ const { connectToRedis } = require("./services/redisClient.service");
 //Routes
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
-const postsRouter = require ("./routes/posts")
-const commentsRouter = require ("./routes/comments")
-const replysRouter = require ("./routes/replys")
+const postsRouter = require("./routes/posts");
+const commentsRouter = require("./routes/comments");
+const replysRouter = require("./routes/replys");
 const { authorization } = require("./middlwares/authentication");
 const connectToMongo = require("./services/mongoClient.service");
 
@@ -62,27 +65,23 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use((res, req, next) => {
+  res.header("Cache-Control", "no-cache");
+  next()
+});
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
 app.use(authenticationRouter);
 
-
-
-
-
-
 app.use(authorization);
-app.get("/",(req,res)=>{
-  res.send("hello it works")
-})
+app.get("/", (req, res) => {
+  res.send("hello it works");
+});
 app.use(usersRouter);
-app.use('/posts',postsRouter)
-app.use('/comments',commentsRouter)
-app.use('/replys',replysRouter)
-
-
+app.use("/posts", postsRouter);
+app.use("/comments", commentsRouter);
+app.use("/replys", replysRouter);
 
 //Change  "yourDbName" with your database name
 //Don't forget to add PORT and MONGOO_URL to .env file
@@ -93,7 +92,7 @@ app.use('/replys',replysRouter)
  * to the database causing production error on server initialization
  */
 
-app.listen(PORT ,async () => {
+app.listen(PORT, async () => {
   console.log(`Server is working on port ${PORT}`);
   await connectToRedis();
   await connectToMongo();

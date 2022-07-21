@@ -5,6 +5,7 @@ const postSchema = new mongoose.Schema({
   creatorName: { type: String, required: true },
   createdAt: { type: String, required: true },
   content: { type: String, required: true },
+  postType:{type:String,required:false},
   media: [],
   reactions: [],
   comments: [

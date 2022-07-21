@@ -11,6 +11,7 @@ const createPost = async (req, res) => {
   const images = req.files;
   const userId = req.userId;
   const visiability = req.body.visiability;
+  const postType = req.body.postType;
   const postId = crypto.randomBytes(32).toString("hex");
   const createdAt = new Date().toISOString();
 
@@ -31,6 +32,7 @@ const createPost = async (req, res) => {
     content,
     media,
     visiability,
+    postType
   };
 
   postsApi

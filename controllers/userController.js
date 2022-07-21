@@ -14,7 +14,7 @@ const getNewsfeed = (req, res) => {
   const userId = req.userId;
   userApi
     .getNewsfeed(userId)
-    .then((response) => res.send(response))
+    .then((response) => res.header("Cache-Control", "no-cache").send(response))
     .catch((error) => res.send(error));
 };
 module.exports = { getProfile, getNewsfeed };

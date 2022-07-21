@@ -125,9 +125,10 @@ const autoLogin = async (req, res) => {
   if (bearerHeader === "Bearer undefined" || bearerHeader === "Bearer null") {
     return res.sendStatus(401);
   }
+  try {
   const userAccessToken = bearerHeader.split(" ")[1];
 
-  try {
+  
     const accessTokenData = jwt.verify(userAccessToken, process.env.TOKEN);
     if (accessTokenData === null) {
       return res.sendStatus(401);
