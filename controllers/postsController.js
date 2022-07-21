@@ -1,8 +1,8 @@
-const PostsApi =  require("../datasources/postsApi") ;
-const postsApi = new PostsApi()
+const PostsApi = require("../datasources/postsApi");
+const postsApi = new PostsApi();
 const User = require("../models/User");
-const UserApi = require("../datasources/userApi")
-const userApi = new UserApi()
+const UserApi = require("../datasources/userApi");
+const userApi = new UserApi();
 const crypto = require("crypto");
 const fileDeleteHandler = require("../utils/fileDelete");
 
@@ -32,6 +32,7 @@ const createPost = async (req, res) => {
     media,
     visiability,
   };
+
   postsApi
     .createPost(postData)
     .then((response) => {

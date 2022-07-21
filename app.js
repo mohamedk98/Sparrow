@@ -8,6 +8,8 @@ const morgan = require("morgan");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const app = express();
+const aws = require("aws-sdk")
+
 //Swagger Options
 const options = {
   definition: {
@@ -65,7 +67,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
 app.use(authenticationRouter);
-app.use(usersRouter);
+
 
 
 
@@ -75,6 +77,7 @@ app.use(authorization);
 app.get("/",(req,res)=>{
   res.send("hello it works")
 })
+app.use(usersRouter);
 app.use('/posts',postsRouter)
 app.use('/comments',commentsRouter)
 app.use('/replys',replysRouter)

@@ -29,4 +29,19 @@ const deleteComment = (req, res) => {
       res.status(error.httpStatusCode).send(error.message);
     });
 };
-module.exports = { addComment, deleteComment };
+
+const updateComment = (req, res) => {
+  const postId = req.params.postId;
+  const commentId = req.params.commentId;
+  const userId = req.userId;
+  const content = req.body.content;
+  commentsApi
+    .updateComment({ postId,commentId, userId, content })
+    .then((response) => {
+      res.status(response.httpStatusCode).send(response.message);
+    })
+    .catch((error) => {
+      res.status(error.httpStatusCode).send(error.message);
+    });
+};
+module.exports = { addComment, deleteComment, updateComment };

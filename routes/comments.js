@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {addComment, deleteComment} = require("../controllers/commentsController")
+const {addComment, deleteComment, updateComment} = require("../controllers/commentsController")
 
 
 router.post("/:postId",addComment)
 router.delete("/:postId/:commentId",deleteComment)
+router.patch("/:postId/:commentId",updateComment)
 
 
 

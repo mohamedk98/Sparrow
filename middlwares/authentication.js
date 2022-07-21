@@ -2,12 +2,10 @@ const jwt = require("jsonwebtoken");
 
 const { userDataRepository } = require("../models/RedisRefreshToken");
 const { redisClient } = require("../services/redisClient.service");
-const { validateRefreshToken } = require("../services/token.service");
 
 const refreshToken = async (req, res, next) => {
-  const refreshToken = req.body.refreshToken;
-  const hasExpiry = req.body.hasExpiry;
-
+  const refreshToken = req.params.refreshToken;
+  const hasExpiry = req.params.hasExpiry;
 
   if (refreshToken === null || refreshToken === undefined) {
     return res.sendStatus(401);
@@ -45,18 +43,11 @@ const refreshToken = async (req, res, next) => {
     7 * 24 * 60 * 60,
   ]);
   res.setHeader("Authorization", `Bearer ${newJwtToken}`);
-  res
-    // .cookie("access_token", newJwtToken, {
-    //   httpOnly: true,
-    //   secure: false,
-    //   //15 minutes token
-    //   expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
-    // })
-    .send({
-      refreshToken: redisUserData.refreshToken,
-      hasExpiry: hasExpiry,
-      accessToken:newJwtToken
-    });
+  res.send({
+    refreshToken: redisUserData.refreshToken,
+    hasExpiry: hasExpiry,
+    accessToken: newJwtToken,
+  });
 };
 
 /**
@@ -67,12 +58,11 @@ const refreshToken = async (req, res, next) => {
  * it on each request. that will achieve authorization
  */
 const authorization = (req, res, next) => {
-  // const userToken = req.cookies.access_token || req.headers["authorization"];
-  const bearerHeader = req.headers.authorization 
+  const bearerHeader = req.headers.authorization;
 
   const TOKEN = process.env.TOKEN;
   if (typeof bearerHeader === "undefined") {
-    return res.sendStatus(401);
+    return res.status(401).send("undefined header");
   }
 
   try {
@@ -83,7 +73,7 @@ const authorization = (req, res, next) => {
     req.username = data.username;
     next();
   } catch {
-    return res.sendStatus(401);
+    return res.status(401).send("Unauthorised");
   }
 };
 

@@ -97,23 +97,7 @@ const updateRedisRefreshTokensIndex = async () => {
   await userDataRepository.createIndex();
 };
 
-/**Create Remember Token that used in auto login */
-// const createRememberToken = (userData) => {
-//   const REMEMBER_TOKEN = process.env.REMEMBER_TOKEN;
-//   const rememberToken = jwt.sign(
-//     {
-//       username: userData.username,
-//       email: userData.email,
-//       userId: userData.userId,
-//     },
-//     REMEMBER_TOKEN,
-//     {
-//       expiresIn: "30d",
-//       algorithm: "HS256",
-//     }
-//   );
-//   return rememberToken;
-// };
+
 
 module.exports = {
   createRefreshToken,

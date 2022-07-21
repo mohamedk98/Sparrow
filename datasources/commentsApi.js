@@ -6,7 +6,7 @@ class CommentsApi {
       const foundPost = await postsApi.findOne({ _id: postId });
       foundPost.comments.push({ userId, commentDate, content });
       await foundPost.save();
-      return { message: "comment added" };
+      return { message: "comment added", httpStatusCode: 200 };
     } catch {
       const error = new Error("An Error has occured, please try again later");
       error.httpStatusCode = 400;
@@ -19,9 +19,9 @@ class CommentsApi {
       let foundPost = await postsApi.findOne({ _id: postId });
 
       if (!foundPost) {
-        const error = new Error("Post not found")
-        error.httpStatusCode = 400
-        return error
+        const error = new Error("Post not found");
+        error.httpStatusCode = 400;
+        return error;
       }
 
       const editedComments = foundPost.comments.filter(
@@ -31,9 +31,45 @@ class CommentsApi {
       await foundPost.save();
       return { message: "Comment Deleted", httpStatusCode: 200 };
     } catch {
-        const error = new Error("an error has occured")
-        error.httpStatusCode = 400
-        return error
+      const error = new Error("an error has occured");
+      error.httpStatusCode = 400;
+      return error;
+    }
+  }
+
+  async updateComment({ postId, commentId, userId, content }) {
+    const postWithOldComment = await postsApi.findOne({ _id: postId });
+    if (!postWithOldComment) {
+      const error = new Error("Post not Found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+    const commentToBeUpdatedIndex = postWithOldComment.comments.findIndex(
+      (comment) => comment._id.toString() === commentId
+    );
+
+    if (commentToBeUpdatedIndex === -1) {
+      const error = new Error("comment not Found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+
+    const commentToBeDeletedUserId =
+      postWithOldComment.comments[commentToBeUpdatedIndex].userId;
+
+    if (commentToBeDeletedUserId.toString() !== userId) {
+      const error = new Error("Unauthorized");
+      error.httpStatusCode = 401;
+      return error;
+    }
+    postWithOldComment.comments[commentToBeUpdatedIndex].content = content;
+    try {
+      await postWithOldComment.save();
+      return { message: "Comment Updated", httpStatusCode: 200 };
+    } catch {
+      const error = new Error("An error has occured, Please try again later");
+      error.httpStatusCode = 400;
+      return error;
     }
   }
 }

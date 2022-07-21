@@ -23,6 +23,7 @@ const postSchema = new mongoose.Schema({
       date: String,
     },
   ],
+  sharesCount:{type:Number},
   visiability: String,
 });
 

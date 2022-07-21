@@ -93,18 +93,12 @@ const login = async (req, res, next) => {
       });
 
       res.setHeader("Authorization", `Bearer ${accessToken}`);
-      res
-        // .cookie("access_token", accessToken, {
-        //   httpOnly: true,
-        //   // secure: false,
-        //   // sameSite: "none",
-        //   //1 day token
-        //   expires: hasExpiry ? new Date(Date.now() + 24 * 60 * 60 * 1000) : 0,
-        // })
-        .send({
-          refreshToken,
-          accessToken,
-        });
+
+      res.send({
+        refreshToken,
+        accessToken,
+        hasExpiry,
+      });
     } else {
       return res.status(400).send({ message: "Incorrect email or Password" });
     }
@@ -114,13 +108,11 @@ const login = async (req, res, next) => {
 };
 
 /** clear the access_token cookie to logout */
-const logout = async (req, res, next) => {
+const logout = async (req, res) => {
   const refreshTokenId = req.body.refreshTokenId;
   await removeRefreshToken(refreshTokenId);
-  res
-    .clearCookie("access_token")
-    .status(200)
-    .send({ message: "Successfully logged out 😏 🍀" });
+  res.setHeader("Authorization", `Bearer ${null}`);
+  res.status(200).send({ message: "Successfully logged out 😏 🍀" });
 };
 
 /**Auto login controller
@@ -135,52 +127,44 @@ const autoLogin = async (req, res) => {
   }
   const userAccessToken = bearerHeader.split(" ")[1];
 
-  console.log(userAccessToken);
-  const accessTokenData = jwt.verify(userAccessToken, process.env.TOKEN);
+  try {
+    const accessTokenData = jwt.verify(userAccessToken, process.env.TOKEN);
+    if (accessTokenData === null) {
+      return res.sendStatus(401);
+    }
 
-  if (accessTokenData === null) {
-    return res.sendStatus(401);
-  }
+    req.userId = accessTokenData.userId;
+    req.username = accessTokenData.username;
+    req.email = accessTokenData.email;
 
-  req.userId = accessTokenData.userId;
-  req.username = accessTokenData.username;
-  req.email = accessTokenData.email;
+    const accessToken = createToken(
+      accessTokenData.username,
+      accessTokenData.email,
+      accessTokenData.userId,
+      accessTokenData.hasExpiry
+    );
+    const refreshToken = createRefreshToken(
+      accessTokenData.username,
+      accessTokenData.email,
+      accessTokenData.userId
+    );
 
-  const accessToken = createToken(
-    accessTokenData.username,
-    accessTokenData.email,
-    accessTokenData.userId,
-    accessTokenData.hasExpiry
-  );
-  const refreshToken = createRefreshToken(
-    accessTokenData.username,
-    accessTokenData.email,
-    accessTokenData.userId
-  );
-
-  await checkRedisRefreshToken(accessTokenData.email);
-  await createRedisRefreshToken({
-    username: accessTokenData.username,
-    email: accessTokenData.email,
-    userId: accessTokenData.userId,
-    refreshToken: refreshToken,
-  });
-  res.setHeader("Authorization", `Bearer ${accessToken}`);
-  res
-    // res
-    //   .cookie("access_token", accessToken, {
-    //     httpOnly: true,
-    //     // secure: true,
-    //     // sameSite: "none",
-    //     //1 day token
-    //     expires: accessTokenData.hasExpiry
-    //       ? new Date(Date.now() + 24 * 60 * 60 * 1000)
-    //       : 0,
-    //   })
-    .send({
+    await checkRedisRefreshToken(accessTokenData.email);
+    await createRedisRefreshToken({
+      username: accessTokenData.username,
+      email: accessTokenData.email,
+      userId: accessTokenData.userId,
+      refreshToken: refreshToken,
+    });
+    res.setHeader("Authorization", `Bearer ${accessToken}`);
+    res.send({
       refreshToken,
       accessToken,
+      hasExpiry: accessTokenData.hasExpiry,
     });
+  } catch {
+    res.status(401).send("Unauthorised");
+  }
 };
 
 module.exports = { autoLogin, logout, signup, login };

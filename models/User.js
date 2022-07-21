@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   profileImage: { type: String, required: false },
   coverImage: { type: String, required: false },
   userDescription: { type: String, required: false },
+  notifcations: [],
   friends: {
     data: [
       {
@@ -32,8 +33,9 @@ const userSchema = new mongoose.Schema({
       userId: { type: mongoose.Types.ObjectId, ref: "User" },
     },
   ],
+  hiddenPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
   gallery: [],
-  sharedPosts: [{ postID: { type: mongoose.Types.ObjectId, ref: "Post" } }],
+  sharedPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
   verification: { verified: String, verificationCode: String },
   resetPassword: { resetStatus: String, resetCode: String },
 });
