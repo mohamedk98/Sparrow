@@ -1,6 +1,6 @@
 const userApi = require("../models/User");
 const postApi = require("../models/Posts");
-const PostsApi = require("./postsApi");
+const sharedPostApi = require("../models/SharedPost");
 
 class UserApi {
   async getUserProfile(userId) {
@@ -16,46 +16,93 @@ class UserApi {
 
   async getNewsfeed(userId) {
     const userdata = await userApi.findOne({ _id: userId }, "-password");
-    let userFriendsIds = [];
-    userdata.friends.data.map((user) =>
-      userFriendsIds.push(user.userId.toString())
-    );
+    let userFriendsIds = userdata.friends.data.map((user) => {
+      return user.userId.toString();
+    });
+
     const friendsPosts = await postApi
       .find()
       .where("userId")
       .in(userFriendsIds);
 
-    //return a big nested list of posts
-    const nestedFriendsSharedPosts = await userApi
-      .findOne({ _id: userId }, "friends -_id")
-      .populate({
-        path: "friends.data.userId",
-        select: "sharedPosts -_id",
-        populate: { path: "sharedPosts.postId" },
-      })
-      .sort("-createdAt");
+    const friendsSharedPosts = await sharedPostApi
+      .find()
+      .where("sharerId")
+      .in(userFriendsIds)
+      .populate("originalPostId")
+      .populate("sharerId", "firstName lastName profileImage _id");
 
-    //flat map the nested posts
-    let FriendsSharedPosts = nestedFriendsSharedPosts.friends.data.flatMap(
-      (post) => post.userId.sharedPosts
-    );
-    //flat map again to get an array of posts
-    FriendsSharedPosts = FriendsSharedPosts.flatMap((post) => post.postId);
-    // FriendsSharedPosts = FriendsSharedPosts.map((post) => ({
-    //   post,
-    //   postType: "shared",
-    // }));
+    // //merge the friends posts and friends shared posts together in one array
+    // let sharedPosts = friendsPosts.concat(FriendsSharedPosts);
+    // //sort the array descendigly
+    // sharedPosts = sharedPosts.sort((firstElement, secondElement) => {
+    //   const firstPostDate = new Date(firstElement.createdAt);
+    //   const secondPostDate = new Date(secondElement.createdAt);
 
-    //merge the friends posts and friends shared posts together in one array
-    let sharedPosts = friendsPosts.concat(FriendsSharedPosts);
-    //sort the array descendigly
-    sharedPosts = sharedPosts.sort((firstElement, secondElement) => {
-      const firstPostDate = new Date(firstElement.createdAt);
-      const secondPostDate = new Date(secondElement.createdAt);
+    //   return secondPostDate - firstPostDate;
+    // });
+    return friendsSharedPosts;
+  }
 
-      return secondPostDate - firstPostDate;
+  async sharePost({
+    originalPostId,
+    sharerId,
+    caption,
+    visiability,
+    shareDate,
+  }) {
+    const sharedPost = new sharedPostApi({
+      originalPostId,
+      sharerId,
+      caption,
+      visiability,
+      shareDate,
     });
-    return sharedPosts;
+
+    const userData = await userApi.findById(sharerId);
+    userData.sharedPosts.push({ postId: originalPostId });
+
+    try {
+      await sharedPost.save();
+      await userData.save();
+      return { message: "Post Shared Successfully", httpStatusCode: 200 };
+    } catch {
+      const error = new Error("something went wrong, please try again later");
+      error.httpStatusCode = 400;
+      return error;
+    }
+  }
+
+  async coverImageUpload(userId, coverImageUrl) {
+    let userData = await userApi.findById(userId);
+    userData.coverImage = coverImageUrl;
+    try {
+      await userData.save();
+      return {
+        message: "Cover Image Updated Successfully",
+        httpStatusCode: 200,
+      };
+    } catch {
+      const error = new Error("something went wrong, please try again later");
+      error.httpStatusCode = 400;
+      return error;
+    }
+  }
+
+  async profileImageUpload(userId, profileImageUrl) {
+    let userData = await userApi.findById(userId);
+    userData.profileImage = profileImageUrl;
+    try {
+      await userData.save();
+      return {
+        message: "Profile Image Updated Successfully",
+        httpStatusCode: 200,
+      };
+    } catch {
+      const error = new Error("something went wrong, please try again later");
+      error.httpStatusCode = 400;
+      return error;
+    }
   }
 }
 

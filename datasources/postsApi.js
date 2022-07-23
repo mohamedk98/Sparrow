@@ -3,7 +3,6 @@ const Post = require("../models/Posts");
 class PostsApi {
   async createPost(postData) {
     const post = new Post({
-      postId: postData.postId,
       userId: postData.userId,
       creatorName: postData.creatorName,
       createdAt: postData.createdAt,
@@ -24,8 +23,8 @@ class PostsApi {
   async getPost(postId) {
     const foundPost = await Post.findOne({ _id: postId }).populate(
       "comments.userId",
-      "firstName lastName profileImage"
-    );
+      "firstName lastName profileImage userId"
+    ).populate("comments.reply.userId","firstName lastName profileImage userId ")
 
     if (foundPost === null) {
       const error = new Error("Post not found");

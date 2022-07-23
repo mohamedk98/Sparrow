@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const postSchema = new mongoose.Schema({
-  postId: { type: String, required: true },
   userId: { type: String, required: true },
   creatorName: { type: String, required: true },
   createdAt: { type: String, required: true },
   content: { type: String, required: true },
-  postType:{type:String,required:false},
+  postType: { type: String, required: false }, //post feeling shared
   media: [],
   reactions: [],
   comments: [
@@ -24,7 +23,7 @@ const postSchema = new mongoose.Schema({
       date: String,
     },
   ],
-  sharesCount:{type:Number},
+  sharesCount: { type: Number },
   visiability: String,
 });
 

@@ -1,9 +1,7 @@
 const PostsApi = require("../datasources/postsApi");
 const postsApi = new PostsApi();
 const User = require("../models/User");
-const UserApi = require("../datasources/userApi");
-const userApi = new UserApi();
-const crypto = require("crypto");
+
 const fileDeleteHandler = require("../utils/fileDelete");
 
 const createPost = async (req, res) => {
@@ -12,27 +10,24 @@ const createPost = async (req, res) => {
   const userId = req.userId;
   const visiability = req.body.visiability;
   const postType = req.body.postType;
-  const postId = crypto.randomBytes(32).toString("hex");
   const createdAt = new Date().toISOString();
-
   let media = [];
-
+console.log(images)
   for (let image of images) {
-    media.push(image.path);
+    media.push(image.location);
   }
 
   const userData = await User.findOne({ _id: userId }, "firstName lastName");
   const creatorName = `${userData.firstName} ${userData.lastName}`;
 
   const postData = {
-    postId,
     userId,
     creatorName,
     createdAt,
     content,
     media,
     visiability,
-    postType
+    postType,
   };
 
   postsApi

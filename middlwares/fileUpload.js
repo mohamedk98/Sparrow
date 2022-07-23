@@ -34,6 +34,24 @@ const imagesStorage = multerS3({
   },
 });
 
+const coverImagesStorage = multerS3({
+  s3: s3,
+  bucket: "zombie-hat",
+  key: function (req, file, cb) {
+    const uniqueFileName = crypto.randomBytes(16).toString("hex");
+    cb(null, "cover_images/" + uniqueFileName + "-" + file.originalname);
+  },
+});
+
+const profileImagesStorage = multerS3({
+  s3: s3,
+  bucket: "zombie-hat",
+  key: function (req, file, cb) {
+    const uniqueFileName = crypto.randomBytes(16).toString("hex");
+    cb(null, "profile_images/" + uniqueFileName + "-" + file.originalname);
+  },
+});
+
 //images filter
 const imagesFilter = (req, file, cb) => {
   if (
@@ -53,4 +71,17 @@ const imagesUpload = multer({
   limits: { fileSize: 5000000 }, //max file size is 5 megabytes
 });
 
-module.exports = { imagesUpload };
+const coverImageUpload =multer({
+  storage: coverImagesStorage,
+  fileFilter: imagesFilter,
+  limits: { fileSize: 5000000 }, //max file size is 5 megabytes
+});
+
+const profileImageUpload =multer({
+  storage: profileImagesStorage,
+  fileFilter: imagesFilter,
+  limits: { fileSize: 5000000 }, //max file size is 5 megabytes
+});
+
+
+module.exports = { imagesUpload,coverImageUpload,profileImageUpload };
