@@ -83,7 +83,7 @@ const updateSharedPost = async (req, res) => {
 const uploadCoverPhoto = async (req, res) => {
   const coverImage = req.file;
   const userId = req.userId;
-  
+
   await userApi
     .coverImageUpload(userId, coverImage.location)
     .then((response) => {
@@ -94,14 +94,21 @@ const uploadCoverPhoto = async (req, res) => {
 const uploadProfilePhoto = async (req, res) => {
   const profileImage = req.file;
   const userId = req.userId;
-  const profileImageDescription = req.body.profileImageDescription
-
-  await userApi
-    .profileImageUpload(userId, profileImage.location,profileImageDescription)
-    .then((response) => {
-      res.status(response.httpStatusCode).send(response);
-    })
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+  const profileImageDescription = req.body.profileImageDescription;
+  try {
+    await userApi
+      .profileImageUpload(
+        userId,
+        profileImage.location,
+        profileImageDescription
+      )
+      .then((response) => {
+        res.status(response.httpStatusCode).send(response);
+      })
+      .catch((error) => res.status(error.httpStatusCode).send(error.message));
+  } catch {
+    res.status(400).send("AN error has occured,plese try again later");
+  }
 };
 
 const addPostReaction = async (req, res) => {
