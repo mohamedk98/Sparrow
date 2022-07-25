@@ -7,6 +7,8 @@ import LoginFormInput from './LoginFormInput';
 import LoginButton from './LoginButton';
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
+import { addAuthentication } from '../../store/userSlice/UserSlice';
+import { useDispatch } from 'react-redux';
 
 // User intial info:
 const loginInfo = {
@@ -21,7 +23,8 @@ const Formic = () => {
 
   // To redirect to home page after submitting form:
   let navigate = useNavigate();
-
+   
+   const dispatch=useDispatch();
   // To show form submition error if exists:
   const [formError, setFormError] = useState('');
 
@@ -77,6 +80,7 @@ const Formic = () => {
             .then(response => {
               // console.log(response);
               if (response.data) setShowSpinner(showSinner);
+              dispatch(addAuthentication(response.data));
               navigate('/');
             })
             .catch(error => {
