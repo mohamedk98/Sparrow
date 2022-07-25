@@ -6,7 +6,7 @@ const sharedPostSchema = new mongoose.Schema({
     ref: "Post",
     required: false,
   },
-  sharerId: { type: mongoose.Types.ObjectId, required: true },
+  sharerId: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   caption: { type: String, required: false },
   shareDate: { type: String, required: true },
   comments: [
@@ -21,7 +21,12 @@ const sharedPostSchema = new mongoose.Schema({
           content: String,
         },
       ],
-      reactions: [],
+      reactions: [
+        {
+          userId: { type: mongoose.Types.ObjectId, ref: "User" },
+          reaction: { type: String },
+        },
+      ],
       date: String,
     },
   ],

@@ -11,11 +11,9 @@ const createPost = async (req, res) => {
   const visiability = req.body.visiability;
   const postType = req.body.postType;
   const createdAt = new Date().toISOString();
-  let media = [];
-console.log(images)
-  for (let image of images) {
-    media.push(image.location);
-  }
+  let media = images.map((image) => {
+    return image.location;
+  });
 
   const userData = await User.findOne({ _id: userId }, "firstName lastName");
   const creatorName = `${userData.firstName} ${userData.lastName}`;

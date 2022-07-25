@@ -1,10 +1,9 @@
-const User = require("../models/User");
-const Post = require("../models/Posts");
 const UserApi = require("../datasources/userApi");
 const userApi = new UserApi();
 const SharedPostApi = require("../datasources/sharedPostApi");
 const sharedPostApi = new SharedPostApi();
-
+const ReactionApi = require("../datasources/reactionsApi");
+const reactionApi = new ReactionApi();
 const getProfile = (req, res) => {
   const userId = req.userId;
   userApi
@@ -103,6 +102,149 @@ const uploadProfilePhoto = async (req, res) => {
     })
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
+
+const addPostReaction = async (req, res) => {
+  const userId = req.userId;
+  const postId = req.params.postId;
+  const reaction = req.body.reaction;
+
+  await reactionApi
+    .addPostReaction(postId, userId, reaction)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const removePostReaction = async (req, res) => {
+  const userId = req.userId;
+  const postId = req.params.postId;
+
+  await reactionApi
+    .removePostReaction(postId, userId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const addSharedPostReaction = async (req, res) => {
+  const userId = req.userId;
+  const sharedPostId = req.params.sharedPostId;
+  const reaction = req.body.reaction;
+
+  await reactionApi
+    .addSharedPostReaction(sharedPostId, userId, reaction)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const removeSharedPostReaction = async (req, res) => {
+  const userId = req.userId;
+  const sharedPostId = req.params.sharedPostId;
+
+  await reactionApi
+    .removePostReaction(sharedPostId, userId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const getAllFriendsRequest = async (res, req) => {
+  const userId = req.userId;
+  await userApi
+    .getFriendsRequests(userId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const getAllFriends = async (res, req) => {
+  const userId = req.userId;
+  await userApi
+    .getFriends(userId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const sendFriendRequest = async (req, res) => {
+  const userId = req.userId;
+  const friendRequestId = req.params.friendRequestId;
+
+  await userApi
+    .sendFriendRequest(userId, friendRequestId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const acceptFriendRequest = async (req, res) => {
+  const userId = req.userId;
+  const friendRequestId = req.params.friendRequestId;
+
+  await userApi
+    .acceptFriendRequest(userId, friendRequestId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const removeFriendRequest = async (req, res) => {
+  const userId = req.userId;
+  const friendRequestId = req.params.friendRequestId;
+
+  await userApi
+    .removeFriendRequest(userId, friendRequestId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const removeFriend = async (req, res) => {
+  const userId = req.userId;
+  const friendId = req.params.friendId;
+
+  await userApi
+    .removeFriend(userId, friendId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const blockFriend = async (req, res) => {
+  const userId = req.userId;
+  const friendId = req.params.friendId;
+
+  await userApi
+    .blockFriend(userId, friendId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const unblockFriend = async (req, res) => {
+  const userId = req.userId;
+  const friendId = req.params.friendId;
+
+  await userApi
+    .unblockFriend(userId, friendId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
 module.exports = {
   getProfile,
   getNewsfeed,
@@ -110,5 +252,17 @@ module.exports = {
   deleteSharedPost,
   updateSharedPost,
   uploadCoverPhoto,
-  uploadProfilePhoto
+  uploadProfilePhoto,
+  addPostReaction,
+  removePostReaction,
+  addSharedPostReaction,
+  removeSharedPostReaction,
+  getAllFriendsRequest,
+  sendFriendRequest,
+  acceptFriendRequest,
+  removeFriendRequest,
+  getAllFriends,
+  removeFriend,
+  blockFriend,
+  unblockFriend,
 };

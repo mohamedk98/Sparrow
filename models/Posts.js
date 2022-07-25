@@ -19,7 +19,12 @@ const postSchema = new mongoose.Schema({
           content: String,
         },
       ],
-      reactions: [],
+      reactions: [
+        {
+          userId: { type: mongoose.Types.ObjectId, ref: "User" },
+          reaction: { type: String },
+        },
+      ],
       date: String,
     },
   ],
