@@ -145,7 +145,7 @@ const addSharedPostReaction = async (req, res) => {
     .then((response) =>
       res.status(response.httpStatusCode).send(response.message)
     )
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const removeSharedPostReaction = async (req, res) => {

@@ -6,7 +6,12 @@ const postSchema = new mongoose.Schema({
   content: { type: String, required: true },
   postType: { type: String, required: false }, //post feeling shared
   media: [],
-  reactions: [],
+  reactions: [
+    {
+      userId: { type: mongoose.Types.ObjectId, ref: "User" },
+      reaction: { type: String },
+    },
+  ],
   comments: [
     {
       userId: { type: mongoose.Types.ObjectId, ref: "User" },

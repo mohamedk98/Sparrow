@@ -78,9 +78,11 @@ class ReactionApi {
   async addSharedPostReaction(sharedPostId, userId, reaction) {
     const postData = await sharedPostApi.findById(sharedPostId);
 
-    const userReactionIndex = postData.reactions.findIndex(
+
+    const userReactionIndex = postData.reactions?.findIndex(
       (reaction) => reaction.userId.toString() === userId
     );
+    console.log(userReactionIndex)
 
     // if the reaction is not found, add a new reaction
     if (userReactionIndex === -1) {
