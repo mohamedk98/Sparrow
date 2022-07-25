@@ -114,7 +114,7 @@ const uploadProfilePhoto = async (req, res) => {
 const addPostReaction = async (req, res) => {
   const userId = req.userId;
   const postId = req.params.postId;
-  const reaction = req.body.data.reaction;
+  const reaction = req.body.reaction
 console.log(req.body)
   await reactionApi
     .addPostReaction(postId, userId, reaction)
