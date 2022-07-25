@@ -33,13 +33,19 @@ class UserApi {
       .find()
       .where("userId")
       .in(userFriendsIds)
-      .populate("comments.userId","firstName lastName profileImage _id")
+      .populate("comments.userId", "firstName lastName profileImage _id");
 
     const friendsSharedPosts = await sharedPostApi
       .find()
       .where("sharerId")
       .in(userFriendsIds)
-      .populate("originalPostId")
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "comments.userId",
+          select: "firstName lastName profileImage _id",
+        },
+      })
       .populate("sharerId", "firstName lastName profileImage _id");
 
     //merge the friends posts and friends shared posts together in one array

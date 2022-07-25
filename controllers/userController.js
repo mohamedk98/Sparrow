@@ -115,7 +115,7 @@ const addPostReaction = async (req, res) => {
   const userId = req.userId;
   const postId = req.params.postId;
   const reaction = req.body.reaction;
-
+console.log(reaction)
   await reactionApi
     .addPostReaction(postId, userId, reaction)
     .then((response) =>
