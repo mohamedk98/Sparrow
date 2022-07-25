@@ -8,7 +8,6 @@ class ReactionApi {
     const userReactionIndex = postData.reactions.findIndex(
       (reaction) => reaction.userId.toString() === userId
     );
-    console.log(userReactionIndex);
     // if the reaction is not found, add a new reaction
     if (userReactionIndex === -1) {
       postData.reactions.push({ userId, reaction });
@@ -31,8 +30,8 @@ class ReactionApi {
       postData.reactions[userReactionIndex].reaction = reaction;
 
       try {
-        let test = await postData.save();
-        console.log(test)
+        postData.markModified("reactions");
+        await postData.save();
         return { message: "reaction updated", httpStatusCode: 200 };
       } catch {
         const error = new Error("An Error has occured, please try again later");
@@ -66,6 +65,7 @@ class ReactionApi {
     );
 
     try {
+      postData.markModified("reactions");
       await postData.save();
       return { message: "reaction deleted", httpStatusCode: 200 };
     } catch {
@@ -103,6 +103,7 @@ class ReactionApi {
       }
       postData.reactions[userReactionIndex].reaction = reaction;
       try {
+        postData.markModified("reactions");
         await postData.save();
         return { message: "reaction updated", httpStatusCode: 200 };
       } catch {
@@ -137,6 +138,7 @@ class ReactionApi {
     );
 
     try {
+      postData.markModified("reactions");
       await postData.save();
       return { message: "reaction deleted", httpStatusCode: 200 };
     } catch {
