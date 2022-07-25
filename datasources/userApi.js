@@ -81,7 +81,7 @@ class UserApi {
     try {
       let newProfile =await userData.save();
       return {
-        message: newProfile,
+         newProfile
         httpStatusCode: 200,
       };
     } catch {

@@ -87,7 +87,7 @@ const uploadCoverPhoto = async (req, res) => {
   await userApi
     .coverImageUpload(userId, coverImage.location)
     .then((response) => {
-      res.status(response.httpStatusCode).send(response.message);
+      res.status(response.httpStatusCode).send(response);
     })
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
