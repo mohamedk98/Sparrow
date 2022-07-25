@@ -82,9 +82,9 @@ class UserApi {
       await sharedPost.save();
       await userData.save();
       return { message: "Post Shared Successfully", httpStatusCode: 200 };
-    } catch {
-      const error = new Error("something went wrong, please try again later");
-      error.httpStatusCode = 400;
+    } catch (error) {
+      // const error = new Error("something went wrong, please try again later");
+      // error.httpStatusCode = 400;
       return error;
     }
   }
