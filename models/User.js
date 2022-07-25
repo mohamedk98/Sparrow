@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
   hiddenPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
-  gallery: [],
+  gallery: [String],
   sharedPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
   verification: { verified: String, verificationCode: String },
   resetPassword: { resetStatus: String, resetCode: String },

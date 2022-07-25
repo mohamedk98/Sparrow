@@ -94,9 +94,10 @@ const uploadCoverPhoto = async (req, res) => {
 const uploadProfilePhoto = async (req, res) => {
   const profileImage = req.file;
   const userId = req.userId;
+  const profileImageDescription = req.body.profileImageDescription
 
   await userApi
-    .profileImageUpload(userId, profileImage.location)
+    .profileImageUpload(userId, profileImage.location,profileImageDescription)
     .then((response) => {
       res.status(response.httpStatusCode).send(response);
     })

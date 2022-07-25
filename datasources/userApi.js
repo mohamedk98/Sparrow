@@ -87,6 +87,7 @@ class UserApi {
     //get the image to delete
     let currentCoverImage = userData.coverImage.split("/")[4];
     userData.coverImage = coverImageUrl;
+    userData.gallery.push(coverImageUrl);
     try {
       let newProfile = await userData.save();
       await s3
@@ -106,11 +107,16 @@ class UserApi {
     }
   }
 
-  async profileImageUpload(userId, profileImageUrl) {
+  async profileImageUpload(userId, profileImageUrl, profileImageDescription) {
     let userData = await userApi.findById(userId);
     //get the image to delete
     let currentProfileImage = userData.profileImage.split("/")[4];
     userData.profileImage = profileImageUrl;
+    //update userData description
+    userData.profileImageDescription = profileImageDescription;
+    //add new photo to gallery
+    userData.gallery.push(profileImageUrl);
+
     try {
       await s3
         .deleteObject({
@@ -118,7 +124,7 @@ class UserApi {
           Key: `profile_images/${currentProfileImage}`,
         })
         .promise();
-        let newProfile = await userData.save();
+      let newProfile = await userData.save();
       return {
         newProfile,
         httpStatusCode: 200,
