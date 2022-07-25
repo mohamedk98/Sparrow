@@ -1,6 +1,15 @@
 const userApi = require("../models/User");
 const postApi = require("../models/Posts");
 const sharedPostApi = require("../models/SharedPost");
+const AWS = require("aws-sdk");
+AWS.config.update({
+  credentials: {
+    accessKeyId: process.env.AWSACCESSKEY,
+    secretAccessKey: process.env.AWSSECRETKEY,
+    region: "eu-central-1",
+  },
+});
+const s3 = new AWS.S3();
 
 class UserApi {
   async getUserProfile(userId) {
@@ -31,8 +40,6 @@ class UserApi {
       .in(userFriendsIds)
       .populate("originalPostId")
       .populate("sharerId", "firstName lastName profileImage _id");
-
-      // friendsSharedPosts.originalPostId = friendsSharedPosts.originalPostId.flat()
 
     //merge the friends posts and friends shared posts together in one array
     let sharedPosts = friendsPosts.concat(friendsSharedPosts);
@@ -77,11 +84,19 @@ class UserApi {
 
   async coverImageUpload(userId, coverImageUrl) {
     let userData = await userApi.findById(userId);
+    //get the image to delete
+    let currentCoverImage = userData.coverImage.split("/")[4];
     userData.coverImage = coverImageUrl;
     try {
-      let newProfile =await userData.save();
+      let newProfile = await userData.save();
+      await s3
+        .deleteObject({
+          Bucket: "zombie-hat",
+          Key: `cover_images/${currentCoverImage}`,
+        })
+        .promise();
       return {
-         newProfile,
+        newProfile,
         httpStatusCode: 200,
       };
     } catch {
@@ -93,11 +108,19 @@ class UserApi {
 
   async profileImageUpload(userId, profileImageUrl) {
     let userData = await userApi.findById(userId);
+    //get the image to delete
+    let currentProfileImage = userData.profileImage.split("/")[4];
     userData.profileImage = profileImageUrl;
     try {
-      await userData.save();
+      await s3
+        .deleteObject({
+          Bucket: "zombie-hat",
+          Key: `profile_images/${currentProfileImage}`,
+        })
+        .promise();
+        let newProfile = await userData.save();
       return {
-        message: "Profile Image Updated Successfully",
+        newProfile,
         httpStatusCode: 200,
       };
     } catch {

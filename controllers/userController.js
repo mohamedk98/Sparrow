@@ -83,7 +83,7 @@ const updateSharedPost = async (req, res) => {
 const uploadCoverPhoto = async (req, res) => {
   const coverImage = req.file;
   const userId = req.userId;
-
+  
   await userApi
     .coverImageUpload(userId, coverImage.location)
     .then((response) => {
@@ -98,7 +98,7 @@ const uploadProfilePhoto = async (req, res) => {
   await userApi
     .profileImageUpload(userId, profileImage.location)
     .then((response) => {
-      res.status(response.httpStatusCode).send(response.message);
+      res.status(response.httpStatusCode).send(response);
     })
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };

@@ -21,7 +21,7 @@ const {
   blockFriend,
   unblockFriend,
 } = require("../controllers/userController");
-const { coverImageUpload } = require("../middlwares/fileUpload");
+const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
 /* user data router */
 router.get("/profile", getProfile);
@@ -40,7 +40,7 @@ router.post(
 );
 router.post(
   "/upload/profileImage",
-  coverImageUpload.single("profilePhoto"),
+  profileImageUpload.single("profileImage"),
   uploadProfilePhoto
 );
 
