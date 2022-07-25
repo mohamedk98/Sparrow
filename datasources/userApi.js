@@ -79,9 +79,9 @@ class UserApi {
     let userData = await userApi.findById(userId);
     userData.coverImage = coverImageUrl;
     try {
-      await userData.save();
+      let newProfile =await userData.save();
       return {
-        message: "Cover Image Updated Successfully",
+        message: newProfile,
         httpStatusCode: 200,
       };
     } catch {
