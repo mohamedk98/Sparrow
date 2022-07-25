@@ -28,7 +28,7 @@ router.get("/profile", getProfile);
 router.get("/newsfeed", getNewsfeed);
 
 /** sharing post routes*/
-router.post("/share/:sharedPostId", sharePost);
+router.post("/share/:postId", sharePost);
 router.patch("/share/:sharedPostId", updateSharedPost);
 router.delete("/share/:sharedPostId", deleteSharedPost);
 
