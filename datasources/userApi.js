@@ -32,7 +32,8 @@ class UserApi {
     const friendsPosts = await postApi
       .find()
       .where("userId")
-      .in(userFriendsIds);
+      .in(userFriendsIds)
+      .populate("comments.userId","firstName lastName profileImage _id")
 
     const friendsSharedPosts = await sharedPostApi
       .find()
