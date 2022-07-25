@@ -80,8 +80,8 @@ app.get("/", (req, res) => {
 });
 app.use(usersRouter);
 app.use("/posts", postsRouter);
-app.use("/comments", commentsRouter);
-app.use("/replys", replysRouter);
+app.use(commentsRouter);
+app.use(replysRouter);
 
 //Change  "yourDbName" with your database name
 //Don't forget to add PORT and MONGOO_URL to .env file
