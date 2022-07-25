@@ -45,10 +45,10 @@ router.post(
 );
 
 /**Reactions Routes */
-router.post("/reaction/:postId", addPostReaction);
-router.delete("/reaction/:postId", removePostReaction);
-router.post("/reaction/:sharedPostId", addSharedPostReaction);
-router.delete("/reaction/:sharedPostId", removeSharedPostReaction);
+router.post("/reaction/post/:postId", addPostReaction);
+router.delete("/reaction/post/:postId", removePostReaction);
+router.post("/reaction/sharedPost/:sharedPostId", addSharedPostReaction);
+router.delete("/reaction/sharedPost/:sharedPostId", removeSharedPostReaction);
 
 /**Friends Actions Routes */
 
