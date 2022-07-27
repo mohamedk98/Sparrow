@@ -18,7 +18,8 @@ const io = new Server(socketIoServer, {
     "https://zombie-hat.herokuapp.com/",
   ],
 });
-
+//Disable caching
+app.disable("etag")
 //Swagger Options
 const options = {
   definition: {
