@@ -13,7 +13,9 @@ const s3 = new AWS.S3();
 
 class UserApi {
   async getUserProfile(userId) {
-    const userData = await userApi.findOne({ _id: userId }, "-password");
+    const userData = await userApi
+      .findOne({ _id: userId }, "-password")
+      .populate("friends.data.userId", "firstName lastName profileImage _id");
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
@@ -72,12 +74,12 @@ class UserApi {
       sharerId,
       caption,
       visiability,
-      createdAt:shareDate,
+      createdAt: shareDate,
     });
 
     const userData = await userApi.findById(sharerId);
     userData.sharedPosts.push({ postId: originalPostId });
-    userData.sharesCount = userData.sharesCount+1
+    userData.sharesCount = userData.sharesCount + 1;
 
     try {
       await sharedPost.save();
