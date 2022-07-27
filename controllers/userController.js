@@ -96,7 +96,7 @@ const uploadProfilePhoto = async (req, res) => {
   const userId = req.userId;
   const profileImageDescription = req.body.profileImageDescription;
   console.log(profileImage)
-  // try {
+  try {
     await userApi
       .profileImageUpload(
         userId,
@@ -107,9 +107,9 @@ const uploadProfilePhoto = async (req, res) => {
         res.status(response.httpStatusCode).send(response);
       })
       .catch((error) => res.status(400).send(error.message));
-  // } catch {
-  //   res.status(400).send("An error has occured,plese try again later");
-  // }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 const addPostReaction = async (req, res) => {
