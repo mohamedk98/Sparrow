@@ -17,6 +17,7 @@ const LikeButton = ({
   setReactClass,
   setVisible,
   setReactionClicked,
+  data,
 }) => {
   // Reactions button clicked:
   const [btnClicked, setBtnClicked] = useState(false);

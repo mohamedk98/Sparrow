@@ -12,23 +12,15 @@ const axiosInstance = axios.create({
 
 //Enhanced axios instance with interceptors to work with token refreshment
 const axiosTokenInstance = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: 'https://zombie-hat.herokuapp.com',
   withCredentials: true,
 });
 
-//interceptor to add refresh token data to the body of each request will be send that
-//depends on authentication
-axiosTokenInstance.interceptors.request.use(
-  /** for each request attach the refresh token data
-   * from the localstorage and add it to the request body
-   *
-   */
+axiosInstance.interceptors.request.use(
   function (config) {
-    const refreshTokenData = store.getState().user.authenticationData;
-
-    if (refreshTokenData) {
-      config.data = { ...refreshTokenData };
-    }
+    config.headers = {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    };
     return config;
   },
   function (error) {
@@ -37,7 +29,7 @@ axiosTokenInstance.interceptors.request.use(
 );
 
 //Resposne interceptor to handle token refreshment
-axiosTokenInstance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   //if reponse is fine just return it
   response => {
     return response;
@@ -47,15 +39,18 @@ axiosTokenInstance.interceptors.response.use(
     //original request configuration
     const originalConfig = error.config;
     if (error.response.status === 401 && !originalConfig._retry) {
-      originalConfig._retry = true;
+      originalConfig._retry = false;
 
       try {
         //using normal instance to not fall in 401 infintie loop
-        const newRefreshToken = await axiosInstance.post(
-          '/token',
-          store?.getState()?.user.authenticationData
-        );
-        console.log(newRefreshToken.data);
+        const newRefreshToken = await axiosTokenInstance.post('/token', {
+          params: {
+            refreshToken:
+              store?.getState()?.user.authenticationData.refreshToken,
+            hasExpiry: store?.getState()?.user.authenticationData.hasExpiry,
+          },
+        });
+
         store.dispatch(addAuthentication(newRefreshToken.data));
         return axiosTokenInstance(originalConfig);
       } catch (_error) {
