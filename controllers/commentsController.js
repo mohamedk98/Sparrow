@@ -41,7 +41,7 @@ const updateComment = (req, res) => {
       res.status(response.httpStatusCode).send(response.message);
     })
     .catch((error) => {
-      res.status(error.httpStatusCode).send(error.message);
+      res.status(400).send(error.message);
     });
 };
 
