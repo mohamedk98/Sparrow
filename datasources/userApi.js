@@ -77,6 +77,7 @@ class UserApi {
 
     const userData = await userApi.findById(sharerId);
     userData.sharedPosts.push({ postId: originalPostId });
+    userData.sharesCount = userData.sharesCount+1
 
     try {
       await sharedPost.save();

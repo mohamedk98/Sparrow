@@ -8,7 +8,8 @@ class PostsApi {
       createdAt: postData.createdAt,
       content: postData.content,
       media: postData.media,
-      postType:postData.postType
+      postType:postData.postType,
+      sharesCount:0
     });
     try {
       await post.save();

@@ -33,7 +33,7 @@ const postSchema = new mongoose.Schema({
       date: String,
     },
   ],
-  sharesCount: { type: Number },
+  sharesCount: { type: Number,default:0 },
   visiability: String,
 });
 
