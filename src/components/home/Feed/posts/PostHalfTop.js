@@ -10,7 +10,7 @@ const PostHalfTop = ({
   postImage,
   reverseDirection,
 }) => {
-  // console.log(postImage);
+  console.log(postImage);
   return (
     <div className={reverseDirection ? 'flex flex-col-reverse' : ''}>
       <div className="card-body relative">
