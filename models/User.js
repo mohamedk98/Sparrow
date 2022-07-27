@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: false },
   profileImage: { type: String, required: false },
   coverImage: { type: String, required: false },
-  userDescription: { type: String, required: false },
+  bio: { type: String, required: false },
+  relationship: { type: String, required: false },
+  mobile: { type: String, required: false },
+  hobbies: [{ type: String, required: false }],
   notifcations: [],
   friends: {
     data: [

@@ -7,8 +7,17 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 const app = express();
-app.disable("etag");
+const socketIoServer = createServer(app);
+const io = new Server(socketIoServer, {
+  cors: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://zombie-hat.herokuapp.com/",
+  ],
+});
 
 //Swagger Options
 const options = {
@@ -67,13 +76,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((res, req, next) => {
   res.header("Cache-Control", "no-cache");
-  next()
+  next();
 });
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
-app.use(authenticationRouter);
 
+app.use(authenticationRouter);
 app.use(authorization);
 app.get("/", (req, res) => {
   res.send("hello it works");
@@ -92,8 +101,12 @@ app.use(replysRouter);
  * to the database causing production error on server initialization
  */
 
-app.listen(PORT, async () => {
+/**Using socketIoserver instead of app to let the server work for both RESTApi and messaging */
+
+socketIoServer.listen(PORT, async () => {
   console.log(`Server is working on port ${PORT}`);
   await connectToRedis();
   await connectToMongo();
 });
+
+
