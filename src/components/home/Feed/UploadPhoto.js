@@ -7,24 +7,47 @@ const UploadPhoto = ({setShowUploadPic,selectedImages,setSelectedImages}) => {
 
     //To Upload Multi Photo
     const selectedFileHandler=(e)=>{
-        const selectedFiles=e.target.files;
         if(!e.target.files[0].name.match(/\.(jpg|jpeg|png|gif)$/)){
-            setImgType('Please select a valid Image');
+                setImgType('Please select a valid Image');
+           
+            }
+            else{
+        const selectedFiles=Array.from(e.target.files);
+        selectedFiles.forEach((img)=>{
+            const reader=new FileReader();
+            reader.readAsDataURL(img);
+            reader.onload=(readerEvent)=>{
+             setSelectedImages((selectedImages)=>[...selectedImages,readerEvent.target.result]);
+            }
+        
+        })
+    }
+        // console.log(selectedFiles);
+        // if(!e.target.files[0].name.match(/\.(jpg|jpeg|png|gif)$/)){
+        //     setImgType('Please select a valid Image');
        
-        }
-        else{
-            setImgType('');
-        
-        
-            const selectedFilesArray=Array.from(selectedFiles);
+        // }
+        // else{
+            // setImgType('');
+            // let result=[];
+            // const selectedFilesArray=Object.values(selectedFiles);
             // console.log(selectedFilesArray);
-            const imageArray=selectedFilesArray.map((file)=>{
-                //To create a url string of the uploaded image
-                return URL.createObjectURL(file);
-            });
+            // selectedFilesArray.map((el)=>result.push(el.name));
+            // console.log(result+"r");
+            // 
+            // for(let i of selectedFilesArray){
+            //     result.push(i);
+            // }
+            // console.log(result+"result");
+            // console.log(selectedFilesArray);  
+            // const imageArray=selectedFilesArray.map((img)=>{
+
+            //     return img;
+            // });
             // console.log(imageArray);
-            setSelectedImages((prevImg)=>prevImg.concat(imageArray));
-        }
+            // setSelectedImages((prevImg)=>selectedFilesArray.concat(prevImg));
+   
+        // }
     } 
 
     //To delete all selected photos if he close the selectPhoto Btn
@@ -83,19 +106,18 @@ const UploadPhoto = ({setShowUploadPic,selectedImages,setSelectedImages}) => {
             :
             '')}
      <div className='flex w-full'>
-     {
-                
-                selectedImages&&selectedImages.map((image,index)=>(
-                                <div key={image} className='flex flex-row flex-wrap justify-center items-center'>
-                                    <img src={image} alt='selectedPhoto' className='h-20'/>
-                                    <button 
-                                    className='h-5 text-white bg-red-700 rounded'
-                                    onClick={()=>
-                                    setSelectedImages(selectedImages.filter((e)=>e!==image))
-                                    }>Delete image</button>
-                                    
-                                </div>
-                            ))
+     {      
+        selectedImages.length>0&&selectedImages.map((image,index)=>(
+                        <div key={image} className='flex flex-row flex-wrap justify-center items-center'>
+                            <img src={image}  alt='selectedPhoto' className='h-20'/>
+                            <button 
+                            className='h-5 text-white bg-red-700 rounded'
+                            onClick={()=>
+                            setSelectedImages(selectedImages.filter((e)=>e!==image))
+                            }>Delete image</button>
+                            
+                        </div>
+                    ))
             }
      </div>
     </div>
