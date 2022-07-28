@@ -95,7 +95,7 @@ const uploadProfilePhoto = async (req, res) => {
   const profileImage = req.file;
   const userId = req.userId;
   const profileImageDescription = req.body.profileImageDescription;
-  console.log(profileImage)
+  console.log(profileImage);
   try {
     await userApi
       .profileImageUpload(
@@ -115,7 +115,7 @@ const uploadProfilePhoto = async (req, res) => {
 const addPostReaction = async (req, res) => {
   const userId = req.userId;
   const postId = req.params.postId;
-  const reaction = req.body.reaction
+  const reaction = req.body.reaction;
   await reactionApi
     .addPostReaction(postId, userId, reaction)
     .then((response) =>
@@ -253,6 +253,15 @@ const unblockFriend = async (req, res) => {
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
+const searchForPeople = async (req, res) => {
+  const keyword = req.params.keyword;
+
+  await userApi
+    .search(keyword)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
 module.exports = {
   getProfile,
   getNewsfeed,
@@ -273,4 +282,5 @@ module.exports = {
   removeFriend,
   blockFriend,
   unblockFriend,
+  searchForPeople,
 };

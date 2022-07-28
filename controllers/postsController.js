@@ -49,8 +49,6 @@ const deletePost = async (req, res) => {
     return res.status(404).send({ message: "Post is not found" });
   }
 
-  // const userData = await userApi.getUser(userId)
-
   //if the user is not authorised to delete, return an error
   if (postData.userId !== userId) {
     return res
@@ -58,18 +56,13 @@ const deletePost = async (req, res) => {
       .send({ message: "You don't have access to delete this post" });
   }
 
-  //if the post contain media, just delete it
-  if (postData.media.length !== 0) {
-    fileDeleteHandler(postData.media);
-  }
-
   await postsApi
     .deletePost(postId)
     .then((response) => {
-      res.send(response.message);
+      res.status(200).send("Post Deleted");
     })
     .catch((error) => {
-      res.send(error.message);
+      res.status(400).send(error.message);
     });
 };
 

@@ -20,6 +20,7 @@ const {
   removeFriend,
   blockFriend,
   unblockFriend,
+  searchForPeople
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
@@ -63,5 +64,8 @@ router.get("/friends", getAllFriends);
 router.delete("/friends/friend/:friendId", removeFriend);
 router.patch("/friends/friend/:friendId", blockFriend);
 router.patch("/friends/friend/:friendId", unblockFriend);
+
+//search
+router.get("/search/:keyword",searchForPeople)
 
 module.exports = router;

@@ -35,7 +35,18 @@ class UserApi {
       .find()
       .where("userId")
       .in(userFriendsIds)
-      .populate("comments.userId", "firstName lastName profileImage _id");
+      .populate({
+        path: "comments.userId",
+        select: "firstName lastName profileImage _id",
+      })
+      .populate({
+        path: "comments.reply.userId",
+        select: "firstName lastName profileImage _id",
+      })
+      .populate({
+        path: "reactions.userId",
+        select: "firstName lastName",
+      });
 
     const friendsSharedPosts = await sharedPostApi
       .find()
@@ -48,7 +59,30 @@ class UserApi {
           select: "firstName lastName profileImage _id",
         },
       })
-      .populate("sharerId", "firstName lastName profileImage _id");
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "reactions.userId",
+          select: "firstName lastName",
+        },
+      })
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "comments.reply.userId",
+          select: "firstName lastName profileImage _id",
+        },
+      })
+      .populate("sharerId", "firstName lastName profileImage _id")
+      .populate("reactions.userId", "firstName lastName")
+      .populate({
+        path: "comments.userId",
+        select: "firstName lastName",
+      })
+      .populate({
+        path: "comments.reply.userId",
+        select: "firstName lastName profileImage _id",
+      });
 
     //merge the friends posts and friends shared posts together in one array
     let sharedPosts = friendsPosts.concat(friendsSharedPosts);
@@ -383,6 +417,22 @@ class UserApi {
       return error;
     }
     return { data: userFriendsRequests, httpStatusCode: 200 };
+  }
+
+  async search(keyword) {
+    try {
+      const searchResult = await userApi.find(
+        { $text: { $search: keyword } },
+        "-password",
+        { score: { $meta: "textScore" } }
+      );
+      console.log();
+      return searchResult;
+    } catch {
+      const error = new Error("something went wrong, please try again later");
+      error.httpStatusCode = 400;
+      return error;
+    }
   }
 }
 

@@ -1,4 +1,15 @@
 const Post = require("../models/Posts");
+const sharedPostAPi = require("../models/SharedPost")
+const AWS = require("aws-sdk");
+const { default: mongoose } = require("mongoose");
+AWS.config.update({
+  credentials: {
+    accessKeyId: process.env.AWSACCESSKEY,
+    secretAccessKey: process.env.AWSSECRETKEY,
+    region: "eu-central-1",
+  },
+});
+const s3 = new AWS.S3();
 
 class PostsApi {
   async createPost(postData) {
@@ -8,8 +19,8 @@ class PostsApi {
       createdAt: postData.createdAt,
       content: postData.content,
       media: postData.media,
-      postType:postData.postType,
-      sharesCount:0
+      postType: postData.postType,
+      sharesCount: 0,
     });
     try {
       await post.save();
@@ -22,10 +33,12 @@ class PostsApi {
   }
 
   async getPost(postId) {
-    const foundPost = await Post.findOne({ _id: postId }).populate(
-      "comments.userId",
-      "firstName lastName profileImage userId"
-    ).populate("comments.reply.userId","firstName lastName profileImage userId ")
+    const foundPost = await Post.findOne({ _id: postId })
+      .populate("comments.userId", "firstName lastName profileImage userId")
+      .populate(
+        "comments.reply.userId",
+        "firstName lastName profileImage userId "
+      );
 
     if (foundPost === null) {
       const error = new Error("Post not found");
@@ -36,18 +49,29 @@ class PostsApi {
     }
   }
 
-  
-
   async deletePost(postId) {
-    return Post.deleteOne({ _id: postId })
-      .then(() => {
-        return { message: "Post deleted", httpStatusCode: 200 };
-      })
-      .catch(() => {
-        const error = new Error("Error deleteing post, please try again later");
-        error.httpStatusCode = 400;
+     Post.findByIdAndDelete(postId, async (error, deletedPost) => {
+      if (error) {
         return error;
-      });
+      }
+      await sharedPostAPi.deleteMany().where("originalId").equals(deletedPost._id)
+      if (deletedPost.media.length > 0) {
+        const mediaToBeDeleted = deletedPost.media.map((singleImage) => {
+          return { Key: `posts_media/${singleImage.split("/")[4]}` };
+        });
+        console.log(mediaToBeDeleted[0].Key);
+        await s3
+          .deleteObjects({
+            Bucket: "zombie-hat",
+            Delete: {
+              Objects: mediaToBeDeleted,
+            },
+          })
+          .promise();
+      }
+    });
+
+  
   }
 
   async updatePost({ _id, content, media, visiability }) {
