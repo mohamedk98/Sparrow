@@ -4535,8 +4535,14 @@ textarea.form-control.is-invalid {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .mr-1 {
   margin-right: 0.25rem;
+=======
+.my-7 {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+>>>>>>> afef43400d26111def6684189994f202c92429fb
 =======
 .my-7 {
   margin-top: 1.75rem;
@@ -5212,7 +5218,10 @@ textarea.form-control.is-invalid {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> afef43400d26111def6684189994f202c92429fb
 .break-words {
   overflow-wrap: break-word;
 }
@@ -5907,12 +5916,16 @@ textarea.form-control.is-invalid {
 .text-blue-400 {
   --tw-text-opacity: 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
   color: rgb(29 78 216 / var(--tw-text-opacity));
 }
 
 .text-gray-300 {
   --tw-text-opacity: 1;
   color: rgb(209 213 219 / var(--tw-text-opacity));
+=======
+  color: rgb(96 165 250 / var(--tw-text-opacity));
+>>>>>>> afef43400d26111def6684189994f202c92429fb
 =======
   color: rgb(96 165 250 / var(--tw-text-opacity));
 >>>>>>> afef43400d26111def6684189994f202c92429fb
