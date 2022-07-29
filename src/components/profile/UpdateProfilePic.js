@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from './getCroppedImg';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -6,13 +6,41 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { AiOutlineMinus } from 'react-icons/ai';
 import { BiCrop } from 'react-icons/bi';
 import { RiTimerFill } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { axiosInstance } from '../../network/axiosInstance';
+import { addUserData } from '../../store/userSlice/UserDataSlice';
 
-function UpdateProfilePic({pic, setPic}) {
+function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChoosePic}) {
+    const userState = useSelector((state) => state.userData.userData);
+    const dispatch = useDispatch();
     const [description, setDescription] = useState("");
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setcroppedAreaPixels] = useState(null);
     const slider = useRef(null);
+
+    // useEffect(()=>{/* setPic(userState.profileImage) */},[pic, dispatch, userState.profileImage])
+    const profilePicHandler = (pic)=>{
+       
+        // let fileReader = new FileReader()
+        // let blobImage = new Blob(pic)
+        // let image = fileReader.readAsDataURL(blobImage)
+      
+        let formData = new FormData();
+        formData.append("profileImage", newImage);
+        //formData.append("profileImageDescription", pic);
+        axiosInstance
+        .post("/upload/profileImage", formData, {
+            headers: {
+            "Content-Type": "multipart/form-data",
+            },
+        })
+        .then((response) => {
+            dispatch(addUserData(response.data.newProfile))
+            setPic(userState.profileImage)})
+        setUpdate(false)
+        setChoosePic(false)
+    }
 
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
         setcroppedAreaPixels(croppedAreaPixels);
@@ -38,7 +66,7 @@ function UpdateProfilePic({pic, setPic}) {
         } catch (error){
             console.log(error)
         }
-    },[croppedAreaPixels])
+    },[croppedAreaPixels, pic, setPic])
 
     return (
         <div className='fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
@@ -46,7 +74,7 @@ function UpdateProfilePic({pic, setPic}) {
                 <div className='relative mb-3'>
                     <div className='text-center text-xl'>Update Picture</div>
                     <button className='absolute right-2 top-0 text-xl'>
-                        <AiOutlineClose onClick={()=>{setPic("")}}/>
+                        <AiOutlineClose onClick={()=>{setUpdate("")}}/>
                     </button>
                 </div>
                 <hr></hr>
@@ -95,11 +123,11 @@ function UpdateProfilePic({pic, setPic}) {
                 </div>
                 <div className='relative h-20'>
                     <div className='absolute right-2 flex justify-end gap-2.5 w-1/3'>
-                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer text-blue-500 rounded-lg hover:brightness-95'>
+                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer text-blue-500 rounded-lg hover:brightness-95' onClick={()=>setUpdate(false)}>
                             <span>Cancel</span>
                         </div>
                         <div className='flex justify-between items-center gap-2 my-3 py-2 px-8 cursor-pointer bg-blue-500 text-white rounded-lg hover:brightness-95'>
-                            <button>Save</button>
+                            <button onClick={()=>profilePicHandler(pic)}>Save</button>
                         </div>
                     </div>
                 </div>

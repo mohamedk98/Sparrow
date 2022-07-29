@@ -7,59 +7,35 @@ import ProfilePhotos from "../../components/profile/ProfilePhotos";
 import ProfileFriends from "../../components/profile/ProfileFriends";
 import ProfileFooter from "../../components/profile/ProfileFooter";
 import PostView from "../../components/profile/PostView";
-import Post from "../../components/home/Feed/posts/Post";
+// import Post from "../../components/home/Feed/posts/Post";
 import Intro from "../../components/profile/Intro";
 import Feed from "../../components/home/Feed/Feed";
+import { useSelector, useDispatch } from "react-redux";
+import { addUserData } from "../../store/userSlice/UserDataSlice";
+import InputBox from "../../components/home/Feed/InputBox";
+import { Outlet, Route, Routes } from "react-router-dom";
+import ProfileInfos from "./ProfileInfos";
+import ProfilePosts from "./ProfilePosts";
+import About from './About';
+import Friends from './Friends';
+import Photos from './Photos';
+import Chat from "../../components/chat/Chat";
 
 function Profile() {
-  
+  const userState = useSelector(state =>console.log(state.userData.userData));
+  const dispatch = useDispatch();
   useEffect(() => {
-    axiosInstance.get('/profile').then(res=>console.log(res)).catch(err=>console.log(err))
+    axiosInstance.get('/profile')
+    .then(res=>dispatch(addUserData(res.data)))
+    .catch(err=>console.log(err))
   });
   return (
-    <div>
-      <div className="lg:w-10/12 sm:w-full m-auto">
-        {/* cover */}
-        <Cover/>
-        {/* profilePicture */}
-        <ProfilePic/>
-        {/* profile menu */}
-        <div className="relative px-10" style={{padding:"0 50px"}}>
-          <ProfileMenu/>
-        </div>
-      </div>
-      {/*bottom*/}
-      <div className="mt-5 bg-slate-200">
-        <div className="w-11/12 m-auto">
-          <div className="py-2.5 px-9">
-            <div className="grid lg:grid-cols-2 grid-col-1 gap-1">
-              {/* bottom left */}
-              <div className="lg:w-5/6 w-full xl:ml-20 lg:ml-14">
-                <Intro/>
-                {/* Profile Photos */}
-                <ProfilePhotos/>
-                {/* Profile friends */}
-                <ProfileFriends/>
-                {/* Profile footer */}
-                <ProfileFooter/>
-              </div>
-              {/* bottom right */}
-              <div>
-                {/* create post */}
-                <Feed/>
-                {/* post view */}
-                <PostView/>
-                {/* post */}
-                <Post/>
-                <Post/>
-                <Post/>
-                <Post/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <ProfileInfos/>
+      <Outlet/>
+      {/* <Chat/> */}
+    </>
+  
   );
 }
 

@@ -103,6 +103,7 @@ const TextArea = ({ placeholder }) => {
         iconClassName="w-7 h-7"
         liNum1={1}
         liNum2={2}
+        tooltipData="more"
       />
     </div>
   );

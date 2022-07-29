@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AiFillHome } from 'react-icons/ai';
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
 import { FaUserAlt } from 'react-icons/fa';
 import { FaUserFriends } from 'react-icons/fa';
@@ -17,14 +18,10 @@ const LeftSideBar = () => {
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const Menus = [
-    { id: 1, title: 'Friends', icon: { iconTitle: FaUserAlt } },
-    { id: 2, title: 'Groups', icon: { iconTitle: FaUserFriends } },
-    { id: 3, title: 'Saved', icon: { iconTitle: MdGroups } },
-    { id: 4, title: 'Events', icon: { iconTitle: BsFillCalendarEventFill } },
-    { id: 5, title: 'Most recent', icon: { iconTitle: BsFillAlarmFill } },
-    { id: 6, title: 'Favourites', icon: { iconTitle: BsStarFill } },
-  ];
+
+  const profileHandler = () => {
+    navigate('/');
+  };
 
   //logout functionality
   const logoutHandler = () => {
@@ -33,8 +30,60 @@ const LeftSideBar = () => {
       navigate('/login');
     });
   };
+
+  const Menus = [
+    {
+      id: 1,
+      title: 'Home',
+      icon: { iconTitle: AiFillHome },
+      handler: profileHandler,
+    },
+    {
+      id: 2,
+      title: 'Friends',
+      icon: { iconTitle: FaUserAlt },
+      handler: profileHandler,
+    },
+    {
+      id: 3,
+      title: 'Groups',
+      icon: { iconTitle: FaUserFriends },
+      handler: profileHandler,
+    },
+    {
+      id: 4,
+      title: 'Saved',
+      icon: { iconTitle: MdGroups },
+      handler: profileHandler,
+    },
+    {
+      id: 5,
+      title: 'Events',
+      icon: { iconTitle: BsFillCalendarEventFill },
+      handler: profileHandler,
+    },
+    {
+      id: 6,
+      title: 'Most recent',
+      icon: { iconTitle: BsFillAlarmFill },
+      handler: profileHandler,
+    },
+    {
+      id: 7,
+      title: 'Favourites',
+      icon: { iconTitle: BsStarFill },
+      handler: profileHandler,
+    },
+    {
+      id: 8,
+      title: 'Logout',
+      icon: { iconTitle: BiLogOut },
+      handler: logoutHandler,
+    },
+  ];
+
   return (
-    <div className="hidden lg:flex fixed">
+    <div className="hidden lg:flex fixed z-10">
       <div
         className={`bg-facebook-grey h-screen p-5 pt-8 ${
           open ? 'w-38' : 'w-20'
@@ -42,7 +91,7 @@ const LeftSideBar = () => {
       >
         <BsFillArrowLeftCircleFill
           onClick={() => setOpen(!open)}
-          className={`bg-facebook-grey text-facebook-blue  text-3xl rounded-full cursor-pointer ${
+          className={`bg-facebook-grey text-facebook-blue text-3xl rounded-full cursor-pointer ${
             !open && 'rotate-180'
           } absolute -right-3 top-9 border border-facebook-grey`}
         />
@@ -64,6 +113,7 @@ const LeftSideBar = () => {
             <li
               key={menu.id}
               className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2"
+              onClick={menu.handler}
             >
               <span className="text-2xl block float-left text-facebook-blue">
                 <menu.icon.iconTitle />
@@ -77,22 +127,6 @@ const LeftSideBar = () => {
               </span>
             </li>
           ))}
-          {/* Logout menu item */}
-          <li
-            className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2"
-            onClick={logoutHandler}
-          >
-            <span className="text-2xl block float-left text-facebook-blue">
-              <BiLogOut />
-            </span>
-            <span
-              className={`text-base font-medium text-black flex-1 ${
-                !open && 'hidden'
-              }`}
-            >
-              Logout
-            </span>
-          </li>
         </ul>
       </div>
     </div>

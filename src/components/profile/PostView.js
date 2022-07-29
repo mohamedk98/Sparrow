@@ -6,7 +6,7 @@ import { AiTwotoneSetting } from 'react-icons/ai';
 
 function PostView() {
     return (
-        <div className="bg-white my-3 p-4 rounded-xl w-full">
+        <div className="bg-white my-3 p-4 rounded-xl w-full shadow-md">
             <div className="grid grid-cols-2 gap-2.5 items-center">
                 <div className="text-xl font-bold">
                     Posts

@@ -7,6 +7,7 @@ import LoginInput from './LoginInput';
 import { axiosInstance } from '../../network/axiosInstance';
 import LoginButton from './LoginButton';
 import { useNavigate } from 'react-router-dom';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 // user intial info:
 const userInfo = {
@@ -184,6 +185,8 @@ const SignupForm = () => {
               >
                 {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </span>
+
+              <PasswordStrengthBar password={password} />
             </div>
 
             <div className="text-xs my-1">

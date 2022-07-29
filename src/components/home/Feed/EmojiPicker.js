@@ -19,6 +19,10 @@ const EmojiPicker = ({ chosenEmoji, onEmojiClick, positionClass }) => {
         }
         <Picker
           onEmojiClick={onEmojiClick}
+          showLoading={true}
+          preload={true}
+          disableAutoFocus={true}
+          searchPlaceholder="Search for Emoji"
           pickerStyle={{
             boxShadow: '-1.5px 11px 10px #222222',
             borderTop: 0,

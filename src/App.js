@@ -13,6 +13,10 @@ import {
   addAuthentication,
   removeAuthentication,
 } from './store/userSlice/UserSlice';
+import ProfilePosts from './pages/profile/ProfilePosts';
+import About from './pages/profile/About';
+import Friends from './pages/profile/Friends';
+import Photos from './pages/profile/Photos';
 
 function App() {
   const navigate = useNavigate();
@@ -41,7 +45,12 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset" element={<Reset />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<Profile />} >
+        <Route path="/profile" element={<ProfilePosts />} />
+        <Route path="about" element={<About />}/>
+        <Route path="friends" element={<Friends />}/>
+        <Route path="photos" element={<Photos />}/>
+      </Route>
       <Route path="*" element={<Error />} />
     </Routes>
   );

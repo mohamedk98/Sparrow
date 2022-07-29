@@ -1,13 +1,12 @@
-import React from 'react';
+import React,{useState} from 'react';
 import profileImg from '../../../assets/images/default_profile.png';
-import { BsFillCameraReelsFill } from 'react-icons/bs';
 import { IoMdHappy } from 'react-icons/io';
 import { AiFillCamera } from 'react-icons/ai';
 import CreatePostModal from './CreatePostModal';
 
 const InputBox = () => {
-  const isOpen = true;
-
+  // const isOpen = true;
+  const [showModal,setShowModal]=useState(true);
   return (
     <>
       <div className="bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6">
@@ -29,26 +28,25 @@ const InputBox = () => {
               data-bs-toggle="modal"
               data-bs-target="#exampleModalCenter"
             />
-            {/* <button type='button'  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">click me</button> */}
           </form>
         </div>
         <div className="flex justify-evenly p-3 border-t">
-          <div className="inputIcon">
-            <BsFillCameraReelsFill className="h-7 xl:w-10 md:w-6 text-red-500" />
-            <p className="text-xs sm:text-sm xl:text-base">Live Video</p>
-          </div>
-          <div className="inputIcon">
+          <div 
+          className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModalCenter"
+          >
             <AiFillCamera className="h-7 xl:w-10 md:w-6 text-green-400" />
             <p className="text-xs sm:text-sm xl:text-base">Photo/Video</p>
           </div>
-          <div className="inputIcon">
+          <div className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer">
             <IoMdHappy className="h-7 xl:w-10 md:w-6 text-yellow-300" />
             <p className="text-xs sm:text-sm xl:text-base">Feeling/Activity</p>
           </div>
         </div>
       </div>
 
-      {isOpen && <CreatePostModal />}
+      {showModal && <CreatePostModal showModal={showModal} setShowModal={setShowModal}/>}
     </>
   );
 };
