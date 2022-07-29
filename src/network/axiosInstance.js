@@ -12,14 +12,14 @@ const axiosInstance = axios.create({
 
 //Enhanced axios instance with interceptors to work with token refreshment
 const axiosTokenInstance = axios.create({
-  baseURL: "https://zombie-hat.herokuapp.com",
+  baseURL: 'https://zombie-hat.herokuapp.com',
   withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
   function (config) {
     config.headers = {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     };
     return config;
   },
@@ -43,7 +43,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         //using normal instance to not fall in 401 infintie loop
-        const newRefreshToken = await axiosTokenInstance.post("/token", {
+        const newRefreshToken = await axiosTokenInstance.post('/token', {
           params: {
             refreshToken:
               store?.getState()?.user.authenticationData.refreshToken,

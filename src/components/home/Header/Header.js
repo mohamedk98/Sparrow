@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaFacebook, FaSearch, FaFacebookMessenger } from 'react-icons/fa';
 import { TiHome } from 'react-icons/ti';
 import { RiGroupFill } from 'react-icons/ri';
@@ -6,8 +6,13 @@ import { RiGroupFill } from 'react-icons/ri';
 import { BsBellFill } from 'react-icons/bs';
 import profileImg from '../../../assets/images/default_profile.png';
 import { Link } from 'react-router-dom';
+import { BsToggleOn } from 'react-icons/bs';
+import { BsToggle2Off } from 'react-icons/bs';
 
 const Header = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  const [lang, setLang] = useState(false);
+
   return (
     <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
       <div className="flex">
@@ -166,20 +171,61 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <a
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="/"
-              >
-                Another action
-              </a>
+              <button className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex">
+                Dark mode{' '}
+                {darkMode && (
+                  <BsToggleOn
+                    className="text-facebook-blue text-2xl ml-3 -mt-0.5"
+                    onClick={() => {
+                      setDarkMode(!darkMode);
+                    }}
+                  />
+                )}
+                {!darkMode && (
+                  <BsToggle2Off
+                    className="text-2xl ml-3 -mt-0.5"
+                    onClick={() => {
+                      setDarkMode(!darkMode);
+                    }}
+                  />
+                )}
+              </button>
             </li>
             <li>
-              <a
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="/"
-              >
-                Something else here
-              </a>
+              <button className="dropdown-item text-sm py-2 px-4 font-normal flex w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
+                <span
+                  className={!lang ? 'text-facebook-blue' : ''}
+                  onClick={() => {
+                    setLang(!lang);
+                  }}
+                >
+                  En
+                </span>{' '}
+                {lang && (
+                  <BsToggleOn
+                    className="text-facebook-blue text-2xl mx-3 -mt-0.5"
+                    onClick={() => {
+                      setLang(!lang);
+                    }}
+                  />
+                )}
+                {!lang && (
+                  <BsToggle2Off
+                    className="text-facebook-blue text-2xl mx-3 -mt-0.5"
+                    onClick={() => {
+                      setLang(!lang);
+                    }}
+                  />
+                )}{' '}
+                <span
+                  className={lang ? 'text-facebook-blue' : ''}
+                  onClick={() => {
+                    setLang(!lang);
+                  }}
+                >
+                  Ar
+                </span>
+              </button>
             </li>
           </ul>
         </div>

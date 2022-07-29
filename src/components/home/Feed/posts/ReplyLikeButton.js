@@ -51,7 +51,7 @@ const ReplyLikeButton = ({ setReactionClicked }) => {
   };
 
   useEffect(() => {
-    console.log(btnClicked, reactType, reactClass);
+    // console.log(btnClicked, reactType, reactClass);
 
     if (reactType === '' && reactClass === '' && btnClicked) {
       setReactType('Like');

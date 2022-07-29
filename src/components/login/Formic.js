@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { axiosInstance } from '../../network/axiosInstance';
+import { useDispatch } from 'react-redux';
+import { addAuthentication } from '../../store/userSlice/UserSlice';
 import LoginFormInput from './LoginFormInput';
 import LoginButton from './LoginButton';
 import { AiFillEye } from 'react-icons/ai';
@@ -14,11 +16,10 @@ import { useDispatch } from 'react-redux';
 const loginInfo = {
   email: '',
   password: '',
-  hasExpiry: false,
 };
 
 const Formic = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
 
@@ -34,9 +35,6 @@ const Formic = () => {
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
-
-  // To handle rember me:
-  const [hasExpiry, setHasExpiry] = useState(false);
 
   // For form validation:
   const [login, setLogin] = useState(loginInfo);
@@ -63,7 +61,7 @@ const Formic = () => {
     <div>
       <Formik
         enableReinitialize // To inforce it to teset form input values when initialValues changes.
-        initialValues={{ email, password, hasExpiry }}
+        initialValues={{ email, password }}
         validationSchema={loginValidation}
         onSubmit={values => {
           // console.log(values);
@@ -81,6 +79,7 @@ const Formic = () => {
               // console.log(response);
               dispatch(addAuthentication(response.data))
               if (response.data) setShowSpinner(showSinner);
+              dispatch(addAuthentication(response.data));
               navigate('/');
             })
             .catch(error => {
@@ -105,22 +104,6 @@ const Formic = () => {
               loginInputEmailClassName="border-2 rounded-md p-3 mb-3 w-full"
               loginInputPasswordClassName="border-2 rounded-md p-3 mb-2 w-full"
             />
-
-            {
-              <div>
-                <input
-                  type="checkbox"
-                  id="hasExpiry"
-                  name="hasExpiry"
-                  onClick={() => {
-                    setHasExpiry(!hasExpiry);
-                  }}
-                  onChange={loginHandler}
-                  className="mr-2"
-                />
-                <label htmlFor="hasExpiry">Remember me</label>
-              </div>
-            }
 
             {formError && (
               <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mt-3 mb-2">

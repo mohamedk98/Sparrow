@@ -24,30 +24,35 @@ const CreatePostModal = ({showModal,setShowModal}) => {
   const [post,setPost]=useState(null);
   const [loading,setLoading]=useState(false);
  
-
+  console.log(selectedImages);
   const onEmojiClick = (event, emojiObject) => {
     setInputStr(prevInput => prevInput + emojiObject.emoji);
     setChosenEmoji(emojiObject);
   };
 
   //Start Posting Post Data
+  const formData = new FormData();
  const submitData=(e)=>{
       e.preventDefault();
-      const formData = new FormData();
+     
   
       formData.append('visability',selectedOption);
       formData.append('content',inputStr);
-      formData.append("media", selectedImages);
-      setLoading(true);
+
       
+      formData.append("media", selectedImages);
+         
+      setLoading(true);
+    
       axiosInstance.post('/posts',formData,{
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         }
       }
       )
       .then((response)=>{
         if(response.status===200){
+          console.log(response);
           setLoading(false);
           setPost(response.data);
 
@@ -66,9 +71,7 @@ const CreatePostModal = ({showModal,setShowModal}) => {
       if(!post){
         return "No Post Created";
       }
-      //To close Modal after submitting
-     
-      
+
   
 
  } 
@@ -218,7 +221,7 @@ const CreatePostModal = ({showModal,setShowModal}) => {
                   >
                   </textarea>
                   {showUploadPic?<UploadPhoto 
-                  setShowUploadPic={setShowUploadPic} 
+                  setShowUploadPic={setShowUploadPic}
                   selectedImages={selectedImages} setSelectedImages={setSelectedImages}/>:''}
                 </div>
               </div>
