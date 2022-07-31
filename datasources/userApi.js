@@ -46,7 +46,8 @@ class UserApi {
       .populate({
         path: "reactions.userId",
         select: "firstName lastName",
-      });
+      })
+      .populate("userId","firstName lastName _id profileImage")
 
     const friendsSharedPosts = await sharedPostApi
       .find()
@@ -59,6 +60,7 @@ class UserApi {
           select: "firstName lastName profileImage _id",
         },
       })
+      .populate({path:"originalPostId",populate:{path:"userId",select:"firstName lastName _id profileImage"}})
       .populate({
         path: "originalPostId",
         populate: {

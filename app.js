@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const roomApi = require("./models/Room");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -19,7 +19,7 @@ const io = new Server(socketIoServer, {
   ],
 });
 //Disable caching
-app.disable("etag")
+app.disable("etag");
 //Swagger Options
 const options = {
   definition: {
@@ -75,10 +75,10 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use((res, req, next) => {
-  res.header("Cache-Control", "no-cache");
-  next();
-});
+// app.use((res, req, next) => {
+//   res.header("Cache-Control", "no-cache");
+//   next();
+// });
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
@@ -104,10 +104,65 @@ app.use(replysRouter);
 
 /**Using socketIoserver instead of app to let the server work for both RESTApi and messaging */
 
+io.on("connection", async (socket) => {
+  console.log(
+    `Use with ID of ${socket.id} Connected`,
+    `Number of connected Users ${io.engine.clientsCount}`
+  );
+
+  socket.on("connect to user", async (receiverId) => {
+    let room = await roomApi
+      .findOne()
+      .where("userIds")
+      .in(socket.handshake.auth.userId).and([{usersIds:receiverId}])
+      
+
+    if (!room) {
+      try {
+        let newRoom = new roomApi();
+        newRoom.usersIds.push(socket.handshake.auth.userId);
+        newRoom.usersIds.push(receiverId);
+         newRoom = await newRoom.save();
+        room = newRoom
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    socket.join(room._id)
+    
+    socket.on("message",(message)=>{
+      io.to(room._id).emit("message",message)
+    })
+
+  });
+
+  // console.log(socket.handshake.auth.userId)
+
+  let users = [];
+
+  for (let [id, socket] of io.of("/").sockets) {
+    users.push(id);
+  }
+
+  socket.emit("online friends", users);
+  socket.broadcast.emit("user connected", socket.id);
+
+  console.log(users);
+  socket.on("disconnect", () => {
+    console.log(`Use with ID of ${socket.id} Disconnected`);
+    socket.broadcast.emit("user disconnected", socket.id);
+  });
+
+  socket.on("message", ({ message, senderId }, to) => {
+    io.to(to)
+      .to(senderId)
+      .emit("message", { message: message, senderId: senderId });
+  });
+});
+
 socketIoServer.listen(PORT, async () => {
   console.log(`Server is working on port ${PORT}`);
   await connectToRedis();
   await connectToMongo();
 });
-
-
