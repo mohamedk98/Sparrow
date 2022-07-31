@@ -20,7 +20,8 @@ const {
   removeFriend,
   blockFriend,
   unblockFriend,
-  searchForPeople
+  searchForPeople,
+  updateIntro
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
@@ -67,5 +68,8 @@ router.patch("/friends/friend/:friendId", unblockFriend);
 
 //search
 router.get("/search/:keyword",searchForPeople)
+
+//edit profile Data
+router.patch("/profile/intro",updateIntro)
 
 module.exports = router;

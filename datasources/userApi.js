@@ -47,7 +47,7 @@ class UserApi {
         path: "reactions.userId",
         select: "firstName lastName",
       })
-      .populate("userId","firstName lastName _id profileImage")
+      .populate("userId", "firstName lastName _id profileImage");
 
     const friendsSharedPosts = await sharedPostApi
       .find()
@@ -60,7 +60,13 @@ class UserApi {
           select: "firstName lastName profileImage _id",
         },
       })
-      .populate({path:"originalPostId",populate:{path:"userId",select:"firstName lastName _id profileImage"}})
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "userId",
+          select: "firstName lastName _id profileImage",
+        },
+      })
       .populate({
         path: "originalPostId",
         populate: {
@@ -434,6 +440,24 @@ class UserApi {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
       return error;
+    }
+  }
+
+  async updateIntro(userId, intro) {
+    const userData = await userApi.findById(userId, "intro");
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+    userData.intro = intro
+    try {
+      await userData.save()
+      return {message:"Intro Updated"}
+    }
+    catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error
     }
   }
 }

@@ -262,6 +262,16 @@ const searchForPeople = async (req, res) => {
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
+const updateIntro = async (req, res) => {
+  const userId = req.userId;
+  const intro = req.body.intro;
+
+  await userApi
+    .updateIntro(userId, intro)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
+
 module.exports = {
   getProfile,
   getNewsfeed,
@@ -283,4 +293,5 @@ module.exports = {
   blockFriend,
   unblockFriend,
   searchForPeople,
+  updateIntro,
 };
