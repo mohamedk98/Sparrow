@@ -76,7 +76,7 @@ router.get("/search/:keyword",searchForPeople)
 //edit profile Data
 router.patch("/profile/intro",updateIntro)
 router.patch("/profile/about",updateAbout)
-router.patch("/profile/hobbies",updateHobbies)
+router.post("/profile/hobbies",updateHobbies)
 
 
 
