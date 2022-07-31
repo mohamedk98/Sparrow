@@ -16,6 +16,19 @@ class UserApi {
     const userData = await userApi
       .findById(userId, "-password")
       .populate("friends.data.userId", "firstName lastName profileImage _id");
+
+
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+
+    return userData
+  }
+
+  async getUserPosts (userId) {
+    
     //get user created posts
     const userPosts = await postApi
       .find({ userId })
@@ -33,9 +46,9 @@ class UserApi {
       })
       .populate("userId", "firstName lastName _id profileImage");
 
-      //get users shared post
-      const userSharedPosts = await sharedPostApi
-      .find({sharerId:userId})
+    //get users shared post
+    const userSharedPosts = await sharedPostApi
+      .find({ sharerId: userId })
       .populate({
         path: "originalPostId",
         populate: {
@@ -75,15 +88,8 @@ class UserApi {
         select: "firstName lastName profileImage _id",
       });
 
-    if (!userData) {
-      const error = new Error("User not found");
-      error.httpStatusCode = 404;
-      return error;
-    }
-
-    return { userData, userPosts,userSharedPosts };
+      return {userPosts,userSharedPosts}
   }
-
   async getNewsfeed(userId) {
     const userdata = await userApi.findOne({ _id: userId }, "-password");
     let userFriendsIds = userdata.friends.data.map((user) => {

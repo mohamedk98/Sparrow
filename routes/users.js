@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getProfile,
   getNewsfeed,
+  getUserPosts,
   sharePost,
   updateSharedPost,
   deleteSharedPost,
@@ -29,6 +30,7 @@ const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUplo
 /* user data router */
 router.get("/profile", getProfile);
 router.get("/newsfeed", getNewsfeed);
+router.get("profile/posts",getUserPosts)
 
 /** sharing post routes*/
 router.post("/share/:postId", sharePost);

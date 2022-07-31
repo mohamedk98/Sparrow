@@ -9,7 +9,7 @@ const getProfile = (req, res) => {
   userApi
     .getUserProfile(userId)
     .then((response) => res.status(200).send(response))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const getNewsfeed = (req, res) => {
@@ -18,6 +18,15 @@ const getNewsfeed = (req, res) => {
     .getNewsfeed(userId)
     .then((response) => res.header("Cache-Control", "no-cache").send(response))
     .catch((error) => res.send(error));
+};
+
+const getUserPosts = async (req, res) => {
+  const userId = req.userId;
+
+  await userApi
+    .getUserPosts(userId)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const sharePost = async (req, res) => {
@@ -297,6 +306,7 @@ const updateAbout = async (req, res) => {
 
 module.exports = {
   getProfile,
+  getUserPosts,
   getNewsfeed,
   sharePost,
   deleteSharedPost,
@@ -317,5 +327,5 @@ module.exports = {
   unblockFriend,
   searchForPeople,
   updateIntro,
-  updateAbout
+  updateAbout,
 };
