@@ -280,6 +280,15 @@ const updateIntro = async (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
+const updateHobbies = async (req, res) => {
+  const userId = req.userId;
+  const hobbies = req.body.intro;
+  await userApi
+    .updateHobbies(userId, hobbies)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
+
 const updateAbout = async (req, res) => {
   const userId = req.userId;
   const major = req.body.data.major;
@@ -328,4 +337,5 @@ module.exports = {
   searchForPeople,
   updateIntro,
   updateAbout,
+  updateHobbies
 };

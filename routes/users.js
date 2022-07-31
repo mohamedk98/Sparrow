@@ -23,7 +23,8 @@ const {
   unblockFriend,
   searchForPeople,
   updateIntro,
-  updateAbout
+  updateAbout,
+  updateHobbies
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
@@ -75,6 +76,7 @@ router.get("/search/:keyword",searchForPeople)
 //edit profile Data
 router.patch("/profile/intro",updateIntro)
 router.patch("/profile/about",updateAbout)
+router.patch("/profile/hobbies",updateHobbies)
 
 
 

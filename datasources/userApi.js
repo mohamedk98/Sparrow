@@ -550,6 +550,25 @@ class UserApi {
       return error;
     }
   }
+
+  async updateHobbies(userId,hobbies) {
+    let userData = await userApi.findById(userId);
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+    userData.hobbies = hobbies
+    try {
+      userData.markModified("hobbies")
+      const updatedUserData = await userData.save()
+      return updatedUserData
+    }
+    catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error;
+    }
+  }
 }
 
 module.exports = UserApi;
