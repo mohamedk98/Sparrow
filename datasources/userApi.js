@@ -14,15 +14,74 @@ const s3 = new AWS.S3();
 class UserApi {
   async getUserProfile(userId) {
     const userData = await userApi
-      .findOne({ _id: userId }, "-password")
+      .findById(userId, "-password")
       .populate("friends.data.userId", "firstName lastName profileImage _id");
+    //get user created posts
+    const userPosts = await postApi
+      .find({ userId })
+      .populate({
+        path: "comments.userId",
+        select: "firstName lastName profileImage _id",
+      })
+      .populate({
+        path: "comments.reply.userId",
+        select: "firstName lastName profileImage _id",
+      })
+      .populate({
+        path: "reactions.userId",
+        select: "firstName lastName",
+      })
+      .populate("userId", "firstName lastName _id profileImage");
+
+      //get users shared post
+      const userSharedPosts = await sharedPostApi
+      .find({sharerId:userId})
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "comments.userId",
+          select: "firstName lastName profileImage _id",
+        },
+      })
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "userId",
+          select: "firstName lastName _id profileImage",
+        },
+      })
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "reactions.userId",
+          select: "firstName lastName",
+        },
+      })
+      .populate({
+        path: "originalPostId",
+        populate: {
+          path: "comments.reply.userId",
+          select: "firstName lastName profileImage _id",
+        },
+      })
+      .populate("sharerId", "firstName lastName profileImage _id")
+      .populate("reactions.userId", "firstName lastName")
+      .populate({
+        path: "comments.userId",
+        select: "firstName lastName",
+      })
+      .populate({
+        path: "comments.reply.userId",
+        select: "firstName lastName profileImage _id",
+      });
+
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
       return error;
     }
 
-    return userData;
+    return { userData, userPosts,userSharedPosts };
   }
 
   async getNewsfeed(userId) {
