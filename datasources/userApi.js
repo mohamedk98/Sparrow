@@ -444,7 +444,7 @@ class UserApi {
   }
 
   async updateIntro(userId, intro) {
-    const userData = await userApi.findById(userId, "intro");
+    const userData = await userApi.findById(userId);
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
@@ -452,8 +452,9 @@ class UserApi {
     }
     userData.intro = intro
     try {
-      await userData.save()
-      return await userData.save()
+      userData.markModified("intro")
+      const updatedUserData = await userData.save()
+      return updatedUserData
     }
     catch {
       const error = new Error("Something went wrong,Please try again later");

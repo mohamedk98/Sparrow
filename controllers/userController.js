@@ -265,7 +265,6 @@ const searchForPeople = async (req, res) => {
 const updateIntro = async (req, res) => {
   const userId = req.userId;
   const intro = req.body.intro;
-
   await userApi
     .updateIntro(userId, intro)
     .then((response) => res.status(200).send(response))
