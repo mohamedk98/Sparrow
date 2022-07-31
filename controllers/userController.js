@@ -293,8 +293,8 @@ const updateAbout = async (req, res) => {
   const userId = req.userId;
   const major = req.body.data.major;
   const university = req.body.data.university;
-  const town = req.body.data.university;
-  const mobile = req.body.data.university;
+  const town = req.body.data.town;
+  const mobile = req.body.data.mobile;
   const relationship = req.body.data.relationship;
   const work = req.body.data.work;
 
