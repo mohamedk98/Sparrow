@@ -453,7 +453,7 @@ class UserApi {
     userData.intro = intro
     try {
       await userData.save()
-      return {message:"Intro Updated"}
+      return await userData.save()
     }
     catch {
       const error = new Error("Something went wrong,Please try again later");
