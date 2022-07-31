@@ -273,12 +273,12 @@ const updateIntro = async (req, res) => {
 
 const updateAbout = async (req, res) => {
   const userId = req.userId;
-  const major = req.body.major;
-  const university = req.body.university;
-  const town = req.body.university;
-  const mobile = req.body.university;
-  const relationship = req.body.relationship;
-  const work = req.body.work;
+  const major = req.body.data.major;
+  const university = req.body.data.university;
+  const town = req.body.data.university;
+  const mobile = req.body.data.university;
+  const relationship = req.body.data.relationship;
+  const work = req.body.data.work;
 
   const aboutData = {
     major,
