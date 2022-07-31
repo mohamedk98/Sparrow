@@ -271,6 +271,30 @@ const updateIntro = async (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
+const updateAbout = async (req, res) => {
+  const userId = req.userId;
+  const major = req.body.major;
+  const university = req.body.university;
+  const town = req.body.university;
+  const mobile = req.body.university;
+  const relationship = req.body.relationship;
+  const work = req.body.work;
+
+  const aboutData = {
+    major,
+    university,
+    town,
+    mobile,
+    relationship,
+    work,
+  };
+
+  await userApi
+    .updateAbout(userId, aboutData)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
+
 module.exports = {
   getProfile,
   getNewsfeed,
@@ -293,4 +317,5 @@ module.exports = {
   unblockFriend,
   searchForPeople,
   updateIntro,
+  updateAbout
 };

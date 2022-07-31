@@ -450,15 +450,39 @@ class UserApi {
       error.httpStatusCode = 404;
       return error;
     }
-    userData.intro = intro
+    userData.intro = intro;
     try {
-      userData.markModified("intro")
-      const updatedUserData = await userData.save()
-      return updatedUserData
-    }
-    catch {
+      userData.markModified("intro");
+      const updatedUserData = await userData.save();
+      return updatedUserData;
+    } catch {
       const error = new Error("Something went wrong,Please try again later");
-      return error
+      return error;
+    }
+  }
+
+  async updateAbout(
+    userId,
+    { major, university, town, mobile, relationship, work }
+  ) {
+    const userData = await userApi.findById(userId);
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+    userData.major = major;
+    userData.university = university;
+    userData.town = town;
+    userData.mobile = mobile;
+    userData.relationship = relationship;
+    userData.work = work;
+    try {
+      const updatedUserData = await userData.save();
+      return updatedUserData;
+    } catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error;
     }
   }
 }
