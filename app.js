@@ -111,30 +111,39 @@ io.on("connection", async (socket) => {
   );
 
   socket.on("connect to user", async (receiverId) => {
+
+
     let room = await roomApi
       .findOne()
       .where("userIds")
-      .in(socket.handshake.auth.userId).and([{usersIds:receiverId}])
-      
+      .in([socket.handshake.auth.userId, receiverId]);
 
     if (!room) {
       try {
         let newRoom = new roomApi();
         newRoom.usersIds.push(socket.handshake.auth.userId);
         newRoom.usersIds.push(receiverId);
-         newRoom = await newRoom.save();
-        room = newRoom
+        newRoom = await newRoom.save();
+        room = newRoom;
       } catch (error) {
         console.log(error);
       }
     }
 
-    socket.join(room._id)
-    
-    socket.on("message",(message)=>{
-      io.to(room._id).emit("message",message)
-    })
 
+    socket.join(room._id.toString());
+    socket.emit("sent messages",room.messages)
+
+    socket.on("message", async (message, senderId) => {
+      io.to(room._id.toString()).emit("message", { message, senderId });
+      room.messages.push({
+        sender: senderId,
+        receiverId: receiverId,
+        message: message,
+        timestamp:new Date().toISOString()
+      });
+      await room.save()
+    });
   });
 
   // console.log(socket.handshake.auth.userId)

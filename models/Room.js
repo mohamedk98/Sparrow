@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 const MessageSchema = new mongoose.Schema({
-  firstUserId: { type: String },
-  secondUserId: { type: String },
   sender: { type: String },
+  receiver:{type:String},
   message: { type: String },
-  timestamp: { type: Date },
+  timestamp: Date,
 });
 const RoomSchema = new mongoose.Schema({
   usersIds: {type:[String],required:false},

@@ -31,7 +31,7 @@ const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUplo
 /* user data router */
 router.get("/profile", getProfile);
 router.get("/newsfeed", getNewsfeed);
-router.get("profile/posts",getUserPosts)
+router.get("/profile/posts",getUserPosts)
 
 /** sharing post routes*/
 router.post("/share/:postId", sharePost);
