@@ -79,8 +79,9 @@ class CommentsApi {
   /**Shared Post Comment API */
   async addSharedPostComment({ sharedPostId, userId, commentDate, content }) {
     try {
-      const foundPost = await sharedPostApi.findOne({ _id: sharedPostId });
+      let  foundPost = await sharedPostApi.findById( sharedPostId );
       foundPost.comments.push({ userId, commentDate, content });
+      foundPost.markModified("comments")
       await foundPost.save();
       return { message: "comment added", httpStatusCode: 200 };
     } catch {
