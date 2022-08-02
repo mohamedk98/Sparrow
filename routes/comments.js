@@ -9,8 +9,9 @@ router.patch("/comment/:postId/:commentId",updateComment)
 
   /**Shared Post Comment Routes */
 router.post("/comment/sharedPost/:sharedPostId",addSharedPostComment)
-router.delete("/comment/sharedPost/:sharedPostId/:commentId",deleteSharedPostComment)
 router.patch("/comment/sharedPost/:sharedPostId/:commentId",updateSharedPostComment)
+router.delete("/comment/sharedPost/:sharedPostId/:commentId",deleteSharedPostComment)
+
 
 
 

@@ -7,7 +7,7 @@ class CommentsApi {
     let foundPost = await postsApi.findById(postId);
     try {
       foundPost.comments.push({ userId, commentDate, content });
-      foundPost.markModified("comments")
+      foundPost.markModified("comments");
       await foundPost.save();
       return { message: "comment added", httpStatusCode: 200 };
     } catch {
@@ -78,12 +78,12 @@ class CommentsApi {
 
   /**Shared Post Comment API */
   async addSharedPostComment({ sharedPostId, userId, commentDate, content }) {
-    let  foundPost = await sharedPostApi.findById( sharedPostId );
+    let foundPost = await sharedPostApi.findById(sharedPostId);
     try {
       foundPost.comments.push({ userId, commentDate, content });
-      foundPost.markModified("comments")
+      foundPost.markModified("comments");
       await foundPost.save();
-      return await foundPost.save()
+      return await foundPost.save();
     } catch {
       const error = new Error("An Error has occured, please try again later");
       error.httpStatusCode = 400;
@@ -91,13 +91,13 @@ class CommentsApi {
     }
   }
 
-  async updateSharedPostComment(sharedPostId, commentObjectId) {
+  async deleteSharedPostComment(sharedPostId, commentObjectId) {
     try {
       let foundPost = await sharedPostApi.findOne({ _id: sharedPostId });
 
       if (!foundPost) {
         const error = new Error("Post not found");
-        error.httpStatusCode = 400;
+        error.httpStatusCode = 404;
         return error;
       }
 
@@ -114,7 +114,7 @@ class CommentsApi {
     }
   }
 
-  async deleteSharedPostComment({ sharedPostId, commentId, userId, content }) {
+  async updateSharedPostComment({ sharedPostId, commentId, userId, content }) {
     const postWithOldComment = await sharedPostApi.findOne({
       _id: sharedPostId,
     });
