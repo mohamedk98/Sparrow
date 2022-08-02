@@ -69,11 +69,11 @@ class ReplyApi {
       ]._id.toString();
 
     //Check if the user is authorized to delete this reply
-    if (userId !== replyToDeleteUserId) {
-      const error = new Error("Unauthorized");
-      error.httpStatusCode = 401;
-      return error;
-    }
+    // if (userId !== replyToDeleteUserId) {
+    //   const error = new Error("Unauthorized");
+    //   error.httpStatusCode = 401;
+    //   return error;
+    // }
     //Remove the reply from the comments and append it to the main post
     postToDeleteReply.comments[commentToDeleteReplyIndex].reply.splice(
       replyToDeleteIndex,
