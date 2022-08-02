@@ -4,9 +4,10 @@ const sharedPostApi = require("../models/SharedPost");
 class CommentsApi {
   /**Post Comment API */
   async addComment({ postId, userId, commentDate, content }) {
+    let foundPost = await postsApi.findById(postId);
     try {
-      const foundPost = await postsApi.findById(postId);
       foundPost.comments.push({ userId, commentDate, content });
+      foundPost.markModified("comments")
       await foundPost.save();
       return { message: "comment added", httpStatusCode: 200 };
     } catch {
