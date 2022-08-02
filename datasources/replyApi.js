@@ -1,5 +1,5 @@
 const postsApi = require("../models/Posts");
-const sharedPostApi = require("../models/SharedPost")
+const sharedPostApi = require("../models/SharedPost");
 class ReplyApi {
   async addReply({ postId, commentId, userId, replyDate, content }) {
     const postToAddReply = await postsApi.findOne({ _id: postId });
@@ -38,7 +38,7 @@ class ReplyApi {
 
     if (!postToDeleteReply) {
       const error = new Error("Post not Found");
-      error.httpStatusCode = 404; 
+      error.httpStatusCode = 404;
       return error;
     }
     //get the comment that contain the reply
@@ -68,10 +68,8 @@ class ReplyApi {
         replyToDeleteIndex
       ]._id.toString();
 
-    console.log(replyToDeleteUserId);
-    console.log(postToDeleteReply.userId);
     //Check if the user is authorized to delete this reply
-    if (userId !== postToDeleteReply.userId && userId !== replyToDeleteUserId) {
+    if (userId !== replyToDeleteUserId) {
       const error = new Error("Unauthorized");
       error.httpStatusCode = 401;
       return error;
@@ -142,8 +140,13 @@ class ReplyApi {
     }
   }
 
-
-  async addSharedPostReply({ sharedPostId, commentId, userId, replyDate, content }) {
+  async addSharedPostReply({
+    sharedPostId,
+    commentId,
+    userId,
+    replyDate,
+    content,
+  }) {
     const postToAddReply = await sharedPostApi.findOne({ _id: sharedPostId });
     if (!postToAddReply) {
       const error = new Error("Post not Found");
@@ -176,7 +179,9 @@ class ReplyApi {
   }
 
   async deleteSharedPostReply({ sharedPostId, commentId, replyId, userId }) {
-    const postToDeleteReply = await sharedPostApi.findOne({ _id: sharedPostId });
+    const postToDeleteReply = await sharedPostApi.findOne({
+      _id: sharedPostId,
+    });
 
     if (!postToDeleteReply) {
       const error = new Error("Post not Found");
@@ -211,7 +216,7 @@ class ReplyApi {
       ]._id.toString();
 
     //Check if the user is authorized to delete this reply
-    if (userId !== postToDeleteReply.userId && userId !== replyToDeleteUserId) {
+    if (userId !== replyToDeleteUserId) {
       const error = new Error("Unauthorized");
       error.httpStatusCode = 403;
       return error;
@@ -232,7 +237,13 @@ class ReplyApi {
     }
   }
 
-  async updateSharedPostReply({ sharedPostId, commentId, replyId, userId, content }) {
+  async updateSharedPostReply({
+    sharedPostId,
+    commentId,
+    replyId,
+    userId,
+    content,
+  }) {
     const postWithOldReply = await sharedPostApi.findOne({ _id: sharedPostId });
     if (!postWithOldReply) {
       const error = new Error("Post not Found");
