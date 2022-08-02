@@ -55,9 +55,9 @@ const sharePost = async (req, res) => {
   await userApi
     .sharePost(sharedPostData)
     .then((response) =>
-      res.status(response.httpStatusCode).send(response.message)
+      res.status(200).send(response.message)
     )
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const deleteSharedPost = async (req, res) => {
@@ -241,9 +241,9 @@ const removeFriend = async (req, res) => {
   await userApi
     .removeFriend(userId, friendId)
     .then((response) =>
-      res.status(response.httpStatusCode).send(response.message)
+      res.status(200).send(response.message)
     )
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const blockFriend = async (req, res) => {

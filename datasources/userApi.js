@@ -214,6 +214,7 @@ class UserApi {
     let userData = await userApi.findById(sharerId);
     userData.sharedPosts.push({ postId: originalPostId });
     userData.sharesCount = userData.sharesCount + 1;
+    console.log(userData.sharesCount)
     userData.markModified("sharesCount")
     try {
       await sharedPost.save(); 
@@ -411,11 +412,8 @@ class UserApi {
     );
 
     try {
-      await userData.save();
-      return {
-        message: "Friend Removed",
-        httpStatusCode: 200,
-      };
+      // await userData.save();
+      return await userData.save()
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
