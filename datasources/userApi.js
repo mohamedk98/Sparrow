@@ -211,12 +211,12 @@ class UserApi {
       createdAt: shareDate,
     });
 
-    const userData = await userApi.findById(sharerId);
+    let userData = await userApi.findById(sharerId);
     userData.sharedPosts.push({ postId: originalPostId });
     userData.sharesCount = userData.sharesCount + 1;
-
+    userData.markModified("sharesCount")
     try {
-      await sharedPost.save();
+      await sharedPost.save(); 
       await userData.save();
       return { message: "Post Shared Successfully", httpStatusCode: 200 };
     } catch {
