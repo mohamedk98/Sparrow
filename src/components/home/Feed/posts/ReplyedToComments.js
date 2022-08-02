@@ -1,15 +1,34 @@
 import React from 'react';
 import Replys from './Replys';
 
-const ReplyedToComments = ({ ReplyLikeButton, reply, comment }) => {
+import dateCalcFunction from './DateCalculations';
+
+const ReplyedToComments = ({
+  ReplyLikeButton,
+  reply,
+  commentId,
+  postId,
+  editReply,
+  setEditReply,
+  // moreID,
+}) => {
+  console.log(reply);
+  console.log(postId);
   return (
     <div key={reply?._id} className="relative -mb-14">
       <Replys
-        profileImage={comment.userId.profileImage}
+        profileImage={reply?.userId?.profileImage}
         name={reply?.userId?.firstName + ' ' + reply?.userId?.lastName}
         content={reply.content}
-        date={reply.replyDate.slice(0, 10)}
+        date={dateCalcFunction(reply?.replyDate)}
         ReplyLikeButton={ReplyLikeButton}
+        reactions={reply?.reactions}
+        userID={reply?.userId?._id}
+        postId={postId}
+        moreID={reply?.userId?._id}
+        replyId={reply?._id}
+        commentId={commentId}
+        setEditReply={setEditReply}
       />
     </div>
   );

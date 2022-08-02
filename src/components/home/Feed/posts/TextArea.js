@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import profileImg from '../../../../assets/images/default_profile.png';
-
 import { VscSmiley } from 'react-icons/vsc';
 
 import EmojiPicker from '../EmojiPicker';
@@ -16,6 +14,7 @@ const TextArea = ({
   id,
   comment,
   reply,
+  replyId,
   editComment,
   postId,
   showMore,
@@ -24,7 +23,18 @@ const TextArea = ({
   commentId,
   value,
   autoFocus,
+  sharedPost,
+  sharedCommentID,
+  editReply,
+  userImage,
+  getInputTextValueHandler,
+  setEmptyTextArea,
+  emptyTextArea,
+  shareAPost,
 }) => {
+  // console.log(sharedCommentID);
+  // console.log(sharedPost);
+  // console.log(editReply);
   // console.log(postId, commentId);
   // For textArea value:
   const textareaRef = useRef('');
@@ -125,19 +135,117 @@ const TextArea = ({
       });
   };
 
+  const editReplyHandler = () => {
+    axiosInstance
+      .patch(
+        `/reply/post/${postId}/${commentId}/${replyId}`,
+        { content: text },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const addSharedCommentHandler = () => {
+    // console.log(id);
+    axiosInstance
+      .post(
+        `/comment/sharedPost/${id}`,
+        { content: text },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const addSharedReplyHandler = () => {
+    // console.log(id);
+    // console.log(postId);
+    axiosInstance
+      .post(
+        `/reply/sharedPost/${postId}/${id}`,
+        { content: text },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const editSharedCommentHandler = () => {
+    console.log(id);
+    console.log(sharedCommentID);
+    axiosInstance
+      .patch(
+        `/comment/sharedPost/${id}/${sharedCommentID}`,
+        { content: text },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const editSharedReplyHandler = () => {
+    // console.log(postId,commentId,replyId);
+    axiosInstance
+      .patch(
+        `/comment/sharedPost/${postId}/${commentId}/${replyId}`,
+        { content: text },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className={'flex mb-3 ' + replyClassName}>
       {!className && showProfileImage && (
         <a href="/">
-          <img
-            src={profileImg}
-            className="rounded-full mr-2 h-8"
-            alt="Avatar"
-          />
+          <img src={userImage} className="rounded-full mr-2 h-8" alt="Avatar" />
         </a>
       )}
-      <div className="w-full relative">
+      <div className="w-full relative z-40">
         <textarea
+          // For sharing post:
+          onFocus={() => shareAPost && setEmptyTextArea(false)}
+          onBlur={e => {
+            shareAPost && getInputTextValueHandler(text);
+            //  setEmptyTextArea(!emptyTextArea)
+          }}
           onKeyDown={e => {
             if (e.key === 'Enter') {
               if (e.target.value.trim() === '') {
@@ -146,14 +254,26 @@ const TextArea = ({
                 return;
               } else {
                 e.preventDefault();
+
                 if (comment) {
-                  addCommentHandler();
+                  sharedPost ? addSharedCommentHandler() : addCommentHandler();
                 }
+
                 if (reply) {
-                  addreplyHandler();
+                  console.log(reply, sharedPost);
+                  sharedPost ? addSharedReplyHandler() : addreplyHandler();
                 }
+
                 if (editComment) {
-                  editCommentHandler();
+                  // console.log(editComment);
+                  // console.log(sharedPost);
+                  sharedPost
+                    ? editSharedCommentHandler()
+                    : editCommentHandler();
+                }
+
+                if (editReply) {
+                  sharedPost ? editSharedReplyHandler() : editReplyHandler();
                 }
 
                 e.target.value = '';
@@ -161,14 +281,14 @@ const TextArea = ({
               }
             }
 
-            console.log(id);
+            // console.log(id);
           }}
           onChange={e => {
             setText(e.target.value);
             // console.log(e.target.value);
             // console.log(text);
           }}
-          value={text}
+          value={emptyTextArea ? '' : text}
           ref={textareaRef}
           cols={cols || '75'}
           rows={rows || '1'}
@@ -182,7 +302,7 @@ const TextArea = ({
               e.target.scrollHeight < 80 ? e.target.scrollHeight : 80
             }px`;
 
-            console.log(e.target.scrollHeight);
+            // console.log(e.target.scrollHeight);
           }}
           placeholder={placeholder}
           autoFocus={autoFocus}

@@ -9,16 +9,46 @@ import LikeButton from './LikeButton';
 
 import ShareModal from './ShareModal';
 
-import profileImg from '../../../../assets/images/default_profile.png';
+// import profileImg from '../../../../assets/images/default_profile.png';
 import TextArea from './TextArea';
 import ReplyLikeButton from './ReplyLikeButton';
 import More from './More';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import ReplyedToComments from './ReplyedToComments';
+import dateCalcFunction from './DateCalculations';
 
-const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
-  // Edit Comment:
+import likeSVG from './../../../../assets/reacts/like.svg';
+import loveSVG from '../../../../assets/reacts/love.svg';
+import careSVG from '../../../../assets/reacts/heart.svg';
+import hahaSVG from '../../../../assets/reacts/haha.svg';
+import wowSVG from '../../../../assets/reacts/wow.svg';
+import sadSVG from '../../../../assets/reacts/sad.svg';
+import angrySVG from '../../../../assets/reacts/angry.svg';
+import ReactionClassHandler from './ReactionClasses';
+
+import PostMiddleCounters from './PostMiddleCounters';
+
+const PostMiddle = ({
+  data,
+  writeComment,
+  setWriteComment,
+  userData,
+  sharedPost,
+  sharedPostData,
+  reactions,
+  reactionsMakers,
+  moreID,
+}) => {
+  // console.log(sharedPostData);
+  // console.log(reactions, sharedPost);
+  // console.log(reactionsMakers, sharedPost);
+  // console.log(data);
+
+  // Edit a Comment:
   const [editComment, setEditComment] = useState(false);
+
+  // Edit a Reply:
+  const [editReply, setEditReply] = useState(false);
 
   // Hide and show reply input in comments:
   const [writeReply, setWriteReply] = useState(false);
@@ -38,47 +68,25 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
   // Reactions className set:
   const [reactClass, setReactClass] = useState('');
 
-  const reactHandler = name => {
+  const reactHandler = (name, reactionsClicked = true) => {
     console.log(name);
     // console.log(reactType);
 
-    setReactionClicked(true);
+    setReactionClicked(reactionsClicked);
     // console.log(reactionClicked);
 
     setReactType(name);
     // console.log(reactType);
 
-    let className = 'font-bold timepicker-clock-animation ';
+    // Handle reacion className and style in runtime (while clicking on reaction):
+    ReactionClassHandler(name, setReactClass);
 
-    switch (name) {
-      case 'Like':
-        className += 'text-facebook-blue';
-        break;
+    // let formData = new FormData();
+    // formData.append('reaction', name);
 
-      case 'Love':
-        className += 'text-red-500';
-        break;
-
-      case 'Care':
-      case 'Haha':
-      case 'Wow':
-      case 'Sad':
-        className += 'text-yellow-400';
-        break;
-
-      case 'Angry':
-        className += 'text-rose-500';
-        break;
-
-      default:
-        break;
-    }
-
-    setReactClass(className);
-    let formData = new FormData();
-    formData.append('reaction', name);
-    // Send reaction to DB:
+    // Send post reaction to DB:
     const reactBody = { reaction: name };
+    // console.log(reactBody);
     let endPoint = data?.sharerId
       ? `/reaction/sharedPost/${data._id}`
       : `/reaction/post/${data._id}`;
@@ -87,7 +95,7 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(response => {
-        console.log(data._id);
+        // console.log(data._id);
         console.log(response);
       })
       .catch(error => {
@@ -96,11 +104,24 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
   };
 
   // console.log(data);
+  // console.log(userData);
 
+  // Post _id for regular and shared post:
   let id = data.originalPostId ? data._id : data._id;
 
   return (
     <Fragment>
+      {sharedPost && (
+        <PostMiddleCounters
+          data={data}
+          reactions={reactions}
+          reactionsMakers={reactionsMakers}
+          sharedPost={sharedPost}
+          setWriteComment={setWriteComment}
+          writeComment={writeComment}
+        />
+      )}
+
       <div className="flex justify-between border-b-2 mb-4 px- relative">
         <PostReactions
           // className=""
@@ -108,6 +129,10 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
           setVisible={setVisible}
           reactHandler={reactHandler}
         />
+
+        {
+          // Reactions button:
+        }
         <LikeButton
           reactType={reactType}
           setReactType={setReactType}
@@ -117,37 +142,71 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
           setVisible={setVisible}
           setReactionClicked={setReactionClicked}
           data={data}
+          userID={userData?._id}
+          reactHandler={reactHandler}
+          sharedPost={sharedPost}
+          sharedPostData={sharedPostData}
         />
+
+        {
+          // Comment button:
+        }
         <button
           type="button"
           className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-10 ml-3 md:ml-3 lg:ml-7 rounded-lg"
           onClick={() => {
             setWriteComment(!writeComment);
+            console.log(data);
           }}
         >
           <FaCommentAlt className="mt-1.5 mr-2" />
           Comment
         </button>
+
+        {
+          // Share button:
+        }
         <button
           type="button"
           className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 lg:px-14 rounded-lg"
           data-bs-toggle="modal"
-          data-bs-target="#ModalCenter"
+          data-bs-target={`#shareModal${data?._id}`}
+          onClick={() => {
+            console.log(data);
+          }}
         >
           <RiShareForwardFill className="mt-0.5 mr-2 text-2xl" />
           Share
         </button>
 
+        {
+          // Share modal:
+        }
         <ShareModal
-          modelID="ModalCenter"
-          profileSRC={profileImg}
-          profileName={data?.creatorName}
-          postDate={data?.createdAt?.slice(0, 10)}
+          modelID={`shareModal${data?._id}`}
+          profileSRC={userData?.profileImage}
+          profileFName={userData?.firstName}
+          profileLName={userData?.lastName}
+          postDate={
+            sharedPost
+              ? data?.originalPostId?.createdAt?.slice(0, 10)
+              : data?.createdAt?.slice(0, 10)
+          }
           hideMore={true}
-          postBody={data?.content}
-          postImage="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/beach-quotes-1559667853.jpg?crop=1.00xw:0.753xh;0,0.201xh&resize=980:*"
+          postCreatorName={
+            sharedPost
+              ? `${data?.originalPostId?.userId?.firstName} ${data?.originalPostId?.userId?.lastName}`
+              : `${data?.userId?.firstName} ${data?.userId?.lastName}`
+          }
+          postCreatorProfileSRC={
+            sharedPost
+              ? data?.originalPostId?.userId?.profileImage
+              : data?.userId?.profileImage
+          }
+          postBody={sharedPost ? data?.originalPostId?.content : data?.content}
+          postImage={sharedPost ? data?.originalPostId?.media : data?.media}
           reverseDirection={true}
-          id={data?._id}
+          postId={sharedPost ? data?.originalPostId?._id : data?._id}
         />
       </div>
 
@@ -162,6 +221,8 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
             comment={true}
             // showMore={true}
             showProfileImage={true}
+            sharedPost={sharedPost}
+            userImage={userData?.profileImage}
           />
 
           {
@@ -180,6 +241,34 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                   </a>
 
                   {
+                    // Show reactions SVGs for comments:
+                    // Not tested, waiting for DB:
+                  }
+                  <div className="flex">
+                    {comment?.reactions?.map(reaction => (
+                      <div key={reaction._id} className="mt-1">
+                        {reaction.reaction === 'Like' ? (
+                          <img className="w-4" src={likeSVG} alt="" />
+                        ) : reaction.reaction === 'Love' ? (
+                          <img className="w-4" src={loveSVG} alt="" />
+                        ) : reaction.reaction === 'Care' ? (
+                          <img className="w-4" src={careSVG} alt="" />
+                        ) : reaction.reaction === 'Haha' ? (
+                          <img className="w-4" src={hahaSVG} alt="" />
+                        ) : reaction.reaction === 'Wow' ? (
+                          <img className="w-4" src={wowSVG} alt="" />
+                        ) : reaction.reaction === 'Sad' ? (
+                          <img className="w-4" src={sadSVG} alt="" />
+                        ) : reaction.reaction === 'Angry' ? (
+                          <img className="w-4" src={angrySVG} alt="" />
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {
                     // Show and hide edit comment input:
                   }
                   {editComment && comment?._id === editComment ? (
@@ -193,7 +282,11 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                         // showMore={true}
                         showProfileImage={false}
                         autoFocus={true}
+                        sharedCommentID={comment?._id}
+                        userImage={userData?.profileImage}
+                        sharedPost={sharedPost}
                       />
+
                       <button
                         onClick={() => setEditComment(false)}
                         className="text-xs absolute bottom-0 left-12 ml-1"
@@ -206,7 +299,7 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                       className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit "
                       id={comment?.userId?._id}
                     >
-                      <span className="text-sm">
+                      <span className="text-sm text-zinc-700 ">
                         {comment?.userId?.firstName +
                           ' ' +
                           comment?.userId?.lastName}
@@ -222,7 +315,12 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                           // Need To Fix liNum2
                         }
                         <More
-                          text="Delete comment"
+                          text={
+                            comment?.userId?._id === userData?._id
+                              ? 'Delete comment'
+                              : 'Hide comment'
+                          }
+                          sharedPost={sharedPost}
                           deleteComment={true}
                           containerClassName="dropdown absolute -right-14 -top-8"
                           iconClassName="w-7 h-7"
@@ -230,12 +328,14 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                           // To show or hide liNum2:
                           id={comment?.userId?._id}
                           userID={userData?._id}
+                          // To show edit a comment input:
                           setEditComment={setEditComment}
+                          commentId={comment?._id}
                           liNum2={2}
                           text2={'Edit comment'}
                           tooltipData="more"
-                          commentId={comment?._id}
                           postId={id}
+                          moreID={moreID}
                         />
                       </div>
                     </div>
@@ -243,53 +343,56 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                 </div>
 
                 {
-                  // Show Reply to Comments buttons
+                  // Show Reply to Comments and reactions buttons if no edit happens to the comment:
                 }
-                <div>
-                  <div className="ml-20 text-sm mt-0.5 mb-3">
-                    <ReplyLikeButton
-                      reactType={reactType}
-                      setReactType={setReactType}
-                      reactionClicked={reactionClicked}
-                      reactClass={reactClass}
-                      setReactClass={setReactClass}
-                      setVisible={setVisible}
-                      visible={visible}
-                      reactHandler={reactHandler}
-                      setReactionClicked={setReactionClicked}
-                    />
+                {!editComment && comment?._id !== editComment && (
+                  <div>
+                    <div className="ml-14 text-sm mt-0.5 mb-3">
+                      <ReplyLikeButton
+                        reactType={reactType}
+                        setReactType={setReactType}
+                        reactionClicked={reactionClicked}
+                        reactClass={reactClass}
+                        setReactClass={setReactClass}
+                        setVisible={setVisible}
+                        visible={visible}
+                        reactHandler={reactHandler}
+                        setReactionClicked={setReactionClicked}
+                      />
 
-                    <button
-                      type="button"
-                      className="btn mx-3 hover:underline underline-offset-2"
-                      id={comment?._id}
-                      onClick={e => {
-                        if (comment?._id === e.target.id) {
-                          // console.log(e.target.id);
-                          setWriteReply(e.target.id);
-                        }
-                      }}
-                    >
-                      Reply
-                    </button>
+                      <button
+                        type="button"
+                        className="btn mx-3 hover:underline underline-offset-2"
+                        id={comment?._id}
+                        onClick={e => {
+                          if (comment?._id === e.target.id) {
+                            // console.log(e.target.id);
+                            setWriteReply(e.target.id);
+                          }
+                        }}
+                      >
+                        Reply
+                      </button>
 
-                    <span className="text-gray-500 text-xs">57m</span>
+                      <span className="text-gray-500 text-xs">
+                        {dateCalcFunction(comment?.commentDate)}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {
-                // Show Replys to Comments
+                // Show Replys to Comments and hide them while editing the a comment
               }
               {comment?.reply?.length > 0 &&
-                showReplyComments !== comment?._id && (
+                showReplyComments !== comment?._id &&
+                !editComment && (
                   <Fragment>
                     <button
                       id={comment?._id}
-                      className={`mr-72 text-sm flex ${
-                        showReplyComments === comment?._id
-                          ? 'text-blue-500'
-                          : ''
+                      className={`mr-72 text-sm flex z-50 ${
+                        showReplyComments === comment?._id && 'text-blue-500'
                       }
                       `}
                       onClick={() =>
@@ -300,101 +403,159 @@ const PostMiddle = ({ data, writeComment, setWriteComment, userData }) => {
                     >
                       <BiShare
                         className={`rotate-180 ml-12 mr-1 mt-0.5 ${
-                          showReplyComments === comment?._id
-                            ? 'text-blue-500'
-                            : ''
+                          showReplyComments === comment?._id && 'text-blue-500'
                         }`}
                       />
                       {comment?.reply?.length}{' '}
                       {comment?.reply?.length === 1 ? 'reply' : 'replies'}
                     </button>
 
-                    <div className="relative -mt-3 md:mt- -top-4 md:-top-4 left-4 md:left-4">
-                      .....
-                    </div>
+                    {
+                      // reply to a comment tree ilustration and hide them while editing a comment:
+                    }
 
-                    <div className="rotate-90 relative top-24 md:top-36 lg:top-56 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
-                      ..................
-                    </div>
-
-                    {writeReply === comment?._id && (
+                    {!editComment && (
                       <Fragment>
-                        <div className="rotate-90 relative -mt-2 top-40 md:top-52 md:-mt-3 lg:top-72 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
-                          .....................
-                        </div>
-                        <div className="relative -mt-3 top-6 md:top-6 left-4 md:left-4">
+                        {
+                          // For horizontal lines and replys are hidden:
+                        }
+                        <div className="relative -mt-3 md:mt-0.5 -top-4 md:-top-7 left-4 md:left-4">
                           .....
                         </div>
+
+                        {
+                          // For vertical lines and replys are hidden
+                        }
+                        <div className="rotate-90 relative top-24 -mt-1 md:top-32 md:-mt-0 lg:top-52 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
+                          ...................
+                        </div>
+
+                        {
+                          // For vertical lines, replys are hidden, and reply textInput is visable:
+                        }
+                        {writeReply === comment?._id && (
+                          <Fragment>
+                            <div className="rotate-90 relative -mt-2 top-36 md:top-48 lg:top-64 lg:-mb-5 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
+                              ........................
+                            </div>
+                            {
+                              // For horizontal lines, replys are hidden, and reply textInput is visable:
+                            }
+                            <div className="relative -mt-3 top-6 md:top-6 left-4 md:left-4">
+                              .....
+                            </div>
+                          </Fragment>
+                        )}
                       </Fragment>
                     )}
                   </Fragment>
                 )}
 
-              {showReplyComments === comment?._id && (
+              {
+                // Show replies to a comment and hide it while editing a comment::
+              }
+              {showReplyComments === comment?._id && !editComment && (
                 <div className="relative">
                   {comment?.reply?.map(reply => (
                     <Fragment key={reply?._id}>
-                      <ReplyedToComments
-                        reply={reply}
-                        comment={comment}
-                        ReplyLikeButton={
-                          <ReplyLikeButton
-                            reactType={reactType}
-                            setReactType={setReactType}
-                            reactionClicked={reactionClicked}
-                            reactClass={reactClass}
-                            setReactClass={setReactClass}
-                            setVisible={setVisible}
-                            visible={visible}
-                            reactHandler={reactHandler}
-                            setReactionClicked={setReactionClicked}
+                      {editReply && reply?._id === editReply ? (
+                        <div className="relative pl-10 pb-3">
+                          <TextArea
+                            value={reply?.content}
+                            replyId={reply?._id}
+                            commentId={comment?._id}
+                            postId={data?._id}
+                            editReply={true}
+                            showMore={false}
+                            showProfileImage={true}
+                            autoFocus={true}
+                            userImage={userData?.profileImage}
+                            // sharedCommentID={data?.comments?._id}
+                            sharedPost={sharedPost}
                           />
-                        }
-                      />
+                          <button
+                            onClick={() => setEditReply(false)}
+                            className="text-xs absolute bottom-3 left-32"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <ReplyedToComments
+                          reply={reply}
+                          // To show edit a reply input:
+                          setEditReply={setEditReply}
+                          commentId={comment?._id}
+                          postId={data?._id}
+                          ReplyLikeButton={
+                            <ReplyLikeButton
+                              reactType={reactType}
+                              setReactType={setReactType}
+                              reactionClicked={reactionClicked}
+                              reactClass={reactClass}
+                              setReactClass={setReactClass}
+                              setVisible={setVisible}
+                              visible={visible}
+                              reactHandler={reactHandler}
+                              setReactionClicked={setReactionClicked}
+                              postId={data?._id}
+                              moreID={moreID}
+                              //For enlarging reply reactions cause they are too small:
+                              containerClassName="w-72 -left-1"
+                            />
+                          }
+                        />
+                      )}
 
                       {
                         // Make a line connection:
                       }
-                      <div className="relative -mt-3 md:-mt-0 -top-16 md:-top-16 left-4 md:left-4">
-                        .....
-                      </div>
+                      {!editComment && (
+                        <Fragment>
+                          <div className="relative -mt-3 md:-mt-0 -top-16 md:-top-16 left-4 md:left-4">
+                            .....
+                          </div>
 
-                      <div className="rotate-90 relative top-8 md:top-20 lg:top-40 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
-                        ...............................................
-                      </div>
+                          <div className="rotate-90 relative top-8 md:top-20 lg:top-40 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
+                            ..............................................
+                          </div>
+                        </Fragment>
+                      )}
                     </Fragment>
                   ))}
                 </div>
               )}
 
               {
-                // Write a Reply to a comment
+                // Write a Reply to a comment and hide it in editing a comment:
               }
-
               {(writeReply === comment?._id ||
-                showReplyComments === comment?._id) && (
-                <Fragment>
-                  <TextArea
-                    placeholder="Reply to Malcolm Dosh"
-                    id={comment?._id}
-                    postId={id}
-                    reply={true}
-                    // showMore={true}
-                    replyClassName="ml-10"
-                    // className="animation"
-                    showProfileImage={true}
-                  />
+                showReplyComments === comment?._id) &&
+                !editComment && (
+                  <Fragment>
+                    <TextArea
+                      placeholder={`Reply to ${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
+                      id={comment?._id}
+                      postId={id}
+                      reply={true}
+                      sharedPost={sharedPost}
+                      userImage={userData?.profileImage}
+                      // showMore={true}
+                      replyClassName="ml-10"
+                      // className="animation"
+                      showProfileImage={true}
+                    />
 
-                  {
-                    // Make a line connection:
-                  }
-                  {showReplyComments === comment?._id && (
-                    <div className="relative -top-12 md:-top-11 left-4 md:left-5 md:-mt-2 md:-ml-1">
-                      .....
-                    </div>
-                  )}
-                </Fragment>
-              )}
+                    {
+                      // continue making a line connection:
+                    }
+                    {showReplyComments === comment?._id && (
+                      <div className="relative -top-12 md:-top-11 left-4 md:left-5 md:-mt-2 md:-ml-1">
+                        .....
+                      </div>
+                    )}
+                  </Fragment>
+                )}
             </div>
           ))}
         </div>

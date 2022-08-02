@@ -3,11 +3,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import likePNG from './../../../../assets/reacts/like.png';
 import likeSVG from './../../../../assets/reacts/like.svg';
 import loveSVG from '../../../../assets/reacts/love.svg';
-import heartSVG from '../../../../assets/reacts/heart.svg';
+import careSVG from '../../../../assets/reacts/heart.svg';
 import hahaSVG from '../../../../assets/reacts/haha.svg';
 import wowSVG from '../../../../assets/reacts/wow.svg';
 import sadSVG from '../../../../assets/reacts/sad.svg';
 import angrySVG from '../../../../assets/reacts/angry.svg';
+import ReactionClassHandler from './ReactionClasses';
 
 const LikeButton = ({
   reactType,
@@ -18,7 +19,18 @@ const LikeButton = ({
   setVisible,
   setReactionClicked,
   data,
+  userID,
+  reactHandler,
+  sharedPost,
+  sharedPostData,
 }) => {
+  // Reaction from API for current user:
+  const userReaction = (sharedPost ? sharedPostData : data)?.reactions?.filter(
+    reaction => reaction?.userId?._id === userID
+  )[0]?.reaction;
+  // console.log(userReaction);
+  // console.log(sharedPostData, sharedPost, userID);
+
   // Reactions button clicked:
   const [btnClicked, setBtnClicked] = useState(false);
 
@@ -29,7 +41,7 @@ const LikeButton = ({
     () => [
       { name: 'Like', svg: likeSVG },
       { name: 'Love', svg: loveSVG },
-      { name: 'Care', svg: heartSVG },
+      { name: 'Care', svg: careSVG },
       { name: 'Haha', svg: hahaSVG },
       { name: 'Wow', svg: wowSVG },
       { name: 'Sad', svg: sadSVG },
@@ -41,6 +53,37 @@ const LikeButton = ({
   const svgPicker = reactTypeSVG.filter(react => {
     return react.name === reactType;
   })[0];
+
+  // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
+  useEffect(() => {
+    // Handle incoming reaction from Data Base:
+    if (userReaction && !reactionClicked) {
+      // Handle className and style for like button in post:
+      ReactionClassHandler(userReaction, setReactClass);
+
+      // Set name or type for the reaction:
+      setReactType(userReaction);
+
+      // set SVG for the reaction:
+      setReactTypeSRC(
+        userReaction === 'Like'
+          ? likeSVG
+          : userReaction === 'Love'
+          ? loveSVG
+          : userReaction === 'Care'
+          ? careSVG
+          : userReaction === 'Haha'
+          ? hahaSVG
+          : userReaction === 'Wow'
+          ? wowSVG
+          : userReaction === 'Sad'
+          ? sadSVG
+          : userReaction === 'Angry'
+          ? angrySVG
+          : likePNG
+      );
+    }
+  }, [reactionClicked, setReactClass, setReactType, userReaction]);
 
   useEffect(() => {
     reactionClicked && setReactTypeSRC(svgPicker?.svg);
@@ -57,28 +100,32 @@ const LikeButton = ({
       setReactTypeSRC(likeSVG);
       setReactClass('text-facebook-blue font-bold');
       setBtnClicked(!btnClicked);
+      reactHandler('Like');
     }
 
     if (
       (reactType === 'Like' && reactTypeSRC === likeSVG && btnClicked) ||
       (reactType !== '' && reactTypeSRC === svgPicker?.svg && btnClicked)
     ) {
-      setReactTypeSRC(likePNG);
       setReactType('');
+      setReactTypeSRC(likePNG);
       setReactClass('');
       setBtnClicked(!btnClicked);
+      reactHandler('', false);
     }
-
+    // console.log(reactType, reactClass, btnClicked, reactTypeSRC);
     // console.log(reactionClicked);
   }, [
     btnClicked,
     reactClass,
+    reactHandler,
     reactType,
     reactTypeSRC,
     reactionClicked,
     setReactClass,
     setReactType,
     svgPicker?.svg,
+    userReaction,
   ]);
 
   return (
@@ -101,8 +148,8 @@ const LikeButton = ({
       onClick={() => {
         setReactionClicked(false);
         setBtnClicked(!btnClicked);
-        console.log(btnClicked);
-        console.log(reactionClicked);
+        // console.log(btnClicked);
+        // console.log(reactionClicked);
       }}
     >
       <div className="mt-0.5 mr-2 text-xl w-5">

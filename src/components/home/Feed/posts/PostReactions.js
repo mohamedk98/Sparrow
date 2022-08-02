@@ -39,12 +39,19 @@ const reactsArray = [
   },
 ];
 
-const PostReactions = ({ visible, setVisible, reactHandler }) => {
+const PostReactions = ({
+  visible,
+  setVisible,
+  reactHandler,
+  containerClassName,
+}) => {
   return (
     <Fragment>
       {visible && (
         <div
-          className="flex flex-row justify-center  align-middle absolute w-8/12 pt-1 px-1 mt-2 -top-14 bg-gray-50 shadow-2xl border rounded-full"
+          className={`flex flex-row justify-center align-middle absolute pt-1 px-1 mt-2 -top-14 bg-gray-50 shadow-2xl border rounded-full ${
+            containerClassName ? containerClassName : 'w-8/12'
+          }`}
           onMouseOver={() => {
             setTimeout(() => {
               setVisible(true);
@@ -56,6 +63,9 @@ const PostReactions = ({ visible, setVisible, reactHandler }) => {
             }, 500);
           }}
         >
+          {
+            // For floating reactions:
+          }
           {reactsArray.map((react, idx) => (
             <div
               className={
