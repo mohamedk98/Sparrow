@@ -86,7 +86,7 @@ class UserApi {
         select: "firstName lastName profileImage _id",
       });
 
-    let allPosts = userSharedPosts.concat(userSharedPosts);
+    let allPosts = userSharedPosts.concat(userPosts);
     //sort the array descendigly
     allPosts = allPosts.sort((firstElement, secondElement) => {
       const firstPostDate = new Date(firstElement.createdAt);

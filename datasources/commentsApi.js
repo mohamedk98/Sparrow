@@ -78,12 +78,12 @@ class CommentsApi {
 
   /**Shared Post Comment API */
   async addSharedPostComment({ sharedPostId, userId, commentDate, content }) {
+    let  foundPost = await sharedPostApi.findById( sharedPostId );
     try {
-      let  foundPost = await sharedPostApi.findById( sharedPostId );
       foundPost.comments.push({ userId, commentDate, content });
       foundPost.markModified("comments")
       await foundPost.save();
-      return { message: "comment added", httpStatusCode: 200 };
+      return await foundPost.save()
     } catch {
       const error = new Error("An Error has occured, please try again later");
       error.httpStatusCode = 400;
