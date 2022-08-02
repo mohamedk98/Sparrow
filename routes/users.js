@@ -24,7 +24,8 @@ const {
   searchForPeople,
   updateIntro,
   updateAbout,
-  updateHobbies
+  updateHobbies,
+  getSingleProfile
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
@@ -32,6 +33,7 @@ const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUplo
 router.get("/profile", getProfile);
 router.get("/newsfeed", getNewsfeed);
 router.get("/profile/posts",getUserPosts)
+router.get("/profile/:username",getSingleProfile)
 
 /** sharing post routes*/
 router.post("/share/:postId", sharePost);

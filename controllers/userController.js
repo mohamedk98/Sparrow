@@ -12,6 +12,14 @@ const getProfile = (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
+const getSingleProfile = (req, res) => {
+  const username = req.params.username;
+  userApi
+    .getSingleUserProfile(username)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
+
 const getNewsfeed = (req, res) => {
   const userId = req.userId;
   userApi
@@ -337,5 +345,6 @@ module.exports = {
   searchForPeople,
   updateIntro,
   updateAbout,
-  updateHobbies
+  updateHobbies,
+  getSingleProfile
 };

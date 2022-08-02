@@ -15,7 +15,27 @@ class UserApi {
   async getUserProfile(userId) {
     const userData = await userApi
       .findById(userId, "-password")
-      .populate("friends.data.userId", "firstName lastName profileImage _id username");
+      .populate(
+        "friends.data.userId",
+        "firstName lastName profileImage _id username"
+      );
+
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+
+    return userData;
+  }
+
+  async getSingleUserProfile(username) {
+    const userData = await userApi
+      .findOne({ username: username }, "-password")
+      .populate(
+        "friends.data.userId",
+        "firstName lastName profileImage _id username"
+      );
 
     if (!userData) {
       const error = new Error("User not found");
@@ -565,8 +585,8 @@ class UserApi {
     //   { new: true }
     // );
     // return userData;
-    const userData = await userApi.findById(userId,"-password")
-    
+    const userData = await userApi.findById(userId, "-password");
+
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
@@ -574,12 +594,11 @@ class UserApi {
     }
 
     try {
-      userData.hobbies = hobbies
+      userData.hobbies = hobbies;
       userData.markModified("hobbies");
-      const updatedUserData = await userData.save()
-      return updatedUserData
-    }
-    catch {
+      const updatedUserData = await userData.save();
+      return updatedUserData;
+    } catch {
       const error = new Error("Something went wrong,Please try again later");
       return error;
     }
