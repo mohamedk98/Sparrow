@@ -13,7 +13,7 @@ const addComment = (req, res) => {
       res.status(200).send(response);
     })
     .catch((error) => {
-      res.send(error.httpStatusCode).send(error.message);
+      res.status(400).send(error.message);
     });
 };
 
@@ -51,8 +51,6 @@ const addSharedPostComment = (req, res) => {
   const userId = req.userId;
   const content = req.body.content;
   const commentDate = new Date().toISOString();
-
-  console.log(userId)
   commentsApi
     .addSharedPostComment({ sharedPostId, userId, commentDate, content })
     .then((response) => {
