@@ -12,9 +12,9 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 class UserApi {
-  async getUserProfile(username) {
+  async getUserProfile(userId) {
     const userData = await userApi
-      .findOne({username}, "-password")
+      .findById(userId, "-password")
       .populate(
         "friends.data.userId",
         "firstName lastName profileImage _id username"

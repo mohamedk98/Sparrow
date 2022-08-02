@@ -5,9 +5,9 @@ const sharedPostApi = new SharedPostApi();
 const ReactionApi = require("../datasources/reactionsApi");
 const reactionApi = new ReactionApi();
 const getProfile = (req, res) => {
-  const username = req.username;
+  const userId = req.userId;
   userApi
-    .getUserProfile(username)
+    .getUserProfile(userId)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
 };
