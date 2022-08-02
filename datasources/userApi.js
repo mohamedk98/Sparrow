@@ -177,7 +177,7 @@ class UserApi {
       .populate("reactions.userId", "firstName lastName")
       .populate({
         path: "comments.userId",
-        select: "firstName lastName",
+        select: "firstName lastName profileImage _id",
       })
       .populate({
         path: "comments.reply.userId",
