@@ -15,7 +15,7 @@ class UserApi {
   async getUserProfile(userId) {
     const userData = await userApi
       .findById(userId, "-password")
-      .populate("friends.data.userId", "firstName lastName profileImage _id");
+      .populate("friends.data.userId", "firstName lastName profileImage _id username");
 
     if (!userData) {
       const error = new Error("User not found");
