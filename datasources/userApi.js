@@ -397,7 +397,7 @@ class UserApi {
 
   async removeFriend(userId, friendId) {
     const userData = await userApi.findById(userId);
-    const friendExist = userData.friends.find(
+    const friendExist = userData.friends.data.find(
       (friend) => friend.userId.toString() === friendId
     );
     //if friend already exist
