@@ -17,18 +17,16 @@ class UserApi {
       .findById(userId, "-password")
       .populate("friends.data.userId", "firstName lastName profileImage _id");
 
-
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
       return error;
     }
 
-    return userData
+    return userData;
   }
 
-  async getUserPosts (userId) {
-    
+  async getUserPosts(userId) {
     //get user created posts
     const userPosts = await postApi
       .find({ userId })
@@ -88,7 +86,16 @@ class UserApi {
         select: "firstName lastName profileImage _id",
       });
 
-      return {userPosts,userSharedPosts}
+    let allPosts = userSharedPosts.concat(userSharedPosts);
+    //sort the array descendigly
+    allPosts = allPosts.sort((firstElement, secondElement) => {
+      const firstPostDate = new Date(firstElement.createdAt);
+      const secondPostDate = new Date(secondElement.createdAt);
+
+      return secondPostDate - firstPostDate;
+    });
+
+    return allPosts;
   }
   async getNewsfeed(userId) {
     const userdata = await userApi.findOne({ _id: userId }, "-password");
@@ -551,25 +558,31 @@ class UserApi {
     }
   }
 
-  async updateHobbies(userId,hobbies) {
-    let userData = await userApi.findByIdAndUpdate(userId,{hobbies},{upsert:true,new:true});
-    return userData
-    // if (!userData) {
-    //   const error = new Error("User not found");
-    //   error.httpStatusCode = 404;
-    //   return error;
-    // }
+  async updateHobbies(userId, hobbies) {
+    // const userData = await userApi.findOneAndUpdate(
+    //   { _id: userId },
+    //   { hobbies: hobbies },
+    //   { new: true }
+    // );
+    // return userData;
+    const userData = await userApi.findById(userId,"-password")
+    
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
 
-    // try {
-    //   userData.hobbies = hobbies
-    //   userData.markModified("hobbies");
-    //   const updatedUserData = await userData.save()
-    //   return updatedUserData
-    // }
-    // catch {
-    //   const error = new Error("Something went wrong,Please try again later");
-    //   return error;
-    // }
+    try {
+      userData.hobbies = hobbies
+      userData.markModified("hobbies");
+      const updatedUserData = await userData.save()
+      return updatedUserData
+    }
+    catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error;
+    }
   }
 }
 

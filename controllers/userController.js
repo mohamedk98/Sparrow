@@ -282,7 +282,7 @@ const updateIntro = async (req, res) => {
 
 const updateHobbies = async (req, res) => {
   const userId = req.userId;
-  const hobbies = req.body.intro;
+  const hobbies = req.body.hobbies;
   await userApi
     .updateHobbies(userId, hobbies)
     .then((response) => res.status(200).send(response))
