@@ -2,24 +2,30 @@ import React from 'react';
 
 import Picker from 'emoji-picker-react';
 
-const EmojiPicker = ({ chosenEmoji, onEmojiClick }) => {
+const EmojiPicker = ({ chosenEmoji, onEmojiClick, positionClass }) => {
   return (
     <div
       className={
-        'absolute h-1/2 scrollbar-hide overflow-y-auto bottom-28'
+        'flex justify-center items-center shadow-2xl absolute ' + positionClass
       }
     >
-  
       <div className="max-w-sm rounded bg-white text-sm">
+        {
+          <div className="py-1 px-5 w-fit mx-auto mt-3 mb-1 text-base border-2 shadow-sm shadow-current">
+            {chosenEmoji
+              ? `You chosed ${chosenEmoji.emoji}`
+              : 'No emoji Chosen'}
+          </div>
+        }
         <Picker
           onEmojiClick={onEmojiClick}
           showLoading={true}
           preload={true}
           disableAutoFocus={true}
-          disableSearchBar={true}
+          searchPlaceholder="Search for Emoji"
           pickerStyle={{
+            boxShadow: '-1.5px 11px 10px #222222',
             borderTop: 0,
-          
           }}
         />
       </div>
