@@ -18,7 +18,8 @@ class UserApi {
       .populate(
         "friends.data.userId",
         "firstName lastName profileImage _id username"
-      ).lean()
+      )
+      .lean();
 
     if (!userData) {
       const error = new Error("User not found");
@@ -219,12 +220,12 @@ class UserApi {
 
     let userData = await userApi.findById(sharerId);
     userData.sharedPosts.push({ postId: originalPostId });
-    userData.sharesCount = userData.sharesCount + 1;
-    console.log(userData.sharesCount);
-    userData.markModified("sharesCount");
+    let originalPost = await postApi.findById(originalPostId);
+    originalPost.sharesCount = originalPost.sharesCount + 1;
     try {
       await sharedPost.save();
       await userData.save();
+      await originalPost.save();
       return { message: "Post Shared Successfully", httpStatusCode: 200 };
     } catch {
       const error = new Error("something went wrong, please try again later");
