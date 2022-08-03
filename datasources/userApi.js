@@ -38,11 +38,13 @@ class UserApi {
 
   async getSingleUserProfile(userId) {
     const userData = await userApi
-      .findById(userId, "-password")
+      .findOne({_id:userId}, "-password")
       .populate(
         "friends.data.userId",
         "firstName lastName profileImage _id username"
       );
+
+      console.log(userData)
 
     if (!userData) {
       const error = new Error("User not found");

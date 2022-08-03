@@ -5,9 +5,9 @@ const sharedPostApi = new SharedPostApi();
 const ReactionApi = require("../datasources/reactionsApi");
 const reactionApi = new ReactionApi();
 
-
 const getProfile = (req, res) => {
   const userId = req.userId;
+  console.log(userId)
   userApi
     .getSingleUserProfile(userId)
     .then((response) => res.status(200).send(response))
@@ -18,10 +18,9 @@ const getSingleProfile = (req, res) => {
   const authenticatedUsername = req.username;
   const username = req.params.username;
   userApi
-    .getUserProfile(authenticatedUsername,username)
+    .getUserProfile(authenticatedUsername, username)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
- 
 };
 
 const getNewsfeed = (req, res) => {
@@ -58,9 +57,7 @@ const sharePost = async (req, res) => {
 
   await userApi
     .sharePost(sharedPostData)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(400).send(error.message));
 };
 
@@ -244,9 +241,7 @@ const removeFriend = async (req, res) => {
 
   await userApi
     .removeFriend(userId, friendId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(400).send(error.message));
 };
 
@@ -350,5 +345,5 @@ module.exports = {
   updateIntro,
   updateAbout,
   updateHobbies,
-  getSingleProfile
+  getSingleProfile,
 };

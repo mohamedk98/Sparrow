@@ -30,10 +30,11 @@ const {
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
 /* user data router */
+router.get("/profile",getProfile)
 router.get("/:username",getSingleProfile );
 router.get("/newsfeed", getNewsfeed);
 router.get("/profile/posts",getUserPosts)
-router.get("/profile",getProfile)
+
 
 /** sharing post routes*/
 router.post("/share/:postId", sharePost);
