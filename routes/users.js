@@ -31,7 +31,6 @@ const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUplo
 
 /* user data router */
 router.get("/profile",getProfile)
-router.get("/:username",getSingleProfile );
 router.get("/newsfeed", getNewsfeed);
 router.get("/profile/posts",getUserPosts)
 
@@ -81,6 +80,8 @@ router.patch("/profile/intro",updateIntro)
 router.patch("/profile/about",updateAbout)
 router.patch("/profile/hobbies",updateHobbies)
 
+//get user profile
+router.get("/:username",getSingleProfile );
 
 
 module.exports = router;

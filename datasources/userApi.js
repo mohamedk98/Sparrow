@@ -44,8 +44,6 @@ class UserApi {
         "firstName lastName profileImage _id username"
       );
 
-      console.log(userData)
-
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
