@@ -8,17 +8,32 @@ import profileImg from '../../../assets/images/default_profile.png';
 import { Link } from 'react-router-dom';
 import { BsToggleOn } from 'react-icons/bs';
 import { BsToggle2Off } from 'react-icons/bs';
+import SearchMenu from './SearchMenu';
+
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [lang, setLang] = useState(false);
+  const [showSearchMenu,setShowSearchMenu]=useState(false);
 
+  
+  
+  
   return (
     <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
+        
       <div className="flex">
+      
+      {!showSearchMenu?
+      <div className='flex'>
         <FaFacebook className="text-facebook-blue text-4xl mr-5" />
+          
+          {/*Start Search Input */}
 
-        <div className="relative mb-4">
+        <div className="relative mb-4"  onClick={()=>{
+              setShowSearchMenu(true);
+            }
+          }>
           <input
             type="text"
             className="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
@@ -26,7 +41,12 @@ const Header = () => {
           />
           <FaSearch className="absolute top-1/4 right-3 md:right-5" />
         </div>
+        </div>
+          
+        : <SearchMenu setShowSearchMenu={setShowSearchMenu} /> }
+    
       </div>
+     
 
       <div className="flex mt-1">
         <TiHome className="hover:text-facebook-blue text-3xl mr-1 md:mr-10" />
