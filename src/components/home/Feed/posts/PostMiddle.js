@@ -38,6 +38,16 @@ const PostMiddle = ({
   reactions,
   reactionsMakers,
   moreID,
+  fullScreenReactionClassName,
+  fullScreenCommentClassName,
+  fullScreenShareClassName,
+  fullScreenCommentsClassName,
+  fullScreenContainerClassName,
+  commentTreeVerticalHiddenReplysClassName,
+  commentTreeVerticalHiddenReplysShowInputClassName,
+  commentTreeVerticalShowReplysClassName,
+  moreFullScreenClassName,
+  reactionsFullScreenClassName,
 }) => {
   // console.log(sharedPostData);
   // console.log(reactions, sharedPost);
@@ -122,12 +132,24 @@ const PostMiddle = ({
         />
       )}
 
-      <div className="flex justify-between border-b-2 mb-4 px- relative">
+      <div
+        className={
+          fullScreenContainerClassName ||
+          'flex justify-around border-b-2 mb-4 relative '
+        }
+      >
+        {
+          // Select a reaction on hover the LikeButton:
+        }
         <PostReactions
           // className=""
           visible={visible}
           setVisible={setVisible}
           reactHandler={reactHandler}
+          reactionsFullScreenClassName={
+            reactionsFullScreenClassName &&
+            '-mt-7 -ml-20 md:-ml-0 md:w-full lg:w-9/12'
+          }
         />
 
         {
@@ -146,6 +168,7 @@ const PostMiddle = ({
           reactHandler={reactHandler}
           sharedPost={sharedPost}
           sharedPostData={sharedPostData}
+          fullScreenReactionClassName={fullScreenReactionClassName}
         />
 
         {
@@ -153,7 +176,10 @@ const PostMiddle = ({
         }
         <button
           type="button"
-          className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-10 ml-3 md:ml-3 lg:ml-7 rounded-lg"
+          className={
+            fullScreenCommentClassName ||
+            'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-10 ml-3 md:ml-3 lg:ml-7 rounded-lg '
+          }
           onClick={() => {
             setWriteComment(!writeComment);
             console.log(data);
@@ -168,7 +194,10 @@ const PostMiddle = ({
         }
         <button
           type="button"
-          className="btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 lg:px-14 rounded-lg"
+          className={
+            fullScreenShareClassName ||
+            'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 lg:px-14 rounded-lg '
+          }
           data-bs-toggle="modal"
           data-bs-target={`#shareModal${data?._id}`}
           onClick={() => {
@@ -214,7 +243,7 @@ const PostMiddle = ({
         // Show Write a Comment input
       }
       {writeComment && (
-        <div className="relative">
+        <div className={'relative ' + fullScreenCommentsClassName}>
           <TextArea
             placeholder="Write a comment"
             id={id}
@@ -229,7 +258,10 @@ const PostMiddle = ({
             // Show Comments
           }
           {data?.comments?.map(comment => (
-            <div className="flex flex-col my-3" key={comment?._id}>
+            <div
+              className="flex flex-col my-3 mr-1 md:mr-0 relative"
+              key={comment?._id}
+            >
               <div>
                 <div className="flex">
                   <a href="/">
@@ -336,6 +368,7 @@ const PostMiddle = ({
                           tooltipData="more"
                           postId={id}
                           moreID={moreID}
+                          // moreFullScreenClassName={moreFullScreenClassName}
                         />
                       </div>
                     </div>
@@ -358,6 +391,9 @@ const PostMiddle = ({
                         visible={visible}
                         reactHandler={reactHandler}
                         setReactionClicked={setReactionClicked}
+                        reactionsFullScreenClassName={
+                          reactionsFullScreenClassName
+                        }
                       />
 
                       <button
@@ -391,7 +427,7 @@ const PostMiddle = ({
                   <Fragment>
                     <button
                       id={comment?._id}
-                      className={`mr-72 text-sm flex z-50 ${
+                      className={`text-sm flex z-50 ${
                         showReplyComments === comment?._id && 'text-blue-500'
                       }
                       `}
@@ -426,7 +462,12 @@ const PostMiddle = ({
                         {
                           // For vertical lines and replys are hidden
                         }
-                        <div className="rotate-90 relative top-24 -mt-1 md:top-32 md:-mt-0 lg:top-52 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
+                        <div
+                          className={
+                            commentTreeVerticalHiddenReplysClassName ||
+                            'rotate-90 relative top-24 -mt-1 md:top-32 md:-mt-0 lg:top-52 -left-48 md:-left-52 lg:-left-72 md:-ml-9'
+                          }
+                        >
                           ...................
                         </div>
 
@@ -435,7 +476,12 @@ const PostMiddle = ({
                         }
                         {writeReply === comment?._id && (
                           <Fragment>
-                            <div className="rotate-90 relative -mt-2 top-36 md:top-48 lg:top-64 lg:-mb-5 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
+                            <div
+                              className={
+                                commentTreeVerticalHiddenReplysShowInputClassName ||
+                                'rotate-90 relative -mt-2 top-36 md:top-48 lg:top-64 lg:-mb-5 -left-48 md:-left-52 lg:-left-72 md:-ml-9'
+                              }
+                            >
                               ........................
                             </div>
                             {
@@ -457,7 +503,7 @@ const PostMiddle = ({
               {showReplyComments === comment?._id && !editComment && (
                 <div className="relative">
                   {comment?.reply?.map(reply => (
-                    <Fragment key={reply?._id}>
+                    <div className="mb-5" key={reply?._id}>
                       {editReply && reply?._id === editReply ? (
                         <div className="relative pl-10 pb-3">
                           <TextArea
@@ -489,6 +535,9 @@ const PostMiddle = ({
                           postId={data?._id}
                           ReplyLikeButton={
                             <ReplyLikeButton
+                              reactionsFullScreenClassName={
+                                reactionsFullScreenClassName
+                              }
                               reactType={reactType}
                               setReactType={setReactType}
                               reactionClicked={reactionClicked}
@@ -502,6 +551,7 @@ const PostMiddle = ({
                               moreID={moreID}
                               //For enlarging reply reactions cause they are too small:
                               containerClassName="w-72 -left-1"
+                              moreFullScreenClassName={moreFullScreenClassName}
                             />
                           }
                         />
@@ -511,17 +561,22 @@ const PostMiddle = ({
                         // Make a line connection:
                       }
                       {!editComment && (
-                        <Fragment>
+                        <div className="relative">
                           <div className="relative -mt-3 md:-mt-0 -top-16 md:-top-16 left-4 md:left-4">
                             .....
                           </div>
 
-                          <div className="rotate-90 relative top-8 md:top-20 lg:top-40 -left-48 md:-left-52 lg:-left-72 md:-ml-9">
-                            ..............................................
+                          <div
+                            className={
+                              commentTreeVerticalShowReplysClassName ||
+                              'rotate-90 absolute -top-16 -left-24 ml-0.5 md:-left-24 lg:-left-24 md:ml-0.5'
+                            }
+                          >
+                            ...................................................
                           </div>
-                        </Fragment>
+                        </div>
                       )}
-                    </Fragment>
+                    </div>
                   ))}
                 </div>
               )}

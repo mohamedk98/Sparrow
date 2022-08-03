@@ -22,6 +22,7 @@ const Replys = ({
   replyId,
   setEditReply,
   commentId,
+  moreFullScreenClassName,
 }) => {
   console.log(moreID, userID);
   return (
@@ -79,6 +80,7 @@ const Replys = ({
           replyId={replyId}
           commentId={commentId}
           setEditReply={setEditReply}
+          moreFullScreenClassName={moreFullScreenClassName}
         />
 
         {

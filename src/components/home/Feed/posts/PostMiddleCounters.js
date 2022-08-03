@@ -16,6 +16,7 @@ const postMiddleCounters = ({
   setWriteComment,
   writeComment,
 }) => {
+  console.log(reactions, reactionsMakers);
   // Handle Tooltip reactionsMakers groups:
   let likeMakers = [];
   let loveMakers = [];

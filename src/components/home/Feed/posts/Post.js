@@ -79,360 +79,50 @@ const Post = ({
         )}
       </div>
 
-      {
-        <FullScreenOriginalPost
-          data={data}
-          // className={className}
-          // userData={userData}
-          // sharedPost={sharedPost}
-          // sharedPostData={sharedPostData}
-          PostHalfTop={
-            <PostHalfTop
-              profileSRC={profileImg}
-              profileName={data?.creatorName}
-              postDate={data?.createdAt?.slice(0, 10)}
-              postBody={data?.content}
-              // postImage={data?.media}
-              hideMore={!className ? false : true}
-              sharerId={data?.sharerId_id}
-              userId={userData?._id}
-              sharedPost={sharedPost}
-              sharedPostData={sharedPostData}
-              reverseDirection={sharedPost && true}
+      <FullScreenOriginalPost
+        postData={data}
+        PostHalfTop={
+          <PostHalfTop
+            profileSRC={data?.userId?.profileImage || profileImg}
+            profileName={data?.creatorName}
+            postDate={dateCalcFunction(data?.createdAt)}
+            moreFullScreenClassName="-ml-24"
+            postBody={data?.content}
+            userID={userData?._id}
+          />
+        }
+        postMiddelAndBottom={
+          <Fragment>
+            <PostMiddleCounters
+              data={data}
+              reactions={reactions}
+              reactionsMakers={reactionsMakers}
+              setWriteComment={setWriteComment}
+              writeComment={writeComment}
             />
-          }
-          postMiddelAndBottom={
-            <div className="">
-              <div
-                className={
-                  'flex justify-between mt-3 pb-3 px-3 ' + sharedPost
-                    ? ''
-                    : 'border-b-2'
-                }
-              >
-                <div>
-                  <a href="/">
-                    <AiFillLike className="text-blue-700 inline mr-1 -mt-1 text-xl" />
-                    {
-                      // <BsHeartFill className="text-red-600 inline mr-1" />
-                    }
-                    <span className="text-gray-500">
-                      {data?.reactions.length}
-                    </span>
-                  </a>
-                </div>
-                <div className="h-6">
-                  <button
-                    onClick={() => {
-                      setWriteComment(!writeComment);
-                    }}
-                    className="text-gray-500 mr-3 hover:border-b-2 border-gray-300"
-                  >
-                    {data?.comments.length}{' '}
-                    {data?.comments.length < 2 ? 'comment' : 'comments'}
-                  </button>
-                  <button className="text-gray-500 hover:border-b-2 border-gray-300">
-                    {data?.sharesCount}{' '}
-                    {data?.sharesCount === 1 ? 'share' : 'shares'}
-                  </button>
-                </div>
-              </div>
-              <PostMiddle
-                writeComment={writeComment}
-                setWriteComment={setWriteComment}
-                data={data}
-                userData={userData}
-              />
-            </div>
-          }
-        />
-      }
+
+            <PostMiddle
+              data={data}
+              writeComment={writeComment}
+              setWriteComment={setWriteComment}
+              userData={userData}
+              moreID={moreID}
+              fullScreenContainerClassName="md:container flex justify-around md:justify-evenly border-b-2 mb-4"
+              fullScreenReactionClassName="flex hover:bg-gray-100 py-2 my-1 px-8 md:px-4 lg:px-8 rounded-lg"
+              fullScreenCommentClassName="flex hover:bg-gray-100 py-2 my-1 px-5 md:px-1.5 lg:px-5 rounded-lg"
+              fullScreenShareClassName="flex hover:bg-gray-100 py-2 my-1 px-7 md:px-3 lg:px-5 rounded-lg"
+              fullScreenCommentsClassName="overflow-y-auto overflow-x-hidden max-h-72"
+              commentTreeVerticalHiddenReplysClassName="rotate-90 absolute top-16 -left-8  md:top-16 md:left-7  lg:top-16 ml-2.5 lg:left-7 md:-ml-12"
+              commentTreeVerticalHiddenReplysShowInputClassName="rotate-90 absolute top-28 -left-8  -mt-1 md:top-32 md:left-4 md:-mt-2 lg:top-32 lg:left-4 md:-ml-12"
+              commentTreeVerticalShowReplysClassName="rotate-90 absolute -top-20 mt-4 ml-0.5 md:-top-20 -left-24 md:-left-24"
+              moreFullScreenClassName="-ml-24"
+              reactionsFullScreenClassName="true"
+            />
+          </Fragment>
+        }
+      />
     </div>
   );
 };
 
 export default Post;
-
-// {
-//   import React, { Fragment, useState } from 'react';
-// import likeSVG from './../../../../assets/reacts/like.svg';
-// import loveSVG from '../../../../assets/reacts/love.svg';
-// import careSVG from '../../../../assets/reacts/heart.svg';
-// import hahaSVG from '../../../../assets/reacts/haha.svg';
-// import wowSVG from '../../../../assets/reacts/wow.svg';
-// import sadSVG from '../../../../assets/reacts/sad.svg';
-// import angrySVG from '../../../../assets/reacts/angry.svg';
-
-// import profileImg from '../../../../assets/images/default_profile.png';
-// import FullScreenOriginalPost from './FullScreenOriginalPost';
-
-// import PostHalfTop from './PostHalfTop';
-
-// import PostMiddle from './PostMiddle';
-// import dateCalcFunction from './DateCalculations';
-
-// const Post = ({
-//   data,
-//   className,
-//   userData,
-//   sharedPost,
-//   sharedPostData,
-//   reactions,
-//   reactionsMakers,
-// }) => {
-//   console.log(data);
-//   // console.log(reactions, sharedPost);
-//   // console.log(reactionsMakers, sharedPost);
-
-//   // Handle Tooltip reactionsMakers groups:
-//   let likeMakers = [];
-//   let loveMakers = [];
-//   let careMakers = [];
-//   let hahaMakers = [];
-//   let wowMakers = [];
-//   let sadMakers = [];
-//   let angryMakers = [];
-
-//   reactionsMakers?.filter(maker => {
-//     if (maker?.reaction === 'Like') {
-//       likeMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return likeMakers;
-//     }
-
-//     if (maker?.reaction === 'Love') {
-//       loveMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return loveMakers;
-//     }
-
-//     if (maker?.reaction === 'Care') {
-//       careMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return careMakers;
-//     }
-
-//     if (maker?.reaction === 'Haha') {
-//       hahaMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return hahaMakers;
-//     }
-
-//     if (maker?.reaction === 'Wow') {
-//       wowMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return wowMakers;
-//     }
-
-//     if (maker?.reaction === 'Sad') {
-//       sadMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return sadMakers;
-//     }
-
-//     if (maker?.reaction === 'Angry') {
-//       angryMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
-//       return angryMakers;
-//     }
-//   });
-
-//   let reactionMakersArray = [
-//     { Like: likeMakers },
-//     { Love: loveMakers },
-//     { Care: careMakers },
-//     { Haha: hahaMakers },
-//     { Wow: wowMakers },
-//     { Sad: sadMakers },
-//     { Angry: angryMakers },
-//   ];
-
-//   // console.log(reactionMakersArray);
-
-//   // console.log(sharedPost);
-//   // Hide and show comments:
-//   const [writeComment, setWriteComment] = useState(false);
-
-//   // console.log(sharedPostData);
-//   // console.log(data?._id);
-//   console.log();
-//   return (
-//     <div
-//       className={`rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7 ${className}`}
-//       key={data?._id}
-//     >
-//       {
-//         <PostHalfTop
-//           profileSRC={profileImg}
-//           profileName={data?.creatorName}
-//           postDate={dateCalcFunction(data?.createdAt)}
-//           hideMore={!className ? false : true}
-//           postBody={data?.content}
-//           postImage={data?.media}
-//           sharerId={data?.sharerId_id}
-//           userId={userData?._id}
-//           sharedPost={sharedPost}
-//           sharedPostData={sharedPostData}
-//           reverseDirection={sharedPost && true}
-//         />
-//       }
-
-//       <div className="">
-//         <div
-//           className={`flex justify-between mt-3 pb-3 px-3 ${
-//             sharedPost ? '' : 'border-b-2'
-//           }`}
-//         >
-//           {
-//             <div className="flex">
-//               {reactions.map((reaction, idx) => (
-//                 <div
-//                   key={idx}
-//                   className="mt-1"
-//                   data-title={
-//                     // reaction makers:
-//                     reaction +
-//                     ': ' +
-//                     reactionMakersArray
-//                       ?.map(maker => maker[reaction])
-//                       ?.join('')
-//                       ?.split(',')
-//                       ?.join(', ')
-//                   }
-//                 >
-//                   {reaction === 'Like' ? (
-//                     <img className="w-4" src={likeSVG} alt="like face" />
-//                   ) : reaction === 'Love' ? (
-//                     <img className="w-4" src={loveSVG} alt="love face" />
-//                   ) : reaction === 'Care' ? (
-//                     <img className="w-4" src={careSVG} alt="care face" />
-//                   ) : reaction === 'Haha' ? (
-//                     <img className="w-4" src={hahaSVG} alt="haha face" />
-//                   ) : reaction === 'Wow' ? (
-//                     <img className="w-4" src={wowSVG} alt="wow face" />
-//                   ) : reaction === 'Sad' ? (
-//                     <img className="w-4" src={sadSVG} alt="sad face" />
-//                   ) : reaction === 'Angry' ? (
-//                     <img className="w-4" src={angrySVG} alt="angry face" />
-//                   ) : (
-//                     ''
-//                   )}
-//                 </div>
-//               ))}
-
-//               {
-//                 // Check if there are reactions or reactions without empty string(""):
-//               }
-//               {data?.reactions?.length !== 0 &&
-//                 data?.reactions?.filter(reaction => reaction.reaction !== '')
-//                   .length !== 0 && (
-//                   <span className="text-gray-500 ml-2 text-sm mt-0.5">
-//                     {
-//                       // show number of reactions for regular and shared post:
-
-//                       (sharedPost ? sharedPostData : data)?.reactions?.filter(
-//                         reaction => reaction.reaction !== ''
-//                       ).length
-//                     }
-//                   </span>
-//                 )}
-//             </div>
-//           }
-
-//           {!sharedPost && (
-//             <div className="h-6">
-//               <button
-//                 onClick={() => {
-//                   setWriteComment(!writeComment);
-//                 }}
-//                 className="text-gray-500 mr-3 hover:border-b-2 border-gray-300"
-//               >
-//                 {data?.comments.length}{' '}
-//                 {data?.comments.length < 2 ? 'comment' : 'comments'}
-//               </button>
-//               <button className="text-gray-500 hover:border-b-2 border-gray-300">
-//                 {data?.sharesCount}{' '}
-//                 {data?.sharesCount === 1 ? 'share' : 'shares'}
-//               </button>
-//             </div>
-//           )}
-//         </div>
-
-//         {!sharedPost && (
-//           <PostMiddle
-//             writeComment={writeComment}
-//             setWriteComment={setWriteComment}
-//             data={data}
-//             userData={userData}
-//           />
-//         )}
-//       </div>
-
-//       {
-//         // <FullScreenOriginalPost
-//         //   // data={data}
-//         //   // className={className}
-//         //   // userData={userData}
-//         //   // sharedPost={sharedPost}
-//         //   // sharedPostData={sharedPostData}
-//         //   PostHalfTop={
-//         //     <PostHalfTop
-//         //       profileSRC={profileImg}
-//         //       profileName={data?.creatorName}
-//         //       postDate={data?.createdAt?.slice(0, 10)}
-//         //       postBody={data?.content}
-//         //       // postImage={data?.media}
-//         //       // hideMore={!className ? false : true}
-//         //       // sharerId={data?.sharerId_id}
-//         //       // userId={userData?._id}
-//         //       // sharedPost={sharedPost}
-//         //       // sharedPostData={sharedPostData}
-//         //       // reverseDirection={sharedPost && true}
-//         //     />
-//         //   }
-//         //   postMiddelAndBottom={
-//         //     <div className="">
-//         //       <div
-//         //         className={
-//         //           'flex justify-between mt-3 pb-3 px-3 ' + sharedPost
-//         //             ? ''
-//         //             : 'border-b-2'
-//         //         }
-//         //       >
-//         //         <div>
-//         //           <a href="/">
-//         //             <AiFillLike className="text-blue-700 inline mr-1 -mt-1 text-xl" />
-//         //             {
-//         //               // <BsHeartFill className="text-red-600 inline mr-1" />
-//         //             }
-//         //             <span className="text-gray-500">
-//         //               {data?.reactions.length}
-//         //             </span>
-//         //           </a>
-//         //         </div>
-//         //         <div className="h-6">
-//         //           <button
-//         //             onClick={() => {
-//         //               setWriteComment(!writeComment);
-//         //             }}
-//         //             className="text-gray-500 mr-3 hover:border-b-2 border-gray-300"
-//         //           >
-//         //             {data?.comments.length}{' '}
-//         //             {data?.comments.length < 2 ? 'comment' : 'comments'}
-//         //           </button>
-//         //           <button className="text-gray-500 hover:border-b-2 border-gray-300">
-//         //             {data?.sharesCount}{' '}
-//         //             {data?.sharesCount === 1 ? 'share' : 'shares'}
-//         //           </button>
-//         //         </div>
-//         //       </div>
-//         //       <PostMiddle
-//         //         writeComment={writeComment}
-//         //         setWriteComment={setWriteComment}
-//         //         data={data}
-//         //         userData={userData}
-//         //       />
-//         //     </div>
-//         //   }
-//         // />
-//       }
-//     </div>
-//   );
-// };
-
-// export default Post;
-
-// }

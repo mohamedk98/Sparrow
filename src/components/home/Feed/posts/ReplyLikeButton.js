@@ -3,7 +3,12 @@ import React, { useState, Fragment, useEffect } from 'react';
 import PostReactions from './PostReactions';
 import ReactionClassHandler from './ReactionClasses';
 
-const ReplyLikeButton = ({ setReactionClicked, containerClassName }) => {
+const ReplyLikeButton = ({
+  setReactionClicked,
+  containerClassName,
+  reactionsFullScreenClassName,
+}) => {
+  // console.log(reactionsFullScreenClassName);
   // Reactions type set:
   const [reactType, setReactType] = useState('');
 
@@ -54,6 +59,9 @@ const ReplyLikeButton = ({ setReactionClicked, containerClassName }) => {
           setVisible={setVisible}
           reactHandler={reactHandler}
           containerClassName={containerClassName}
+          reactionsFullScreenClassName={
+            reactionsFullScreenClassName && 'ml-0 -mt-6'
+          }
         />
       </div>
 

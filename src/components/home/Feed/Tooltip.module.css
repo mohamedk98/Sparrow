@@ -13,7 +13,7 @@
   padding: 0.1rem 0.5rem 0.1rem;
   bottom: 110%;
   left: -35%;
-  white-space: nowrap;
+  white-space: wrap;
   box-shadow: 1px 1px 3px #222222;
   opacity: 0;
   border-radius: 15%;

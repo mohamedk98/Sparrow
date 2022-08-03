@@ -22,6 +22,7 @@ const More = ({
   sharedPostData,
   moreID,
   sharerId,
+  moreFullScreenClassName,
 }) => {
   // console.log(editReply);
   // console.log(userID);
@@ -137,7 +138,9 @@ const More = ({
 
           // id={`More${moreID}`}
         >
-          <ul className="dropdown-menu min-w-max absolute bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto">
+          <ul
+            className={`dropdown-menu min-w-max absolute bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
+          >
             {
               // For Text Number 1:
             }

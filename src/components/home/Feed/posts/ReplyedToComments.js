@@ -11,6 +11,7 @@ const ReplyedToComments = ({
   editReply,
   setEditReply,
   // moreID,
+  moreFullScreenClassName,
 }) => {
   console.log(reply);
   console.log(postId);
@@ -29,6 +30,7 @@ const ReplyedToComments = ({
         replyId={reply?._id}
         commentId={commentId}
         setEditReply={setEditReply}
+        moreFullScreenClassName={moreFullScreenClassName}
       />
     </div>
   );

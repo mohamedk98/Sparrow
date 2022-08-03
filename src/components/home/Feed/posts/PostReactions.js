@@ -44,14 +44,17 @@ const PostReactions = ({
   setVisible,
   reactHandler,
   containerClassName,
+  reactionsFullScreenClassName,
 }) => {
   return (
     <Fragment>
       {visible && (
         <div
-          className={`flex flex-row justify-center align-middle absolute pt-1 px-1 mt-2 -top-14 bg-gray-50 shadow-2xl border rounded-full ${
-            containerClassName ? containerClassName : 'w-8/12'
-          }`}
+          className={`flex flex-row justify-center align-middle absolute pt-1 px-1 bg-gray-50 shadow-2xl border rounded-full z-50 ${
+            reactionsFullScreenClassName
+              ? reactionsFullScreenClassName
+              : ' mt-2 -top-10 lg:-top-14 -ml-5 '
+          } ${containerClassName ? containerClassName : 'w-8/12'}`}
           onMouseOver={() => {
             setTimeout(() => {
               setVisible(true);
@@ -70,7 +73,9 @@ const PostReactions = ({
             <div
               className={
                 react.name === 'Care'
-                  ? 'cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-3/6 -mt-0.5 hover:w-10/12'
+                  ? `cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-3/6 -mt-0.5 hover:w-10/12 ${
+                      reactionsFullScreenClassName && 'lg:w-6/12'
+                    }`
                   : 'cursor-pointer relative mr-1 ml-2 hover:w-10/12'
               }
               key={idx}

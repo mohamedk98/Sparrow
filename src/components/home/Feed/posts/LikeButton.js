@@ -23,6 +23,7 @@ const LikeButton = ({
   reactHandler,
   sharedPost,
   sharedPostData,
+  fullScreenReactionClassName,
 }) => {
   // Reaction from API for current user:
   const userReaction = (sharedPost ? sharedPostData : data)?.reactions?.filter(
@@ -133,7 +134,9 @@ const LikeButton = ({
       type="button"
       className={
         'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-8 md:px-11 lg:px-14 rounded-lg ' +
-        reactClass
+        reactClass +
+        ' ' +
+        fullScreenReactionClassName
       }
       onMouseOver={() => {
         setTimeout(() => {
