@@ -12,13 +12,13 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 class UserApi {
-  async getUserProfile(userId) {
-    const userData = await userApi
-      .findById(userId, "-password")
+  async getUserProfile(authenticatedUsername, username) {
+    let userData = await userApi
+      .findOne({ username }, "-password")
       .populate(
         "friends.data.userId",
         "firstName lastName profileImage _id username"
-      );
+      ).lean()
 
     if (!userData) {
       const error = new Error("User not found");
@@ -26,7 +26,13 @@ class UserApi {
       return error;
     }
 
-    return userData;
+    if (authenticatedUsername === username) {
+      userData.currentLoginAccount = true;
+      return userData;
+    } else {
+      userData.currentLoginAccount = false;
+      return userData;
+    }
   }
 
   async getSingleUserProfile(username) {
@@ -214,10 +220,10 @@ class UserApi {
     let userData = await userApi.findById(sharerId);
     userData.sharedPosts.push({ postId: originalPostId });
     userData.sharesCount = userData.sharesCount + 1;
-    console.log(userData.sharesCount)
-    userData.markModified("sharesCount")
+    console.log(userData.sharesCount);
+    userData.markModified("sharesCount");
     try {
-      await sharedPost.save(); 
+      await sharedPost.save();
       await userData.save();
       return { message: "Post Shared Successfully", httpStatusCode: 200 };
     } catch {
@@ -413,7 +419,7 @@ class UserApi {
 
     try {
       // await userData.save();
-      return await userData.save()
+      return await userData.save();
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;

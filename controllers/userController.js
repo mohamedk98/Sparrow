@@ -4,10 +4,13 @@ const SharedPostApi = require("../datasources/sharedPostApi");
 const sharedPostApi = new SharedPostApi();
 const ReactionApi = require("../datasources/reactionsApi");
 const reactionApi = new ReactionApi();
+
+
 const getProfile = (req, res) => {
-  const userId = req.userId;
+  const authenticatedUsername = req.username;
+  const username = req.params.username;
   userApi
-    .getUserProfile(userId)
+    .getUserProfile(authenticatedUsername,username)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
 };
