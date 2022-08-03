@@ -337,7 +337,7 @@ const TextArea = ({
             {showPicker ? (
               <EmojiPicker
                 positionClass={
-                  className ? 'top-10 left-40' : 'bottom-12 right-0'
+                  className ? 'top-10 left-40' : 'bottom-14 right-0'
                 }
                 chosenEmoji={chosenEmoji}
                 onEmojiClick={onEmojiClick}

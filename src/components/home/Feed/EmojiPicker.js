@@ -6,7 +6,8 @@ const EmojiPicker = ({ chosenEmoji, onEmojiClick, positionClass }) => {
   return (
     <div
       className={
-        'flex justify-center items-center shadow-2xl absolute ' + positionClass
+        'flex justify-center items-center shadow-2xl absolute bottom-24 ' +
+        positionClass
       }
     >
       <div className="max-w-sm rounded bg-white text-sm">
