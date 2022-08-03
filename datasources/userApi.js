@@ -36,9 +36,9 @@ class UserApi {
     }
   }
 
-  async getSingleUserProfile(username) {
+  async getSingleUserProfile(userId) {
     const userData = await userApi
-      .findOne({ username: username }, "-password")
+      .findById(userId, "-password")
       .populate(
         "friends.data.userId",
         "firstName lastName profileImage _id username"

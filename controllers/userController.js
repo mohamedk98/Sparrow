@@ -7,20 +7,21 @@ const reactionApi = new ReactionApi();
 
 
 const getProfile = (req, res) => {
+  const userId = req.userId;
+  userApi
+    .getSingleUserProfile(userId)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
+
+const getSingleProfile = (req, res) => {
   const authenticatedUsername = req.username;
   const username = req.params.username;
   userApi
     .getUserProfile(authenticatedUsername,username)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
-};
-
-const getSingleProfile = (req, res) => {
-  const username = req.params.username;
-  userApi
-    .getSingleUserProfile(username)
-    .then((response) => res.status(200).send(response))
-    .catch((error) => res.status(400).send(error.message));
+ 
 };
 
 const getNewsfeed = (req, res) => {
