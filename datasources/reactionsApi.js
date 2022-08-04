@@ -158,7 +158,7 @@ class ReactionApi {
     }
 
     const userCommentIndex = postData.comments.findIndex(
-      (comment) => comment.userId.toString() === commentId
+      (comment) => comment._id.toString() === commentId
     );
 
     if (userCommentIndex === -1) {
@@ -212,7 +212,7 @@ class ReactionApi {
     }
 
     const userCommentIndex = postData.comments.findIndex(
-      (comment) => comment.userId.toString() === commentId
+      (comment) => comment._id.toString() === commentId
     );
 
     if (userCommentIndex === -1) {
