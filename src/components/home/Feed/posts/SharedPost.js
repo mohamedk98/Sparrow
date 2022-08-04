@@ -26,7 +26,7 @@ const SharedPost = () => {
   useEffect(() => {
     // Fetching NewsFeed data:
     axiosInstance
-      .get('/newsfeed')
+      .get('/newsfeed/page')
       .then(response => {
         // console.log(response.data);
 

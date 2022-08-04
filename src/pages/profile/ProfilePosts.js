@@ -8,7 +8,7 @@ import ProfilePhotos from '../../components/profile/ProfilePhotos';
 
 function ProfilePosts() {
     return (
-        <div className="mt-3 bg-slate-200">
+        <div className="mt-3 bg-slate-200 dark:bg-darkBgColor">
             <div className="w-11/12 m-auto">
                 <div className="py-2.5 px-9">
                     <div className="grid lg:grid-cols-2 grid-col-1 gap-1">

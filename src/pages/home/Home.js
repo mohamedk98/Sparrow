@@ -21,10 +21,10 @@ const Home = () => {
       });
   }, [navigate]);
   return (
-    <div className="h-full bg-gray-200">
+    <div className="h-full bg-gray-200 dark:bg-darkBgColor">
       <Header />
       <div className="flex">
-        <LeftSideBar />
+        <LeftSideBar profileData={profileData} />
         <Feed />
         <RightSideBar />
       </div>

@@ -70,19 +70,19 @@ const RightSideBar = () => {
   return (
     <div className="hidden lg:flex fixed z-10 right-0 ">
       <div
-        className={`bg-facebook-grey h-screen p-5 pt-8 ${
+        className={`bg-facebook-grey dark:bg-darkBgSideBar h-screen p-5 pt-8 ${
           open ? 'w-38' : 'w-20'
         } duration-300  relative`}
       >
         <BsFillArrowRightCircleFill
           onClick={() => setOpen(!open)}
-          className={`bg-facebook-grey text-facebook-blue text-3xl rounded-full cursor-pointer ${
+          className={`bg-facebook-grey text-facebook-blue  text-3xl rounded-full cursor-pointer ${
             !open && 'rotate-180'
           } absolute -left-3 top-9 border border-facebook-grey`}
         />
         <ul>
-          <li className={open ? 'mt-10' : '-ml-4 mt-10 text-center'}>
-            <span className="font-bold text-sm ml-2 duration-300">
+          <li className={open ? 'mt-10 ' : '-ml-4 mt-10 text-center  '}>
+            <span className="font-bold text-sm ml-2 dark:text-white duration-300">
               Contacts
             </span>
             {open && (
@@ -90,7 +90,7 @@ const RightSideBar = () => {
                 tooltipData="options"
                 text={
                   <div
-                    className="flex"
+                    className="flex  dark:text-white "
                     onClick={() => {
                       setShowContacts(!showContacts);
                     }}
@@ -153,7 +153,7 @@ const RightSideBar = () => {
                   className="rounded-full w-9"
                 />
                 <span
-                  className={`text-black origin-left text-sm mt-1 duration-300 ${
+                  className={`text-black dark:text-white origin-left text-sm mt-1 duration-300 ${
                     !open && 'scale-0 -mb-7'
                   }`}
                 >

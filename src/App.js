@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
-import { useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { axiosInstance } from './network/axiosInstance';
@@ -18,7 +18,9 @@ import About from './pages/profile/About';
 import Friends from './pages/profile/Friends';
 import Photos from './pages/profile/Photos';
 
+
 function App() {
+  const [theme,setTheme]=useState("light");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -40,6 +42,7 @@ function App() {
       });
   }, []);
 
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -53,6 +56,7 @@ function App() {
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>
+
   );
 }
 

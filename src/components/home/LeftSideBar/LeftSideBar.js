@@ -14,14 +14,28 @@ import { useDispatch } from 'react-redux';
 import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
 
-const LeftSideBar = () => {
+const LeftSideBar = ({profileData}) => {
   const [open, setOpen] = useState(true);
+  const [allFriends,setAllFriends]=useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const profileHandler = () => {
     navigate('/');
   };
+
+  const friendsHandler=async()=>{
+    if( allFriends.length===0){
+      setAllFriends('You have no friends yet');
+    }
+    else{
+      const res= await axiosInstance.get('/friends');
+      // setAllFriends(res.data);
+      console.log(res);
+    }
+
+    navigate('/friends');
+  }
 
   //logout functionality
   const logoutHandler = () => {
@@ -42,7 +56,7 @@ const LeftSideBar = () => {
       id: 2,
       title: 'Friends',
       icon: { iconTitle: FaUserAlt },
-      handler: profileHandler,
+      handler: friendsHandler,
     },
     {
       id: 3,
@@ -83,9 +97,9 @@ const LeftSideBar = () => {
   ];
 
   return (
-    <div className="hidden lg:flex fixed z-10">
+    <div className="hidden lg:flex fixed z-10 ">
       <div
-        className={`bg-facebook-grey h-screen p-5 pt-8 ${
+        className={`bg-facebook-grey dark:bg-darkBgSideBar   h-screen p-5 pt-8 ${
           open ? 'w-38' : 'w-20'
         } duration-300  relative`}
       >
@@ -99,11 +113,11 @@ const LeftSideBar = () => {
           <li className="flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2 ">
             <img src={profileImg} alt="profile" className="rounded-full" />
             <span
-              className={`text-black origin-left font-bold text-sm mt-3 ml-2 duration-300 ${
+              className={`text-black dark:text-white origin-left font-bold text-sm mt-3 ml-2 duration-300 ${
                 !open && 'scale-0 -mb-7'
               }`}
             >
-              User Name
+              {profileData.firstName} {profileData.lastName}
             </span>
           </li>
         </ul>
@@ -119,7 +133,7 @@ const LeftSideBar = () => {
                 <menu.icon.iconTitle />
               </span>
               <span
-                className={`text-base font-medium text-black flex-1 ${
+                className={`text-base font-medium text-black dark:text-white flex-1 ${
                   !open && 'hidden'
                 }`}
               >

@@ -9,18 +9,19 @@ import { Link } from 'react-router-dom';
 import { BsToggleOn } from 'react-icons/bs';
 import { BsToggle2Off } from 'react-icons/bs';
 import SearchMenu from './SearchMenu';
-
+import UseDarkMode from '../../../Theme/UseDarkMode';
 
 const Header = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  // const [darkMode, setDarkMode] = useState(false);
+  const [setTheme,colorTheme]=UseDarkMode();
   const [lang, setLang] = useState(false);
   const [showSearchMenu,setShowSearchMenu]=useState(false);
 
   
-  
+
   
   return (
-    <nav className="py-4 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
+    <nav className="py-4 px-6 dark:bg-darkBgSideBar dark:text-white bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
         
       <div className="flex">
       
@@ -78,12 +79,13 @@ const Header = () => {
             </span>
           </a>
           <ul
-            className="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
-    "
+            className="dropdown-menu min-w-max absolute hidden 
+            bg-white text-base z-50 float-left py-2 list-none text-left 
+            rounded-lg shadow-lg mt-1 m-0 bg-clip-padding dark:bg-darkBgSideBar border-none left-auto right-0"
             aria-labelledby="dropdownMenuButton1"
           >
             <li>
-              <div className="relative dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
+              <div className="relative dark:bg-darkBgSideBar dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
                 <input
                   type="text"
                   className="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none"
@@ -94,7 +96,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 to={'/profile'}
               >
                 Action
@@ -102,7 +104,7 @@ const Header = () => {
             </li>
             <li>
               <a
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 href="/"
               >
                 Something else here
@@ -128,13 +130,13 @@ const Header = () => {
             </span>
           </a>
           <ul
-            className="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
+            className="dropdown-menu dark:bg-darkBgSideBar  min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
     "
             aria-labelledby="dropdownMenuButton3"
           >
             <li>
               <Link
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 to={'/profile'}
               >
                 Profile
@@ -142,7 +144,7 @@ const Header = () => {
             </li>
             <li>
               <a
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 href="1"
               >
                 Another action
@@ -150,7 +152,7 @@ const Header = () => {
             </li>
             <li>
               <a
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 href="1"
               >
                 Something else here
@@ -179,42 +181,51 @@ const Header = () => {
           </a>
           <ul
             className="
-          dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none left-auto right-0"
+          dropdown-menu min-w-max dark:bg-darkBgSideBar absolute hidden bg-white  text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none left-auto right-0"
             aria-labelledby="dropdownMenuButton2"
           >
             <li>
               <Link
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 to={'/profile'}
               >
                 Profile
               </Link>
             </li>
             <li>
-              <button className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex">
+            <div className='text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex'>
+            <div className="form-check form-switch">
+            <input className="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm" 
+            type="checkbox" 
+            role="switch"
+            id="flexSwitchCheckChecked"
+           onChange={()=>setTheme(colorTheme)}/>
+            <label className="form-check-label inline-block text-gray-800 dark:text-white" htmlFor="flexSwitchCheckChecked">Dark Mode</label>
+           </div>
+           </div>
+              {/* <button className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex">
                 Dark mode{' '}
                 {darkMode && (
                   <BsToggleOn
                     className="text-facebook-blue text-2xl ml-3 -mt-0.5"
-                    onClick={() => {
-                      setDarkMode(!darkMode);
-                    }}
+                    onClick={()=>setTheme(colorTheme)}
+                   
+                   
                   />
                 )}
                 {!darkMode && (
                   <BsToggle2Off
                     className="text-2xl ml-3 -mt-0.5"
-                    onClick={() => {
-                      setDarkMode(!darkMode);
-                    }}
+                    onClick={()=>setTheme(colorTheme)}
+               
                   />
                 )}
-              </button>
+              </button> */}
             </li>
             <li>
               <button className="dropdown-item text-sm py-2 px-4 font-normal flex w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
                 <span
-                  className={!lang ? 'text-facebook-blue' : ''}
+                  className={!lang ? 'text-facebook-blue dark:text-white' : ''}
                   onClick={() => {
                     setLang(!lang);
                   }}
@@ -223,7 +234,7 @@ const Header = () => {
                 </span>{' '}
                 {lang && (
                   <BsToggleOn
-                    className="text-facebook-blue text-2xl mx-3 -mt-0.5"
+                    className="text-facebook-blue dark:text-whit text-2xl mx-3 -mt-0.5"
                     onClick={() => {
                       setLang(!lang);
                     }}
@@ -238,7 +249,7 @@ const Header = () => {
                   />
                 )}{' '}
                 <span
-                  className={lang ? 'text-facebook-blue' : ''}
+                  className={lang ? 'text-facebook-blue dark:text-white' : ''}
                   onClick={() => {
                     setLang(!lang);
                   }}
