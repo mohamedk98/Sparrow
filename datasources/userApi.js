@@ -484,7 +484,7 @@ class UserApi {
   }
 
   async unblockFriend(userId, friendId) {
-    const userData = await userApi.findById(userId);
+    let userData = await userApi.findById(userId);
     if (!userData) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
@@ -505,6 +505,7 @@ class UserApi {
     );
 
     try {
+      userData.markModified("blockList")
       await userData.save();
       return {
         message: "Friend Unblocked",
