@@ -7,7 +7,7 @@ const reactionApi = new ReactionApi();
 
 const getProfile = (req, res) => {
   const userId = req.userId;
-  console.log(userId)
+  console.log(userId);
   userApi
     .getSingleUserProfile(userId)
     .then((response) => res.status(200).send(response))
@@ -25,8 +25,15 @@ const getSingleProfile = (req, res) => {
 
 const getNewsfeed = (req, res) => {
   const userId = req.userId;
+  let page = req.params.page;
+  if (page == null || page == undefined || typeof page != "number") {
+    page = 1;
+  } else {
+    page = parseInt(page);
+  }
+
   userApi
-    .getNewsfeed(userId)
+    .getNewsfeed(userId, page)
     .then((response) => res.header("Cache-Control", "no-cache").send(response))
     .catch((error) => res.send(error));
 };
@@ -296,6 +303,16 @@ const updateHobbies = async (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
+const selectCoverPhotoFromMedia = async (req, res) => {
+  const coverPhotoUrl = req.body.coverPhotoUrl;
+  const userId = req.userId;
+
+  await userApi
+    .updateCoverPhotoFromMedia(userId, coverPhotoUrl)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
+
 const updateAbout = async (req, res) => {
   const userId = req.userId;
   const major = req.body.data.major;
@@ -346,4 +363,5 @@ module.exports = {
   updateAbout,
   updateHobbies,
   getSingleProfile,
+  selectCoverPhotoFromMedia,
 };

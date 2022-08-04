@@ -25,13 +25,14 @@ const {
   updateIntro,
   updateAbout,
   updateHobbies,
-  getSingleProfile
+  getSingleProfile,
+  selectCoverPhotoFromMedia
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
 /* user data router */
 router.get("/profile",getProfile)
-router.get("/newsfeed", getNewsfeed);
+router.get("/newsfeed/:page", getNewsfeed);
 router.get("/profile/posts",getUserPosts)
 
 
@@ -51,6 +52,7 @@ router.post(
   profileImageUpload.single("profileImage"),
   uploadProfilePhoto
 );
+
 
 /**Reactions Routes */
 router.post("/reaction/post/:postId", addPostReaction);
@@ -79,6 +81,7 @@ router.get("/search/:keyword",searchForPeople)
 router.patch("/profile/intro",updateIntro)
 router.patch("/profile/about",updateAbout)
 router.patch("/profile/hobbies",updateHobbies)
+router.patch("/profile/coverImage",selectCoverPhotoFromMedia)
 
 //get user profile
 router.get("/:username",getSingleProfile );

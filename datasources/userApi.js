@@ -38,7 +38,7 @@ class UserApi {
 
   async getSingleUserProfile(userId) {
     const userData = await userApi
-      .findOne({_id:userId}, "-password")
+      .findOne({ _id: userId }, "-password")
       .populate(
         "friends.data.userId",
         "firstName lastName profileImage _id username"
@@ -74,6 +74,7 @@ class UserApi {
     //get users shared post
     const userSharedPosts = await sharedPostApi
       .find({ sharerId: userId })
+      .limit(1)
       .populate({
         path: "originalPostId",
         populate: {
@@ -124,7 +125,13 @@ class UserApi {
 
     return allPosts;
   }
-  async getNewsfeed(userId) {
+  async getNewsfeed(userId, page) {
+    const limit = 5;
+    let skip = page * limit;
+    if (page === 1) {
+      skip = 0;
+    }
+
     const userdata = await userApi.findOne({ _id: userId }, "-password");
     let userFriendsIds = userdata.friends.data.map((user) => {
       return user.userId.toString();
@@ -134,6 +141,9 @@ class UserApi {
       .find()
       .where("userId")
       .in(userFriendsIds)
+      .limit(limit)
+      .skip(skip)
+      .and({ visiability: "public" })
       .populate({
         path: "comments.userId",
         select: "firstName lastName profileImage _id",
@@ -150,6 +160,8 @@ class UserApi {
 
     const friendsSharedPosts = await sharedPostApi
       .find()
+      .limit(limit)
+      .skip(skip)
       .where("sharerId")
       .in(userFriendsIds)
       .populate({
@@ -326,7 +338,8 @@ class UserApi {
 
   async acceptFriendRequest(userId, friendRequestId) {
     const userData = await userApi.findById(userId);
-
+    const friendData = await userApi.findById(friendRequestId);
+    
     //if user is not found
     if (!userData) {
       const error = new Error("User not found");
@@ -334,7 +347,7 @@ class UserApi {
       return error;
     }
 
-    const friendExist = userData.friends.find(
+    const friendExist = userData.friends.data.find(
       (friendRequest) => friendRequest.userId.toString() === friendRequestId
     );
     //if friend already exist
@@ -345,7 +358,8 @@ class UserApi {
     }
 
     //add the friend to the friends list and remove it from friend request
-    userData.friends.push({ friendRequestId });
+    userData.friends.data.push({ friendRequestId });
+    friendData.friends.data.push({ userId });
     userData.friendsRequests = userData.friendsRequests.filter(
       (friendRequest) => friendRequest.userId.toString() !== friendRequestId
     );
@@ -404,6 +418,7 @@ class UserApi {
 
   async removeFriend(userId, friendId) {
     const userData = await userApi.findById(userId);
+    const friendData = await userApi.findById(friendId);
     const friendExist = userData.friends.data.find(
       (friend) => friend.userId.toString() === friendId
     );
@@ -414,12 +429,15 @@ class UserApi {
       return error;
     }
 
-    userData.friends = userData.friends.filter(
+    userData.friends = userData.friends.data.filter(
       (friend) => friend.userId.toString() !== friendId
     );
 
+    friendData.friends = userData.friends.data.filter(
+      (friend) => friend.userId.toString() !== userId
+    );
+
     try {
-      // await userData.save();
       return await userData.save();
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -435,7 +453,7 @@ class UserApi {
       error.httpStatusCode = 404;
       return error;
     }
-    const friendExist = userData.friends.find(
+    const friendExist = userData.friends.data.find(
       (friend) => friend.userId.toString() === friendId
     );
     if (!friendExist) {
@@ -445,7 +463,7 @@ class UserApi {
     }
 
     //remove from friend and add it to block list
-    userData.friends = userData.friends.filter(
+    userData.friends = userData.friends.data.filter(
       (friend) => friend.userId.toString() !== friendId
     );
     userData.blockList.push({ userId: friendId });
@@ -584,12 +602,6 @@ class UserApi {
   }
 
   async updateHobbies(userId, hobbies) {
-    // const userData = await userApi.findOneAndUpdate(
-    //   { _id: userId },
-    //   { hobbies: hobbies },
-    //   { new: true }
-    // );
-    // return userData;
     const userData = await userApi.findById(userId, "-password");
 
     if (!userData) {
@@ -601,6 +613,25 @@ class UserApi {
     try {
       userData.hobbies = hobbies;
       userData.markModified("hobbies");
+      const updatedUserData = await userData.save();
+      return updatedUserData;
+    } catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error;
+    }
+  }
+
+  async updateCoverPhotoFromMedia(userId, coverPhotoUrl) {
+    let userData = await userApi.findById(userId, "coverImage");
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+
+    try {
+      userData.coverImage = coverPhotoUrl;
+      userData.markModified("coverImage");
       const updatedUserData = await userData.save();
       return updatedUserData;
     } catch {
