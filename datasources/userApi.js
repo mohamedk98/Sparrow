@@ -439,7 +439,9 @@ class UserApi {
 
     try {
       await friendData.save();
-      let updatedUserData = await userData.save();
+      let updatedUserData = await (
+        await userData.save()
+      ).populate("friends.data.userId", "firstName lastName profileImage _id");
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -471,8 +473,10 @@ class UserApi {
     userData.blockList.push({ userId: friendId });
 
     try {
-      let updatedUserData = await userData.save();
-      return updatedUserData
+      let updatedUserData = await (
+        await userData.save()
+      ).populate("friends.data.userId", "firstName lastName profileImage _id");
+      return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
@@ -502,7 +506,7 @@ class UserApi {
     );
 
     try {
-      userData.markModified("blockList")
+      userData.markModified("blockList");
       await userData.save();
       return {
         message: "Friend Unblocked",
