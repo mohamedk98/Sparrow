@@ -75,8 +75,8 @@ router.delete("/friends/friendRequest/:friendRequestId", removeFriendRequest);
 //Friend
 router.get("/friends", getAllFriends);
 router.delete("/friends/friend/:friendId", removeFriend);
-router.patch("/friends/friend/:friendId", blockFriend);
-router.patch("/friends/friend/:friendId", unblockFriend);
+router.post("/friends/friend/block/:friendId", blockFriend);
+router.patch("/friends/friend/block/:friendId", unblockFriend);
 
 //search
 router.get("/search/:keyword",searchForPeople)
