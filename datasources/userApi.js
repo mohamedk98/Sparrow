@@ -129,7 +129,7 @@ class UserApi {
     const limit = 5;
     let skip = page * limit;
     if (page === 1) {
-      skip = 0;
+      skip = 1;
     }
 
     const userdata = await userApi.findOne({ _id: userId }, "-password");
@@ -143,7 +143,6 @@ class UserApi {
       .in(userFriendsIds)
       .limit(limit)
       .skip(skip)
-      .and({ visiability: "public" })
       .populate({
         path: "comments.userId",
         select: "firstName lastName profileImage _id",
@@ -158,6 +157,7 @@ class UserApi {
       })
       .populate("userId", "firstName lastName _id profileImage");
 
+    
     const friendsSharedPosts = await sharedPostApi
       .find()
       .limit(limit)
@@ -201,7 +201,8 @@ class UserApi {
       .populate({
         path: "comments.reply.userId",
         select: "firstName lastName profileImage _id",
-      });
+      })
+
 
     //merge the friends posts and friends shared posts together in one array
     let sharedPosts = friendsPosts.concat(friendsSharedPosts);
@@ -339,7 +340,7 @@ class UserApi {
   async acceptFriendRequest(userId, friendRequestId) {
     const userData = await userApi.findById(userId);
     const friendData = await userApi.findById(friendRequestId);
-    
+
     //if user is not found
     if (!userData) {
       const error = new Error("User not found");
@@ -419,7 +420,7 @@ class UserApi {
   async removeFriend(userId, friendId) {
     const userData = await userApi.findById(userId);
     const friendData = await userApi.findById(friendId);
-    const friendExist = userData.friends.data.find(
+    const friendExist = userData.friends?.data.find(
       (friend) => friend.userId.toString() === friendId
     );
     //if friend already exist
@@ -429,11 +430,11 @@ class UserApi {
       return error;
     }
 
-    userData.friends = userData.friends.data.filter(
+    userData.friends.data = userData.friends?.data.filter(
       (friend) => friend.userId.toString() !== friendId
     );
 
-    friendData.friends = userData.friends.data.filter(
+    friendData.friends.data = friendData.friends?.data.filter(
       (friend) => friend.userId.toString() !== userId
     );
 
