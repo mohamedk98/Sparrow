@@ -306,7 +306,7 @@ class ReactionApi {
 
     // if the reaction is not found, add a new reaction
     if (userReactionIndex === -1) {
-      postData.postData.comments[userCommentIndex].reply[
+      postData.comments[userCommentIndex].reply[
         replyIndex
       ].reactions.push({ userId, reaction });
       try {
