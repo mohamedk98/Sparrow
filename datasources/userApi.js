@@ -19,7 +19,7 @@ class UserApi {
         "friends.data.userId",
         "firstName lastName profileImage _id username"
       )
-      .populate("blockList.userId","firstName lastName profileImage _id")
+      .populate("blockList.userId", "firstName lastName profileImage _id")
       .lean();
 
     if (!userData) {
@@ -158,7 +158,6 @@ class UserApi {
       })
       .populate("userId", "firstName lastName _id profileImage");
 
-    
     const friendsSharedPosts = await sharedPostApi
       .find()
       .limit(limit)
@@ -202,8 +201,7 @@ class UserApi {
       .populate({
         path: "comments.reply.userId",
         select: "firstName lastName profileImage _id",
-      })
-
+      });
 
     //merge the friends posts and friends shared posts together in one array
     let sharedPosts = friendsPosts.concat(friendsSharedPosts);
@@ -419,7 +417,7 @@ class UserApi {
   }
 
   async removeFriend(userId, friendId) {
-    const userData = await userApi.findById(userId);
+    let userData = await userApi.findById(userId);
     const friendData = await userApi.findById(friendId);
     const friendExist = userData.friends?.data.find(
       (friend) => friend.userId.toString() === friendId
@@ -440,8 +438,8 @@ class UserApi {
     );
 
     try {
-      await friendData.save()
-      let updatedUserData = await userData.save()
+      await friendData.save();
+      let updatedUserData = await userData.save();
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
