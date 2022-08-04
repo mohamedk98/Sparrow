@@ -471,11 +471,8 @@ class UserApi {
     userData.blockList.push({ userId: friendId });
 
     try {
-      await userData.save();
-      return {
-        message: "Friend Blocked",
-        httpStatusCode: 200,
-      };
+      let updatedUserData = await userData.save();
+      return updatedUserData
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;

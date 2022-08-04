@@ -300,7 +300,7 @@ const blockFriend = async (req, res) => {
   await userApi
     .blockFriend(userId, friendId)
     .then((response) =>
-      res.status(response.httpStatusCode).send(response.message)
+      res.status(200).send(response)
     )
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
