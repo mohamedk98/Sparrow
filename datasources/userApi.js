@@ -439,6 +439,7 @@ class UserApi {
     );
 
     try {
+      await friendData.save()
       return await userData.save();
     } catch {
       const error = new Error("something went wrong, please try again later");
