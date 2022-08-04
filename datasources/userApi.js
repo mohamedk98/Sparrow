@@ -19,6 +19,7 @@ class UserApi {
         "friends.data.userId",
         "firstName lastName profileImage _id username"
       )
+      .populate("blockList.userId","firstName lastName profileImage _id")
       .lean();
 
     if (!userData) {
