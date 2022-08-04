@@ -28,7 +28,8 @@ const {
   getSingleProfile,
   selectCoverPhotoFromMedia,
   addCommentReaction,
-  removeCommentReaction
+  removeCommentReaction,
+  addReplyReaction
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
@@ -63,6 +64,7 @@ router.post("/reaction/sharedPost/:sharedPostId", addSharedPostReaction);
 router.delete("/reaction/sharedPost/:sharedPostId", removeSharedPostReaction);
 router.post("/reaction/post/:postId/:commentId", addCommentReaction);
 router.delete("/reaction/post/:postId/:commentId", removeCommentReaction);
+router.post("/reaction/post/:postId/:commentId/:replyId", addReplyReaction);
 
 /**Friends Actions Routes */
 

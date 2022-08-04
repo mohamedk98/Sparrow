@@ -201,6 +201,20 @@ const addCommentReaction = (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
+const addReplyReaction = (req, res) => {
+  const userId = req.userId;
+  const { postId, commentId,replyId } = req.params;
+  const reaction = req.body.reaction;
+  const postType = req.body.postType;
+
+  reactionApi
+    .addReplyReaction(postId, userId, commentId,replyId, reaction, postType)
+    .then((response) =>
+      res.status(200).send(response.message)
+    )
+    .catch((error) => res.status(400).send(error.message));
+};
+
 const removeCommentReaction = async (req, res) => {
   const userId = req.userId;
   const { postId, commentId } = req.params;
@@ -378,6 +392,7 @@ module.exports = {
   addSharedPostReaction,
   removeSharedPostReaction,
   addCommentReaction,
+  addReplyReaction,
   removeCommentReaction,
   getAllFriendsRequest,
   sendFriendRequest,
