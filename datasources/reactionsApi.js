@@ -184,13 +184,22 @@ class ReactionApi {
       }
     }
     //if reaction was found, and the value changed either update it or leave it as it is
-    else if (postData.reactions[userReactionIndex].reaction !== reaction) {
-      if (postData.reactions[userReactionIndex].userId.toString() !== userId) {
+    else if (
+      postData.comments[userCommentIndex].reactions[userReactionIndex]
+        .reaction !== reaction
+    ) {
+      if (
+        postData.comments[userCommentIndex].reactions[
+          userReactionIndex
+        ].userId.toString() !== userId
+      ) {
         const error = new Error("Unauthorised");
         error.httpStatusCode = 403;
         return error;
       }
-      postData.reactions[userReactionIndex].reaction = reaction;
+      postData.comments[userCommentIndex].reactions[
+        userReactionIndex
+      ].reaction = reaction;
       try {
         postData.markModified("comments");
         await postData.save();
@@ -281,23 +290,25 @@ class ReactionApi {
       return error;
     }
 
-    const replyCommentIndex = postData.comments[
-      userCommentIndex
-    ]?.reply.findIndex((reply) => reply._id.toString() === replyId);
+    const replyIndex = postData.comments[userCommentIndex]?.reply.findIndex(
+      (reply) => reply._id.toString() === replyId
+    );
 
-    if (replyCommentIndex === -1) {
+    if (replyIndex === -1) {
       const error = new Error("Reply not found");
       error.httpStatusCode = 404;
       return error;
     }
 
     const userReactionIndex = postData.comments[userCommentIndex].reply[
-      replyCommentIndex
+      replyIndex
     ].reactions.findIndex((reaction) => reaction.userId.toString() === userId);
 
     // if the reaction is not found, add a new reaction
     if (userReactionIndex === -1) {
-      postData.comments[userCommentIndex].reactions.push({ userId, reaction });
+      postData.postData.comments[userCommentIndex].reply[
+        replyIndex
+      ].reactions.push({ userId, reaction });
       try {
         await postData.save();
         return { message: "reaction added", httpStatusCode: 200 };
@@ -308,13 +319,20 @@ class ReactionApi {
       }
     }
     //if reaction was found, and the value changed either update it or leave it as it is
-    else if (postData.reactions[userReactionIndex].reaction !== reaction) {
-      if (postData.reactions[userReactionIndex].userId.toString() !== userId) {
+    else if (
+      postData.comments[userCommentIndex].reply[replyIndex].reaction !==
+      reaction
+    ) {
+      if (
+        postData.comments[userCommentIndex].reply[
+          replyIndex
+        ].userId.toString() !== userId
+      ) {
         const error = new Error("Unauthorised");
         error.httpStatusCode = 403;
         return error;
       }
-      postData.reactions[userReactionIndex].reaction = reaction;
+      postData.comments[userCommentIndex].reply[replyIndex].reaction = reaction;
       try {
         postData.markModified("comments");
         await postData.save();
