@@ -440,7 +440,8 @@ class UserApi {
 
     try {
       await friendData.save()
-      return await userData.save();
+      let updatedUserData = await userData.save()
+      return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
