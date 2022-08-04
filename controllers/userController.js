@@ -26,11 +26,12 @@ const getSingleProfile = (req, res) => {
 const getNewsfeed = (req, res) => {
   const userId = req.userId;
   let page = req.params.page;
-  if (page == null || page == undefined || typeof page != "number") {
+  if (page === null || page === undefined || !isFinite(page)) {
     page = 1;
   } else {
     page = parseInt(page);
   }
+  console.log(page)
 
   userApi
     .getNewsfeed(userId, page)
@@ -177,6 +178,32 @@ const addSharedPostReaction = async (req, res) => {
 const removeSharedPostReaction = async (req, res) => {
   const userId = req.userId;
   const sharedPostId = req.params.sharedPostId;
+
+  await reactionApi
+    .removePostReaction(sharedPostId, userId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const addCommentReaction = (req, res) => {
+  const userId = req.userId;
+  const { postId, commentId } = req.params;
+  const reaction = req.body.reaction;
+  const postType = req.body.postType;
+
+  reactionApi
+    .addCommentReaction(postId, userId, commentId, reaction, postType)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+};
+
+const removeCommentReaction = async (req, res) => {
+  const userId = req.userId;
+  const { postId, commentId } = req.params;
 
   await reactionApi
     .removePostReaction(sharedPostId, userId)
