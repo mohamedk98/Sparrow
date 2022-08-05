@@ -11,6 +11,7 @@ const {
   updateRedisRefreshTokensIndex,
 } = require("../services/token.service");
 const AuthenticationApi = require("../datasources/authenticationApi");
+const { sendVerifyEmail } = require("../utils/emailSender");
 
 /**Singup controller
  * it returns either success message or failure based on the error
@@ -26,14 +27,13 @@ const signup = async (req, res, next) => {
   //Hashed password
   const hashedPassword = await bcrypt.hash(password, 12);
   //generate Random userID
-  const userId = crypto.randomBytes(16).toString("hex");
+  const verificationCode = crypto.randomBytes(32).toString("hex");
   //generate unique username by adding firstName-lastName-random number
   const username = `${firstName}-${lastName}-${crypto
     .randomBytes(12)
     .toString("hex")}`;
 
   AuthenticationApi.signup({
-    userId,
     username,
     firstName,
     lastName,
@@ -41,8 +41,14 @@ const signup = async (req, res, next) => {
     hashedPassword,
     date,
     gender,
+    verificationCode,
   })
-    .then((response) => {
+    .then(async (response) => {
+      await sendVerifyEmail(
+        `${firstName} ${lastName}`,
+        email,
+        verificationCode
+      );
       res.status(response.httpStatusCode).send(response.message);
     })
     .catch((error) => {
@@ -50,6 +56,14 @@ const signup = async (req, res, next) => {
     });
 };
 
+const verifyEmail = (req, res) => {
+  const verificationCode = req.query.verificationCode;
+  const email = req.params.email;
+
+  AuthenticationApi.verifyEmail(email,verificationCode)
+    .then((response) => res.status(200).send(response.message))
+    .catch((error) => res.status(403).send(error.message));
+};
 /**Login Controller
  * if the user is found and the password is correct, add a jwt token to the
  * cookie with a certain expiry date
@@ -126,9 +140,8 @@ const autoLogin = async (req, res) => {
     return res.sendStatus(401);
   }
   try {
-  const userAccessToken = bearerHeader.split(" ")[1];
+    const userAccessToken = bearerHeader.split(" ")[1];
 
-  
     const accessTokenData = jwt.verify(userAccessToken, process.env.TOKEN);
     if (accessTokenData === null) {
       return res.sendStatus(401);
@@ -168,4 +181,4 @@ const autoLogin = async (req, res) => {
   }
 };
 
-module.exports = { autoLogin, logout, signup, login };
+module.exports = { autoLogin, logout, signup, login, verifyEmail };

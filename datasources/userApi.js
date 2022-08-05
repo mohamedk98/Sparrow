@@ -528,7 +528,7 @@ class UserApi {
       error.httpStatusCode = 404;
       return error;
     }
-    return { data: userFriends, httpStatusCode: 200 };
+    return userFriends;
   }
 
   async getFriendsRequests(userId) {
@@ -543,7 +543,7 @@ class UserApi {
       error.httpStatusCode = 404;
       return error;
     }
-    return { data: userFriendsRequests, httpStatusCode: 200 };
+    return userFriendsRequests;
   }
 
   async search(keyword) {

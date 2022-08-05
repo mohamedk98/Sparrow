@@ -89,6 +89,8 @@ router.patch("/profile/about",updateAbout)
 router.patch("/profile/hobbies",updateHobbies)
 router.patch("/profile/coverImage",selectCoverPhotoFromMedia)
 
+
+
 //get user profile
 router.get("/:username",getSingleProfile );
 

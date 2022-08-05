@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
   username: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
@@ -43,7 +42,8 @@ const userSchema = new mongoose.Schema({
   hiddenPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
   gallery: [String],
   sharedPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
-  verification: { verified: String, verificationCode: String },
+  verificationCode: String,
+  verified: { type: Boolean, default: false },
   resetPassword: { resetStatus: String, resetCode: String },
 });
 

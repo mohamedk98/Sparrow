@@ -232,9 +232,9 @@ const getAllFriendsRequest = async (res, req) => {
   await userApi
     .getFriendsRequests(userId)
     .then((response) =>
-      res.status(response.httpStatusCode).send(response.message)
+      res.status(200).send(response)
     )
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const getAllFriends = async (res, req) => {
@@ -242,9 +242,9 @@ const getAllFriends = async (res, req) => {
   await userApi
     .getFriends(userId)
     .then((response) =>
-      res.status(response.httpStatusCode).send(response.message)
+      res.status(200).send(response)
     )
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const sendFriendRequest = async (req, res) => {

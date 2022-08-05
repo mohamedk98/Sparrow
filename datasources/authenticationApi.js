@@ -6,7 +6,6 @@ class AuthenticationApi {
   //if the email or username was already used,don't create account
   //else,create a new account
   async signup({
-    userId,
     username,
     firstName,
     lastName,
@@ -14,11 +13,11 @@ class AuthenticationApi {
     hashedPassword,
     date,
     gender,
+    verificationCode,
   }) {
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       const user = new User({
-        userId: userId,
         username: username,
         email: email,
         password: hashedPassword,
@@ -27,6 +26,7 @@ class AuthenticationApi {
         dateOfBirth: date,
         age: new Date().getFullYear() - date.slice(0, 4),
         gender: gender,
+        verificationCode: verificationCode,
       });
 
       try {
@@ -45,13 +45,37 @@ class AuthenticationApi {
   }
 
   async login(email) {
-    const exisitngUser = await User.findOne({ email } );
+    const exisitngUser = await User.findOne({ email });
     if (!exisitngUser) {
       const error = new Error("Incorrect email or Password");
       error.httpStatusCode = 400;
       return error;
     } else {
       return exisitngUser;
+    }
+  }
+
+  async verifyEmail(email, verificationCode) {
+    let exisitingUser = await User.findOne({ email });
+    if (!exisitingUser) {
+      const error = new Error("Email address doesn't exists")
+      return error
+    }
+
+    if (exisitingUser.verified === true) {
+      const error = new Error("Email Already Verified")
+      return error
+    }
+
+    if (exisitingUser.verificationCode === verificationCode) {
+      exisitingUser.verificationCode = "";
+      exisitingUser.verified = true;
+      try {
+        await exisitingUser.save();
+        return { message: "Email Verified Successfully" };
+      } catch {
+        return { message: "Incorrect or bad token" };
+      }
     }
   }
 }

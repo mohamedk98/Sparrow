@@ -84,6 +84,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
 
 app.use(authenticationRouter);
+
 app.use(authorization);
 app.get("/", (req, res) => {
   res.send("hello it works");
@@ -105,14 +106,7 @@ app.use(replysRouter);
 /**Using socketIoserver instead of app to let the server work for both RESTApi and messaging */
 
 io.on("connection", async (socket) => {
-  console.log(
-    `Use with ID of ${socket.id} Connected`,
-    `Number of connected Users ${io.engine.clientsCount}`
-  );
-
   socket.on("connect to user", async (receiverId) => {
-
-
     let room = await roomApi
       .findOne()
       .where("userIds")
@@ -130,9 +124,8 @@ io.on("connection", async (socket) => {
       }
     }
 
-
     socket.join(room._id.toString());
-    socket.emit("sent messages",room.messages)
+    socket.emit("sent messages", room.messages);
 
     socket.on("message", async (message, senderId) => {
       io.to(room._id.toString()).emit("message", { message, senderId });
@@ -140,33 +133,15 @@ io.on("connection", async (socket) => {
         sender: senderId,
         receiverId: receiverId,
         message: message,
-        timestamp:new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      await room.save()
+      await room.save();
     });
   });
 
-  // console.log(socket.handshake.auth.userId)
-
-  let users = [];
-
-  for (let [id, socket] of io.of("/").sockets) {
-    users.push(id);
-  }
-
-  socket.emit("online friends", users);
-  socket.broadcast.emit("user connected", socket.id);
-
-  console.log(users);
   socket.on("disconnect", () => {
     console.log(`Use with ID of ${socket.id} Disconnected`);
     socket.broadcast.emit("user disconnected", socket.id);
-  });
-
-  socket.on("message", ({ message, senderId }, to) => {
-    io.to(to)
-      .to(senderId)
-      .emit("message", { message: message, senderId: senderId });
   });
 });
 
