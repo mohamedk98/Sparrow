@@ -31,7 +31,7 @@ const getNewsfeed = (req, res) => {
   } else {
     page = parseInt(page);
   }
-  console.log(page)
+  console.log(page);
 
   userApi
     .getNewsfeed(userId, page)
@@ -195,23 +195,19 @@ const addCommentReaction = (req, res) => {
 
   reactionApi
     .addCommentReaction(postId, userId, commentId, reaction, postType)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(400).send(error.message));
 };
 
 const addReplyReaction = (req, res) => {
   const userId = req.userId;
-  const { postId, commentId,replyId } = req.params;
+  const { postId, commentId, replyId } = req.params;
   const reaction = req.body.reaction;
   const postType = req.body.postType;
 
   reactionApi
-    .addReplyReaction(postId, userId, commentId,replyId, reaction, postType)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .addReplyReaction(postId, userId, commentId, replyId, reaction, postType)
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(400).send(error.message));
 };
 
@@ -219,31 +215,26 @@ const removeCommentReaction = async (req, res) => {
   const userId = req.userId;
   const { postId, commentId } = req.params;
   reactionApi
-  .removeCommentReaction(postId, userId, commentId)
-  .then((response) =>
-    res.status(response.httpStatusCode).send(response.message)
-  )
-  .catch((error) => res.status(error.httpStatusCode).send(error.message));
-
+    .removeCommentReaction(postId, userId, commentId)
+    .then((response) =>
+      res.status(response.httpStatusCode).send(response.message)
+    )
+    .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
-const getAllFriendsRequest = async (res, req) => {
+const getAllFriendsRequest = async (req, res) => {
   const userId = req.userId;
-  await userApi
+   userApi
     .getFriendsRequests(userId)
-    .then((response) =>
-      res.status(200).send(response)
-    )
+    .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
 };
 
-const getAllFriends = async (res, req) => {
+const getAllFriends = async (req, res) => {
   const userId = req.userId;
-  await userApi
+   userApi
     .getFriends(userId)
-    .then((response) =>
-      res.status(200).send(response)
-    )
+    .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
 };
 
@@ -299,9 +290,7 @@ const blockFriend = async (req, res) => {
 
   await userApi
     .blockFriend(userId, friendId)
-    .then((response) =>
-      res.status(200).send(response)
-    )
+    .then((response) => res.status(200).send(response))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 

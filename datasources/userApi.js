@@ -523,7 +523,8 @@ class UserApi {
     const userFriends = await userApi
       .findById(userId, "friends")
       .populate("friends.userId", "firstName lastName profileImage _id");
-    if (!userData) {
+    console.log(userFriends)
+    if (!userFriends) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
       return error;
@@ -538,7 +539,8 @@ class UserApi {
         "friendsRequests.userId",
         "firstName lastName profileImage _id"
       );
-    if (!userData) {
+      console.log(userFriendsRequests)
+    if (!userFriendsRequests) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
       return error;
