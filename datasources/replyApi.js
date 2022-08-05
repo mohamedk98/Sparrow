@@ -178,7 +178,7 @@ class ReplyApi {
     }
   }
 
-  async deleteSharedPostReply({ sharedPostId, commentId, replyId, userId }) {
+  async deleteSharedPostReply( sharedPostId, commentId, replyId, userId ) {
     const postToDeleteReply = await sharedPostApi.findOne({
       _id: sharedPostId,
     });
@@ -210,17 +210,17 @@ class ReplyApi {
       return error;
     }
 
-    const replyToDeleteUserId =
-      postToDeleteReply.comments[commentToDeleteReplyIndex].reply[
-        replyToDeleteIndex
-      ]._id.toString();
+    // const replyToDeleteUserId =
+    //   postToDeleteReply.comments[commentToDeleteReplyIndex].reply[
+    //     replyToDeleteIndex
+    //   ]._id.toString();
 
-    //Check if the user is authorized to delete this reply
-    if (userId !== replyToDeleteUserId) {
-      const error = new Error("Unauthorized");
-      error.httpStatusCode = 403;
-      return error;
-    }
+    // //Check if the user is authorized to delete this reply
+    // if (userId !== replyToDeleteUserId) {
+    //   const error = new Error("Unauthorized");
+    //   error.httpStatusCode = 403;
+    //   return error;
+    // }
     //Remove the reply from the comments and append it to the main post
     postToDeleteReply.comments[commentToDeleteReplyIndex].reply.splice(
       replyToDeleteIndex,

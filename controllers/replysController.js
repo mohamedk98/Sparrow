@@ -59,7 +59,7 @@ const deleteSharedPostReply = (req, res) => {
   const userId = req.userId;
 
   replyApi
-    .deleteSharedPostReply({ sharedPostId, commentId, replyId, userId })
+    .deleteSharedPostReply( sharedPostId, commentId, replyId, userId )
     .then((response) =>
       res.status(response.httpStatusCode).send(response.message)
     )
