@@ -21,9 +21,7 @@ const userSchema = new mongoose.Schema({
   hobbies: [{ type: String, required: false }],
   notifcations: [
     {
-      userId: { type: mongoose.Types.ObjectId, ref: "User" },
-      type:String,
-      message:String
+      notificationId: { type: mongoose.Types.ObjectId, ref: "Notification" },
     },
   ],
   friends: {

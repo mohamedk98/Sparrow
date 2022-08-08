@@ -1,5 +1,7 @@
 const Post = require("../models/Posts");
-const sharedPostAPi = require("../models/SharedPost")
+const sharedPostAPi = require("../models/SharedPost");
+const notificationApi = require("../models/Notification");
+const userApi = require("../models/User");
 const AWS = require("aws-sdk");
 const { default: mongoose } = require("mongoose");
 AWS.config.update({
@@ -22,8 +24,20 @@ class PostsApi {
       postType: postData.postType,
       sharesCount: 0,
     });
+
+    const userData = await userApi.findById(postData.userId);
+    let userFriendsIds = userData.friends.data.map((user) => {
+      return { userId: user.userId.toString() };
+    });
+    const newNotification = new notificationApi({
+      from: sharerId,
+      to: userFriendsIds,
+      type: "create post",
+      message: "has added a new post",
+    });
     try {
       await post.save();
+      await newNotification.save();
       return { message: "Post Created", httpStatusCode: 200 };
     } catch {
       const error = new Error("An error occured, Please try again later");
@@ -50,11 +64,14 @@ class PostsApi {
   }
 
   async deletePost(postId) {
-     Post.findByIdAndDelete(postId, async (error, deletedPost) => {
+    Post.findByIdAndDelete(postId, async (error, deletedPost) => {
       if (error) {
         return error;
       }
-      await sharedPostAPi.deleteMany().where("originalId").equals(deletedPost._id)
+      await sharedPostAPi
+        .deleteMany()
+        .where("originalId")
+        .equals(deletedPost._id);
       if (deletedPost.media.length > 0) {
         const mediaToBeDeleted = deletedPost.media.map((singleImage) => {
           return { Key: `posts_media/${singleImage.split("/")[4]}` };
@@ -70,8 +87,6 @@ class PostsApi {
           .promise();
       }
     });
-
-  
   }
 
   async updatePost({ _id, content, media, visiability }) {

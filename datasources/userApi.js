@@ -1,6 +1,7 @@
 const userApi = require("../models/User");
 const postApi = require("../models/Posts");
 const sharedPostApi = require("../models/SharedPost");
+const notificationApi = require("../models/Notification");
 const AWS = require("aws-sdk");
 AWS.config.update({
   credentials: {
@@ -37,15 +38,36 @@ class UserApi {
     }
   }
 
-
-
   async getSingleUserProfile(userId) {
-    const userData = await userApi
-      .findOne({ _id: userId }, "-password")
-      .populate(
-        "friends.data.userId",
-        "firstName lastName profileImage _id username"
-      );
+    let currentNotifications = await notificationApi
+      .find({}, "_id")
+      .where("to.userId")
+      .in(userId);
+    currentNotifications = currentNotifications.map((notification) => {
+      return { notificationId: notification._id };
+    });
+    const userData = userApi
+      .findByIdAndUpdate(
+        userId,
+        { notifcations: currentNotifications },
+        { new: true }
+      )
+      .then((updatedDocument) => {
+        return updatedDocument.populate([
+          {
+            path: "friends.data.userId",
+            select: "firstName lastName profileImage _id username",
+          },
+          {
+            path: "notifcations.notificationId",
+            select: "_id from message type",
+            populate: {
+              path: "from",
+              select: "_id username firstName lastName profileImage",
+            },
+          },
+        ]);
+      });
 
     if (!userData) {
       const error = new Error("User not found");
@@ -214,7 +236,7 @@ class UserApi {
 
       return secondPostDate - firstPostDate;
     });
-    return {allPosts,page:page};
+    return { allPosts, page: page };
   }
 
   async sharePost({
@@ -233,6 +255,16 @@ class UserApi {
     });
 
     let userData = await userApi.findById(sharerId);
+    let userFriendsIds = userData.friends.data.map((user) => {
+      return { userId: user.userId.toString() };
+    });
+
+    const newNotification = new notificationApi({
+      from: sharerId,
+      to: userFriendsIds,
+      type: "share post",
+      message: "has shared a post",
+    });
     userData.sharedPosts.push({ postId: originalPostId });
     let originalPost = await postApi.findById(originalPostId);
     originalPost.sharesCount = originalPost.sharesCount + 1;
@@ -240,6 +272,7 @@ class UserApi {
       await sharedPost.save();
       await userData.save();
       await originalPost.save();
+      await newNotification.save();
       return { message: "Post Shared Successfully", httpStatusCode: 200 };
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -524,8 +557,11 @@ class UserApi {
   async getFriends(userId) {
     const userFriends = await userApi
       .findById(userId, "friends")
-      .populate("friends.data.userId", "firstName lastName profileImage _id username");
-    console.log(userFriends)
+      .populate(
+        "friends.data.userId",
+        "firstName lastName profileImage _id username"
+      );
+    console.log(userFriends);
     if (!userFriends) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
@@ -541,7 +577,7 @@ class UserApi {
         "friendsRequests.userId",
         "firstName lastName profileImage _id"
       );
-      console.log(userFriendsRequests)
+    console.log(userFriendsRequests);
     if (!userFriendsRequests) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
