@@ -522,7 +522,7 @@ class UserApi {
   async getFriends(userId) {
     const userFriends = await userApi
       .findById(userId, "friends")
-      .populate("friends.userId", "firstName lastName profileImage _id");
+      .populate("friends.data.userId", "firstName lastName profileImage _id");
     console.log(userFriends)
     if (!userFriends) {
       const error = new Error("User not found");

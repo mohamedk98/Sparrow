@@ -106,6 +106,10 @@ app.use(replysRouter);
 /**Using socketIoserver instead of app to let the server work for both RESTApi and messaging */
 
 io.on("connection", async (socket) => {
+  /**When a user connect:
+   * find the room id and if exist,make the user join this room
+   * else,create a new room and add the users to it
+   */
   socket.on("connect to user", async (receiverId) => {
     let room = await roomApi
       .findOne()
@@ -124,9 +128,12 @@ io.on("connection", async (socket) => {
       }
     }
 
+    //make the user join the room
     socket.join(room._id.toString());
+    //send the stored messsages to this room
     socket.emit("sent messages", room.messages);
 
+    //when sending a message,emit it to the room,add the message to the room then save it in DB
     socket.on("message", async (message, senderId) => {
       io.to(room._id.toString()).emit("message", { message, senderId });
       room.messages.push({

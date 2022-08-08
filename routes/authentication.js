@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {autoLogin,logout,signup,login, verifyEmail}= require("../controllers/authenticationController");
+const {autoLogin,logout,signup,login, verifyEmail, resetPassword, sendResetPasswordEmail, changePassword}= require("../controllers/authenticationController");
 const { refreshToken } = require('../middlwares/authentication');
 //POST Routes:
 //-------------------------------------\\
@@ -18,5 +18,8 @@ router.post("/token", refreshToken);
 router.get('/autologin',autoLogin) 
 //User account settings
 router.get("/verifyEmail/:email",verifyEmail)
+router.post("/reset",sendResetPasswordEmail)
+router.post("/resetpassword",resetPassword)
+router.post("/changepassword",changePassword)
 
 module.exports = router;

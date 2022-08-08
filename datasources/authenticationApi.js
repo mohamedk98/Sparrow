@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 //Authentication data source
 class AuthenticationApi {
@@ -58,13 +58,13 @@ class AuthenticationApi {
   async verifyEmail(email, verificationCode) {
     let exisitingUser = await User.findOne({ email });
     if (!exisitingUser) {
-      const error = new Error("Email address doesn't exists")
-      return error
+      const error = new Error("Email address doesn't exists");
+      return error;
     }
 
     if (exisitingUser.verified === true) {
-      const error = new Error("Email Already Verified")
-      return error
+      const error = new Error("Email Already Verified");
+      return error;
     }
 
     if (exisitingUser.verificationCode === verificationCode) {
@@ -76,6 +76,78 @@ class AuthenticationApi {
       } catch {
         return { message: "Incorrect or bad token" };
       }
+    }
+  }
+
+  async sendResetPasswordEmail(email) {
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      const error = new Error("Email or account doesn't exists");
+      return error;
+    }
+
+    try {
+      user.resetPasswordCode = resetToken;
+      user.passwordResetMode = true;
+      await user.save();
+      return {
+        message: `An email has sent to ${email} for steps to change password, please check your spam`,
+      };
+    } catch {
+      const error = new Error("Something went wrong pelaase try again later");
+      return error;
+    }
+  }
+
+  async resetPassword (email,resetToken,newPassword){
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      const error = new Error("Email or account doesn't exists");
+      return error;
+    }
+
+    if (user.resetPasswordCode !== resetToken) {
+      const error = new Error("Could not change your password, please try again later ");
+      return error;
+    }
+
+    if (user.passwordResetMode !== false || user.resetPasswordCode === "") {
+      const error = new Error("Could not change your password, please try again later");
+      return error;
+    }
+
+   
+    try {
+      user.password = newPassword
+      user.resetPasswordCode = "";
+      user.passwordResetMode = false;
+      await user.save();
+      return {
+        message: "Password Changed Successfully, you can log in your account again",
+      };
+    } catch {
+      const error = new Error("Something went wrong pelaase try again later");
+      return error;
+    }
+  }
+
+  async changePassword(userId,newPassword) {
+    const user = await User.findById(userId);
+    if (!user) {
+      const error = new Error("Email or account doesn't exists");
+      return error;
+    }
+
+    try {
+      user.password = newPassword
+      await user.save();
+      return {
+        message: "Password Changed Successfully",
+      };
+    } catch {
+      const error = new Error("Something went wrong pelaase try again later");
+      return error;
     }
   }
 }

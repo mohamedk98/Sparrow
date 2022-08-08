@@ -60,7 +60,49 @@ const verifyEmail = (req, res) => {
   const verificationCode = req.query.verificationCode;
   const email = req.params.email;
 
-  AuthenticationApi.verifyEmail(email,verificationCode)
+  AuthenticationApi.verifyEmail(email, verificationCode)
+    .then((response) => res.status(200).send(response.message))
+    .catch((error) => res.status(403).send(error.message));
+};
+
+const sendResetPasswordEmail = (req, res) => {
+  const email = req.body.email;
+
+  AuthenticationApi.sendResetPasswordEmail(email)
+    .then((response) => res.status(200).send(response.message))
+    .catch((error) => res.status(403).send(error.message));
+};
+
+const resetPassword = async (req, res) => {
+  const email = req.query.email;
+  const resetToken = req.quary.resetToken;
+  const password = req.body.password;
+  const repassword = req.body.repassword;
+
+  if (password !== repassword) {
+    const error = new Error("Password and Retyped password are not matching");
+    return res.status(400).send(error.message);
+  }
+
+  const hashedNewPassword = await bcrypt.hash(password, 12);
+  AuthenticationApi.resetPassword(email, resetToken, hashedNewPassword)
+    .then((response) => res.status(200).send(response.message))
+    .catch((error) => res.status(403).send(error.message));
+};
+
+const changePassword = async (req, res) => {
+  const userId = req.userId;
+  const password = req.body.password;
+  const repassword = req.body.repassword;
+
+  if (password !== repassword) {
+    const error = new Error("Password and Retyped password are not matching");
+    return res.status(400).send(error.message);
+  }
+
+  const hashedNewPassword = await bcrypt.hash(password, 12);
+
+  AuthenticationApi.changePassword(userId, hashedNewPassword)
     .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(403).send(error.message));
 };
@@ -181,4 +223,13 @@ const autoLogin = async (req, res) => {
   }
 };
 
-module.exports = { autoLogin, logout, signup, login, verifyEmail };
+module.exports = {
+  autoLogin,
+  logout,
+  signup,
+  login,
+  verifyEmail,
+  sendResetPasswordEmail,
+  resetPassword,
+  changePassword,
+};

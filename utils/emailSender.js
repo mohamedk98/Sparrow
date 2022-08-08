@@ -5,13 +5,17 @@ const verifyEmailTemplate = fs.readFileSync(
   path.join(__dirname, "verifyEmailTemplate.html"),
   "utf-8"
 );
+const resetPasswordTemplate = fs.readFileSync(
+  path.join(__dirname, "ResetPasswordTemplate.html"),
+  "utf-8"
+);
 sendgridEmail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendVerifyEmail = async (name, email, verificationCode) => {
   sendgridEmail.send({
     from: "zombie.hat.iti@gmail.com",
     to: email,
-    subject: "Zombie Hat Verification Required",
+    subject: "ZombieHat Verification Required",
     text: `Dear ${name}, Thank you for joining our family. To activate your account please lick the following link`,
     substitutionWrappers: [':', ''],
     substitutions: {
@@ -22,6 +26,19 @@ const sendVerifyEmail = async (name, email, verificationCode) => {
   });
 };
 
-const sendResetPassword = () => {};
+const sendResetPassword = (name, email,resetToken) => {
+  sendgridEmail.send({
+    from: "zombie.hat.iti@gmail.com",
+    to: email,
+    subject: "ZombieHat Password Reset",
+    substitutionWrappers: [':', ''],
+    substitutions: {
+      name:name,
+      email: email,
+      resetToken: resetToken,
+    },
+    html: resetPasswordTemplate,
+  });
+};
 
 module.exports = { sendVerifyEmail, sendResetPassword };

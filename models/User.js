@@ -44,7 +44,8 @@ const userSchema = new mongoose.Schema({
   sharedPosts: [{ postId: { type: mongoose.Types.ObjectId, ref: "Post" } }],
   verificationCode: String,
   verified: { type: Boolean, default: false },
-  resetPassword: { resetStatus: String, resetCode: String },
+  resetPasswordCode: String,
+  passwordResetMode:{type:Boolean,default:false}
 });
 
 module.exports = mongoose.model("User", userSchema);
