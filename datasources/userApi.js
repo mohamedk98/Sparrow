@@ -37,6 +37,8 @@ class UserApi {
     }
   }
 
+
+
   async getSingleUserProfile(userId) {
     const userData = await userApi
       .findOne({ _id: userId }, "-password")
@@ -204,15 +206,15 @@ class UserApi {
       });
 
     //merge the friends posts and friends shared posts together in one array
-    let sharedPosts = friendsPosts.concat(friendsSharedPosts);
+    let allPosts = friendsPosts.concat(friendsSharedPosts);
     //sort the array descendigly
-    sharedPosts = sharedPosts.sort((firstElement, secondElement) => {
+    allPosts = allPosts.sort((firstElement, secondElement) => {
       const firstPostDate = new Date(firstElement.createdAt);
       const secondPostDate = new Date(secondElement.createdAt);
 
       return secondPostDate - firstPostDate;
     });
-    return sharedPosts;
+    return {allPosts,page:page};
   }
 
   async sharePost({
