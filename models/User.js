@@ -19,7 +19,13 @@ const userSchema = new mongoose.Schema({
   town: { type: String, required: false, default: "" },
   work: { type: String, required: false, default: "" },
   hobbies: [{ type: String, required: false }],
-  notifcations: [],
+  notifcations: [
+    {
+      userId: { type: mongoose.Types.ObjectId, ref: "User" },
+      type:String,
+      message:String
+    },
+  ],
   friends: {
     data: [
       {
@@ -45,7 +51,7 @@ const userSchema = new mongoose.Schema({
   verificationCode: String,
   verified: { type: Boolean, default: false },
   resetPasswordCode: String,
-  passwordResetMode:{type:Boolean,default:false}
+  passwordResetMode: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("User", userSchema);
