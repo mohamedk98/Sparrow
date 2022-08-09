@@ -1,19 +1,28 @@
 import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { axiosInstance } from '../../network/axiosInstance';
+import { addUserData } from '../../store/userSlice/UserDataSlice';
 
-function CoverSelectPhoto() {
+function CoverSelectPhoto({choosePic, setChoosePic}) {
     const userState = useSelector(state =>state.userData.userData);
-    const chooseCover = ()=>{
-        
+    const dispatch = useDispatch();
+    const chooseCover = (photo)=>{
+        axiosInstance
+        .patch(`/profile/coverImage`,{coverPhotoUrl:photo})
+        .then((response) => {
+            dispatch(addUserData(response.data))
+        })
+        .catch(error => console.log(error));
+        setChoosePic(false)
     }
     return (
         <div className='fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
             <div className='w-2/4 mx-auto my-32 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white'>
                 <div className='relative mb-3'>
                     <div className='text-center text-xl'>Select Photo</div>
-                    <div className='absolute right-2 top-0 text-xl'>
-                        <AiOutlineClose onClick={()=>{}}/>
+                    <div className='absolute right-2 top-0 text-xl cursor-pointer'>
+                        <AiOutlineClose onClick={()=>setChoosePic(false)}/>
                     </div>
                 </div>
                 <hr></hr>
@@ -21,7 +30,7 @@ function CoverSelectPhoto() {
                 {userState?.gallery?.map((photo, index)=>{
                     return(
                         <img key={index} src={photo} alt="photos" className="w-full h-24 rounded-md"
-                                onClick={()=>chooseCover()}></img>
+                                onClick={()=>chooseCover(photo)}></img>
                     )
                 })}
                 </div>

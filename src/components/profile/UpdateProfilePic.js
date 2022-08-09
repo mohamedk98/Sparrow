@@ -78,15 +78,15 @@ function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChooseP
                     </button>
                 </div>
                 <hr></hr>
-                <div>
+               {/*  <div>
                     <textarea
                     className='w-full my-4 p-4 border rounded-xl resize-none focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400' 
                     placeholder='Description'
                     value={description}
                     onChange={e=>setDescription(e.target.value)}
                     />
-                </div>
-                <div className='relative h-full w-full'>
+                </div> */}
+                <div className='relative h-full w-full p-2'>
                     <div className='relative flex justify-center h-80 w-full'>
                         <Cropper
                             image={pic}
@@ -115,10 +115,10 @@ function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChooseP
                             <BiCrop className='text-lg'/>
                             <span>Crop Photo</span>
                         </div>
-                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer bg-slate-200 rounded-lg hover:brightness-95'>
+                        {/* <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer bg-slate-200 rounded-lg hover:brightness-95'>
                             <RiTimerFill className='text-lg'/>
                             <span>Make Temporary</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className='relative h-20'>

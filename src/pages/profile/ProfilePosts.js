@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import InputBox from '../../components/home/Feed/InputBox';
+import SharedPost from '../../components/home/Feed/posts/SharedPost';
 import Intro from '../../components/profile/Intro';
 import PostView from '../../components/profile/PostView';
 import ProfileFooter from '../../components/profile/ProfileFooter';
 import ProfileFriends from '../../components/profile/ProfileFriends';
 import ProfilePhotos from '../../components/profile/ProfilePhotos';
+import { axiosInstance } from '../../network/axiosInstance';
+import { addUserData } from '../../store/userSlice/UserDataSlice';
 
 function ProfilePosts() {
+    const userState = useSelector(state =>console.log(state.userData.userData));
+    const dispatch = useDispatch();
+    const [posts, setPosts] = useState([])
+    useEffect(() => {
+        axiosInstance.get('/profile/posts')
+        .then(res=>{
+            setPosts(res.data);
+            console.log(res.data)})
+        .catch(err=>console.log(err))
+    },[]);
     return (
-        <div className="mt-3 bg-slate-200">
+        <div className="mt-3 bg-slate-200 dark:bg-zinc-900 transition duration-700">
             <div className="w-11/12 m-auto">
                 <div className="py-2.5 px-9">
                     <div className="grid lg:grid-cols-2 grid-col-1 gap-1">
@@ -27,12 +41,9 @@ function ProfilePosts() {
                         {/* create post */}
                         <InputBox />
                         {/* post view */}
-                        <PostView/>
+                        {/* <PostView/> */}
                         {/* post */}
-                    {/*  <Post/>
-                        <Post/>
-                        <Post/>
-                        <Post/> */}
+                        <SharedPost posts={posts}  userData={userState} />
                     </div>
                     </div>
                 </div>

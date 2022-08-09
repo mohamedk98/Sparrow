@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // import './App.css';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { axiosInstance } from './network/axiosInstance';
 import Error from './pages/error/Error';
@@ -17,6 +17,7 @@ import ProfilePosts from './pages/profile/ProfilePosts';
 import About from './pages/profile/About';
 import Friends from './pages/profile/Friends';
 import Photos from './pages/profile/Photos';
+import { addUserData } from './store/userSlice/UserDataSlice';
 
 function App() {
   const navigate = useNavigate();
@@ -39,18 +40,23 @@ function App() {
         navigate('/login');
       });
   }, []);
+  useEffect(() => {
+    axiosInstance.get('/profile')
+    .then(res=>dispatch(addUserData(res.data)))
+    .catch(err=>console.log(err))
+  },[]);
 
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset" element={<Reset />} />
-      <Route path="/:username" element={<Profile />}>
-        <Route index element={<ProfilePosts />} />
-        <Route path="/posts" element={<ProfilePosts />} />
-        <Route path="about" element={<About />} />
-        <Route path="friends" element={<Friends />} />
-        <Route path="photos" element={<Photos />} />
+      <Route path="/:username" element={<Profile />} >
+        <Route index element={<ProfilePosts />}/>
+        <Route path="posts" element={<ProfilePosts />} />
+        <Route path="about" element={<About />}/>
+        <Route path="friends" element={<Friends />}/>
+        <Route path="photos" element={<Photos />}/>
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>

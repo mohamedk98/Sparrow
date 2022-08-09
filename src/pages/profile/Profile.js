@@ -13,29 +13,39 @@ import Feed from "../../components/home/Feed/Feed";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserData } from "../../store/userSlice/UserDataSlice";
 import InputBox from "../../components/home/Feed/InputBox";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, useParams } from "react-router-dom";
 import ProfileInfos from "./ProfileInfos";
 import ProfilePosts from "./ProfilePosts";
 import About from './About';
 import Friends from './Friends';
 import Photos from './Photos';
 import Chat from "../../components/chat/Chat";
+import useDarkMode from "../../hooks/useDarkMode";
+import Header from "../../components/home/Header/Header";
 
 function Profile() {
   const userState = useSelector(state =>console.log(state.userData.userData));
   const dispatch = useDispatch();
+  const {username} = useParams();
+  console.log(username)
+  console.log(userState)
   useEffect(() => {
-    axiosInstance.get('/profile')
+    axiosInstance.get(`/${username}`)
     .then(res=>dispatch(addUserData(res.data)))
     .catch(err=>console.log(err))
-  });
+  },[userState, dispatch, username]);
+  const [colorTheme,setTheme] = useDarkMode()
   return (
     <>
+    <div className="dark:bg-zinc-800 transition duration-700">
+      {/* <button onClick={()=>setTheme(colorTheme)}>dark</button> */}
+      <Header/>
       <ProfileInfos/>
       <Outlet/>
       {/* <Chat/> */}
+    </div>
+      
     </>
-  
   );
 }
 

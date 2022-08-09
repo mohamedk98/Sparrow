@@ -7,10 +7,12 @@ import CoverSelectPhoto from "./CoverSelectPhoto";
 import { axiosInstance } from "../../network/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserData } from "../../store/userSlice/UserDataSlice";
+import PhotoModalSingle from "./PhotoModalSingle";
 
 function Cover() {
   const userState = useSelector((state) => state.userData.userData);
   const dispatch = useDispatch();
+  const [openPhoto, setOpenPhoto] = useState(false);
   const [showCoverMenu, setShowCoverMenu] = useState(false);
   const [choosePic, setChoosePic] = useState(false);
   const [coverPic, setCoverPic] = useState(cover);
@@ -54,20 +56,22 @@ function Cover() {
     setError(null);
   };
   const openModal = () => {
-    setChoosePic(!choosePic);
+    setChoosePic(true);
   };
   return (
     <div className="cover max-w-5xl mx-auto">
-      <div className="bg-slate-200 relative w-full h-96 rounded-t-none rounded-b-md cursor-pointer">
+      <div className="bg-slate-200 relative w-full h-96 rounded-t-none rounded-b-md">
         {
           <img
-            className="relative w-full h-96 rounded-t-none rounded-b-md"
+            className="relative w-full h-96 rounded-t-none rounded-b-md cursor-pointer"
             src={coverPic}
             alt=""
+            onClick={()=>setOpenPhoto(true)}
           ></img>
         }
+        {openPhoto&&<PhotoModalSingle photo={coverPic} setOpenPhoto={setOpenPhoto}/>}
         {error && <div className="text-end text-red-600">{error}</div>}
-        <div className="absolute bottom-4 right-4">
+        {userState.currentLoginAccount&&<div className="absolute bottom-4 right-4">
           <div
             className="bg-white p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer hover:brightness-95"
             onClick={() => {
@@ -78,17 +82,17 @@ function Cover() {
             Add Cover Photo
           </div>
           {showCoverMenu && (
-            <div className="bg-white p-2 rounded-lg absolute right-0 w-80 shadow shadow-slate-400 z-10">
+            <div className="bg-white dark:bg-zinc-700 dark:text-slate-100 transition duration-700 p-2 rounded-lg absolute right-0 w-80 shadow shadow-slate-400 dark:shadow-zinc-500 z-10">
               <div
-                className="flex items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200"
+                className="flex dark:hover:bg-zinc-600 items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200"
                 onClick={openModal}
               >
                 <MdPhotoLibrary className="w-5 h-5" />
                 Select Photo
-                {choosePic && <CoverSelectPhoto />}
               </div>
+              {choosePic && <CoverSelectPhoto choosePic={choosePic} setChoosePic={setChoosePic} />}
               <div
-                className="flex items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200"
+                className="flex dark:hover:bg-zinc-600 items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200"
                 onClick={() => refInput.current.click()}
               >
                 <MdOutlineUpload className="w-5 h-5" />
@@ -103,7 +107,7 @@ function Cover() {
               </div>
             </div>
           )}
-        </div>
+        </div>}
       </div>
     </div>
   );
