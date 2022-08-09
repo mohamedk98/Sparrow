@@ -188,8 +188,7 @@ class UserApi {
         path: "comments.reply.reactions.userId",
         select: "firstName lastName",
       })
-      .populate("userId", "firstName lastName _id profileImage")
-
+      .populate("userId", "firstName lastName _id profileImage");
 
     const friendsSharedPosts = await sharedPostApi
       .find()
@@ -368,11 +367,23 @@ class UserApi {
     receiverData.friendsRequests.push({ senderId });
 
     try {
-      await receiverData.save();
-      return {
-        message: "Friend Request Sent",
-        httpStatusCode: 200,
-      };
+      let updatedUserData = await (
+        await receiverData.save()
+      )
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
+      return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
@@ -409,11 +420,23 @@ class UserApi {
     );
 
     try {
-      await userData.save();
-      return {
-        message: "Friend Request Accepted, you are now friends",
-        httpStatusCode: 200,
-      };
+      let updatedUserData = await (
+        await userData.save()
+      )
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
+      return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
@@ -448,11 +471,23 @@ class UserApi {
     );
 
     try {
-      await userData.save();
-      return {
-        message: "Friend Request Removed",
-        httpStatusCode: 200,
-      };
+      let updatedUserData = await (
+        await userData.save()
+      )
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
+      return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
@@ -485,7 +520,20 @@ class UserApi {
       await friendData.save();
       let updatedUserData = await (
         await userData.save()
-      ).populate("friends.data.userId", "firstName lastName profileImage _id");
+      )
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -519,7 +567,20 @@ class UserApi {
     try {
       let updatedUserData = await (
         await userData.save()
-      ).populate("friends.data.userId", "firstName lastName profileImage _id");
+      )
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -551,11 +612,23 @@ class UserApi {
 
     try {
       userData.markModified("blockList");
-      await userData.save();
-      return {
-        message: "Friend Unblocked",
-        httpStatusCode: 200,
-      };
+      let updatedUserData = await (
+        await userData.save()
+      )
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
+      return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
       error.httpStatusCode = 400;
