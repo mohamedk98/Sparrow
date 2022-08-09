@@ -565,9 +565,9 @@ class UserApi {
     userData.blockList.push({ userId: friendId });
 
     try {
-      let updatedUserData = await (
-        await userData.save()
-      )
+      let updatedUserData = await userData.save();
+
+      updatedUserData = updatedUserData
         .populate(
           "friends.data.userId",
           "firstName lastName profileImage _id username"
@@ -581,6 +581,7 @@ class UserApi {
             select: "_id username firstName lastName profileImage",
           },
         });
+
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
