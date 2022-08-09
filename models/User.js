@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema({
   verified: { type: Boolean, default: false },
   resetPasswordCode: String,
   passwordResetMode: { type: Boolean, default: false },
+  currentLoginAccount: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model("User", userSchema);

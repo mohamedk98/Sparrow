@@ -180,7 +180,16 @@ class UserApi {
         path: "reactions.userId",
         select: "firstName lastName",
       })
-      .populate("userId", "firstName lastName _id profileImage");
+      .populate({
+        path: "comments.reactions.userId",
+        select: "firstName lastName",
+      })
+      .populate({
+        path: "comments.reply.reactions.userId",
+        select: "firstName lastName",
+      })
+      .populate("userId", "firstName lastName _id profileImage")
+
 
     const friendsSharedPosts = await sharedPostApi
       .find()
