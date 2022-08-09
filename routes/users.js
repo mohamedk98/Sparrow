@@ -29,7 +29,8 @@ const {
   selectCoverPhotoFromMedia,
   addCommentReaction,
   removeCommentReaction,
-  addReplyReaction
+  addReplyReaction,
+  updateName
 } = require("../controllers/userController");
 const { coverImageUpload, profileImageUpload } = require("../middlwares/fileUpload");
 
@@ -88,6 +89,7 @@ router.patch("/profile/intro",updateIntro)
 router.patch("/profile/about",updateAbout)
 router.patch("/profile/hobbies",updateHobbies)
 router.patch("/profile/coverImage",selectCoverPhotoFromMedia)
+router.patch("/profile/name",updateName)
 
 
 

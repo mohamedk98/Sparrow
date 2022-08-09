@@ -367,6 +367,18 @@ const updateAbout = async (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
+const updateName = (req,res)=>{
+  const userId = req.userId
+  const firstName = req.body.name.firstName
+  const lastName = req.body.name.lastName
+
+  userApi
+  .updateName(userId, firstName,lastName)
+  .then((response) => res.status(200).send(response))
+  .catch((error) => res.status(400).send(error.message));
+
+}
+
 module.exports = {
   getProfile,
   getUserPosts,
@@ -397,4 +409,5 @@ module.exports = {
   updateHobbies,
   getSingleProfile,
   selectCoverPhotoFromMedia,
+  updateName
 };

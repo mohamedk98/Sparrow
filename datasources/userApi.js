@@ -764,6 +764,41 @@ class UserApi {
       return error;
     }
   }
+
+  async updateName(userId, firstName, lastName) {
+    let userData = await userApi.findById(userId);
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+
+    try {
+      userData.firstName = firstName;
+      userData.lastName = lastName;
+      userData.markModified("firstName");
+      userData.markModified("lastName");
+
+      const updatedUserData = await userData.save();
+      return await updatedUserData
+        .populate(
+          "friends.data.userId",
+          "firstName lastName profileImage _id username"
+        )
+        .populate("blockList.userId", "firstName lastName profileImage _id")
+        .populate({
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        });
+    } catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error;
+    }
+  }
 }
 
 module.exports = UserApi;
