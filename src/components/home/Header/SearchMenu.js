@@ -26,7 +26,7 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
       {result &&
         result.map(user => (
           <Link
-            to={`/profile/:${user.username}`}
+            to={`/${user.username}`}
             key={user.userId}
             className="relative w-full flex items-center hover:bg-gray-100 gap-2 p-1 rounded-lg"
           >

@@ -10,11 +10,12 @@ import { FaUserAlt } from 'react-icons/fa';
 import { BiLogOut } from 'react-icons/bi';
 import profileImg from '../../../assets/images/default_profile.png';
 import { axiosInstance } from '../../../network/axiosInstance';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
 
 const LeftSideBar = () => {
+  const userState = useSelector(state => state.userData.userData);
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -97,13 +98,13 @@ const LeftSideBar = () => {
         />
         <ul>
           <li className="flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2 ">
-            <img src={profileImg} alt="profile" className="rounded-full" />
+            <img src={userState.profileImage} alt="profile" className="rounded-full w-12 h-12" />
             <span
-              className={`text-black origin-left font-bold text-sm mt-3 ml-2 duration-300 ${
+              className={`text-black origin-left font-bold text-sm mt-3 ml-1 duration-300 ${
                 !open && 'scale-0 -mb-7'
               }`}
             >
-              User Name
+              {userState.firstName} {userState.lastName}
             </span>
           </li>
         </ul>

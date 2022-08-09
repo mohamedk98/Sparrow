@@ -189,7 +189,7 @@ const Header = () => {
           >
             <div className="w-10">
               <img
-                src={profileImg}
+                src={userState.profileImage}
                 className="rounded-full"
                 alt="profile img"
                 loading="lazy"
