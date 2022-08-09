@@ -291,7 +291,7 @@ const blockFriend = async (req, res) => {
   await userApi
     .blockFriend(userId, friendId)
     .then((response) => res.status(200).send(response))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(error.httpStatusCode).send(error));
 };
 
 const unblockFriend = async (req, res) => {
