@@ -565,25 +565,23 @@ class UserApi {
     userData.blockList.push({ userId: friendId });
 
     try {
-      let updatedUserData = await userData.save();
-
-      updatedUserData = updatedUserData
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
-          path: "notifcations.notificationId",
-          select: "_id from message type",
-          populate: {
-            path: "from",
-            select: "_id username firstName lastName profileImage",
-          },
-        });
-
-      return updatedUserData;
-    } catch (error){
+      userData.save().then((updatedUserData) => {
+        return updatedUserData
+          .populate(
+            "friends.data.userId",
+            "firstName lastName profileImage _id username"
+          )
+          .populate("blockList.userId", "firstName lastName profileImage _id")
+          .populate({
+            path: "notifcations.notificationId",
+            select: "_id from message type",
+            populate: {
+              path: "from",
+              select: "_id username firstName lastName profileImage",
+            },
+          });
+      });
+    } catch (error) {
       // const error = new Error("something went wrong, please try again later");
       // error.httpStatusCode = 400;
       return error;
