@@ -583,9 +583,9 @@ class UserApi {
         });
 
       return updatedUserData;
-    } catch {
-      const error = new Error("something went wrong, please try again later");
-      error.httpStatusCode = 400;
+    } catch (error){
+      // const error = new Error("something went wrong, please try again later");
+      // error.httpStatusCode = 400;
       return error;
     }
   }
