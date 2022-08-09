@@ -559,7 +559,7 @@ class UserApi {
     }
 
     //remove from friend and add it to block list
-    userData.friends = userData.friends.data.filter(
+    userData.friends.data = userData.friends.data.filter(
       (friend) => friend.userId.toString() !== friendId
     );
     userData.blockList.push({ userId: friendId });
