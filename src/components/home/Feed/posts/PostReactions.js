@@ -45,6 +45,7 @@ const PostReactions = ({
   reactHandler,
   containerClassName,
   reactionsFullScreenClassName,
+  careReplyClassName,
 }) => {
   return (
     <Fragment>
@@ -73,16 +74,28 @@ const PostReactions = ({
             <div
               className={
                 react.name === 'Care'
-                  ? `cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-3/6 -mt-0.5 hover:w-10/12 ${
-                      reactionsFullScreenClassName && 'lg:w-6/12'
+                  ? `cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-6/12 -mt-0.5 hover:lg:w-8/12 hover:md:w-9/12 hover:w-11/12 md:max-h-20 ${
+                      careReplyClassName &&
+                      !reactionsFullScreenClassName &&
+                      careReplyClassName
+                    } ${
+                      reactionsFullScreenClassName &&
+                      ' w-6/12 md:w-6/12 hover:w-10/12 '
                     }`
-                  : 'cursor-pointer relative mr-1 ml-2 hover:w-10/12'
+                  : `cursor-pointer relative mr-1 ml-2 hoverlg::w-7/12 hover:md:w-9/12 hover:w-11/12 max-h-10 ${
+                      reactionsFullScreenClassName && ' w-6/12 hover:w-7/12 '
+                    }`
               }
               key={idx}
               onClick={() => reactHandler(react.name)}
               data-title={react.name}
             >
-              <img src={react.image} alt={react.name} />
+              <img
+                width="100%"
+                height="100%"
+                src={react.image}
+                alt={react.name}
+              />
             </div>
           ))}
         </div>

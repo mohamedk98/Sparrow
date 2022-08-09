@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
 import { useState } from 'react';
 import { axiosInstance } from '../../../../network/axiosInstance';
-// import profileImg from './../../../../assets/images/default_profile.png';
 
 import './../Tooltip.module.css';
 import PostHalfTop from './PostHalfTop';
 import TextArea from './TextArea';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 
 const ShareModal = ({
   modelID,
@@ -21,7 +23,9 @@ const ShareModal = ({
   postCreatorName,
   postCreatorProfileSRC,
 }) => {
-  // console.log(modelID);
+  // Force rerender:
+  const dispatch = useDispatch();
+  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
 
   // To get the value of textArea field:
   const [emptyTextArea, setEmptyTextArea] = useState(false);
@@ -35,9 +39,7 @@ const ShareModal = ({
     axiosInstance
       .post(`/share/${postId}`, { caption: caption })
       .then(response => {
-        // console.log(caption);
-        console.log(postId);
-        console.log(response);
+        dispatch(forceUpdateHandler(!forceReRender));
       })
       .catch(error => {
         console.log(error);

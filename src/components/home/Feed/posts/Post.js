@@ -2,8 +2,6 @@ import React, { Fragment, useState } from 'react';
 
 import profileImg from '../../../../assets/images/default_profile.png';
 
-import { AiFillLike } from 'react-icons/ai';
-
 import FullScreenOriginalPost from './FullScreenOriginalPost';
 
 import PostHalfTop from './PostHalfTop';
@@ -23,20 +21,15 @@ const Post = ({
   reactionsMakers,
   moreID,
 }) => {
-  // console.log(reactions, sharedPost);
-  // console.log(reactionsMakers, sharedPost);
-
-  // console.log(sharedPost);
-
   // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
 
-  // console.log(sharedPostData);
-  // console.log(data?._id);
   console.log();
   return (
     <div
-      className={`rounded-lg shadow-lg bg-white  p-3 max-w-2xl mx-auto my-7 ${className}`}
+      className={`rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7 ${
+        className && className
+      }`}
       key={data?._id}
     >
       {
@@ -65,6 +58,7 @@ const Post = ({
             sharedPost={sharedPost}
             setWriteComment={setWriteComment}
             writeComment={writeComment}
+            userData={userData}
           />
         )}
 
@@ -89,17 +83,20 @@ const Post = ({
             moreFullScreenClassName="-ml-24"
             postBody={data?.content}
             userID={userData?._id}
+            fullScreenContentClassName="px-5 ml-7"
           />
         }
         postMiddelAndBottom={
           <Fragment>
-            <PostMiddleCounters
-              data={data}
-              reactions={reactions}
-              reactionsMakers={reactionsMakers}
-              setWriteComment={setWriteComment}
-              writeComment={writeComment}
-            />
+            {
+              <PostMiddleCounters
+                data={data}
+                reactions={reactions}
+                reactionsMakers={reactionsMakers}
+                setWriteComment={setWriteComment}
+                writeComment={writeComment}
+              />
+            }
 
             <PostMiddle
               data={data}

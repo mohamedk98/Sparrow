@@ -1,49 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import Post from './Post';
 import profileImg from '../../../../assets/images/default_profile.png';
 import PostHalfTop from './PostHalfTop';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  postsDataHandler,
+  forceUpdateHandler,
   profileDataHandler,
 } from '../../../../store/userSlice/NewsFeedSlice';
 import PostMiddle from './PostMiddle';
 import dateCalcFunction from './DateCalculations';
 
-const SharedPost = () => {
+const SharedPost = ({ postsProfile, userDataProfile }) => {
+  // Force rercall api upon change in component:
+  const dispatch = useDispatch();
+  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+
   // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const posts = useSelector(state => state.newsFeed.postsData);
-  // console.log(posts);
 
   const userData = useSelector(state => state.newsFeed.profileData);
   // console.log(userData);
 
-  useEffect(() => {
-    // Fetching NewsFeed data:
-    axiosInstance
-      .get('/newsfeed/page')
-      .then(response => {
-        // console.log(response.data);
+  const [posts, setPosts] = useState([]);
 
-        // Sorting data upon date descendingly:
-        // let data = response.data.sort((a, b) => {
-        //   return new Date(...a.createdAt).getTime() >
-        //     new Date(...b.createdAt).getTime()
-        //     ? -1
-        //     : 0;
-        // });
-        let data = response.data;
-        console.log(data);
-        dispatch(postsDataHandler(data));
+  // Infinte scroll:
+  let pageNumber = useRef(1);
+  const loadMorePosts = useCallback(() => {
+    let onePage = [];
+    axiosInstance
+      .get(`/newsfeed/${pageNumber.current}`)
+      .then(response => {
+        console.log(response);
+        response.data.allPosts.map(res => {
+          res.pageNum = response?.data?.page;
+          onePage.push(res);
+        });
+
+        setPosts(prev => [...prev, ...onePage]);
+
+        dispatch(forceUpdateHandler(0));
+        console.log(posts);
+        console.log(response.data.page);
       })
       .catch(error => {
         console.log(error);
       });
+    pageNumber.current += 1;
+  }, []);
+
+  const handleScroll = useCallback(
+    e => {
+      const scrollHeight = e.target.documentElement.scrollHeight;
+      const currentHeight = Math.ceil(
+        e.target.documentElement.scrollTop + window.innerHeight
+      );
+      if (currentHeight + 1 >= scrollHeight) {
+        loadMorePosts();
+      }
+    },
+    [loadMorePosts]
+  );
+
+  useEffect(() => {
+    // Fetching NewsFeed data:
+    loadMorePosts();
+
+    window.addEventListener('scroll', handleScroll);
 
     // Fetching user Data:
     axiosInstance
@@ -55,74 +78,107 @@ const SharedPost = () => {
       .catch(error => {
         console.log(error);
       });
-  }, [dispatch]);
+  }, [dispatch, handleScroll, loadMorePosts]);
 
-  return posts?.map(post => {
-    return post?.sharerId ? (
-      <div
-        className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7"
-        key={post?._id}
-      >
-        <PostHalfTop
-          profileSRC={post?.sharerId?.profileImage || profileImg}
-          profileName={
-            post?.sharerId?.firstName + ' ' + post?.sharerId?.lastName
-          }
-          // To calc time difference between post date and current date:
-          postDate={dateCalcFunction(post?.createdAt)}
-          // reverseDirection={true}
-          originalPostId={post?.originalPostId}
-          sharedPost={false}
-          sharedPostData={post}
-          userData={userData}
-          moreID={post?._id}
-          userID={userData?._id}
-          // hideMore={true}
-          // postBody={post?.content}
-          // postImage={post.media}
-        />
-        <Post
-          data={post.originalPostId}
-          className="p-0 border-2 border-t-0 px-3 -mx-2.5 shadow-none rounded-t-none mb-0"
-          userData={userData}
-          sharedPost={true}
-          sharedPostData={post}
-        />
+  // Force rercall api upon change in component:
+  useEffect(() => {
+    let onePage = [];
+    forceReRender &&
+      axiosInstance
+        .get(`/newsfeed/${forceReRender}`)
+        .then(response => {
+          console.log(response);
+          response.data.allPosts.map(res => {
+            res.pageNum = response?.data?.page;
+            onePage.push(res);
+          });
 
-        {
-          <PostMiddle
-            writeComment={writeComment}
-            setWriteComment={setWriteComment}
-            data={post}
+          setPosts(onePage);
+
+          dispatch(forceUpdateHandler(0));
+          console.log(posts);
+          console.log(response.data.page);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+  }, [dispatch, forceReRender]);
+
+  return (
+    postsProfile ||
+    posts?.map(post => {
+      return post?.sharerId ? (
+        <div
+          className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7"
+          key={post?._id}
+        >
+          <PostHalfTop
+            profileSRC={post?.sharerId?.profileImage || profileImg}
+            profileName={
+              post?.sharerId?.firstName + ' ' + post?.sharerId?.lastName
+            }
+            // To calc time difference between post date and current date:
+            postDate={dateCalcFunction(post?.createdAt)}
+            originalPostId={post?.originalPostId}
+            sharedPost={false}
+            sharedPostData={post}
+            userData={userDataProfile || userData}
+            moreID={post?._id}
+            userID={userDataProfile || userData?._id}
+          />
+          <Post
+            data={post?.originalPostId}
+            className="p-0 border-2 border-t-0 px-3 -mx-2.5 shadow-none rounded-t-none mb-0"
+            userData={userDataProfile || userData}
             sharedPost={true}
             sharedPostData={post}
-            userData={userData}
+            // For fullScreen mode:
             reactions={[
-              ...new Set(post?.reactions?.map(post => post?.reaction)),
+              ...new Set(
+                post?.originalPostId?.reactions?.map(post => post?.reaction)
+              ),
             ]}
             // For toolTip purposes:
-            reactionsMakers={post?.reactions?.map(post => {
+            reactionsMakers={post?.originalPostId?.reactions?.map(post => {
               return post;
             })}
-            moreID={post?._id}
           />
-        }
-      </div>
-    ) : (
-      <Post
-        data={post}
-        key={post._id}
-        userData={userData}
-        sharedPost={false}
-        reactions={[...new Set(post?.reactions?.map(post => post?.reaction))]}
-        // For toolTip purposes:
-        reactionsMakers={post?.reactions?.map(post => {
-          return post;
-        })}
-        moreID={post?._id}
-      />
-    );
-  });
+
+          {
+            <PostMiddle
+              writeComment={writeComment}
+              setWriteComment={setWriteComment}
+              data={post}
+              sharedPost={true}
+              sharedPostData={post}
+              userData={userDataProfile || userData}
+              reactions={[
+                ...new Set(post?.reactions?.map(post => post?.reaction)),
+              ]}
+              // For toolTip purposes:
+              reactionsMakers={post?.reactions?.map(post => {
+                return post;
+              })}
+              moreID={post?._id}
+            />
+          }
+        </div>
+      ) : (
+        <Post
+          data={post}
+          key={post._id}
+          userData={userDataProfile || userData}
+          sharedPost={false}
+          reactions={[...new Set(post?.reactions?.map(post => post?.reaction))]}
+          // For toolTip purposes:
+          reactionsMakers={post?.reactions?.map(post => {
+            return post;
+          })}
+          moreID={post?._id}
+        />
+      );
+    })
+  );
 };
 
 export default SharedPost;

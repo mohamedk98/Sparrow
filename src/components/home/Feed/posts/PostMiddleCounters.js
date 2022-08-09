@@ -16,7 +16,6 @@ const postMiddleCounters = ({
   setWriteComment,
   writeComment,
 }) => {
-  console.log(reactions, reactionsMakers);
   // Handle Tooltip reactionsMakers groups:
   let likeMakers = [];
   let loveMakers = [];
@@ -72,7 +71,6 @@ const postMiddleCounters = ({
     { Sad: sadMakers },
     { Angry: angryMakers },
   ];
-  // console.log(reactionMakersArray);
 
   //   Check if ther are no reactions from DB:
   let reactionsLengthCheck =

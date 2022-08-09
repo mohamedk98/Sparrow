@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { axiosInstance } from '../../../../network/axiosInstance';
+import { useDispatch, useSelector } from 'react-redux';
+import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 
 const More = ({
   text,
@@ -24,6 +26,9 @@ const More = ({
   sharerId,
   moreFullScreenClassName,
 }) => {
+  // Rerender:
+  const dispatch = useDispatch();
+  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
   // console.log(editReply);
   // console.log(userID);
   // console.log(id, userID, sharedPostData);
@@ -88,12 +93,6 @@ const More = ({
   };
 
   const deleteReplyHandler = () => {
-    // console.log(id);
-
-    // console.log(postId);
-    // console.log(commentId);
-    // console.log(replyId);
-
     axiosInstance
       .delete(`/reply/post/${postId}/${commentId}/${replyId}`)
       .then(response => {
@@ -105,41 +104,35 @@ const More = ({
   };
 
   const deleteSharedReplyHandler = () => {
-    // axiosInstance
-    //   .delete(`/post/${postId}`)
-    //   .then(response => {
-    //     console.log(id);
-    //     console.log(response);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    console.log(postId, commentId, replyId, sharedPost);
+    axiosInstance
+      .delete(`/reply/sharedPost/${postId}/${commentId}/${replyId}`)
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
     <div className={containerClassName} data-title={tooltipData}>
       <button
-        className={'dropdown-toggle  dark:text-white flex items-center hidden-arrow'}
+        className={'dropdown-toggle flex items-center hidden-arrow'}
         onClick={() => {
-          console.log(moreID);
-          console.log(userID);
-
           setShowMore(!showMore);
         }}
       >
         <BiDotsHorizontalRounded
-          className={'hover:bg-zinc-100 dark:hover:bg-darkBgSideBar rounded-full p-1 z-50 ' + iconClassName}
+          className={'hover:bg-zinc-100 rounded-full p-1 z-50 ' + iconClassName}
         />
       </button>
 
       {
-        <div
-          className={showMore ? 'block' : 'hidden'}
-
-          // id={`More${moreID}`}
-        >
+        <div className={showMore ? 'block' : 'hidden'}>
           <ul
-            className={`dropdown-menu min-w-max absolute bg-white dark:bg-darkBgSideBar dark: text-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
+            className={`dropdown-menu min-w-max absolute bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
           >
             {
               // For Text Number 1:
@@ -147,15 +140,10 @@ const More = ({
             {liNum1 && !confirmDeleteComment && (
               <li
                 className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer"
-                onClick={
-                  () => {
-                    text?.slice(0, 6) === 'Delete' &&
-                      setConfirmDeleteComment(true);
-                  }
-                  // deleteComment &&
-                  // text === 'Delete comment' &&
-                  // deleteCommentHandler()
-                }
+                onClick={() => {
+                  text?.slice(0, 6) === 'Delete' &&
+                    setConfirmDeleteComment(true);
+                }}
               >
                 {text}
               </li>
@@ -241,6 +229,7 @@ const More = ({
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
+                      dispatch(forceUpdateHandler(!forceReRender));
                     }}
                   >
                     Delete
@@ -266,90 +255,3 @@ const More = ({
 };
 
 export default More;
-
-// {
-//   <div
-//       className={containerClassName}
-//       data-title={tooltipData}
-//       id={id}
-//       onClick={() => {
-//         // console.log(id);
-//         setShowMore(true);
-//         console.log(showMore);
-//       }}
-//     >
-//       <button
-//         className="dropdown-toggle flex items-center hidden-arrow"
-//         // role="button"
-//         data-bs-toggle="dropdown"
-//         // aria-expanded="false"
-//       >
-//         <div className="w-10">
-//           <BiDotsHorizontalRounded
-//             className={'hover:bg-zinc-100 rounded-full p-1 ' + iconClassName}
-//           />
-//         </div>
-//       </button>
-
-//       {setShowMore && (
-//         <ul className="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-0">
-//           {liNum1 && !confirmDeleteComment && (
-//             <li
-//               className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer"
-//               onClick={
-//                 () => setConfirmDeleteComment(true)
-//                 // deleteComment &&
-//                 // text === 'Delete comment' &&
-//                 // deleteCommentHandler()
-//               }
-//             >
-//               {text}
-//             </li>
-//           )}
-
-//           {liNum2 && id === userID && !confirmDeleteComment && (
-//             <li
-//               className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer"
-//               onClick={() => {
-//                 setEditComment(commentId);
-//               }}
-//             >
-//               {text2}
-//             </li>
-//           )}
-
-//           {confirmDeleteComment && (
-//             <div className=" bg-white max-w-sm">
-//               <h5 className="text-gray-900 text-sm leading-tight font-medium mb-2">
-//                 Confirm deletion comment?
-//               </h5>
-//               <div className="flex justify-between">
-//                 <button
-//                   type="button"
-//                   className=" inline-block px-1 py-1 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
-//                   onClick={() => {
-//                     deleteComment &&
-//                       text === 'Delete comment' &&
-//                       deleteCommentHandler();
-//                     setConfirmDeleteComment(false);
-//                   }}
-//                 >
-//                   Delete
-//                 </button>
-
-//                 <button
-//                   type="button"
-//                   className=" inline-block px-1 py-1 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-//                   onClick={() => {
-//                     setConfirmDeleteComment(false);
-//                   }}
-//                 >
-//                   Cancel
-//                 </button>
-//               </div>
-//             </div>
-//           )}
-//         </ul>
-//       )}
-//     </div>
-// }

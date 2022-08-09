@@ -29,8 +29,6 @@ const LikeButton = ({
   const userReaction = (sharedPost ? sharedPostData : data)?.reactions?.filter(
     reaction => reaction?.userId?._id === userID
   )[0]?.reaction;
-  // console.log(userReaction);
-  // console.log(sharedPostData, sharedPost, userID);
 
   // Reactions button clicked:
   const [btnClicked, setBtnClicked] = useState(false);
@@ -89,8 +87,6 @@ const LikeButton = ({
   useEffect(() => {
     reactionClicked && setReactTypeSRC(svgPicker?.svg);
 
-    // console.log(btnClicked, reactType, reactTypeSRC);
-
     if (
       reactType === '' &&
       reactClass === '' &&
@@ -114,8 +110,6 @@ const LikeButton = ({
       setBtnClicked(!btnClicked);
       reactHandler('', false);
     }
-    // console.log(reactType, reactClass, btnClicked, reactTypeSRC);
-    // console.log(reactionClicked);
   }, [
     btnClicked,
     reactClass,
@@ -151,8 +145,6 @@ const LikeButton = ({
       onClick={() => {
         setReactionClicked(false);
         setBtnClicked(!btnClicked);
-        // console.log(btnClicked);
-        // console.log(reactionClicked);
       }}
     >
       <div className="mt-0.5 mr-2 text-xl w-5">

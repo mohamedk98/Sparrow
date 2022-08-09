@@ -5,6 +5,8 @@ import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from '../EmojiPicker';
 import More from './More';
 import { axiosInstance } from '../../../../network/axiosInstance';
+import { useDispatch, useSelector } from 'react-redux';
+import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 
 const TextArea = ({
   rows,
@@ -31,14 +33,18 @@ const TextArea = ({
   setEmptyTextArea,
   emptyTextArea,
   shareAPost,
+  setEditComment,
+  setEditReply,
+  // For socket IO:
+  chat,
+  sendMessageHandler,
 }) => {
-  // console.log(sharedCommentID);
-  // console.log(sharedPost);
-  // console.log(editReply);
-  // console.log(postId, commentId);
+  // Force rerender:
+  const dispatch = useDispatch();
+  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+
   // For textArea value:
   const textareaRef = useRef('');
-  // console.log(textareaRef.current.selectionEnd);
   const [text, setText] = useState(value || '');
 
   // Emojis:
@@ -48,8 +54,7 @@ const TextArea = ({
 
   // make the carret always at the end of emoji set:
   const [carretPosition, setCarretPosition] = useState(0);
-  // console.log(carretPosition);
-  // console.log(textareaRef.current.selectionEnd);
+
   useEffect(() => {
     if (textareaRef.current.selectionEnd !== undefined) {
       textareaRef.current.selectionEnd = carretPosition;
@@ -57,8 +62,6 @@ const TextArea = ({
   }, [carretPosition]);
 
   const onEmojiClick = (event, emojiObject) => {
-    // console.log(event);
-    // console.log(emojiObject.emoji);
     setChosenEmoji(emojiObject);
 
     // Make focus on textArea Field:
@@ -66,7 +69,6 @@ const TextArea = ({
     refTxtAreaField.focus();
 
     // index to placein the emoji:
-    // console.log(refTxtAreaField.value);
     const emojiStart = text.slice(0, refTxtAreaField.selectionStart);
     // console.log(start);
 
@@ -91,7 +93,7 @@ const TextArea = ({
         }
       )
       .then(response => {
-        console.log(id);
+        // console.log(id);
         console.log(response);
       })
       .catch(error => {
@@ -109,7 +111,7 @@ const TextArea = ({
         }
       )
       .then(response => {
-        console.log(id);
+        // console.log(id);
         console.log(response);
       })
       .catch(error => {
@@ -154,7 +156,6 @@ const TextArea = ({
   };
 
   const addSharedCommentHandler = () => {
-    // console.log(id);
     axiosInstance
       .post(
         `/comment/sharedPost/${id}`,
@@ -173,8 +174,6 @@ const TextArea = ({
   };
 
   const addSharedReplyHandler = () => {
-    // console.log(id);
-    // console.log(postId);
     axiosInstance
       .post(
         `/reply/sharedPost/${postId}/${id}`,
@@ -213,10 +212,9 @@ const TextArea = ({
   };
 
   const editSharedReplyHandler = () => {
-    // console.log(postId,commentId,replyId);
     axiosInstance
       .patch(
-        `/comment/sharedPost/${postId}/${commentId}/${replyId}`,
+        `/reply/sharedPost/${postId}/${commentId}/${replyId}`,
         { content: text },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -235,7 +233,11 @@ const TextArea = ({
     <div className={'flex mb-3 ' + replyClassName}>
       {!className && showProfileImage && (
         <a href="/">
-          <img src={userImage} className="rounded-full mr-2 h-8" alt="Avatar" />
+          <img
+            src={userImage}
+            className="rounded-full mr-2 h-9 w-9"
+            alt="Avatar"
+          />
         </a>
       )}
       <div className="w-full relative z-40">
@@ -244,7 +246,6 @@ const TextArea = ({
           onFocus={() => shareAPost && setEmptyTextArea(false)}
           onBlur={e => {
             shareAPost && getInputTextValueHandler(text);
-            //  setEmptyTextArea(!emptyTextArea)
           }}
           onKeyDown={e => {
             if (e.key === 'Enter') {
@@ -265,28 +266,33 @@ const TextArea = ({
                 }
 
                 if (editComment) {
-                  // console.log(editComment);
-                  // console.log(sharedPost);
                   sharedPost
                     ? editSharedCommentHandler()
                     : editCommentHandler();
+                  setEditComment(false);
                 }
 
                 if (editReply) {
                   sharedPost ? editSharedReplyHandler() : editReplyHandler();
+                  setEditReply(false);
                 }
 
-                e.target.value = '';
+                if (chat) {
+                  sendMessageHandler(text);
+                  console.log(text);
+                }
+
+                setText('');
+
                 e.target.style.height = `${32}px`;
+                setTimeout(() => {
+                  dispatch(forceUpdateHandler(!forceReRender));
+                }, 100);
               }
             }
-
-            // console.log(id);
           }}
           onChange={e => {
             setText(e.target.value);
-            // console.log(e.target.value);
-            // console.log(text);
           }}
           value={emptyTextArea ? '' : text}
           ref={textareaRef}
@@ -294,15 +300,11 @@ const TextArea = ({
           rows={rows || '1'}
           onInput={e => {
             if (className) return;
-            // e.target.style.height = 'auto';
-            // e.target.style.height = `${e.target.scrollHeight}px`;
 
             e.target.style.height = 'auto';
             e.target.style.height = `${
               e.target.scrollHeight < 80 ? e.target.scrollHeight : 80
             }px`;
-
-            // console.log(e.target.scrollHeight);
           }}
           placeholder={placeholder}
           autoFocus={autoFocus}

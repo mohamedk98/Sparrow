@@ -30,13 +30,11 @@ function Profile() {
     .catch(err=>console.log(err))
   });
   return (
-
-    <div className="dark:bg-darkBgColor">
+    <>
       <ProfileInfos/>
       <Outlet/>
       {/* <Chat/> */}
-      </div>
-
+    </>
   
   );
 }

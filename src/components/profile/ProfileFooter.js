@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function ProfileFooter() {
   return (
-    <div className="text-base text-slate-500 ">
+    <div className="text-base text-slate-500">
         <Link 
           to="/"
           className="hover:underline underline-offset-2 mx-4"

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { axiosInstance } from "../../../network/axiosInstance";
-import profileImg from "../../../assets/images/default_profile.png";
-import { VscSmiley } from "react-icons/vsc";
-import EmojiPicker from "./EmojiPicker";
-import { IoMdPhotos } from "react-icons/io";
-import UploadPhoto from "./UploadPhoto";
-import IsLoadingScreen from "./IsLoadingScreen";
+import React, { useState } from 'react';
+import { axiosInstance } from '../../../network/axiosInstance';
+import profileImg from '../../../assets/images/default_profile.png';
+import { VscSmiley } from 'react-icons/vsc';
+import EmojiPicker from './EmojiPicker';
+import { IoMdPhotos } from 'react-icons/io';
+import UploadPhoto from './UploadPhoto';
+import IsLoadingScreen from './IsLoadingScreen';
 
 const CreatePostModal = ({ showModal, setShowModal }) => {
   const [showPicker, setShowPicker] = useState(false);
@@ -13,36 +13,34 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
   const [showUploadPic, setShowUploadPic] = useState(false);
 
   //Post Data
-  const [inputStr, setInputStr] = useState("");
+  const [inputStr, setInputStr] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("Public");
+  const [selectedOption, setSelectedOption] = useState('Public');
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const onEmojiClick = (event, emojiObject) => {
-    setInputStr((prevInput) => prevInput + emojiObject.emoji);
+    setInputStr(prevInput => prevInput + emojiObject.emoji);
     setChosenEmoji(emojiObject);
   };
- 
 
   //Start Posting Post Data
-  const submitData = (e) => {
+  const submitData = e => {
     e.preventDefault();
     let formData = new FormData();
 
-    formData.append("visability", selectedOption);
-    formData.append("content", inputStr);
+    formData.append('visability', selectedOption);
+    formData.append('content', inputStr);
 
-    selectedImages.forEach((selectedImage) => {
-      formData.append("media", selectedImage);
+    selectedImages.forEach(selectedImage => {
+      formData.append('media', selectedImage);
     });
-  
 
     setLoading(true);
-  
+
     axiosInstance
-      .post("/posts", formData, {})
-      .then((response) => {
+      .post('/posts', formData, {})
+      .then(response => {
         if (response.status === 200) {
           setLoading(false);
           setPost(response.data);
@@ -52,23 +50,19 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
           window.location.reload(false);
         }
       })
-      .catch((err) => console.log("error :( " + err));
+      .catch(err => console.log('error :( ' + err));
 
     if (!post) {
-      return "No Post Created";
+      return 'No Post Created';
     }
-
-  
   };
   //End Posting Post Data
 
-
- 
   return (
     <>
       {showModal ? (
         <div
-          className="modal fade fixed top-10 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+          className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
           id="exampleModalCenter"
           tabIndex="-1"
           aria-labelledby="exampleModalCenterTitle"
@@ -119,7 +113,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                       <div className="absolute mt-5 left-[4.5rem]">
                         <select
                           name="visability"
-                          onChange={(e) => setSelectedOption(e.target.value)}
+                          onChange={e => setSelectedOption(e.target.value)}
                           value={selectedOption}
                           className="
           px-2
@@ -139,7 +133,6 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
         "
                           type="button"
                         >
-                                
                           <option
                             value="Public"
                             className="
@@ -187,7 +180,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                           className=" px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
                           placeholder="What's on your mind, Sarah?"
                           value={inputStr}
-                          onChange={(e) => {
+                          onChange={e => {
                             setInputStr(e.target.value);
                           }}
                         ></textarea>
@@ -198,7 +191,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                             setSelectedImages={setSelectedImages}
                           />
                         ) : (
-                          ""
+                          ''
                         )}
                       </div>
                     </div>
@@ -219,25 +212,28 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                           type="button"
                           onClick={() => setShowPicker(!showPicker)}
                         >
-                          {" "}
-                          <VscSmiley />{" "}
+                          {' '}
+                          <VscSmiley />{' '}
                         </button>
                         {showPicker ? (
-                  
                           <EmojiPicker
                             chosenEmoji={chosenEmoji}
                             onEmojiClick={onEmojiClick}
                           />
-                       
                         ) : null}
                       </div>
                     </div>
 
                     <button
-                      disabled={( (selectedImages.length>=0 && selectedImages.length<5) ?false:true)}
-                      className="inline-block px-6 w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">
+                      disabled={
+                        selectedImages.length >= 0 && selectedImages.length < 5
+                          ? false
+                          : true
+                      }
+                      className="inline-block px-6 w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                    >
                       Post
-                  </button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -245,7 +241,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
           </form>
         </div>
       ) : (
-        ""
+        ''
       )}
     </>
   );

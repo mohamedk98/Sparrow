@@ -9,12 +9,10 @@ import LikeButton from './LikeButton';
 
 import ShareModal from './ShareModal';
 
-// import profileImg from '../../../../assets/images/default_profile.png';
 import TextArea from './TextArea';
 import ReplyLikeButton from './ReplyLikeButton';
 import More from './More';
 import { axiosInstance } from '../../../../network/axiosInstance';
-import ReplyedToComments from './ReplyedToComments';
 import dateCalcFunction from './DateCalculations';
 
 import likeSVG from './../../../../assets/reacts/like.svg';
@@ -27,6 +25,10 @@ import angrySVG from '../../../../assets/reacts/angry.svg';
 import ReactionClassHandler from './ReactionClasses';
 
 import PostMiddleCounters from './PostMiddleCounters';
+
+import { useDispatch } from 'react-redux';
+import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import Replys from './Replys';
 
 const PostMiddle = ({
   data,
@@ -49,10 +51,8 @@ const PostMiddle = ({
   moreFullScreenClassName,
   reactionsFullScreenClassName,
 }) => {
-  // console.log(sharedPostData);
-  // console.log(reactions, sharedPost);
-  // console.log(reactionsMakers, sharedPost);
-  // console.log(data);
+  // Force Rerender:
+  const dispatch = useDispatch();
 
   // Edit a Comment:
   const [editComment, setEditComment] = useState(false);
@@ -79,24 +79,15 @@ const PostMiddle = ({
   const [reactClass, setReactClass] = useState('');
 
   const reactHandler = (name, reactionsClicked = true) => {
-    console.log(name);
-    // console.log(reactType);
-
     setReactionClicked(reactionsClicked);
-    // console.log(reactionClicked);
 
     setReactType(name);
-    // console.log(reactType);
 
     // Handle reacion className and style in runtime (while clicking on reaction):
     ReactionClassHandler(name, setReactClass);
 
-    // let formData = new FormData();
-    // formData.append('reaction', name);
-
     // Send post reaction to DB:
     const reactBody = { reaction: name };
-    // console.log(reactBody);
     let endPoint = data?.sharerId
       ? `/reaction/sharedPost/${data._id}`
       : `/reaction/post/${data._id}`;
@@ -105,16 +96,13 @@ const PostMiddle = ({
         headers: { 'Content-Type': 'application/json' },
       })
       .then(response => {
-        // console.log(data._id);
-        console.log(response);
+        // console.log(response);
+        dispatch(forceUpdateHandler(data?.pageNum));
       })
       .catch(error => {
         console.log(error);
       });
   };
-
-  // console.log(data);
-  // console.log(userData);
 
   // Post _id for regular and shared post:
   let id = data.originalPostId ? data._id : data._id;
@@ -129,6 +117,7 @@ const PostMiddle = ({
           sharedPost={sharedPost}
           setWriteComment={setWriteComment}
           writeComment={writeComment}
+          reactType={reactType}
         />
       )}
 
@@ -178,11 +167,11 @@ const PostMiddle = ({
           type="button"
           className={
             fullScreenCommentClassName ||
-            'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-10 ml-3 md:ml-3 lg:ml-7 rounded-lg '
+            'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-7 ml-3 md:ml-3 lg:ml-7 rounded-lg '
           }
           onClick={() => {
             setWriteComment(!writeComment);
-            console.log(data);
+            // console.log(data);
           }}
         >
           <FaCommentAlt className="mt-1.5 mr-2" />
@@ -199,9 +188,10 @@ const PostMiddle = ({
             'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 lg:px-14 rounded-lg '
           }
           data-bs-toggle="modal"
-          data-bs-target={`#shareModal${data?._id}`}
+          data-bs-target={`#sharemodal${data?._id}end`}
           onClick={() => {
-            console.log(data);
+            // console.log(data);
+            // console.log(data?._id);
           }}
         >
           <RiShareForwardFill className="mt-0.5 mr-2 text-2xl" />
@@ -212,7 +202,7 @@ const PostMiddle = ({
           // Share modal:
         }
         <ShareModal
-          modelID={`shareModal${data?._id}`}
+          modelID={`sharemodal${data?._id}end`}
           profileSRC={userData?.profileImage}
           profileFName={userData?.firstName}
           profileLName={userData?.lastName}
@@ -273,34 +263,6 @@ const PostMiddle = ({
                   </a>
 
                   {
-                    // Show reactions SVGs for comments:
-                    // Not tested, waiting for DB:
-                  }
-                  <div className="flex">
-                    {comment?.reactions?.map(reaction => (
-                      <div key={reaction._id} className="mt-1">
-                        {reaction.reaction === 'Like' ? (
-                          <img className="w-4" src={likeSVG} alt="" />
-                        ) : reaction.reaction === 'Love' ? (
-                          <img className="w-4" src={loveSVG} alt="" />
-                        ) : reaction.reaction === 'Care' ? (
-                          <img className="w-4" src={careSVG} alt="" />
-                        ) : reaction.reaction === 'Haha' ? (
-                          <img className="w-4" src={hahaSVG} alt="" />
-                        ) : reaction.reaction === 'Wow' ? (
-                          <img className="w-4" src={wowSVG} alt="" />
-                        ) : reaction.reaction === 'Sad' ? (
-                          <img className="w-4" src={sadSVG} alt="" />
-                        ) : reaction.reaction === 'Angry' ? (
-                          <img className="w-4" src={angrySVG} alt="" />
-                        ) : (
-                          ''
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {
                     // Show and hide edit comment input:
                   }
                   {editComment && comment?._id === editComment ? (
@@ -317,6 +279,7 @@ const PostMiddle = ({
                         sharedCommentID={comment?._id}
                         userImage={userData?.profileImage}
                         sharedPost={sharedPost}
+                        setEditComment={setEditComment}
                       />
 
                       <button
@@ -328,7 +291,7 @@ const PostMiddle = ({
                     </div>
                   ) : (
                     <div
-                      className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit "
+                      className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative"
                       id={comment?.userId?._id}
                     >
                       <span className="text-sm text-zinc-700 ">
@@ -371,6 +334,34 @@ const PostMiddle = ({
                           // moreFullScreenClassName={moreFullScreenClassName}
                         />
                       </div>
+
+                      {
+                        // Show reactions SVGs for comments:
+                        // Not tested, waiting for DB:
+                      }
+                      <div className="flex absolute right-0">
+                        {comment?.reactions?.map(reaction => (
+                          <div key={reaction._id} className="mt-1 ">
+                            {reaction.reaction === 'Like' ? (
+                              <img className="w-4" src={likeSVG} alt="" />
+                            ) : reaction.reaction === 'Love' ? (
+                              <img className="w-4" src={loveSVG} alt="" />
+                            ) : reaction.reaction === 'Care' ? (
+                              <img className="w-4" src={careSVG} alt="" />
+                            ) : reaction.reaction === 'Haha' ? (
+                              <img className="w-4" src={hahaSVG} alt="" />
+                            ) : reaction.reaction === 'Wow' ? (
+                              <img className="w-4" src={wowSVG} alt="" />
+                            ) : reaction.reaction === 'Sad' ? (
+                              <img className="w-4" src={sadSVG} alt="" />
+                            ) : reaction.reaction === 'Angry' ? (
+                              <img className="w-4" src={angrySVG} alt="" />
+                            ) : (
+                              ''
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -393,6 +384,17 @@ const PostMiddle = ({
                         setReactionClicked={setReactionClicked}
                         reactionsFullScreenClassName={
                           reactionsFullScreenClassName
+                        }
+                        postId={data?._id}
+                        commentId={comment?._id}
+                        sharedPost={sharedPost}
+                        comment={true}
+                        reply={false}
+                        curruntUserCommentReaction={
+                          comment?.reactions?.length > 0 &&
+                          (comment?.reactions?.filter(
+                            reaction => reaction?.userId === userData?._id
+                          ))[0]?.reaction
                         }
                       />
 
@@ -518,6 +520,7 @@ const PostMiddle = ({
                             userImage={userData?.profileImage}
                             // sharedCommentID={data?.comments?._id}
                             sharedPost={sharedPost}
+                            setEditReply={setEditReply}
                           />
                           <button
                             onClick={() => setEditReply(false)}
@@ -527,34 +530,52 @@ const PostMiddle = ({
                           </button>
                         </div>
                       ) : (
-                        <ReplyedToComments
-                          reply={reply}
-                          // To show edit a reply input:
-                          setEditReply={setEditReply}
-                          commentId={comment?._id}
-                          postId={data?._id}
-                          ReplyLikeButton={
-                            <ReplyLikeButton
-                              reactionsFullScreenClassName={
-                                reactionsFullScreenClassName
-                              }
-                              reactType={reactType}
-                              setReactType={setReactType}
-                              reactionClicked={reactionClicked}
-                              reactClass={reactClass}
-                              setReactClass={setReactClass}
-                              setVisible={setVisible}
-                              visible={visible}
-                              reactHandler={reactHandler}
-                              setReactionClicked={setReactionClicked}
-                              postId={data?._id}
-                              moreID={moreID}
-                              //For enlarging reply reactions cause they are too small:
-                              containerClassName="w-72 -left-1"
-                              moreFullScreenClassName={moreFullScreenClassName}
-                            />
-                          }
-                        />
+                        <div key={reply?._id} className="relative -mb-14">
+                          <Replys
+                            profileImage={reply?.userId?.profileImage}
+                            name={
+                              reply?.userId?.firstName +
+                              ' ' +
+                              reply?.userId?.lastName
+                            }
+                            content={reply.content}
+                            date={dateCalcFunction(reply?.replyDate)}
+                            reactions={reply?.reactions}
+                            userID={reply?.userId?._id}
+                            moreID={reply?.userId?._id}
+                            replyId={reply?._id}
+                            // To show edit a reply input:
+                            commentId={comment?._id}
+                            postId={data?._id}
+                            setEditReply={setEditReply}
+                            moreFullScreenClassName={moreFullScreenClassName}
+                            sharedPost={sharedPost}
+                            // For ReplyLikeButton:
+                            reactionsFullScreenClassName={
+                              reactionsFullScreenClassName
+                            }
+                            reactType={reactType}
+                            setReactType={setReactType}
+                            reactionClicked={reactionClicked}
+                            reactClass={reactClass}
+                            setReactClass={setReactClass}
+                            setVisible={setVisible}
+                            visible={visible}
+                            reactHandler={reactHandler}
+                            setReactionClicked={setReactionClicked}
+                            replyToComment={true}
+                            //For enlarging reply reactions cause they are too small:
+                            containerClassName="w-72 -left-1"
+                            reply={true}
+                            comment={false}
+                            curruntUserReplyReaction={
+                              reply?.reactions?.length > 0 &&
+                              (reply?.reactions?.filter(
+                                reaction => reaction?.userId === userData?._id
+                              ))[0]?.reaction
+                            }
+                          />
+                        </div>
                       )}
 
                       {

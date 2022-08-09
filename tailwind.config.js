@@ -4,7 +4,6 @@ module.exports = {
     './src/**/*.{html,js}',
     './node_modules/tw-elements/dist/js/**/*.js',
   ],
-  darkMode:'class',
   theme: {
     extend: {
       colors: {
@@ -15,10 +14,9 @@ module.exports = {
           greenHover: '#349421db',
           grey: '#f0f2f5',
         },
-        darkBgColor:'#22303C',
-        darkBgSideBar:'#192734',
-       
-
+      },
+      spacing: {
+        128: '25rem',
       },
     },
   },

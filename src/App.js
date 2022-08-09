@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // import './App.css';
-import { createContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { axiosInstance } from './network/axiosInstance';
 import Error from './pages/error/Error';
@@ -17,9 +17,6 @@ import ProfilePosts from './pages/profile/ProfilePosts';
 import About from './pages/profile/About';
 import Friends from './pages/profile/Friends';
 import Photos from './pages/profile/Photos';
-import AllFriendsPage from './pages/friendsRequest/AllFriendsPage';
-import FriendsRequestPage from './pages/friendsRequest/FriendsRequestPage';
-
 
 function App() {
   const navigate = useNavigate();
@@ -44,23 +41,19 @@ function App() {
   }, []);
 
   return (
-    <Routes >
+    <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset" element={<Reset />} />
-      <Route path="/profile" element={<Profile />} >
-        <Route path="/profile" element={<ProfilePosts />} />
-        <Route path='/profile/:username' element={<ProfilePosts/>}/>
-        <Route path="about" element={<About />}/>
-        <Route path="friends" element={<Friends />}/>
-        <Route path="photos" element={<Photos />}/>
+      <Route path="/:username" element={<Profile />}>
+        <Route index element={<ProfilePosts />} />
+        <Route path="/posts" element={<ProfilePosts />} />
+        <Route path="about" element={<About />} />
+        <Route path="friends" element={<Friends />} />
+        <Route path="photos" element={<Photos />} />
       </Route>
-      <Route path='/friends' element={<AllFriendsPage/>}/>
-      <Route path='/friends/friendRequest' element={<FriendsRequestPage/>}/>
-      <Route path='/:username' element={<AllFriendsPage/>}/>
       <Route path="*" element={<Error />} />
     </Routes>
-
   );
 }
 

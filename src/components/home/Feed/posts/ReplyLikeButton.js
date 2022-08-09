@@ -1,14 +1,30 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect, useCallback } from 'react';
+import { axiosInstance } from '../../../../network/axiosInstance';
 
 import PostReactions from './PostReactions';
 import ReactionClassHandler from './ReactionClasses';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 
 const ReplyLikeButton = ({
   setReactionClicked,
   containerClassName,
   reactionsFullScreenClassName,
+  postId,
+  commentId,
+  sharedPost,
+  comment,
+  replyId,
+  reply,
+  reactionClicked,
+  curruntUserCommentReaction,
+  curruntUserReplyReaction,
 }) => {
-  // console.log(reactionsFullScreenClassName);
+  // Rerender:
+  const dispatch = useDispatch();
+  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+
   // Reactions type set:
   const [reactType, setReactType] = useState('');
 
@@ -22,20 +38,79 @@ const ReplyLikeButton = ({
   const [reactClass, setReactClass] = useState('');
 
   // reactHandler for replys not for post:
-  const reactHandler = name => {
-    console.log(name);
-    // console.log(reactType);
+  const reactHandler = useCallback(
+    name => {
+      setReactType(name);
 
-    setReactType(name);
+      // Handle className for like button in reply:
+      ReactionClassHandler(name, setReactClass);
 
-    // Handle className for like button in reply:
-    ReactionClassHandler(name, setReactClass);
-  };
+      // Send post reaction to DB:
+      const reactBody = {
+        reaction: name,
+        postType: `${sharedPost ? 'shared' : 'post'}`,
+      };
+
+      let endPoint =
+        comment && !reply
+          ? `/reaction/post/${postId}/${commentId}`
+          : reply && !comment
+          ? `/reaction/post/${postId}/${commentId}/${replyId}`
+          : null;
+      axiosInstance
+        .post(endPoint, reactBody, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => {
+          console.log(
+            `${postId}/${commentId}/${replyId}/${comment}/${reply}/${sharedPost}`
+          );
+          // console.log(data._id);
+          console.log(response);
+          dispatch(forceUpdateHandler(!forceReRender));
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    [
+      comment,
+      commentId,
+      dispatch,
+      forceReRender,
+      postId,
+      reply,
+      replyId,
+      sharedPost,
+    ]
+  );
+
+  // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
+  useEffect(() => {
+    // for comments:
+    // Handle incoming reaction from Data Base:
+    if (curruntUserCommentReaction && !reactionClicked) {
+      // Handle className and style for like button in post:
+      ReactionClassHandler(curruntUserCommentReaction, setReactClass);
+
+      // Set name or type for the reaction:
+      setReactType(curruntUserCommentReaction);
+    }
+
+    // For replys:
+    // Handle incoming reaction from Data Base:
+    if (curruntUserReplyReaction && !reactionClicked) {
+      // Handle className and style for like button in post:
+      ReactionClassHandler(curruntUserReplyReaction, setReactClass);
+
+      // Set name or type for the reaction:
+      setReactType(curruntUserReplyReaction);
+    }
+  }, [curruntUserCommentReaction, curruntUserReplyReaction, reactionClicked]);
 
   useEffect(() => {
-    // console.log(btnClicked, reactType, reactClass);
-
     if (reactType === '' && reactClass === '' && btnClicked) {
+      reactHandler('Like');
       setReactType('Like');
       setReactClass('text-facebook-blue font-bold');
       setBtnClicked(!btnClicked);
@@ -48,8 +123,9 @@ const ReplyLikeButton = ({
       setReactType('');
       setReactClass('');
       setBtnClicked(!btnClicked);
+      reactHandler('', false);
     }
-  }, [btnClicked, reactClass, reactType]);
+  }, [btnClicked, reactClass, reactHandler, reactType]);
 
   return (
     <Fragment>
@@ -59,8 +135,9 @@ const ReplyLikeButton = ({
           setVisible={setVisible}
           reactHandler={reactHandler}
           containerClassName={containerClassName}
+          careReplyClassName={'lg:w-52 hover:lg:w-60'}
           reactionsFullScreenClassName={
-            reactionsFullScreenClassName && 'ml-0 -mt-6'
+            reactionsFullScreenClassName && ' -ml-5 -mt-8 '
           }
         />
       </div>
@@ -81,9 +158,6 @@ const ReplyLikeButton = ({
         onClick={() => {
           setReactionClicked(false);
           setBtnClicked(!btnClicked);
-          // console.log(btnClicked);
-
-          setReactClass(!btnClicked ? 'text-facebook-blue font-bold' : '');
         }}
       >
         {reactType ? reactType : 'Like'}

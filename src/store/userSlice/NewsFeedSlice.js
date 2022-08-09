@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   postsData: [],
   profileData: {},
+  forceUpdate: false,
 };
 
 export const newsFeedSlice = createSlice({
@@ -18,9 +19,14 @@ export const newsFeedSlice = createSlice({
     profileDataHandler: (state, action) => {
       state.profileData = { ...action.payload };
     },
+
+    forceUpdateHandler: (state, action) => {
+      state.forceUpdate = action.payload;
+    },
   },
 });
 
-export const { postsDataHandler, profileDataHandler } = newsFeedSlice.actions;
+export const { postsDataHandler, profileDataHandler, forceUpdateHandler } =
+  newsFeedSlice.actions;
 
 export default newsFeedSlice.reducer;

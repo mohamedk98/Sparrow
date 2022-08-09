@@ -21,14 +21,8 @@ const PostHalfTop = ({
   // For fullScreenModal:
   dateClassName,
   moreFullScreenClassName,
+  fullScreenContentClassName,
 }) => {
-  // console.log(moreID);
-  // console.log(userId);
-  // console.log(sharedPost);
-  // console.log(sharedPostData?._id);
-  // console.log(fullPost);
-  // console.log(postImage);
-
   return (
     <div
       className={`${
@@ -62,7 +56,6 @@ const PostHalfTop = ({
                 liNum2={userID === sharerId ? 2 : false}
                 tooltipData="more"
                 sharedPostData={sharedPostData}
-                // postId={postId}
                 moreID={moreID || postId}
                 userID={userID}
                 sharerId={sharerId}
@@ -73,21 +66,25 @@ const PostHalfTop = ({
           </div>
         </div>
 
-        <p className="mb-5">{postBody}</p>
+        <p className={`mb-5 ${fullScreenContentClassName}`}>{postBody}</p>
       </div>
 
       {
         // To open FullScreenOriginalPost modal onClick the PostImageGrid component (images):
       }
       <button
+        type="button"
         data-bs-target={'#fullScreenModal' + postId}
         data-bs-toggle="modal"
+        className="w-full"
       >
-        <PostImageGrid
-          reverseDirection={reverseDirection}
-          postImage={postImage}
-          modalId={postId}
-        />
+        {!fullScreenContentClassName && (
+          <PostImageGrid
+            reverseDirection={reverseDirection}
+            postImage={postImage}
+            modalId={postId}
+          />
+        )}
       </button>
     </div>
   );

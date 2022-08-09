@@ -8,16 +8,16 @@ import { BsFillTelephoneFill } from 'react-icons/bs';
 
 function About() {
     return (
-        <div className="mt-3 bg-slate-200 shadow-md dark:bg-darkBgColor">
+        <div className="mt-3 bg-slate-200 shadow-md">
             <div className="w-11/12 m-auto">
                 <div className="py-2.5 px-9">
                     <div className="grid grid-col-1">
                         <div className="lg:w-5/6 w-full mt-3 xl:ml-20 lg:ml-14">
-                            <div className="bg-white dark:bg-darkBgSideBar dark:text-white my-3 p-4 rounded-xl">
+                            <div className="bg-white my-3 p-4 rounded-xl">
                                 <div className="flex gap-2.5 items-center justify-between font-bold text-xl">
                                     About
                                 </div>
-                                <div className='w-3/4 m-auto p-3 dark:text-white text-gray-600'>
+                                <div className='w-3/4 m-auto p-3 text-gray-600'>
                                     <div className='flex justify-between items-center my-3 p-2'>
                                         <div className='flex items-center'>
                                             <FaGraduationCap className='text-2xl'/>
