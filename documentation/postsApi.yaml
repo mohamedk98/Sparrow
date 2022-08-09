@@ -18,7 +18,7 @@ paths:
                 items:
                   type: string
 
-  /post/{postId}:
+  /post/:postId:
     get:
       summary: Returns a single post with a specific ID
       parameters:
@@ -40,7 +40,7 @@ paths:
                 items:
                   type: string
 
-    /post/{postId}:
+    /post/:postId:
     delete:
       summary: Delete a single post with a specific ID
       parameters:

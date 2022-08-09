@@ -281,15 +281,14 @@ class ReactionApi {
       postData = await sharedPostApi.findById(postId);
     }
 
-    console.log(postData)
+    console.log(postData);
 
     const userCommentIndex = postData.comments.findIndex(
       (comment) => comment._id.toString() === commentId
     );
 
-    console.log(userCommentIndex)
+    console.log(userCommentIndex);
     if (userCommentIndex === -1) {
-  
       const error = new Error("Comment not found");
       error.httpStatusCode = 404;
       return error;
@@ -299,7 +298,7 @@ class ReactionApi {
     const replyIndex = postData.comments[userCommentIndex].reply.findIndex(
       (reply) => reply._id.toString() === replyId
     );
-    console.log(replyIndex)
+    console.log(replyIndex);
     if (replyIndex === -1) {
       const error = new Error("Reply not found");
       error.httpStatusCode = 404;
@@ -308,16 +307,18 @@ class ReactionApi {
 
     const userReactionIndex = postData.comments[userCommentIndex].reply[
       replyIndex
-    ]?.reactions?.findIndex((reaction) => reaction.userId.toString() === userId);
-    console.log(userReactionIndex)
+    ]?.reactions?.findIndex(
+      (reaction) => reaction.userId.toString() === userId
+    );
+    console.log(userReactionIndex);
     // if the reaction is not found, add a new reaction
     if (userReactionIndex === -1) {
-      postData.comments[userCommentIndex]?.reply[
-        replyIndex
-      ]?.reactions.push({ userId, reaction });
+      postData.comments[userCommentIndex]?.reply[replyIndex]?.reactions.push({
+        userId,
+        reaction,
+      });
 
       try {
-     
         await postData.save();
         return { message: "reaction added", httpStatusCode: 200 };
       } catch {
@@ -328,23 +329,24 @@ class ReactionApi {
     }
     //if reaction was found, and the value changed either update it or leave it as it is
     else if (
-      postData.comments[userCommentIndex]?.reply[replyIndex]?.reactions[userReactionIndex]?.reaction !==
-      reaction
+      postData.comments[userCommentIndex]?.reply[replyIndex]?.reactions[
+        userReactionIndex
+      ]?.reaction !== reaction
     ) {
-
-      if (
-        postData.comments[userCommentIndex]?.reply[
-          replyIndex
-        ]?.userId.toString() !== userId
-      ) {
-        const error = new Error("Unauthorised");
-        error.httpStatusCode = 403;
-        return error;
-      }
-      postData.comments[userCommentIndex].reply[replyIndex].reactions[userReactionIndex].reaction = reaction;
+      // if (
+      //   postData.comments[userCommentIndex]?.reply[
+      //     replyIndex
+      //   ]?.userId.toString() !== userId
+      // ) {
+      //   const error = new Error("Unauthorised");
+      //   error.httpStatusCode = 403;
+      //   return error;
+      // }
+      postData.comments[userCommentIndex].reply[replyIndex].reactions[
+        userReactionIndex
+      ].reaction = reaction;
 
       try {
-
         postData.markModified("comments");
         await postData.save();
         return { message: "reaction updated", httpStatusCode: 200 };
