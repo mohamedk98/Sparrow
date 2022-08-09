@@ -18,8 +18,8 @@ const SearchMenu = ({setShowSearchMenu}) => {
         const res=await axiosInstance.get(`/search/:${searchTerm}`);
         setResult(res.data);
       }
-      console.log(result);
     }
+    console.log(result);
 
     useClickOutside(menu,()=>{
         setShowSearchMenu(false);

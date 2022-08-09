@@ -1,18 +1,27 @@
 import React,{useState,useEffect} from "react";
 
-function useDarkMod () {
-    const [theme,setTheme]= useState('light');
-    const colorTheme=theme==='light'?'dark':'light';
-    //if setTheme or colorTheme value changed
-    useEffect(() => {
-        const root=window.document.documentElement;
-        root.classList.add(theme);
-        //To prevent an infinite loop of switching colors
-        root.classList.remove(colorTheme);
 
-    }, [setTheme,colorTheme]);
+const UseDarkMode= ()=> {
+    const [isDarkMode,setDarkMode]= useState(()=>localStorage.theme==='dark');
+    const toggleMode=()=>{
+      setDarkMode(!isDarkMode);
+    };
     
-  return [setTheme,colorTheme];
+    useEffect(()=>{
+      const html=window.document.documentElement;
+
+      const prevTheme=isDarkMode?"light":"dark";
+      html.classList.remove(prevTheme);
+
+      const nextTheme=isDarkMode?"dark":"light";
+      html.classList.add(nextTheme);
+
+      localStorage.setItem("theme",nextTheme);
+
+    },[isDarkMode]);
+
+     return [isDarkMode,toggleMode];
+
 }
 
-export default useDarkMod;
+export default UseDarkMode;

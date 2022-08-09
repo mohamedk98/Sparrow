@@ -36,7 +36,7 @@ const Post = ({
   console.log();
   return (
     <div
-      className={`rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7 ${className}`}
+      className={`rounded-lg shadow-lg bg-white  p-3 max-w-2xl mx-auto my-7 ${className}`}
       key={data?._id}
     >
       {

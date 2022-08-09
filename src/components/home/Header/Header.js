@@ -13,11 +13,10 @@ import UseDarkMode from '../../../Theme/UseDarkMode';
 
 const Header = () => {
   // const [darkMode, setDarkMode] = useState(false);
-  const [setTheme,colorTheme]=UseDarkMode();
+  const [isDarkMode,toggleMode]=UseDarkMode();
   const [lang, setLang] = useState(false);
   const [showSearchMenu,setShowSearchMenu]=useState(false);
 
-  
 
   
   return (
@@ -50,9 +49,12 @@ const Header = () => {
      
 
       <div className="flex mt-1">
+        <Link to='/'>
         <TiHome className="hover:text-facebook-blue text-3xl mr-1 md:mr-10" />
-
-        <RiGroupFill className="hover:text-facebook-blue text-3xl ml-1 md:ml-10" />
+        </Link>
+      <Link to='/friends/friendRequest'>
+      <RiGroupFill className="hover:text-facebook-blue text-3xl ml-1 md:ml-10" />
+      </Link>
 
         {
           //   <HiUserGroup className="hover:text-facebook-blue text-4xl ml-1 md:ml-20" />
@@ -199,7 +201,7 @@ const Header = () => {
             type="checkbox" 
             role="switch"
             id="flexSwitchCheckChecked"
-           onChange={()=>setTheme(colorTheme)}/>
+           onChange={()=>toggleMode(isDarkMode)}/>
             <label className="form-check-label inline-block text-gray-800 dark:text-white" htmlFor="flexSwitchCheckChecked">Dark Mode</label>
            </div>
            </div>

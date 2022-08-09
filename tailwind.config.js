@@ -17,6 +17,7 @@ module.exports = {
         },
         darkBgColor:'#22303C',
         darkBgSideBar:'#192734',
+       
 
       },
     },

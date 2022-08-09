@@ -119,7 +119,7 @@ const More = ({
   return (
     <div className={containerClassName} data-title={tooltipData}>
       <button
-        className={'dropdown-toggle flex items-center hidden-arrow'}
+        className={'dropdown-toggle  dark:text-white flex items-center hidden-arrow'}
         onClick={() => {
           console.log(moreID);
           console.log(userID);
@@ -128,7 +128,7 @@ const More = ({
         }}
       >
         <BiDotsHorizontalRounded
-          className={'hover:bg-zinc-100 rounded-full p-1 z-50 ' + iconClassName}
+          className={'hover:bg-zinc-100 dark:hover:bg-darkBgSideBar rounded-full p-1 z-50 ' + iconClassName}
         />
       </button>
 
@@ -139,7 +139,7 @@ const More = ({
           // id={`More${moreID}`}
         >
           <ul
-            className={`dropdown-menu min-w-max absolute bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
+            className={`dropdown-menu min-w-max absolute bg-white dark:bg-darkBgSideBar dark: text-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
           >
             {
               // For Text Number 1:

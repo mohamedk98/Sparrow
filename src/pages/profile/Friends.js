@@ -17,10 +17,10 @@ function Friends() {
                                 <div className='grid grid-cols-2 gap-2.5 my-5'>
                                     {userState?.friends?.data?.map((friend, index)=>{
                                         return(
-                                            <div className='flex  justify-between  rounded-lg p-3 border gap-2.5 h-32'>
-                                                <div className='flex items-center'>
-                                                    <img key={index} src={friend.profileImage} alt="photos" className="w-full rounded-md"></img>
-                                                    <span className='text-md font-semibold'>{friend.userId.firstName} {friend.userId.lastName}</span>
+                                            <div className='flex  justify-between  rounded-lg p-3 border gap-2.5 h-32'key={index} >
+                                                <div className='flex items-center w-24 ' >
+                                                    <img src={friend.userId.profileImage} alt="photos" className="max-h-32  rounded-md"></img>
+                                                    <span className='text-md font-semibold ml-2'>{friend.userId.firstName} {friend.userId.lastName}</span>
                                                 </div>
                                                 <div className='flex items-center cursor-pointer'>
                                                     <BsThreeDots className='text-xl font-semibold rounded-full w-8 h-8 p-1 hover:bg-slate-200'/>

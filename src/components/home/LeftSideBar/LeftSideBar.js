@@ -29,12 +29,12 @@ const LeftSideBar = ({profileData}) => {
       setAllFriends('You have no friends yet');
     }
     else{
-      const res= await axiosInstance.get('/friends');
+      const res= await axiosInstance.get('/friends/friendRequest');
       // setAllFriends(res.data);
-      console.log(res);
+      console.log(res.data);
     }
 
-    navigate('/friends');
+    navigate('/friends/friendRequest');
   }
 
   //logout functionality
@@ -110,7 +110,7 @@ const LeftSideBar = ({profileData}) => {
           } absolute -right-3 top-9 border border-facebook-grey`}
         />
         <ul>
-          <li className="flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2 ">
+          <li className="flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 rounded-md mt-2 ">
             <img src={profileImg} alt="profile" className="rounded-full" />
             <span
               className={`text-black dark:text-white origin-left font-bold text-sm mt-3 ml-2 duration-300 ${
@@ -126,7 +126,7 @@ const LeftSideBar = ({profileData}) => {
           {Menus.map(menu => (
             <li
               key={menu.id}
-              className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2"
+              className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 rounded-md mt-2"
               onClick={menu.handler}
             >
               <span className="text-2xl block float-left text-facebook-blue">

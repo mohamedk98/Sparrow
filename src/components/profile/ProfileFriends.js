@@ -18,8 +18,8 @@ function ProfileFriends() {
             <div className='grid grid-cols-3 gap-2.5 my-5'>
                 {userState?.friends?.data?.slice(0,9).map((friend, index)=>{
                     return(
-                        <div className='h-32'>
-                            <img key={index} src={friend.profileImage} alt="photos" className="w-full h-24 rounded-md"></img>
+                        <div className='h-32' key={index}>
+                            <img  src={friend.userId.profileImage} alt="photos" className="w-full h-24 rounded-md"></img>
                             <span className='text-sm mt-3'>{friend.userId.firstName} {friend.userId.lastName}</span>
                         </div>
                     )

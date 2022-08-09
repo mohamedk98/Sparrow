@@ -90,7 +90,7 @@ const RightSideBar = () => {
                 tooltipData="options"
                 text={
                   <div
-                    className="flex  dark:text-white "
+                    className="flex   dark:text-white "
                     onClick={() => {
                       setShowContacts(!showContacts);
                     }}

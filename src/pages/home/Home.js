@@ -23,7 +23,7 @@ const Home = () => {
   return (
     <div className="h-full bg-gray-200 dark:bg-darkBgColor">
       <Header />
-      <div className="flex">
+      <div className="flex dark:bg-darkBgColor">
         <LeftSideBar profileData={profileData} />
         <Feed />
         <RightSideBar />
