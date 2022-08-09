@@ -780,20 +780,7 @@ class UserApi {
       userData.markModified("lastName");
 
       const updatedUserData = await userData.save();
-      return await updatedUserData
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
-          path: "notifcations.notificationId",
-          select: "_id from message type",
-          populate: {
-            path: "from",
-            select: "_id username firstName lastName profileImage",
-          },
-        });
+      return updatedUserData;
     } catch {
       const error = new Error("Something went wrong,Please try again later");
       return error;
