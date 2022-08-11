@@ -79,7 +79,7 @@ class UserApi {
     return userData;
   }
 
-  async getUserPosts(userId) {
+  async getUserPosts(userId,page) {
     const limit = 5;
     let skip = page * limit;
     if (page === 1) {

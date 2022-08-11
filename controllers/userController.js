@@ -41,9 +41,9 @@ const getNewsfeed = (req, res) => {
 
 const getUserPosts = async (req, res) => {
   const userId = req.userId;
-
+  const page = req.params.page
   await userApi
-    .getUserPosts(userId)
+    .getUserPosts(userId,page)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
 };
