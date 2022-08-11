@@ -80,9 +80,16 @@ class UserApi {
   }
 
   async getUserPosts(userId) {
+    const limit = 5;
+    let skip = page * limit;
+    if (page === 1) {
+      skip = 1;
+    }
     //get user created posts
     const userPosts = await postApi
       .find({ userId })
+      .limit(limit)
+      .skip(skip)
       .populate({
         path: "comments.userId",
         select: "firstName lastName profileImage _id",
@@ -100,7 +107,8 @@ class UserApi {
     //get users shared post
     const userSharedPosts = await sharedPostApi
       .find({ sharerId: userId })
-      .limit(1)
+      .limit(limit)
+      .skip(skip)
       .populate({
         path: "originalPostId",
         populate: {
@@ -149,7 +157,7 @@ class UserApi {
       return secondPostDate - firstPostDate;
     });
 
-    return allPosts;
+    return { allPosts, page: page };
   }
   async getNewsfeed(userId, page) {
     const limit = 5;
