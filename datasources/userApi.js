@@ -164,7 +164,7 @@ class UserApi {
     });
 
     const friendsPosts = await postApi
-      .find({visiability:"public"})
+      .find()
       .where("userId")
       .in(userFriendsIds)
       .limit(limit)
@@ -192,7 +192,7 @@ class UserApi {
       .populate("userId", "firstName lastName _id profileImage");
 
     const friendsSharedPosts = await sharedPostApi
-      .find({visiability:"public"})
+      .find()
       .limit(limit)
       .skip(skip)
       .where("sharerId")
