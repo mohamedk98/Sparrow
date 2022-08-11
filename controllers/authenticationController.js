@@ -74,8 +74,8 @@ const sendResetPasswordEmail = (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const email = req.query.email;
-  const resetToken = req.quary.resetToken;
+  const email = req.params.email;
+  const resetToken = req.params.resetToken;
   const password = req.body.password;
   const repassword = req.body.repassword;
 

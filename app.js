@@ -50,6 +50,7 @@ app.use(
 const { connectToRedis } = require("./services/redisClient.service");
 
 //Routes
+const adminRouter = require("./routes/admin")
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
@@ -82,6 +83,8 @@ app.use(express.urlencoded({ extended: false }));
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
+
+app.use("/admin",adminRouter)
 
 app.use(authenticationRouter);
 
