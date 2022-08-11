@@ -2,6 +2,7 @@ const userApi = require("../models/User");
 const postApi = require("../models/Posts");
 const sharedPostApi = require("../models/SharedPost");
 const notificationApi = require("../models/Notification");
+const bycrypt = require("bcrypt");
 const AWS = require("aws-sdk");
 AWS.config.update({
   credentials: {
@@ -163,7 +164,7 @@ class UserApi {
     });
 
     const friendsPosts = await postApi
-      .find()
+      .find({visiability:"public"})
       .where("userId")
       .in(userFriendsIds)
       .limit(limit)
@@ -191,7 +192,7 @@ class UserApi {
       .populate("userId", "firstName lastName _id profileImage");
 
     const friendsSharedPosts = await sharedPostApi
-      .find()
+      .find({visiability:"public"})
       .limit(limit)
       .skip(skip)
       .where("sharerId")
@@ -364,25 +365,28 @@ class UserApi {
       return error;
     }
 
-    receiverData.friendsRequests.push({ senderId });
-
     try {
-      let updatedUserData = await (
-        await receiverData.save()
-      )
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
+      receiverData.friendsRequests.push({ userId: senderId });
+      receiverData.markModified("friendsRequests");
+      let updatedUserData = await receiverData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
           path: "notifcations.notificationId",
           select: "_id from message type",
           populate: {
             path: "from",
             select: "_id username firstName lastName profileImage",
           },
-        });
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -413,29 +417,36 @@ class UserApi {
     }
 
     //add the friend to the friends list and remove it from friend request
-    userData.friends.data.push({ friendRequestId });
-    friendData.friends.data.push({ userId });
+    userData.friends.data.push({ userId: friendRequestId });
+    friendData.friends.data.push({ userId: userId });
     userData.friendsRequests = userData.friendsRequests.filter(
       (friendRequest) => friendRequest.userId.toString() !== friendRequestId
     );
 
     try {
-      let updatedUserData = await (
-        await userData.save()
-      )
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
+      userData.markModified("friends");
+      userData.markModified("friendsRequests");
+      friendData.markModified("friends");
+      await friendData.save();
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
           path: "notifcations.notificationId",
           select: "_id from message type",
           populate: {
             path: "from",
             select: "_id username firstName lastName profileImage",
           },
-        });
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -471,22 +482,25 @@ class UserApi {
     );
 
     try {
-      let updatedUserData = await (
-        await userData.save()
-      )
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
           path: "notifcations.notificationId",
           select: "_id from message type",
           populate: {
             path: "from",
             select: "_id username firstName lastName profileImage",
           },
-        });
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -518,22 +532,25 @@ class UserApi {
 
     try {
       await friendData.save();
-      let updatedUserData = await (
-        await userData.save()
-      )
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
           path: "notifcations.notificationId",
           select: "_id from message type",
           populate: {
             path: "from",
             select: "_id username firstName lastName profileImage",
           },
-        });
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -565,22 +582,26 @@ class UserApi {
     userData.blockList.push({ userId: friendId });
 
     try {
-      userData.save().then((updatedUserData) => {
-        return updatedUserData
-          .populate(
-            "friends.data.userId",
-            "firstName lastName profileImage _id username"
-          )
-          .populate("blockList.userId", "firstName lastName profileImage _id")
-          .populate({
-            path: "notifcations.notificationId",
-            select: "_id from message type",
-            populate: {
-              path: "from",
-              select: "_id username firstName lastName profileImage",
-            },
-          });
-      });
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
+      return updatedUserData;
     } catch (error) {
       // const error = new Error("something went wrong, please try again later");
       // error.httpStatusCode = 400;
@@ -611,22 +632,25 @@ class UserApi {
 
     try {
       userData.markModified("blockList");
-      let updatedUserData = await (
-        await userData.save()
-      )
-        .populate(
-          "friends.data.userId",
-          "firstName lastName profileImage _id username"
-        )
-        .populate("blockList.userId", "firstName lastName profileImage _id")
-        .populate({
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
           path: "notifcations.notificationId",
           select: "_id from message type",
           populate: {
             path: "from",
             select: "_id username firstName lastName profileImage",
           },
-        });
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("something went wrong, please try again later");
@@ -658,7 +682,6 @@ class UserApi {
         "friendsRequests.userId",
         "firstName lastName profileImage _id"
       );
-    console.log(userFriendsRequests);
     if (!userFriendsRequests) {
       const error = new Error("User not found");
       error.httpStatusCode = 404;
@@ -693,7 +716,25 @@ class UserApi {
     userData.intro = intro;
     try {
       userData.markModified("intro");
-      const updatedUserData = await userData.save();
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("Something went wrong,Please try again later");
@@ -718,7 +759,25 @@ class UserApi {
     userData.relationship = relationship;
     userData.work = work;
     try {
-      const updatedUserData = await userData.save();
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("Something went wrong,Please try again later");
@@ -738,7 +797,25 @@ class UserApi {
     try {
       userData.hobbies = hobbies;
       userData.markModified("hobbies");
-      const updatedUserData = await userData.save();
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("Something went wrong,Please try again later");
@@ -757,7 +834,25 @@ class UserApi {
     try {
       userData.coverImage = coverPhotoUrl;
       userData.markModified("coverImage");
-      const updatedUserData = await userData.save();
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("Something went wrong,Please try again later");
@@ -779,7 +874,72 @@ class UserApi {
       userData.markModified("firstName");
       userData.markModified("lastName");
 
-      const updatedUserData = await userData.save();
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
+      return updatedUserData;
+    } catch {
+      const error = new Error("Something went wrong,Please try again later");
+      return error;
+    }
+  }
+  async updatePassword(userId, oldPassword, newPassword) {
+    let userData = await userApi.findById(userId);
+    if (!userData) {
+      const error = new Error("User not found");
+      error.httpStatusCode = 404;
+      return error;
+    }
+
+    const isPasswordMatch = await bycrypt.compare(
+      oldPassword,
+      userData.password
+    );
+
+    if (!isPasswordMatch) {
+      const error = new Error("Incorrect Old password");
+      return error;
+    }
+
+    try {
+      const hashedPassword = await bycrypt.hash(newPassword, 12);
+      userData.password = hashedPassword;
+      userData.markModified("password");
+      let updatedUserData = await userData.save();
+      updatedUserData = await updatedUserData.populate([
+        {
+          path: "friends.data.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        {
+          path: "blockList.userId",
+          select: "firstName lastName profileImage _id",
+        },
+        {
+          path: "notifcations.notificationId",
+          select: "_id from message type",
+          populate: {
+            path: "from",
+            select: "_id username firstName lastName profileImage",
+          },
+        },
+      ]);
       return updatedUserData;
     } catch {
       const error = new Error("Something went wrong,Please try again later");

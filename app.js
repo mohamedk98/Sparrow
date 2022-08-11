@@ -83,6 +83,7 @@ app.use(express.urlencoded({ extended: false }));
 //This will use the built react app as static to be served via server
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
+//Admin Routes
 
 app.use("/admin",adminRouter)
 

@@ -144,9 +144,7 @@ const addPostReaction = async (req, res) => {
   const reaction = req.body.reaction;
   await reactionApi
     .addPostReaction(postId, userId, reaction)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(400).send(error.message));
 };
 
@@ -156,9 +154,7 @@ const removePostReaction = async (req, res) => {
 
   await reactionApi
     .removePostReaction(postId, userId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
@@ -169,9 +165,7 @@ const addSharedPostReaction = async (req, res) => {
 
   await reactionApi
     .addSharedPostReaction(sharedPostId, userId, reaction)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(400).send(error.message));
 };
 
@@ -181,9 +175,7 @@ const removeSharedPostReaction = async (req, res) => {
 
   await reactionApi
     .removePostReaction(sharedPostId, userId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
@@ -216,15 +208,13 @@ const removeCommentReaction = async (req, res) => {
   const { postId, commentId } = req.params;
   reactionApi
     .removeCommentReaction(postId, userId, commentId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
 const getAllFriendsRequest = async (req, res) => {
   const userId = req.userId;
-   userApi
+  userApi
     .getFriendsRequests(userId)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
@@ -232,7 +222,7 @@ const getAllFriendsRequest = async (req, res) => {
 
 const getAllFriends = async (req, res) => {
   const userId = req.userId;
-   userApi
+  userApi
     .getFriends(userId)
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error.message));
@@ -244,9 +234,7 @@ const sendFriendRequest = async (req, res) => {
 
   await userApi
     .sendFriendRequest(userId, friendRequestId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
@@ -256,9 +244,7 @@ const acceptFriendRequest = async (req, res) => {
 
   await userApi
     .acceptFriendRequest(userId, friendRequestId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
@@ -268,9 +254,7 @@ const removeFriendRequest = async (req, res) => {
 
   await userApi
     .removeFriendRequest(userId, friendRequestId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
+    .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(error.httpStatusCode).send(error.message));
 };
 
@@ -300,10 +284,8 @@ const unblockFriend = async (req, res) => {
 
   await userApi
     .unblockFriend(userId, friendId)
-    .then((response) =>
-      res.status(200).send(response.message)
-    )
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const searchForPeople = async (req, res) => {
@@ -367,17 +349,34 @@ const updateAbout = async (req, res) => {
     .catch((error) => res.status(400).send(error.message));
 };
 
-const updateName = (req,res)=>{
-  const userId = req.userId
-  const firstName = req.body.name.firstName
-  const lastName = req.body.name.lastName
+const updateName = (req, res) => {
+  const userId = req.userId;
+  const firstName = req.body.name.firstName;
+  const lastName = req.body.name.lastName;
 
   userApi
-  .updateName(userId, firstName,lastName)
-  .then((response) => res.status(200).send(response))
-  .catch((error) => res.status(400).send(error.message));
+    .updateName(userId, firstName, lastName)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
 
-}
+const updatePassword = async (req, res) => {
+  const userId = req.userId;
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+  const newRePassword = req.body.newRePassword;
+
+  if (newPassword !== newRePassword) {
+    const error = new Error("Password and Retyped password are not matching");
+    return res.status(400).send(error.message);
+  }
+
+
+  userApi
+    .updatePassword(userId, oldPassword, newPassword)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
+};
 
 module.exports = {
   getProfile,
@@ -409,5 +408,6 @@ module.exports = {
   updateHobbies,
   getSingleProfile,
   selectCoverPhotoFromMedia,
-  updateName
+  updateName,
+  updatePassword
 };
