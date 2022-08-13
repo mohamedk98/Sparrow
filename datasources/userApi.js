@@ -242,7 +242,16 @@ class UserApi {
       .populate({
         path: "comments.reply.userId",
         select: "firstName lastName profileImage _id",
-      });
+        populate:{
+          path:"reactions.userId",
+          select:"firstName lastName"
+        }
+      })
+      .populate({
+        path: "comments.reactions.userId",
+        select: "firstName lastName  _id",
+      })
+
 
     //merge the friends posts and friends shared posts together in one array
     let allPosts = friendsPosts.concat(friendsSharedPosts);
