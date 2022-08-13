@@ -38,9 +38,9 @@ class PostsApi {
       await post.save();
       await newNotification.save();
       return { message: "Post Created", httpStatusCode: 200 };
-    } catch {
-      const error = new Error("An error occured, Please try again later");
-      error.httpStatusCode = 400;
+    } catch (error) {
+      // const error = new Error("An error occured, Please try again later");
+      // error.httpStatusCode = 400;
       return error;
     }
   }
