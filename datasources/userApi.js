@@ -79,7 +79,7 @@ class UserApi {
     return userData;
   }
 
-  async getUserPosts(userId,page) {
+  async getUserPosts(userId, page) {
     const limit = 5;
     let skip = page * limit;
     if (page === 1) {
@@ -223,15 +223,25 @@ class UserApi {
         path: "originalPostId",
         populate: {
           path: "reactions.userId",
-          select: "firstName lastName",
+          select: "firstName lastName _id",
         },
       })
       .populate({
         path: "originalPostId",
-        populate: {
-          path: "comments.reply.userId",
-          select: "firstName lastName profileImage _id",
-        },
+        populate: [
+          {
+            path: "comments.reply.userId",
+            select: "firstName lastName profileImage _id",
+          },
+          {
+            path: "comments.reactions.userId",
+            select: "firstName lastName  _id",
+          },
+          {
+            path: "comments.reply.reactions.userId",
+            select: "firstName lastName  _id",
+          },
+        ],
       })
       .populate("sharerId", "firstName lastName profileImage _id")
       .populate("reactions.userId", "firstName lastName")
@@ -242,16 +252,15 @@ class UserApi {
       .populate({
         path: "comments.reply.userId",
         select: "firstName lastName profileImage _id",
-        populate:{
-          path:"reactions.userId",
-          select:"firstName lastName"
-        }
+      })
+      .populate({
+        path: "comments.reply.reactions.userId",
+        select: "firstName lastName profileImage _id",
       })
       .populate({
         path: "comments.reactions.userId",
         select: "firstName lastName  _id",
-      })
-
+      });
 
     //merge the friends posts and friends shared posts together in one array
     let allPosts = friendsPosts.concat(friendsSharedPosts);
