@@ -102,6 +102,14 @@ class UserApi {
         path: "reactions.userId",
         select: "firstName lastName",
       })
+      .populate({
+        path: "comments.reactions.userId",
+        select: "firstName lastName",
+      })
+      .populate({
+        path: "comments.reply.reactions.userId",
+        select: "firstName lastName",
+      })
       .populate("userId", "firstName lastName _id profileImage");
 
     //get users shared post
@@ -127,27 +135,44 @@ class UserApi {
         path: "originalPostId",
         populate: {
           path: "reactions.userId",
-          select: "firstName lastName",
+          select: "firstName lastName _id",
         },
       })
       .populate({
         path: "originalPostId",
-        populate: {
-          path: "comments.reply.userId",
-          select: "firstName lastName profileImage _id",
-        },
+        populate: [
+          {
+            path: "comments.reply.userId",
+            select: "firstName lastName profileImage _id",
+          },
+          {
+            path: "comments.reactions.userId",
+            select: "firstName lastName  _id",
+          },
+          {
+            path: "comments.reply.reactions.userId",
+            select: "firstName lastName  _id",
+          },
+        ],
       })
       .populate("sharerId", "firstName lastName profileImage _id")
       .populate("reactions.userId", "firstName lastName")
       .populate({
         path: "comments.userId",
-        select: "firstName lastName",
+        select: "firstName lastName profileImage _id",
       })
       .populate({
         path: "comments.reply.userId",
         select: "firstName lastName profileImage _id",
+      })
+      .populate({
+        path: "comments.reply.reactions.userId",
+        select: "firstName lastName profileImage _id",
+      })
+      .populate({
+        path: "comments.reactions.userId",
+        select: "firstName lastName  _id",
       });
-
     let allPosts = userSharedPosts.concat(userPosts);
     //sort the array descendigly
     allPosts = allPosts.sort((firstElement, secondElement) => {
