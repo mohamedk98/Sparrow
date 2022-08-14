@@ -2,13 +2,8 @@ import React, { useState } from 'react';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
 import { FaUserAlt } from 'react-icons/fa';
-// import { FaUserFriends } from 'react-icons/fa';
-// import { MdGroups } from 'react-icons/md';
-// import { BsFillCalendarEventFill } from 'react-icons/bs';
-// import { BsFillAlarmFill } from 'react-icons/bs';
-// import { BsStarFill } from 'react-icons/bs';
+
 import { BiLogOut } from 'react-icons/bi';
-import profileImg from '../../../assets/images/default_profile.png';
 import { axiosInstance } from '../../../network/axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthentication } from '../../../store/userSlice/UserSlice';
@@ -20,8 +15,12 @@ const LeftSideBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const profileHandler = () => {
+  const homeHandler = () => {
     navigate('/');
+  };
+
+  const profileHandler = () => {
+    navigate('/profile/friends');
   };
 
   //logout functionality
@@ -37,7 +36,7 @@ const LeftSideBar = () => {
       id: 1,
       title: 'Home',
       icon: { iconTitle: AiFillHome },
-      handler: profileHandler,
+      handler: homeHandler,
     },
     {
       id: 2,
@@ -45,36 +44,6 @@ const LeftSideBar = () => {
       icon: { iconTitle: FaUserAlt },
       handler: profileHandler,
     },
-    // {
-    //   id: 3,
-    //   title: 'Groups',
-    //   icon: { iconTitle: FaUserFriends },
-    //   handler: profileHandler,
-    // },
-    // {
-    //   id: 4,
-    //   title: 'Saved',
-    //   icon: { iconTitle: MdGroups },
-    //   handler: profileHandler,
-    // },
-    // {
-    //   id: 5,
-    //   title: 'Events',
-    //   icon: { iconTitle: BsFillCalendarEventFill },
-    //   handler: profileHandler,
-    // },
-    // {
-    //   id: 6,
-    //   title: 'Most recent',
-    //   icon: { iconTitle: BsFillAlarmFill },
-    //   handler: profileHandler,
-    // },
-    // {
-    //   id: 7,
-    //   title: 'Favourites',
-    //   icon: { iconTitle: BsStarFill },
-    //   handler: profileHandler,
-    // },
     {
       id: 3,
       title: 'Logout',
@@ -87,7 +56,7 @@ const LeftSideBar = () => {
     <div className="hidden lg:flex fixed z-10">
       <div
         className={`bg-facebook-grey h-screen p-5 pt-8 ${
-          open ? 'w-38' : 'w-20'
+          open ? 'w-38' : 'w-24'
         } duration-300  relative`}
       >
         <BsFillArrowLeftCircleFill
@@ -97,8 +66,20 @@ const LeftSideBar = () => {
           } absolute -right-3 top-9 border border-facebook-grey`}
         />
         <ul>
-          <li className="flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2 ">
-            <img src={userState.profileImage} alt="profile" className="rounded-full w-12 h-12" />
+          <li
+            className={`flex items-center gap-x-4 cursor-pointer  hover:bg-facebook-greyHover rounded-md mt-2 ${
+              open ? 'p-2' : 'p-'
+            }`}
+            onClick={() => navigate('/profile')}
+          >
+            <img
+              src={userState.profileImage}
+              alt="profile"
+              className={`rounded-full ${
+                open ? 'w-12 h-12' : 'w-11 h-11 ml-1.5 px-0.5'
+              }`}
+            />
+
             <span
               className={`text-black origin-left font-bold text-sm mt-3 ml-1 duration-300 ${
                 !open && 'scale-0 -mb-7'
@@ -109,11 +90,11 @@ const LeftSideBar = () => {
           </li>
         </ul>
 
-        <ul className="pt-2">
+        <ul className={`pt-2 ${!open && 'ml-1.5'}`}>
           {Menus.map(menu => (
             <li
               key={menu.id}
-              className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md mt-2"
+              className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md my-5"
               onClick={menu.handler}
             >
               <span className="text-2xl block float-left text-facebook-blue">

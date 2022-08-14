@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { MdDelete } from 'react-icons/md';
+import { MdCancel } from 'react-icons/md';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import CreatePostModal from '../CreatePostModal';
+import EditPost from './EditPost';
 
 const More = ({
   text,
@@ -25,7 +29,15 @@ const More = ({
   moreID,
   sharerId,
   moreFullScreenClassName,
+  // For edit post:
+  postData,
 }) => {
+  // console.log(sharedPost);
+  // console.log(text, text2, liNum1, liNum2);
+  // console.log(id, userID);
+  // console.log(postId);
+  // console.log(userID, sharerId);
+
   // Rerender:
   const dispatch = useDispatch();
   const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
@@ -35,6 +47,9 @@ const More = ({
   // let sharedPostID = sharedPost && sharedPostData?._id;
   // console.log(sharedPost);
   // console.log(sharedPost);
+
+  // Show modal for edit post:
+  const [showEditPostModal, setShowEditPostModal] = useState(false);
 
   // Show and hide more:
   const [showMore, setShowMore] = useState(false);
@@ -69,27 +84,27 @@ const More = ({
   };
 
   const deletePostHandler = () => {
-    // axiosInstance
-    //   .delete(`/post/${postId}`)
-    //   .then(response => {
-    //     console.log(id);
-    //     console.log(response);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    axiosInstance
+      .delete(`/post/${moreID}`)
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const deleteSharedPostHandler = () => {
-    // axiosInstance
-    //   .delete(`/post/${postId}`)
-    //   .then(response => {
-    //     console.log(id);
-    //     console.log(response);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    axiosInstance
+      .delete(`/share/${moreID}`)
+      .then(response => {
+        console.log(id);
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const deleteReplyHandler = () => {
@@ -166,10 +181,28 @@ const More = ({
                   if (setEditReply) {
                     setEditReply(replyId);
                   }
+
+                  if (text2 === 'Edit post') {
+                    setShowEditPostModal(true);
+                    // setShowMore(!showMore);
+                  }
                 }}
               >
                 {text2}
               </li>
+            )}
+
+            {
+              // Show EditPostModal
+            }
+            {showEditPostModal && (
+              <EditPost
+                showModal={showEditPostModal}
+                setShowModal={setShowEditPostModal}
+                setShowMore={setShowMore}
+                sharedPostData={sharedPostData}
+                postData={postData}
+              />
             )}
 
             {
@@ -232,7 +265,7 @@ const More = ({
                       dispatch(forceUpdateHandler(!forceReRender));
                     }}
                   >
-                    Delete
+                    <MdDelete className="text-xl mx-3.5 " />
                   </button>
 
                   <button
@@ -242,7 +275,7 @@ const More = ({
                       setConfirmDeleteComment(false);
                     }}
                   >
-                    Cancel
+                    <MdCancel className="text-xl mx-3.5" />
                   </button>
                 </div>
               </div>

@@ -20,6 +20,8 @@ const Post = ({
   reactions,
   reactionsMakers,
   moreID,
+  // For More position:
+  postsProfile,
 }) => {
   // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
@@ -40,12 +42,15 @@ const Post = ({
           hideMore={!className ? false : true}
           postBody={data?.content}
           postImage={data?.media}
-          sharerId={data?.sharerId_id}
+          sharerId={data?.userId?._id}
           userID={userData?._id}
           sharedPost={sharedPost}
           sharedPostData={sharedPostData}
           reverseDirection={sharedPost && true}
           postId={data?._id}
+          postData={data}
+          // For More position:
+          postsProfile={postsProfile}
         />
       }
 
@@ -69,6 +74,8 @@ const Post = ({
             data={data}
             userData={userData}
             moreID={moreID}
+            // For the middle three buttons position:
+            postsProfile={postsProfile}
           />
         )}
       </div>
@@ -84,6 +91,7 @@ const Post = ({
             postBody={data?.content}
             userID={userData?._id}
             fullScreenContentClassName="px-5 ml-7"
+            postData={data}
           />
         }
         postMiddelAndBottom={
@@ -109,8 +117,8 @@ const Post = ({
               fullScreenCommentClassName="flex hover:bg-gray-100 py-2 my-1 px-5 md:px-1.5 lg:px-5 rounded-lg"
               fullScreenShareClassName="flex hover:bg-gray-100 py-2 my-1 px-7 md:px-3 lg:px-5 rounded-lg"
               fullScreenCommentsClassName="overflow-y-auto overflow-x-hidden max-h-72"
-              commentTreeVerticalHiddenReplysClassName="rotate-90 absolute top-16 -left-8  md:top-16 md:left-7  lg:top-16 ml-2.5 lg:left-7 md:-ml-12"
-              commentTreeVerticalHiddenReplysShowInputClassName="rotate-90 absolute top-28 -left-8  -mt-1 md:top-32 md:left-4 md:-mt-2 lg:top-32 lg:left-4 md:-ml-12"
+              commentTreeVerticalHiddenReplysClassName="rotate-90 absolute -top-12 -left-8  md:-top-11 md:left-7 ml-2.5 lg:left-7 md:-ml-12"
+              commentTreeVerticalHiddenReplysShowInputClassName="rotate-90 absolute top-0 -left-8 -mt-1 md:top-4 md:left-4 md:-mt-2 lg:left-4 md:-ml-12"
               commentTreeVerticalShowReplysClassName="rotate-90 absolute -top-20 mt-4 ml-0.5 md:-top-20 -left-24 md:-left-24"
               moreFullScreenClassName="-ml-24"
               reactionsFullScreenClassName="true"

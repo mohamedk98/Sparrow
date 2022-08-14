@@ -73,7 +73,7 @@ const ShareModal = ({
             </div>
 
             <div className="modal-body container space-x-2 p-4">
-              <div className="grid grid-cols-10 w-full">
+              <div className="flex w-full">
                 <img
                   src={profileSRC}
                   alt="profile-imag"
@@ -83,8 +83,8 @@ const ShareModal = ({
                   layout="fixed"
                 />
 
-                <p className="font-bold text-sm ml-3">
-                  {profileFName + ' ' + profileLName}
+                <p className="font-bold text-sm ml-3 mt-2.5">
+                  {`${profileFName} ${profileLName}`}
                 </p>
               </div>
               <div className="grid grid-cols-1 w-12/13">
@@ -119,7 +119,7 @@ const ShareModal = ({
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-gray-200 rounded-b-md">
               <button
                 type="button"
-                className="inline-block px-6 w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                className="inline-block px-6 w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-0.5"
                 onClick={() => {
                   shareHandler();
                   setEmptyTextArea(true);

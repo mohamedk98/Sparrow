@@ -11,7 +11,7 @@ import {
 import PostMiddle from './PostMiddle';
 import dateCalcFunction from './DateCalculations';
 
-const SharedPost = ({ postsProfile, userDataProfile }) => {
+const SharedPost = ({ postsProfile }) => {
   // Force rercall api upon change in component:
   const dispatch = useDispatch();
   const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
@@ -29,7 +29,9 @@ const SharedPost = ({ postsProfile, userDataProfile }) => {
   const loadMorePosts = useCallback(() => {
     let onePage = [];
     axiosInstance
-      .get(`/newsfeed/${pageNumber.current}`)
+      .get(
+        `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${pageNumber.current}`
+      )
       .then(response => {
         console.log(response);
         response.data.allPosts.map(res => {
@@ -85,7 +87,7 @@ const SharedPost = ({ postsProfile, userDataProfile }) => {
     let onePage = [];
     forceReRender &&
       axiosInstance
-        .get(`/newsfeed/${forceReRender}`)
+        .get(`/${postsProfile ? 'profile/posts' : 'newsfeed'}/${forceReRender}`)
         .then(response => {
           console.log(response);
           response.data.allPosts.map(res => {
@@ -104,81 +106,86 @@ const SharedPost = ({ postsProfile, userDataProfile }) => {
         });
   }, [dispatch, forceReRender]);
 
-  return (
-    postsProfile ||
-    posts?.map(post => {
-      return post?.sharerId ? (
-        <div
-          className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7"
-          key={post?._id}
-        >
-          <PostHalfTop
-            profileSRC={post?.sharerId?.profileImage || profileImg}
-            profileName={
-              post?.sharerId?.firstName + ' ' + post?.sharerId?.lastName
-            }
-            // To calc time difference between post date and current date:
-            postDate={dateCalcFunction(post?.createdAt)}
-            originalPostId={post?.originalPostId}
-            sharedPost={false}
-            sharedPostData={post}
-            userData={userDataProfile || userData}
-            moreID={post?._id}
-            userID={userDataProfile || userData?._id}
-          />
-          <Post
-            data={post?.originalPostId}
-            className="p-0 border-2 border-t-0 px-3 -mx-2.5 shadow-none rounded-t-none mb-0"
-            userData={userDataProfile || userData}
-            sharedPost={true}
-            sharedPostData={post}
-            // For fullScreen mode:
-            reactions={[
-              ...new Set(
-                post?.originalPostId?.reactions?.map(post => post?.reaction)
-              ),
-            ]}
-            // For toolTip purposes:
-            reactionsMakers={post?.originalPostId?.reactions?.map(post => {
-              return post;
-            })}
-          />
-
-          {
-            <PostMiddle
-              writeComment={writeComment}
-              setWriteComment={setWriteComment}
-              data={post}
-              sharedPost={true}
-              sharedPostData={post}
-              userData={userDataProfile || userData}
-              reactions={[
-                ...new Set(post?.reactions?.map(post => post?.reaction)),
-              ]}
-              // For toolTip purposes:
-              reactionsMakers={post?.reactions?.map(post => {
-                return post;
-              })}
-              moreID={post?._id}
-            />
+  return posts?.map(post => {
+    return post?.sharerId ? (
+      <div
+        className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7"
+        key={post?._id}
+      >
+        <PostHalfTop
+          profileSRC={post?.sharerId?.profileImage || profileImg}
+          profileName={
+            post?.sharerId?.firstName + ' ' + post?.sharerId?.lastName
           }
-        </div>
-      ) : (
-        <Post
-          data={post}
-          key={post._id}
-          userData={userDataProfile || userData}
+          // To calc time difference between post date and current date:
+          postDate={dateCalcFunction(post?.createdAt)}
+          originalPostId={post?.originalPostId}
           sharedPost={false}
-          reactions={[...new Set(post?.reactions?.map(post => post?.reaction))]}
+          sharedPostData={post}
+          userData={userData}
+          moreID={post?._id}
+          userID={userData?._id}
+          sharerId={post?.sharerId?._id}
+          postBody={post?.caption}
+          // For More position:
+          postsProfile={postsProfile}
+        />
+        <Post
+          data={post?.originalPostId}
+          className="p-0 border-2 border-t-0 px-3 -mx-2.5 shadow-none rounded-t-none mb-0"
+          userData={userData}
+          sharedPost={true}
+          sharedPostData={post}
+          // For fullScreen mode:
+          reactions={[
+            ...new Set(
+              post?.originalPostId?.reactions?.map(post => post?.reaction)
+            ),
+          ]}
           // For toolTip purposes:
-          reactionsMakers={post?.reactions?.map(post => {
+          reactionsMakers={post?.originalPostId?.reactions?.map(post => {
             return post;
           })}
-          moreID={post?._id}
         />
-      );
-    })
-  );
+
+        {
+          <PostMiddle
+            writeComment={writeComment}
+            setWriteComment={setWriteComment}
+            data={post}
+            sharedPost={true}
+            sharedPostData={post}
+            userData={userData}
+            reactions={[
+              ...new Set(post?.reactions?.map(post => post?.reaction)),
+            ]}
+            // For toolTip purposes:
+            reactionsMakers={post?.reactions?.map(post => {
+              return post;
+            })}
+            moreID={post?._id}
+            // For More position:
+            postsProfile={postsProfile}
+          />
+        }
+      </div>
+    ) : (
+      <Post
+        data={post}
+        key={post._id}
+        userData={userData}
+        sharedPost={false}
+        reactions={[...new Set(post?.reactions?.map(post => post?.reaction))]}
+        // For toolTip purposes:
+        reactionsMakers={post?.reactions?.map(post => {
+          return post;
+        })}
+        moreID={post?._id}
+        // For More position:
+        postsProfile={postsProfile}
+      />
+    );
+  });
 };
 
 export default SharedPost;

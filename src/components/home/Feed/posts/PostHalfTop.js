@@ -22,7 +22,12 @@ const PostHalfTop = ({
   dateClassName,
   moreFullScreenClassName,
   fullScreenContentClassName,
+  // For edit post:
+  postData,
+  // For more position:
+  postsProfile,
 }) => {
+  // console.log(postBody);
   return (
     <div
       className={`${
@@ -51,7 +56,11 @@ const PostHalfTop = ({
                 text2={userID === sharerId && 'Edit post'}
                 sharedPost={sharedPost}
                 containerClassName="dropdown absolute right-1 top-1 "
-                iconClassName={hideMore === true ? 'hidden' : 'w-9 h-9'}
+                iconClassName={
+                  hideMore === true
+                    ? 'hidden'
+                    : `w-9 h-9 ${postsProfile && 'ml-24'}`
+                }
                 liNum1={1}
                 liNum2={userID === sharerId ? 2 : false}
                 tooltipData="more"
@@ -59,14 +68,17 @@ const PostHalfTop = ({
                 moreID={moreID || postId}
                 userID={userID}
                 sharerId={sharerId}
+                id={sharerId}
                 userData={userData}
                 moreFullScreenClassName={moreFullScreenClassName}
+                postData={postData}
+                // postId={postId}
               />
             )}
           </div>
         </div>
 
-        <p className={`mb-5 ${fullScreenContentClassName}`}>{postBody}</p>
+        <p className={`mb-1 ${fullScreenContentClassName}`}>{postBody}</p>
       </div>
 
       {

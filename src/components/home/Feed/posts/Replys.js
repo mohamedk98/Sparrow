@@ -1,14 +1,8 @@
 import React from 'react';
 import More from './More';
 
-import likeSVG from './../../../../assets/reacts/like.svg';
-import loveSVG from '../../../../assets/reacts/love.svg';
-import careSVG from '../../../../assets/reacts/heart.svg';
-import hahaSVG from '../../../../assets/reacts/haha.svg';
-import wowSVG from '../../../../assets/reacts/wow.svg';
-import sadSVG from '../../../../assets/reacts/sad.svg';
-import angrySVG from '../../../../assets/reacts/angry.svg';
 import ReplyLikeButton from './ReplyLikeButton';
+import PostMiddleCounters from './PostMiddleCounters';
 
 const Replys = ({
   profileImage,
@@ -39,6 +33,7 @@ const Replys = ({
 
   curruntUserReplyReaction,
 }) => {
+  // console.log(reactions);
   return (
     <div className="flex my-3 ml-10">
       {
@@ -54,13 +49,24 @@ const Replys = ({
 
       <div className="max-w-md relative">
         {
-          // Name and content for replyd user:
+          // Name, content, and reactions for replyd user:
         }
-        <div className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit ">
+        <div className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative">
           <span className="text-sm text-zinc-700">{name}</span>
           <span className="block max-w-xs md:max-w-sm break-words max-h-10 overflow-auto">
             {content}
           </span>
+
+          {
+            <span className="absolute -right-3 top-20 -mt-1.5 z-10">
+              <PostMiddleCounters
+                reactions={reactions?.map(reaction => reaction?.reaction)}
+                reactionsMakers={reactions}
+                sharedPost={sharedPost}
+                reply={true}
+              />
+            </span>
+          }
         </div>
 
         <div className="ml-6 text-sm mt-0.5 mb-3">
@@ -109,32 +115,6 @@ const Replys = ({
           moreFullScreenClassName={moreFullScreenClassName}
           sharedPost={sharedPost}
         />
-
-        {
-          <div className="flex absolute top-14 right-0">
-            {reactions.map(reaction => (
-              <div key={reaction?._id} className="mt-1">
-                {reaction.reaction === 'Like' ? (
-                  <img className="w-4" src={likeSVG} alt="likeSVG" />
-                ) : reaction.reaction === 'Love' ? (
-                  <img className="w-4" src={loveSVG} alt="loveSVG" />
-                ) : reaction.reaction === 'Care' ? (
-                  <img className="w-4" src={careSVG} alt="careSVG" />
-                ) : reaction.reaction === 'Haha' ? (
-                  <img className="w-4" src={hahaSVG} alt="hahaSVG" />
-                ) : reaction.reaction === 'Wow' ? (
-                  <img className="w-4" src={wowSVG} alt="wowSVG" />
-                ) : reaction.reaction === 'Sad' ? (
-                  <img className="w-4" src={sadSVG} alt="sadSVG" />
-                ) : reaction.reaction === 'Angry' ? (
-                  <img className="w-4" src={angrySVG} alt="angrySVG" />
-                ) : (
-                  ''
-                )}
-              </div>
-            ))}
-          </div>
-        }
       </div>
     </div>
   );

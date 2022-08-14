@@ -19,7 +19,12 @@ const userInfo = {
   gender: '',
 };
 
-const SignupForm = () => {
+const SignupForm = ({
+  setShowModal,
+
+  // For Verification Alert
+  setShowVerificationAlert,
+}) => {
   // const dispatch = useDispatch();
 
   // Spineer:
@@ -69,7 +74,7 @@ const SignupForm = () => {
       .matches(/^[a-z ]+$/i, 'Numbers and special characters are not allowed'),
     email: Yup.string()
 
-      .required('Email address is required when resetting password')
+      .required('Email address is required while resetting password')
       .matches(
         /\w+@\w+.(com|net|org)$/gi,
         'Enter a valid email with the end of (com | net | org)'
@@ -78,11 +83,11 @@ const SignupForm = () => {
 
     password: Yup.string()
       .required('Password is required')
-      .min(8, 'Password length must be 8 at least')
-      .max(36, 'Password length max. is 36')
+      // .min(8, 'Password length must be 8 at least')
+      // .max(36, 'Password length max. is 36')
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        'password must contain at least one upper case, one lower case, one number, and one special charcter (! @ # $ % ^ & *)'
+        'Password length must be eight at least, composed of at least one uppercase, one lowercase letters, one number and one special charcter (! @ # $ % ^ & *)'
       ),
 
     date: Yup.string().required('Date is required'),
@@ -128,13 +133,21 @@ const SignupForm = () => {
               gender: values.gender,
             })
             .then(response => {
-              if (response.data) setShowSpinner(false);
+              if (response.data) {
+                setShowSpinner(false);
+                setShowModal(false);
+                setShowVerificationAlert(true);
+              }
 
-              navigate('/');
+              // navigate('/');
             })
             .catch(error => {
               // console.log(error, error.message);
-              setFormError(error?.response?.data?.message || error?.message);
+              setFormError(
+                error?.response?.data?.message ||
+                  error?.message ||
+                  'Something went wrong'
+              );
 
               if (error.response) setShowSpinner(false);
             });
@@ -142,20 +155,40 @@ const SignupForm = () => {
       >
         {formic => (
           <Form onSubmit={formic.handleSubmit} className="flex flex-col">
-            <LoginInput
-              name="firstName"
-              type="text"
-              placeholder="First name"
-              className="border-2 rounded-md p-3 mb-3 mr-5 w-full"
-              onChange={signupHandler}
-            />
-            <LoginInput
-              name="lastName"
-              type="text"
-              placeholder="Last name"
-              className="border-2 rounded-md p-3 mb-3 w-full"
-              onChange={signupHandler}
-            />
+            <div className="flex justify-between">
+              <LoginInput
+                name="firstName"
+                type="text"
+                placeholder="First name"
+                className="border-2 rounded-md p-3 mb-3 w-full"
+                onChange={signupHandler}
+              />
+
+              {formic.errors.firstName && formic.touched.firstName && (
+                <Fragment>
+                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base shadow-lg h-fit -left-52 top-5 mt-0.5 whitespace-pre-wrap w-[13rem]">
+                    {formic.errors.firstName}
+                    <span className="absolute h-0 w-0 border-y-8 border-y-transparent border-l-[14px] border-l-red-800 -right-3 top-3 border-transparent"></span>
+                  </span>
+                </Fragment>
+              )}
+
+              <LoginInput
+                name="lastName"
+                type="text"
+                placeholder="Last name"
+                className="border-2 rounded-md p-3 mb-3 w-full"
+                onChange={signupHandler}
+              />
+              {formic.errors.lastName && formic.touched.lastName && (
+                <Fragment>
+                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base shadow-lg h-fit -right-52 top-5 mt-0.5 whitespace-pre-wrap w-[13rem]">
+                    {formic.errors.lastName}
+                    <span className="absolute h-0 w-0 border-y-8 border-y-transparent border-r-[14px]  border-r-red-800 -left-3 top-3 border-transparent"></span>
+                  </span>
+                </Fragment>
+              )}
+            </div>
             <LoginInput
               name="email"
               type="text"
@@ -163,6 +196,15 @@ const SignupForm = () => {
               className="border-2 rounded-md p-3 mb-3 w-full"
               onChange={signupHandler}
             />
+            {formic.errors.email && formic.touched.email && (
+              <Fragment>
+                <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 text-base  shadow-lg h-fit -left-56 top-16 mt-2.5 whitespace-pre-wrap w-[14rem] px-1">
+                  {formic.errors.email}
+                  <span className="absolute h-0 w-0 border-y-8 border-l-[14px] border-l-red-800 -right-3 top-6 border-transparent"></span>
+                </span>
+              </Fragment>
+            )}
+
             <div className="relative">
               <LoginInput
                 type={showPassword ? 'text' : 'password'}
@@ -174,55 +216,59 @@ const SignupForm = () => {
 
               <span
                 onClick={togglePassword}
-                className={
-                  formic.errors.firstName ||
-                  formic.errors.lastName ||
-                  formic.errors.email ||
-                  formic.errors.password
-                    ? 'hidden'
-                    : 'absolute right-7 top-5'
-                }
+                className="absolute right-5 top-5 -mt-0.5 cursor-pointer"
               >
                 {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </span>
 
               <PasswordStrengthBar password={password} />
+
+              {formic.errors.password && formic.touched.password && (
+                <Fragment>
+                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 text-base shadow-lg h-fit -right-56 top-1.5 mt-0.5 px-2.5 whitespace-pre-wrap w-[13rem]">
+                    {formic.errors.password}
+                    <span className="absolute h-0 w-0 border-y-8 border-r-[14px] border-transparent border-r-red-800 -left-3 top-3"></span>
+                  </span>
+                </Fragment>
+              )}
             </div>
 
-            <div className="text-xs my-1">
+            <div className="text-xs my-1 relative">
               Date of birth
-              {formic.errors.date ? (
-                <div className="text-center text-red-500">
-                  {formic.errors.date}
-                </div>
-              ) : (
-                ''
+              {formic.errors.date && formic.touched.date && (
+                <Fragment>
+                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit -left-44 top-3">
+                    {formic.errors.date}
+                    <span className="absolute h-0 w-0 border-y-8 border-y-transparent border-l-[14px] border-l-red-800 -right-3 top-3"></span>
+                  </span>
+                </Fragment>
               )}
               <input
                 type="date"
                 name="date"
                 onChange={signupHandler}
                 className={`block text-center m-auto border border-gray-300 px-7 py-1 text-base rounded ${
-                  formic.errors.date
+                  formic.errors.date && formic.touched.date
                     ? ' outline-red-500 border-red-500'
                     : ' outline-indigo-400'
                 }`}
               />
             </div>
 
-            <div className="text-xs my-1 mb-5">
+            <div className="text-xs my-1 mb-5 relative">
               Gender
-              {formic.errors.gender ? (
-                <div className="text-center text-red-500">
-                  {formic.errors.gender}
-                </div>
-              ) : (
-                ''
+              {formic.errors.gender && formic.touched.gender && (
+                <Fragment>
+                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit -right-48 -mr-1 top-5">
+                    {formic.errors.gender}
+                    <span className="absolute h-0 w-0 border-y-8 border-y-transparent border-r-[14px] border-r-red-800 -left-3 top-3"></span>
+                  </span>
+                </Fragment>
               )}
               <div className="flex justify-around text-base mt-1">
                 <div
                   className={`form-check form-check-inline border border-solid  w-1/3 py-2 flex justify-around rounded ${
-                    formic.errors.date
+                    formic.errors.gender && formic.touched.gender
                       ? ' outline-red-500 border-red-500'
                       : ' outline-indigo-400'
                   }`}
@@ -244,7 +290,7 @@ const SignupForm = () => {
                 </div>
                 <div
                   className={`form-check form-check-inline border border-solid 00 w-1/3 py-2 flex justify-around rounded ${
-                    formic.errors.date
+                    formic.errors.gender && formic.touched.gender
                       ? ' outline-red-500 border-red-500'
                       : ' outline-indigo-400'
                   }`}

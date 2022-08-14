@@ -50,7 +50,7 @@ const RightSideBar = ({ setOpenChats }) => {
             </span>
             {open && (
               <More
-                tooltipData="options"
+                // tooltipData="options"
                 text={
                   <div
                     className="flex"

@@ -16,7 +16,7 @@ const loginInfo = {
   password: '',
 };
 
-const Formic = () => {
+const Formic = ({ setShowModal }) => {
   const dispatch = useDispatch();
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
@@ -77,11 +77,14 @@ const Formic = () => {
               // console.log(response);
               if (response.data) setShowSpinner(showSinner);
               dispatch(addAuthentication(response.data));
+              setShowModal && setShowModal(false);
               navigate('/');
             })
             .catch(error => {
               // console.log(error.response.data.message);
-              setFormError(error?.response?.data?.message || 'Network Error');
+              setFormError(
+                error?.response?.data?.message || 'Something went wrong'
+              );
               if (error.response) setShowSpinner(showSinner);
             });
         }}

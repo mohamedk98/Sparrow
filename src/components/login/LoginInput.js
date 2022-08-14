@@ -1,14 +1,11 @@
 import React from 'react';
-import { useField, ErrorMessage } from 'formik';
+import { useField } from 'formik';
 
 const LoginInput = ({ placeholder, className, ...props }) => {
   const [field, meta] = useField(props);
 
   return (
     <div className="flex flex-col">
-      <div className="text-center text-red-500 text-sm">
-        <ErrorMessage name={field.name} />
-      </div>
       <input
         type={field.type}
         name={field.name}

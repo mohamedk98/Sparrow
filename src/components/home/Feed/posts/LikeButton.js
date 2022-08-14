@@ -24,6 +24,8 @@ const LikeButton = ({
   sharedPost,
   sharedPostData,
   fullScreenReactionClassName,
+  // For like button position in profile page:
+  postsProfile,
 }) => {
   // Reaction from API for current user:
   const userReaction = (sharedPost ? sharedPostData : data)?.reactions?.filter(
@@ -127,7 +129,9 @@ const LikeButton = ({
     <button
       type="button"
       className={
-        'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-8 md:px-11 lg:px-14 rounded-lg ' +
+        `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-8 md:px-11 ${
+          postsProfile && 'lg:px-5 lg:hover:px-5'
+        } lg:px-14 rounded-lg ` +
         reactClass +
         ' ' +
         fullScreenReactionClassName

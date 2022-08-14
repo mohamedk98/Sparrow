@@ -46,6 +46,8 @@ const PostReactions = ({
   containerClassName,
   reactionsFullScreenClassName,
   careReplyClassName,
+  // For the heart reaction size and position:
+  postsProfile,
 }) => {
   return (
     <Fragment>
@@ -74,7 +76,10 @@ const PostReactions = ({
             <div
               className={
                 react.name === 'Care'
-                  ? `cursor-pointer ml-1 w-9/12 md:w-4/6 lg:w-6/12 -mt-0.5 hover:lg:w-8/12 hover:md:w-9/12 hover:w-11/12 md:max-h-20 ${
+                  ? `cursor-pointer ml-1 w-9/12 md:w-4/6 ${
+                      postsProfile &&
+                      'lg:w-11/12 hover:lg:w-full w-9/12 md:w-6/12'
+                    } lg:w-6/12 -mt-0.5 hover:lg:w-8/12 hover:md:w-9/12 hover:w-11/12 md:max-h-20 ${
                       careReplyClassName &&
                       !reactionsFullScreenClassName &&
                       careReplyClassName
@@ -82,7 +87,11 @@ const PostReactions = ({
                       reactionsFullScreenClassName &&
                       ' w-6/12 md:w-6/12 hover:w-10/12 '
                     }`
-                  : `cursor-pointer relative mr-1 ml-2 hoverlg::w-7/12 hover:md:w-9/12 hover:w-11/12 max-h-10 ${
+                  : `cursor-pointer relative mr-1 ml-2 ${
+                      postsProfile
+                        ? 'lg:w-10/12 hover:lg:w-full'
+                        : 'hover:lg:w-7/12 '
+                    } hover:md:w-9/12 hover:w-11/12 max-h-10 ${
                       reactionsFullScreenClassName && ' w-6/12 hover:w-7/12 '
                     }`
               }

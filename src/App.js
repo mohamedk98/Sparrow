@@ -2,12 +2,13 @@
 // import './App.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { axiosInstance } from './network/axiosInstance';
 import Error from './pages/error/Error';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Reset from './pages/reset/Reset';
+import ResetPassword from './pages/reset/ResetPassword';
 import Profile from './pages/profile/Profile';
 import {
   addAuthentication,
@@ -22,7 +23,7 @@ import { addUserData } from './store/userSlice/UserDataSlice';
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const location = useLocation();
   //DON"T UNCOMMENT, USED IN TESTING AUTHENTICATION ONLY
 
   useEffect(() => {
@@ -37,26 +38,30 @@ function App() {
       .catch(error => {
         // console.log(error);
         dispatch(removeAuthentication());
-        navigate('/login');
+        if (location.pathname !== '/resetPassword') {
+          navigate('/login');
+        }
       });
   }, []);
   useEffect(() => {
-    axiosInstance.get('/profile')
-    .then(res=>dispatch(addUserData(res.data)))
-    .catch(err=>console.log(err))
-  },[]);
+    axiosInstance
+      .get('/profile')
+      .then(res => dispatch(addUserData(res.data)))
+      .catch(err => console.log(err));
+  }, []);
 
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/reset" element={<Reset />} />
-      <Route path="/:username" element={<Profile />} >
-        <Route index element={<ProfilePosts />}/>
+      <Route path="/resetPassword" element={<ResetPassword />} />
+      <Route path="/:username" element={<Profile />}>
+        <Route index element={<ProfilePosts />} />
         <Route path="posts" element={<ProfilePosts />} />
-        <Route path="about" element={<About />}/>
-        <Route path="friends" element={<Friends />}/>
-        <Route path="photos" element={<Photos />}/>
+        <Route path="about" element={<About />} />
+        <Route path="friends" element={<Friends />} />
+        <Route path="photos" element={<Photos />} />
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>

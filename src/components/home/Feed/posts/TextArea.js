@@ -38,6 +38,9 @@ const TextArea = ({
   // For socket IO:
   chat,
   sendMessageHandler,
+
+  // For edit a post:
+  editPost,
 }) => {
   // Force rerender:
   const dispatch = useDispatch();
@@ -243,9 +246,9 @@ const TextArea = ({
       <div className="w-full relative z-40">
         <textarea
           // For sharing post:
-          onFocus={() => shareAPost && setEmptyTextArea(false)}
+          onFocus={() => shareAPost && !editPost && setEmptyTextArea(false)}
           onBlur={e => {
-            shareAPost && getInputTextValueHandler(text);
+            (shareAPost || editPost) && getInputTextValueHandler(text);
           }}
           onKeyDown={e => {
             if (e.key === 'Enter') {
@@ -255,6 +258,10 @@ const TextArea = ({
                 return;
               } else {
                 e.preventDefault();
+
+                if (editPost) {
+                  return;
+                }
 
                 if (comment) {
                   sharedPost ? addSharedCommentHandler() : addCommentHandler();

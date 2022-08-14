@@ -2,18 +2,25 @@ import React, { useState } from 'react';
 import { FaFacebook, FaSearch, FaFacebookMessenger } from 'react-icons/fa';
 import { TiHome } from 'react-icons/ti';
 import { RiGroupFill } from 'react-icons/ri';
-// import { HiUserGroup } from 'react-icons/hi';
 import { BsBellFill } from 'react-icons/bs';
-import profileImg from '../../../assets/images/default_profile.png';
-import { Link } from 'react-router-dom';
+import { BiLogOut } from 'react-icons/bi';
+
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsToggleOn } from 'react-icons/bs';
 import { BsToggle2Off } from 'react-icons/bs';
 import SearchMenu from './SearchMenu';
 import { axiosInstance } from '../../../network/axiosInstance';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useDarkMode from '../../../hooks/useDarkMode';
+import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 
 const Header = () => {
+  const navigate = useNavigate();
+  // For home and friends icons active style:
+  const location = useLocation();
+  const [activeHome, setActiveHome] = useState(false);
+  const [activeFriends, setActiveFriends] = useState(false);
+
   // get loggedInUserData:
   const userState = useSelector(state => state.userData.userData);
 
@@ -38,11 +45,24 @@ const Header = () => {
     console.log(result);
   };
 
+  //logout functionality
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(removeAuthentication());
+    axiosInstance.post('/logout').then(() => {
+      navigate('/login');
+    });
+  };
+
   return (
     <nav className="pt-3 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
       <div className="flex">
         <div className="flex">
-          <FaFacebook className="text-facebook-blue text-4xl mr-5" />
+          <FaFacebook
+            className="text-facebook-blue text-4xl mr-5"
+            onClick={() => navigate('/')}
+          />
           {/*Start Search Input */}
           <div
             className="relative mb-4"
@@ -67,15 +87,34 @@ const Header = () => {
       </div>
       {/*End of Search Input */}
 
-      <div className="flex mt-1">
-        <TiHome className="hover:text-facebook-blue text-3xl mr-1 md:mr-10" />
-
-        <RiGroupFill className="hover:text-facebook-blue text-3xl ml-1 md:ml-10" />
-
-        {
-          //   <HiUserGroup className="hover:text-facebook-blue text-4xl ml-1 md:ml-20" />
+      <Link
+        to={'/'}
+        className={`${
+          location.pathname === '/' && 'border-b-2 border-b-blue-500'
         }
-      </div>
+        } w-20 -mx-10 md:-mx-20 mt-1.5`}
+      >
+        <TiHome
+          className={`${
+            location.pathname === '/' && 'text-facebook-blue hover:bg-inherit'
+          } hover:text-facebook-blue text-3xl mr-1 md:mr-10 hover:bg-gray-200 px-5 py-3 w-full h-14 -mt-3`}
+        />
+      </Link>
+
+      <Link
+        to={'/profile/friends'}
+        className={`${
+          location.pathname === '/profile/friends' &&
+          'border-b-2 border-b-blue-500'
+        } w-20 -mx-10 md:-mx-20 mt-1.5`}
+      >
+        <RiGroupFill
+          className={`${
+            location.pathname === '/profile/friends' &&
+            'text-facebook-blue hover:bg-inherit'
+          } hover:text-facebook-blue text-3xl hover:bg-gray-200 px-5 py-3 w-full h-14 b -mt-3 `}
+        />
+      </Link>
 
       <div className="flex">
         <div className="dropdown relative mr-1 md:mr-10">
@@ -190,7 +229,7 @@ const Header = () => {
             <div className="w-10">
               <img
                 src={userState.profileImage}
-                className="rounded-full"
+                className="rounded-full w-10 h-10"
                 alt="profile img"
                 loading="lazy"
               />
@@ -206,7 +245,7 @@ const Header = () => {
                 className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                 to={`/${userState.username}`}
               >
-                Profile
+                My Profile
               </Link>
             </li>
             <li>
@@ -217,6 +256,7 @@ const Header = () => {
                     className="text-facebook-blue text-2xl ml-3 -mt-0.5"
                     onClick={() => {
                       setDarkMode(!darkMode);
+                      // setTheme(colorTheme);
                     }}
                   />
                 )}
@@ -225,6 +265,7 @@ const Header = () => {
                     className="text-2xl ml-3 -mt-0.5"
                     onClick={() => {
                       setDarkMode(!darkMode);
+                      // setTheme(colorTheme);
                     }}
                   />
                 )}
@@ -265,6 +306,13 @@ const Header = () => {
                   Ar
                 </span>
               </button>
+            </li>
+            <li
+              className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex cursor-pointer align-baseline justify-cente"
+              onClick={() => logoutHandler()}
+            >
+              {<BiLogOut className="text-xl text-facebook-blue mr-2" />}
+              Logout
             </li>
           </ul>
         </div>

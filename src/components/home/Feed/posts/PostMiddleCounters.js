@@ -15,7 +15,10 @@ const postMiddleCounters = ({
   sharedPost,
   setWriteComment,
   writeComment,
+  reply,
 }) => {
+  // console.log(reactions);
+  // console.log(reactionsMakers);
   // Handle Tooltip reactionsMakers groups:
   let likeMakers = [];
   let loveMakers = [];
@@ -79,16 +82,19 @@ const postMiddleCounters = ({
 
   return (
     <div
-      className={`flex justify-between mt-3 pb-3 px-3 ${
+      className={`flex justify-between pb-3 px-3 ${
         sharedPost
           ? `${
-              (sharedPost && data?.comments.length !== 0) ||
-              reactionsLengthCheck
+              ((sharedPost && data?.comments?.length !== 0) ||
+                reactionsLengthCheck) &&
+              !reply
                 ? 'border-b-2'
                 : '-mt-9'
             }`
+          : reply
+          ? ''
           : 'border-b-2'
-      }`}
+      } ${reply ? 'pt-7 -mt-11' : 'mt-3'}`}
     >
       {
         <div className="flex">
@@ -129,7 +135,7 @@ const postMiddleCounters = ({
           {
             // Check if there are reactions or reactions without empty string(""):
           }
-          {data?.reactions?.length !== 0 && reactionsLengthCheck && (
+          {data?.reactions?.length !== 0 && reactionsLengthCheck && !reply && (
             <span className="text-gray-500 ml-2 text-sm mt-0.5">
               {
                 data?.reactions?.filter(reaction => reaction.reaction !== '')
@@ -139,7 +145,7 @@ const postMiddleCounters = ({
           )}
         </div>
       }
-      {
+      {!reply && (
         <div className="h-6">
           <button
             onClick={() => {
@@ -167,7 +173,7 @@ const postMiddleCounters = ({
             </button>
           )}
         </div>
-      }
+      )}
     </div>
   );
 };

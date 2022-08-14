@@ -20,6 +20,8 @@ const ReplyLikeButton = ({
   reactionClicked,
   curruntUserCommentReaction,
   curruntUserReplyReaction,
+  // For the heart reaction size and position:
+  postsProfile,
 }) => {
   // Rerender:
   const dispatch = useDispatch();
@@ -139,6 +141,8 @@ const ReplyLikeButton = ({
           reactionsFullScreenClassName={
             reactionsFullScreenClassName && ' -ml-5 -mt-8 '
           }
+          // For the heart reaction size and position:
+          postsProfile={postsProfile}
         />
       </div>
 

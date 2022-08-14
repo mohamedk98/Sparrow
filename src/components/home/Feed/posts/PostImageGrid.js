@@ -23,6 +23,8 @@ const PostImageGrid = ({
           <div
             key={idx}
             className={' ' + imageContainerClassName && imageContainerClassName}
+            // data-mdb-ripple="true"
+            // data-mdb-ripple-color="primary"
           >
             <img
               key={idx}

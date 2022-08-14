@@ -5,9 +5,12 @@ import LoginButton from '../../components/login/LoginButton';
 import SignupModal from '../../components/login/SignupModal';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import {axiosInstance} from '../../network/axiosInstance';
+import { axiosInstance } from '../../network/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 const Reset = () => {
+  // Show modal for LogIn:
+  const [showLogInModal, setShowLogInModal] = useState(false);
+
   // To show form submition error if exists:
   const [formError, setFormError] = useState('');
 
@@ -37,16 +40,23 @@ const Reset = () => {
         <button
           className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-1 px-8 w-fit h-fit mr-5"
           type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModalCenter"
+          onClick={() => {
+            setShowLogInModal(!showLogInModal);
+          }}
         >
           Log In
         </button>
 
-        <SignupModal
-          SignupOrResetLoginFormComponent={<Formic />}
-          h1={'Log In'}
-        />
+        {showLogInModal && (
+          <SignupModal
+            showModal={showLogInModal}
+            setShowModal={setShowLogInModal}
+            SignupOrResetLoginFormComponent={
+              <Formic setShowModal={setShowLogInModal} />
+            }
+            h1={'Log In'}
+          />
+        )}
       </nav>
 
       <div className="flex justify-center mt-28  ">
@@ -56,8 +66,7 @@ const Reset = () => {
           </div>
           <div className="p-6">
             <p className="text-gray-700 text-base mb-4">
-              Please enter your email address or mobile number to search for
-              your account.
+              Please enter your email address to search for your account.
             </p>
 
             <Formik
@@ -73,18 +82,18 @@ const Reset = () => {
                 setShowSpinner(!showSinner);
 
                 axiosInstance
-                  .post('/login', {
+                  .post('/reset', {
                     email: values.email,
                   })
                   .then(response => {
-                    // console.log(response);
+                    console.log(response);
                     if (response.data) setShowSpinner(showSinner);
-                    navigate('/');
+                    // navigate('/');
                   })
                   .catch(error => {
-                    // console.log(error.response.data.message);
+                    console.log(error.response.data.message);
                     setFormError(
-                      error.response.data.message || 'Network Error'
+                      error.response.data.message || 'Something went wrong'
                     );
                     if (error.response) setShowSpinner(showSinner);
                   });
@@ -103,10 +112,16 @@ const Reset = () => {
                     }`}
                   />
                   {errors.email && touched.email ? (
-                    <div className="text-center text-red-500">
+                    <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mb-2">
                       {errors.email}
                     </div>
-                  ) : null}
+                  ) : (
+                    formError && (
+                      <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mb-2">
+                        {formError}
+                      </div>
+                    )
+                  )}
 
                   <div className="py-3 px-6 border-t border-gray-300 text-gray-600 mt-3"></div>
                   <div className="flex items-center">
@@ -133,11 +148,6 @@ const Reset = () => {
                       }}
                     />
                   </div>
-                  {formError && (
-                    <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mt-5 mb-2">
-                      {formError}
-                    </div>
-                  )}
                 </Form>
               )}
             </Formik>
@@ -149,5 +159,3 @@ const Reset = () => {
 };
 
 export default Reset;
-
-// "border-2 rounded-md p-3 mb-3 w-full"

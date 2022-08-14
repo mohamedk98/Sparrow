@@ -15,13 +15,6 @@ import More from './More';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import dateCalcFunction from './DateCalculations';
 
-import likeSVG from './../../../../assets/reacts/like.svg';
-import loveSVG from '../../../../assets/reacts/love.svg';
-import careSVG from '../../../../assets/reacts/heart.svg';
-import hahaSVG from '../../../../assets/reacts/haha.svg';
-import wowSVG from '../../../../assets/reacts/wow.svg';
-import sadSVG from '../../../../assets/reacts/sad.svg';
-import angrySVG from '../../../../assets/reacts/angry.svg';
 import ReactionClassHandler from './ReactionClasses';
 
 import PostMiddleCounters from './PostMiddleCounters';
@@ -40,6 +33,7 @@ const PostMiddle = ({
   reactions,
   reactionsMakers,
   moreID,
+  // For full screen:
   fullScreenReactionClassName,
   fullScreenCommentClassName,
   fullScreenShareClassName,
@@ -50,6 +44,8 @@ const PostMiddle = ({
   commentTreeVerticalShowReplysClassName,
   moreFullScreenClassName,
   reactionsFullScreenClassName,
+  // For the middle three buttons position:
+  postsProfile,
 }) => {
   // Force Rerender:
   const dispatch = useDispatch();
@@ -139,6 +135,8 @@ const PostMiddle = ({
             reactionsFullScreenClassName &&
             '-mt-7 -ml-20 md:-ml-0 md:w-full lg:w-9/12'
           }
+          // For the heart reaction size and position:
+          postsProfile={postsProfile}
         />
 
         {
@@ -158,6 +156,8 @@ const PostMiddle = ({
           sharedPost={sharedPost}
           sharedPostData={sharedPostData}
           fullScreenReactionClassName={fullScreenReactionClassName}
+          // For like button position in profile page:
+          postsProfile={postsProfile}
         />
 
         {
@@ -167,7 +167,9 @@ const PostMiddle = ({
           type="button"
           className={
             fullScreenCommentClassName ||
-            'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 md:px-7 hover:lg:px-7 ml-3 md:ml-3 lg:ml-7 rounded-lg '
+            `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 ${
+              postsProfile && 'lg:px-3 lg:hover:px-3 lg:mr-3'
+            } md:px-7 hover:lg:px-7 ml-3 md:ml-3 lg:ml-7 rounded-lg `
           }
           onClick={() => {
             setWriteComment(!writeComment);
@@ -185,7 +187,9 @@ const PostMiddle = ({
           type="button"
           className={
             fullScreenShareClassName ||
-            'btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 lg:px-14 rounded-lg '
+            `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 ${
+              postsProfile && 'lg:px-5 lg:hover:px-5'
+            } lg:px-14 rounded-lg `
           }
           data-bs-toggle="modal"
           data-bs-target={`#sharemodal${data?._id}end`}
@@ -339,29 +343,18 @@ const PostMiddle = ({
                         // Show reactions SVGs for comments:
                         // Not tested, waiting for DB:
                       }
-                      <div className="flex absolute right-0">
-                        {comment?.reactions?.map(reaction => (
-                          <div key={reaction._id} className="mt-1 ">
-                            {reaction.reaction === 'Like' ? (
-                              <img className="w-4" src={likeSVG} alt="" />
-                            ) : reaction.reaction === 'Love' ? (
-                              <img className="w-4" src={loveSVG} alt="" />
-                            ) : reaction.reaction === 'Care' ? (
-                              <img className="w-4" src={careSVG} alt="" />
-                            ) : reaction.reaction === 'Haha' ? (
-                              <img className="w-4" src={hahaSVG} alt="" />
-                            ) : reaction.reaction === 'Wow' ? (
-                              <img className="w-4" src={wowSVG} alt="" />
-                            ) : reaction.reaction === 'Sad' ? (
-                              <img className="w-4" src={sadSVG} alt="" />
-                            ) : reaction.reaction === 'Angry' ? (
-                              <img className="w-4" src={angrySVG} alt="" />
-                            ) : (
-                              ''
+                      {
+                        <span className="absolute -right-3 top-20 -mt-1.5 z-10">
+                          <PostMiddleCounters
+                            reactions={comment?.reactions?.map(
+                              reaction => reaction?.reaction
                             )}
-                          </div>
-                        ))}
-                      </div>
+                            reactionsMakers={comment?.reactions}
+                            sharedPost={sharedPost}
+                            reply={true}
+                          />
+                        </span>
+                      }
                     </div>
                   )}
                 </div>
@@ -396,6 +389,8 @@ const PostMiddle = ({
                             reaction => reaction?.userId === userData?._id
                           ))[0]?.reaction
                         }
+                        // For the heart reaction size and position:
+                        postsProfile={postsProfile}
                       />
 
                       <button
@@ -426,12 +421,12 @@ const PostMiddle = ({
               {comment?.reply?.length > 0 &&
                 showReplyComments !== comment?._id &&
                 !editComment && (
-                  <Fragment>
+                  <div className="relative">
                     <button
                       id={comment?._id}
-                      className={`text-sm flex z-50 ${
+                      className={`text-sm flex ${
                         showReplyComments === comment?._id && 'text-blue-500'
-                      }
+                      } z-20 
                       `}
                       onClick={() =>
                         comment?.reply?.length > 0
@@ -440,7 +435,7 @@ const PostMiddle = ({
                       }
                     >
                       <BiShare
-                        className={`rotate-180 ml-12 mr-1 mt-0.5 ${
+                        className={`rotate-180 ml-12 mr-1 mt-0.5 z-10 ${
                           showReplyComments === comment?._id && 'text-blue-500'
                         }`}
                       />
@@ -457,7 +452,7 @@ const PostMiddle = ({
                         {
                           // For horizontal lines and replys are hidden:
                         }
-                        <div className="relative -mt-3 md:mt-0.5 -top-4 md:-top-7 left-4 md:left-4">
+                        <div className="relative -mt-3 md:mt-0.5 -top-4 md:-top-7 left-4 md:left-4 z-0 w-3">
                           .....
                         </div>
 
@@ -467,7 +462,7 @@ const PostMiddle = ({
                         <div
                           className={
                             commentTreeVerticalHiddenReplysClassName ||
-                            'rotate-90 relative top-24 -mt-1 md:top-32 md:-mt-0 lg:top-52 -left-48 md:-left-52 lg:-left-72 md:-ml-9'
+                            'rotate-90 absolute -top-11 -mt-0.5 md:top-3 md:-mt-14 lg:top-3 -left-5 -ml-0.5 md:left-3.5 lg:left-3.5 md:-ml-9'
                           }
                         >
                           ...................
@@ -481,8 +476,12 @@ const PostMiddle = ({
                             <div
                               className={
                                 commentTreeVerticalHiddenReplysShowInputClassName ||
-                                'rotate-90 relative -mt-2 top-36 md:top-48 lg:top-64 lg:-mb-5 -left-48 md:-left-52 lg:-left-72 md:-ml-9'
+                                'rotate-90 absolute -mt- -top-1 md:top-2 lg:top-3 lg:-mb-5 -left-8 -ml-0.5 md:left-0.5 lg:left-0.5 md:-ml-9'
                               }
+                              // className={
+                              //   commentTreeVerticalHiddenReplysShowInputClassName ||
+                              //   'rotate-90 relative -mt-2 top-36 md:top-48 lg:top-64 lg:-mb-5 -left-48 md:-left-52 lg:-left-72 md:-ml-9'
+                              // }
                             >
                               ........................
                             </div>
@@ -496,7 +495,7 @@ const PostMiddle = ({
                         )}
                       </Fragment>
                     )}
-                  </Fragment>
+                  </div>
                 )}
 
               {
