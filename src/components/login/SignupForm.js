@@ -145,7 +145,8 @@ const SignupForm = ({
               // console.log(error, error.message);
               setFormError(
                 error?.response?.data?.message ||
-                  error?.message ||
+                  (error?.message === 'Request failed with status code 400' &&
+                    'Acount already exists') ||
                   'Something went wrong'
               );
 

@@ -4,6 +4,7 @@ const initialState = {
   postsData: [],
   profileData: {},
   forceUpdate: false,
+  alert: {},
 };
 
 export const newsFeedSlice = createSlice({
@@ -23,10 +24,18 @@ export const newsFeedSlice = createSlice({
     forceUpdateHandler: (state, action) => {
       state.forceUpdate = action.payload;
     },
+
+    alertHandler: (state, action) => {
+      state.alert = { ...action.payload };
+    },
   },
 });
 
-export const { postsDataHandler, profileDataHandler, forceUpdateHandler } =
-  newsFeedSlice.actions;
+export const {
+  postsDataHandler,
+  profileDataHandler,
+  forceUpdateHandler,
+  alertHandler,
+} = newsFeedSlice.actions;
 
 export default newsFeedSlice.reducer;

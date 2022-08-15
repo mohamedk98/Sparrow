@@ -26,6 +26,9 @@ const PostHalfTop = ({
   postData,
   // For more position:
   postsProfile,
+
+  // for edit and delete post:
+  sharededitPost,
 }) => {
   // console.log(postBody);
   return (
@@ -73,6 +76,9 @@ const PostHalfTop = ({
                 moreFullScreenClassName={moreFullScreenClassName}
                 postData={postData}
                 // postId={postId}
+
+                // for edit and delete post:
+                sharededitPost={sharededitPost}
               />
             )}
           </div>

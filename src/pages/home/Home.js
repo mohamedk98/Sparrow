@@ -5,9 +5,10 @@ import { axiosInstance } from '../../network/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/home/Header/Header';
 import RightSideBar from '../../components/home/RightSideBar/RightSideBar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUserData } from '../../store/userSlice/UserDataSlice';
 import Chat from '../../components/chat/Chat';
+import AlertMessage from '../../components/home/Feed/posts/AlertMessage';
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,6 +38,10 @@ const Home = () => {
         navigate('/login');
       });
   }, [navigate]);
+
+  // To show and hide alerts:
+  const alert = useSelector(state => state.newsFeed.alert);
+
   return (
     <div className=" h-full bg-gray-200">
       <Header />
@@ -56,6 +61,9 @@ const Home = () => {
             closeChat={closeChatHandler}
           />
         ))}
+      </div>
+      <div className="fixed bottom-0 left-2 z-60">
+        <AlertMessage alert={alert} />
       </div>
     </div>
   );

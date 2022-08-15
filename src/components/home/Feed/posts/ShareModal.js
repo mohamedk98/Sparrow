@@ -7,7 +7,10 @@ import PostHalfTop from './PostHalfTop';
 import TextArea from './TextArea';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import {
+  forceUpdateHandler,
+  alertHandler,
+} from '../../../../store/userSlice/NewsFeedSlice';
 
 const ShareModal = ({
   modelID,
@@ -39,10 +42,29 @@ const ShareModal = ({
     axiosInstance
       .post(`/share/${postId}`, { caption: caption })
       .then(response => {
+        console.log(response);
         dispatch(forceUpdateHandler(!forceReRender));
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
         console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 

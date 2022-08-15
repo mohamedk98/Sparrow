@@ -7,7 +7,10 @@ import PostHalfTop from './PostHalfTop';
 import TextArea from './TextArea';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import {
+  alertHandler,
+  forceUpdateHandler,
+} from '../../../../store/userSlice/NewsFeedSlice';
 import dateCalcFunction from './DateCalculations';
 import PostImageGrid from './PostImageGrid';
 
@@ -21,7 +24,7 @@ const EditPost = ({
   sharedPostData,
   postData,
 }) => {
-  console.log(postData);
+  // console.log(postData);
   let sharedPost;
   sharedPostData ? (sharedPost = true) : (sharedPost = false);
 
@@ -78,16 +81,23 @@ const EditPost = ({
     setLoading(true);
 
     let formData = new FormData();
-    formData.append('visability', selectedOption);
-    formData.append('content', caption);
+    formData.append(
+      'visability',
+      selectedOption ? selectedOption : postData?.visiability
+    );
+    formData.append(
+      'content',
+      caption.length > 0 ? caption : postData?.content
+    );
     console.log(formData);
-    selectedImages.forEach(image => {
+    selectedImages?.forEach(image => {
       formData.append('media', image);
     });
     console.log(formData);
+
     axiosInstance
       .patch(
-        `/post/${postID}`,
+        `/posts/${postID}`,
         formData
         // // {
         // //     content: caption,
@@ -96,16 +106,42 @@ const EditPost = ({
         // //   }
       )
       .then(response => {
-        console.log(postID);
+        // console.log(postID);
         console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data || 'Saved successfully',
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
+
         setShowModal(false);
         setShowMore(false);
         setLoading(false);
 
-        dispatch(forceUpdateHandler(!forceReRender));
+        setTimeout(() => {
+          dispatch(forceUpdateHandler(!forceReRender));
+        }, 3000);
       })
       .catch(error => {
         console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message:
+              error.data || 'Something went wrong please, try again later',
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
+
+        setShowModal(false);
+        setShowMore(false);
+        setLoading(false);
       });
   };
 
@@ -115,18 +151,51 @@ const EditPost = ({
     setLoading(true);
     axiosInstance
       .patch(`/share/${postID}`, {
-        caption: caption,
-        visiability: selectedOption,
+        caption:
+          caption.length > 0
+            ? caption
+            : sharedPostData?.originalPostId?.content,
+        visiability: selectedOption
+          ? selectedOption
+          : sharedPostData?.visiability,
       })
       .then(response => {
-        console.log(postID);
+        // console.log(postID);
         console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data || 'Saved successfully',
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
+
         setShowModal(false);
         setShowMore(false);
-        dispatch(forceUpdateHandler(!forceReRender));
+        setLoading(false);
+
+        setTimeout(() => {
+          dispatch(forceUpdateHandler(!forceReRender));
+        }, 3000);
       })
       .catch(error => {
         console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message:
+              error.data || 'Something went wrong please, try again later',
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
+
+        setShowModal(false);
+        setShowMore(false);
+        setLoading(false);
       });
   };
 
@@ -135,7 +204,7 @@ const EditPost = ({
   return (
     <Fragment>
       {showModal && (
-        <Fragment>
+        <div className="z-100">
           <div className=" fixed top-0 left-0 z-50 w-full h-full mt-8 outline-none overflow-x-hidden overflow-y-auto">
             <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
               {/*content*/}
@@ -284,7 +353,7 @@ const EditPost = ({
             </div>
           </div>
           <div className="opacity-75 fixed inset-0 z-40 bg-black"></div>
-        </Fragment>
+        </div>
       )}
     </Fragment>
   );

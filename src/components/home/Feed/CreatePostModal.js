@@ -6,8 +6,12 @@ import EmojiPicker from './EmojiPicker';
 import { IoMdPhotos } from 'react-icons/io';
 import UploadPhoto from './UploadPhoto';
 import IsLoadingScreen from './IsLoadingScreen';
+import { useDispatch } from 'react-redux';
+import { alertHandler } from '../../../store/userSlice/NewsFeedSlice';
 
 const CreatePostModal = ({ showModal, setShowModal }) => {
+  const dispatch = useDispatch();
+
   const [showPicker, setShowPicker] = useState(false);
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const [showUploadPic, setShowUploadPic] = useState(false);
@@ -47,10 +51,30 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
           console.log(response);
           // To close Modal after submitting data
           setShowModal(false);
-          window.location.reload(false);
+
+          // Alert message:
+          dispatch(
+            alertHandler({
+              message: response.data,
+              showAlert: true,
+              statusCode: 200,
+            })
+          );
+          // window.location.reload(false);
         }
       })
-      .catch(err => console.log('error :( ' + err));
+      .catch(err => {
+        console.log('error :( ' + err);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: err.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
+      });
 
     if (!post) {
       return 'No Post Created';

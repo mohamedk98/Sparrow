@@ -22,6 +22,9 @@ const Post = ({
   moreID,
   // For More position:
   postsProfile,
+
+  // for edit and delete post:
+  sharededitPost,
 }) => {
   // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
@@ -51,6 +54,8 @@ const Post = ({
           postData={data}
           // For More position:
           postsProfile={postsProfile}
+          // for edit and delete post:
+          sharededitPost={sharededitPost}
         />
       }
 

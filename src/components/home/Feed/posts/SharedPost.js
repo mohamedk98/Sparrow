@@ -30,7 +30,8 @@ const SharedPost = ({ postsProfile }) => {
     let onePage = [];
     axiosInstance
       .get(
-        `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${pageNumber.current}`
+        `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${1}`
+        // `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${pageNumber.current}`
       )
       .then(response => {
         console.log(response);
@@ -39,7 +40,8 @@ const SharedPost = ({ postsProfile }) => {
           onePage.push(res);
         });
 
-        setPosts(prev => [...prev, ...onePage]);
+        // setPosts(prev => [...prev, ...onePage]);
+        setPosts(response.data.allPosts);
 
         dispatch(forceUpdateHandler(0));
         console.log(posts);
@@ -129,6 +131,8 @@ const SharedPost = ({ postsProfile }) => {
           postBody={post?.caption}
           // For More position:
           postsProfile={postsProfile}
+          // for edit and delete post:
+          sharededitPost={true}
         />
         <Post
           data={post?.originalPostId}
@@ -183,6 +187,8 @@ const SharedPost = ({ postsProfile }) => {
         moreID={post?._id}
         // For More position:
         postsProfile={postsProfile}
+        // for edit and delete post:
+        sharededitPost={false}
       />
     );
   });

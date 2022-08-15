@@ -17,7 +17,7 @@
   box-shadow: 1px 1px 3px #222222;
   opacity: 0;
   border-radius: 15%;
-  z-index: 99999;
+  z-index: 40;
   visibility: hidden;
 }
 [data-title] {

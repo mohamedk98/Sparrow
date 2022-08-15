@@ -4,7 +4,10 @@ import { MdDelete } from 'react-icons/md';
 import { MdCancel } from 'react-icons/md';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
-import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import {
+  alertHandler,
+  forceUpdateHandler,
+} from '../../../../store/userSlice/NewsFeedSlice';
 import CreatePostModal from '../CreatePostModal';
 import EditPost from './EditPost';
 
@@ -31,6 +34,9 @@ const More = ({
   moreFullScreenClassName,
   // For edit post:
   postData,
+
+  // for edit and delete post:
+  sharededitPost,
 }) => {
   // console.log(sharedPost);
   // console.log(text, text2, liNum1, liNum2);
@@ -61,11 +67,29 @@ const More = ({
     axiosInstance
       .delete(`/comment/${postId}/${commentId}`)
       .then(response => {
-        console.log(id);
-        console.log(response);
+        // console.log(id);
+        // console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 
@@ -74,36 +98,94 @@ const More = ({
     axiosInstance
       .delete(`/comment/sharedpost/${postId}/${commentId}`)
       .then(response => {
-        console.log(id);
-        console.log(response);
-        console.log(sharedPostData);
+        // console.log(id);
+        // console.log(response);
+        // console.log(sharedPostData);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 
   const deletePostHandler = () => {
+    console.log(moreID);
+
     axiosInstance
-      .delete(`/post/${moreID}`)
+      .delete(`/posts/${moreID}`)
       .then(response => {
-        console.log(id);
+        // console.log(id);
         console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 
   const deleteSharedPostHandler = () => {
+    console.log(moreID);
+
     axiosInstance
       .delete(`/share/${moreID}`)
       .then(response => {
-        console.log(id);
+        // console.log(id);
         console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 
@@ -111,10 +193,28 @@ const More = ({
     axiosInstance
       .delete(`/reply/post/${postId}/${commentId}/${replyId}`)
       .then(response => {
-        console.log(response);
+        // console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 
@@ -123,11 +223,29 @@ const More = ({
     axiosInstance
       .delete(`/reply/sharedPost/${postId}/${commentId}/${replyId}`)
       .then(response => {
-        console.log(id);
-        console.log(response);
+        // console.log(id);
+        // console.log(response);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: response.data,
+            showAlert: true,
+            statusCode: 200,
+          })
+        );
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
+
+        // Alert message:
+        dispatch(
+          alertHandler({
+            message: error.data,
+            showAlert: true,
+            statusCode: 400,
+          })
+        );
       });
   };
 
@@ -239,13 +357,13 @@ const More = ({
                         setShowMore(!showMore);
                       }
 
-                      if (text === 'Delete post' && sharedPost) {
+                      if (text === 'Delete post' && !sharededitPost) {
                         deletePostHandler();
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
 
-                      if (text === 'Delete post' && !sharedPost) {
+                      if (text === 'Delete post' && sharededitPost) {
                         deleteSharedPostHandler();
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
