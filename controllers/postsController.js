@@ -9,7 +9,6 @@ const createPost = async (req, res) => {
   const images = req.files;
   const userId = req.userId;
   const visiability = req.body.visiability;
-  const postType = req.body.postType;
   const createdAt = new Date().toISOString();
   let media = images.map((image) => {
     return image.location;
@@ -25,16 +24,15 @@ const createPost = async (req, res) => {
     content,
     media,
     visiability,
-    postType,
   };
 
   postsApi
     .createPost(postData)
     .then((response) => {
-      res.send(response.message);
+      res.status(200).send(response.message);
     })
     .catch((error) => {
-      res.status(error.httpStatusCode).send(error.message);
+      res.status(400).send(error.message);
     });
 };
 
