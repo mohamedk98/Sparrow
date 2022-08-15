@@ -90,17 +90,14 @@ class PostsApi {
   }
 
   async updatePost(updatedPostData) {
-    try {
-      await Post.findByIdAndUpdate(
-        updatedPostData.postId,
-        {
-          content: updatedPostData.content,
-          media: updatedPostData.media,
-          visiability: updatedPostData.visiability,
-        },
-        { new: true }
-      );
+    let postToBeUpdated = await Post.findById(updatedPostData.postId);
 
+    try {
+      postToBeUpdated.content = updatedPostData.content;
+      postToBeUpdated.visiability = updatedPostData.visiability;
+      postToBeUpdated.media = updatedPostData.media;
+
+      await postToBeUpdated.save();
       return { message: "Post updated", httpStatusCode: 200 };
     } catch (error) {
       // const error = new Error("An Error has occured, please try again later");
