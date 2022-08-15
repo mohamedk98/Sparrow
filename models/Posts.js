@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const postSchema = new mongoose.Schema({
-  userId: { type: mongoose.Types.ObjectId, ref:"User",required: true },
+  userId: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   creatorName: { type: String, required: true },
   createdAt: { type: String, required: true },
-  content: { type: String, required: true },
+  content: { type: String, required: true, default: "" },
   postType: { type: String, required: false },
   media: [],
   reactions: [
@@ -27,7 +27,7 @@ const postSchema = new mongoose.Schema({
               userId: { type: mongoose.Types.ObjectId, ref: "User" },
               reaction: { type: String },
             },
-          ]
+          ],
         },
       ],
       reactions: [
@@ -39,7 +39,7 @@ const postSchema = new mongoose.Schema({
       date: String,
     },
   ],
-  sharesCount: { type: Number,default:0 },
+  sharesCount: { type: Number, default: 0 },
   visiability: String,
 });
 
