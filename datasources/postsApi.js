@@ -47,7 +47,7 @@ class PostsApi {
   }
 
   async getPost(postId) {
-    const foundPost = await Post.findOne({ _id: postId })
+    const foundPost = await Post.findById(postId)
       .populate("comments.userId", "firstName lastName profileImage userId")
       .populate(
         "comments.reply.userId",
@@ -58,9 +58,9 @@ class PostsApi {
       const error = new Error("Post not found");
       error.httpStatusCode = 404;
       return error;
-    } else {
+    } 
       return foundPost;
-    }
+    
   }
 
   async deletePost(postId) {

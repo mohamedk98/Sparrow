@@ -42,10 +42,7 @@ const deletePost = async (req, res) => {
   const userId = req.userId;
 
   const postData = await postsApi.getPost(postId);
-  //if there is no post, return an error
-  if (!postData) {
-    return res.status(404).send({ message: "Post is not found" });
-  }
+
 
   //if the user is not authorised to delete, return an error
   if (postData?.userId?.toString() !== userId) {
