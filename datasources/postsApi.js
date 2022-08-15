@@ -76,7 +76,6 @@ class PostsApi {
         const mediaToBeDeleted = deletedPost.media.map((singleImage) => {
           return { Key: `posts_media/${singleImage.split("/")[4]}` };
         });
-        console.log(mediaToBeDeleted[0].Key);
         await s3
           .deleteObjects({
             Bucket: "zombie-hat",
