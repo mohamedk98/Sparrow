@@ -87,7 +87,7 @@ class UserApi {
     // }
     //get user created posts
     const userPosts = await postApi
-      .find({ userId })
+      .find({userId})
       // .limit(limit)
       // .skip(skip)
       .populate({
