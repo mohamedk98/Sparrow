@@ -102,10 +102,7 @@ const updatePost = async (req, res) => {
       .send({ message: "You don't have access to edit this post" });
   }
 
-  //if the post contain media, just delete it
-  if (postData.media.length !== 0) {
-    fileDeleteHandler(postData.media);
-  }
+
   const updatedPostData = {
     ...postData._doc,
     media: media,
