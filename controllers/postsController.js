@@ -104,7 +104,7 @@ const updatePost = async (req, res) => {
 
 
   const updatedPostData = {
-    _id:postData._id,
+    postId:postId,
     media: media,
     content: content,
     visiability: visiability,

@@ -21,7 +21,7 @@ class PostsApi {
       createdAt: postData.createdAt,
       content: postData.content,
       media: postData.media,
-      visiability:postData.visiability,
+      visiability: postData.visiability,
       sharesCount: 0,
     });
 
@@ -89,11 +89,15 @@ class PostsApi {
     });
   }
 
-  async updatePost({ _id, content, media, visiability }) {
+  async updatePost(updatedPostData) {
     try {
       await Post.findByIdAndUpdate(
-        _id,
-        { content: content, media: media, visiability: visiability },
+        updatedPostData.postId,
+        {
+          content: updatedPostData.content,
+          media: updatedPostData.media,
+          visiability: updatedPostData.visiability,
+        },
         { new: true }
       );
 

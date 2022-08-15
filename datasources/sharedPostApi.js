@@ -44,9 +44,9 @@ class SharedPostApi {
       });
   }
 
-  async updateSharedPost({ _id, caption, visiability, userId }) {
+  async updateSharedPost( sharedPostId, caption, visiability, userId ) {
     try {
-      let sharedPostToBeUpdated = await SharedPost.findById(_id);
+      let sharedPostToBeUpdated = await SharedPost.findById(sharedPostId);
       if (sharedPostToBeUpdated.sharerId.toString() !== userId) {
         const error = new Error(
           "You don't have permission to update this shared post"
@@ -56,6 +56,8 @@ class SharedPostApi {
       }
       sharedPostToBeUpdated.caption = caption;
       sharedPostToBeUpdated.visiability = visiability;
+      sharedPostToBeUpdated.markModified("caption")
+      sharedPostToBeUpdated.markModified("visiability")
       await sharedPostToBeUpdated.save();
       return { message: "Post updated", httpStatusCode: 200 };
     } catch {

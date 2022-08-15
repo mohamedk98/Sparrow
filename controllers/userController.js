@@ -78,7 +78,7 @@ const deleteSharedPost = async (req, res) => {
     return res.status(404).send("Shared Post not Found");
   }
 
-  if (sharedPost.sharerId.toString() !== userId) {
+  if (sharedPost?.sharerId?.toString() !== userId) {
     return res
       .status(403)
       .send("You Don't have Permissions to Delete This Post");
@@ -99,11 +99,11 @@ const updateSharedPost = async (req, res) => {
   const visiability = req.body.visiability;
 
   await sharedPostApi
-    .updateSharedPost({ sharedPostId, caption, visiability, userId })
+    .updateSharedPost( sharedPostId, caption, visiability, userId )
     .then((response) => {
       res.status(200).send(response.message);
     })
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const uploadCoverPhoto = async (req, res) => {
