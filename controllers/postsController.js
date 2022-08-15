@@ -79,11 +79,10 @@ const updatePost = async (req, res) => {
   const images = req.files;
   const content = req.body.content;
   const visiability = req.body.visiability;
-  let media = [];
 
-  for (let image of images) {
-    media.push(image.path);
-  }
+  let media = images.map((image) => {
+    return image.location;
+  });
 
   let postData = await postsApi.getPost(postId);
   //if there is no post, return an error
