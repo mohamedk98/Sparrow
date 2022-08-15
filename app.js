@@ -50,6 +50,7 @@ app.use(
 const { connectToRedis } = require("./services/redisClient.service");
 
 //Routes
+const adminAuthenticationRouter = require("./routes/adminAuthentication")
 const adminRouter = require("./routes/admin")
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
@@ -84,7 +85,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
 //Admin Routes
-
+app.use(adminAuthenticationRouter);
 app.use("/admin",adminRouter)
 
 app.use(authenticationRouter);
