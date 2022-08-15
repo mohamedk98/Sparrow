@@ -29,7 +29,7 @@ class PostsApi {
       return { userId: user.userId.toString() };
     });
     const newNotification = new notificationApi({
-      from: sharerId,
+      from: postData.userId,
       to: userFriendsIds,
       type: "create post",
       message: "has added a new post",
