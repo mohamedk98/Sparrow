@@ -3,7 +3,7 @@ const postSchema = new mongoose.Schema({
   userId: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   creatorName: { type: String, required: true },
   createdAt: { type: String, required: true },
-  content: { type: String, required: true, default: "" },
+  content: { type: String, required: false, default: "" },
   postType: { type: String, required: false },
   media: [],
   reactions: [
