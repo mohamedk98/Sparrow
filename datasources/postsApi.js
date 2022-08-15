@@ -96,7 +96,9 @@ class PostsApi {
       postToBeUpdated.content = updatedPostData.content;
       postToBeUpdated.visiability = updatedPostData.visiability;
       postToBeUpdated.media = updatedPostData.media;
-
+      postToBeUpdated.markModified("content")
+      postToBeUpdated.markModified("visiability")
+      postToBeUpdated.markModified("media")
       await postToBeUpdated.save();
       return { message: "Post updated", httpStatusCode: 200 };
     } catch (error) {

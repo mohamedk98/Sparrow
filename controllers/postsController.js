@@ -48,7 +48,7 @@ const deletePost = async (req, res) => {
   }
 
   //if the user is not authorised to delete, return an error
-  if (postData.userId !== userId) {
+  if (postData?.userId?.toString() !== userId) {
     return res
       .status(401)
       .send({ message: "You don't have access to delete this post" });
