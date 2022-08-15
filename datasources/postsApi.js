@@ -21,6 +21,7 @@ class PostsApi {
       createdAt: postData.createdAt,
       content: postData.content,
       media: postData.media,
+      visiability:postData.visiability,
       sharesCount: 0,
     });
 
