@@ -34,4 +34,9 @@ const adminLogin = async (req, res, next) => {
   .catch(error=> next(error))
   };
 
-module.exports = {adminLogin}
+  const adminLogout = async (req, res) => {;
+    res.setHeader("Authorization", `Bearer ${null}`);
+    res.status(200).send({ message: "Successfully logged out 😏 🍀" });
+  };
+
+module.exports = {adminLogin, adminLogout}
