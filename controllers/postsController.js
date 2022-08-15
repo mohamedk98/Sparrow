@@ -112,10 +112,10 @@ const updatePost = async (req, res) => {
   await postsApi
     .updatePost(updatedPostData)
     .then((response) => {
-      res.send(response.message);
+      res.status(200).send(response.message);
     })
     .catch((error) => {
-      res.send(error.message);
+      res.status(400).send(error.message);
     });
 };
 
