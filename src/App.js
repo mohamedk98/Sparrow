@@ -1,24 +1,37 @@
 // import logo from './logo.svg';
 // import './App.css';
-import { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { axiosInstance } from './network/axiosInstance';
-import Error from './pages/error/Error';
-import Home from './pages/home/Home';
-import Login from './pages/login/Login';
-import Reset from './pages/reset/Reset';
-import ResetPassword from './pages/reset/ResetPassword';
-import Profile from './pages/profile/Profile';
 import {
   addAuthentication,
   removeAuthentication,
 } from './store/userSlice/UserSlice';
-import ProfilePosts from './pages/profile/ProfilePosts';
-import About from './pages/profile/About';
-import Friends from './pages/profile/Friends';
-import Photos from './pages/profile/Photos';
 import { addUserData } from './store/userSlice/UserDataSlice';
+
+// import Error from './pages/error/Error';
+// import Home from './pages/home/Home';
+// import Login from './pages/login/Login';
+// import Reset from './pages/reset/Reset';
+// import ResetPassword from './pages/reset/ResetPassword';
+// import Profile from './pages/profile/Profile';
+// import ProfilePosts from './pages/profile/ProfilePosts';
+// import About from './pages/profile/About';
+// import Friends from './pages/profile/Friends';
+// import Photos from './pages/profile/Photos';
+
+// Laze Loading for performance reasons:
+const Error = lazy(() => import('./pages/error/Error'));
+const Home = lazy(() => import('./pages/home/Home'));
+const Login = lazy(() => import('./pages/login/Login'));
+const Reset = lazy(() => import('./pages/reset/Reset'));
+const ResetPassword = lazy(() => import('./pages/reset/ResetPassword'));
+const Profile = lazy(() => import('./pages/profile/Profile'));
+const ProfilePosts = lazy(() => import('./pages/profile/ProfilePosts'));
+const About = lazy(() => import('./pages/profile/About'));
+const Friends = lazy(() => import('./pages/profile/Friends'));
+const Photos = lazy(() => import('./pages/profile/Photos'));
 
 function App() {
   const navigate = useNavigate();
@@ -51,20 +64,35 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/reset" element={<Reset />} />
-      <Route path="/resetPassword" element={<ResetPassword />} />
-      <Route path="/:username" element={<Profile />}>
-        <Route index element={<ProfilePosts />} />
-        <Route path="posts" element={<ProfilePosts />} />
-        <Route path="about" element={<About />} />
-        <Route path="friends" element={<Friends />} />
-        <Route path="photos" element={<Photos />} />
-      </Route>
-      <Route path="*" element={<Error />} />
-    </Routes>
+    <Suspense
+    // fallback={
+    //   <div className="text-center mt-5">
+    //     <button className="btn btn-primary" type="button" disabled>
+    //       <span
+    //         className="spinner-border spinner-border-sm"
+    //         role="status"
+    //         aria-hidden="true"
+    //       ></span>
+    //       Loading...
+    //     </button>
+    //   </div>
+    // }
+    >
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/reset" element={<Reset />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/:username" element={<Profile />}>
+          <Route index element={<ProfilePosts />} />
+          <Route path="posts" element={<ProfilePosts />} />
+          <Route path="about" element={<About />} />
+          <Route path="friends" element={<Friends />} />
+          <Route path="photos" element={<Photos />} />
+        </Route>
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </Suspense>
   );
 }
 

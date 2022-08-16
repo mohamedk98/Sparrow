@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { axiosInstance } from '../../../network/axiosInstance';
-import profileImg from '../../../assets/images/default_profile.png';
 import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from './EmojiPicker';
 import { IoMdPhotos } from 'react-icons/io';

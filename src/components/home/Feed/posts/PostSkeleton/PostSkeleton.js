@@ -17,7 +17,7 @@ const PostSkeleton = () => {
 
           <div>
             <Skeleton className="ml-5 mt-2" count={1} width={150} />
-            <Skeleton className="ml-5 mt-2" count={1} width={140} />
+            <Skeleton className="ml-5 mt-2" count={1} width={110} />
           </div>
         </div>
         <div className="mb-3">
@@ -34,7 +34,12 @@ const PostSkeleton = () => {
       </div>
 
       <div className="flex justify-around mt-3 mb-2">
-        <Skeleton className="mx-10" count={3} inline width={120} />
+        <Skeleton
+          className="mx-2 md:mx-5 lg:mx-10"
+          count={3}
+          inline
+          width={120}
+        />
       </div>
     </div>
   );

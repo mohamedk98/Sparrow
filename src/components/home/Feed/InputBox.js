@@ -3,19 +3,21 @@ import profileImg from '../../../assets/images/default_profile.png';
 import { IoMdHappy } from 'react-icons/io';
 import { AiFillCamera } from 'react-icons/ai';
 import CreatePostModal from './CreatePostModal';
+import { useSelector } from 'react-redux';
 
 const InputBox = ({ showModal, setShowModal }) => {
   console.log(showModal);
-  // const isOpen = true;
-  // const [showModal, setShowModal] = useState(true);
+  // User data:
+  const user = useSelector(state => state.newsFeed.profileData);
+
   return (
     <>
       <div className="bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6">
         <div className="flex space-x-4 p-4 items-center">
           <img
-            src={profileImg}
+            src={user?.profileImage}
             alt="profile-imag"
-            className="rounded-full"
+            className="rounded-full h-10 w-10"
             width={40}
             height={40}
             layout="fixed"
@@ -25,9 +27,7 @@ const InputBox = ({ showModal, setShowModal }) => {
               type="text"
               readOnly
               className="rounded-full h-12 bg-gray-100 flex-grow px-5 focus:outline-none cursor-pointer"
-              placeholder={`What's on your mind,Sarah?`}
-              // data-bs-toggle="modal"
-              // data-bs-target="#exampleModalCenter"
+              placeholder={`What's on your mind, ${user?.firstName}?`}
               onClick={() => {
                 setShowModal(!showModal);
               }}
@@ -37,8 +37,6 @@ const InputBox = ({ showModal, setShowModal }) => {
         <div className="flex justify-evenly p-3 border-t">
           <div
             className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer"
-            // data-bs-toggle="modal"
-            // data-bs-target="#exampleModalCenter"
             onClick={() => {
               setShowModal(!showModal);
             }}

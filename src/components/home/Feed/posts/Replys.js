@@ -32,6 +32,9 @@ const Replys = ({
   setReactionClicked,
 
   curruntUserReplyReaction,
+
+  // For max-w for replys:
+  postsProfile,
 }) => {
   // console.log(reactions);
   return (
@@ -51,14 +54,19 @@ const Replys = ({
         {
           // Name, content, and reactions for replyd user:
         }
-        <div className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative">
+        <div
+          className={`px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit max-w-xs md:max-w-sm lg:max-w-none relative ${
+            postsProfile &&
+            'max-w-[17.5rem] md:max-w-full lg:max-w-[17.5rem] lg1:max-w-full'
+          }`}
+        >
           <span className="text-sm text-zinc-700">{name}</span>
           <span className="block max-w-xs md:max-w-sm break-words max-h-10 overflow-auto">
             {content}
           </span>
 
           {
-            <span className="absolute -right-3 top-20 -mt-1.5 z-10">
+            <span className="absolute -right-3 -bottom-5 -mt-1.5 z-10">
               <PostMiddleCounters
                 reactions={reactions?.map(reaction => reaction?.reaction)}
                 reactionsMakers={reactions}
@@ -68,6 +76,31 @@ const Replys = ({
               />
             </span>
           }
+
+          {
+            // More options:
+          }
+          {userID === moreID && (
+            <span className="absolute top-0 right-0">
+              <More
+                text={userID === moreID ? 'Delete reply' : 'Hide reply'}
+                text2={userID === moreID && 'Edit reply'}
+                containerClassName="dropdown absolute left-8 lg:left-10 -top-2 mt-4"
+                iconClassName="w-7 h-7 relative "
+                liNum1={1}
+                liNum2={userID === moreID ? 2 : false}
+                tooltipData="more"
+                postId={postId}
+                id={moreID}
+                userID={userID}
+                replyId={replyId}
+                commentId={commentId}
+                setEditReply={setEditReply}
+                moreFullScreenClassName={moreFullScreenClassName}
+                sharedPost={sharedPost}
+              />
+            </span>
+          )}
         </div>
 
         <div className="ml-6 text-sm mt-0.5 mb-3">
@@ -98,26 +131,6 @@ const Replys = ({
 
           <span className="text-gray-500 ml-3 text-xs">{date}</span>
         </div>
-
-        {userID === moreID && (
-          <More
-            text={userID === moreID ? 'Delete reply' : 'Hide reply'}
-            text2={userID === moreID && 'Edit reply'}
-            containerClassName="dropdown absolute left-40 -top-2 mt-4"
-            iconClassName="w-7 h-7 relative "
-            liNum1={1}
-            liNum2={userID === moreID ? 2 : false}
-            tooltipData="more"
-            postId={postId}
-            id={moreID}
-            userID={userID}
-            replyId={replyId}
-            commentId={commentId}
-            setEditReply={setEditReply}
-            moreFullScreenClassName={moreFullScreenClassName}
-            sharedPost={sharedPost}
-          />
-        )}
       </div>
     </div>
   );

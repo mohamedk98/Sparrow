@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import InputBox from './InputBox';
-import Post from './posts/Post';
 import SharedPost from './posts/SharedPost';
 
 const Feed = () => {

@@ -114,19 +114,19 @@ const postMiddleCounters = ({
               }
             >
               {reaction === 'Like' ? (
-                <img className="w-4" src={likeSVG} alt="like face" />
+                <img className="w-4 h-4" src={likeSVG} alt="like face" />
               ) : reaction === 'Love' ? (
-                <img className="w-4" src={loveSVG} alt="love face" />
+                <img className="w-4 h-4" src={loveSVG} alt="love face" />
               ) : reaction === 'Care' ? (
-                <img className="w-4" src={careSVG} alt="care face" />
+                <img className="w-4 h-4" src={careSVG} alt="care face" />
               ) : reaction === 'Haha' ? (
-                <img className="w-4" src={hahaSVG} alt="haha face" />
+                <img className="w-4 h-4" src={hahaSVG} alt="haha face" />
               ) : reaction === 'Wow' ? (
-                <img className="w-4" src={wowSVG} alt="wow face" />
+                <img className="w-4 h-4" src={wowSVG} alt="wow face" />
               ) : reaction === 'Sad' ? (
-                <img className="w-4" src={sadSVG} alt="sad face" />
+                <img className="w-4 h-4" src={sadSVG} alt="sad face" />
               ) : reaction === 'Angry' ? (
-                <img className="w-4" src={angrySVG} alt="angry face" />
+                <img className="w-4 h-4" src={angrySVG} alt="angry face" />
               ) : (
                 ''
               )}

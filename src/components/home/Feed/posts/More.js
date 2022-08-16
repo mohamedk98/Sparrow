@@ -8,7 +8,6 @@ import {
   alertHandler,
   forceUpdateHandler,
 } from '../../../../store/userSlice/NewsFeedSlice';
-import CreatePostModal from '../CreatePostModal';
 import EditPost from './EditPost';
 
 const More = ({
@@ -252,8 +251,10 @@ const More = ({
 
   return (
     <div className={containerClassName} data-title={tooltipData}>
-      <button
-        className={'dropdown-toggle flex items-center hidden-arrow'}
+      <span
+        className={
+          'dropdown-toggle flex items-center hidden-arrow cursor-pointer'
+        }
         onClick={() => {
           setShowMore(!showMore);
         }}
@@ -261,7 +262,7 @@ const More = ({
         <BiDotsHorizontalRounded
           className={'hover:bg-zinc-100 rounded-full p-1 z-50 ' + iconClassName}
         />
-      </button>
+      </span>
 
       {
         <div className={showMore ? 'block' : 'hidden'}>

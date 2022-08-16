@@ -1,6 +1,8 @@
 import React from 'react';
 import More from './More';
 import PostImageGrid from './PostImageGrid';
+import { ImEarth } from 'react-icons/im';
+import { ImLock } from 'react-icons/im';
 
 const PostHalfTop = ({
   profileSRC,
@@ -31,6 +33,7 @@ const PostHalfTop = ({
   sharededitPost,
 }) => {
   // console.log(postBody);
+  let visiability = postData?.visiability;
   return (
     <div
       className={`${
@@ -50,38 +53,53 @@ const PostHalfTop = ({
           <div>
             <strong>{profileName}</strong>
 
-            <span className={'text-gray-600 text-sm block ' + dateClassName}>
-              {postDate}
-            </span>
+            <div className="flex">
+              <span className={'text-gray-600 text-sm block ' + dateClassName}>
+                {postDate}
+              </span>
+              {visiability && (
+                <span data-title={'tooltipData'}>
+                  {visiability === 'public' ? (
+                    <ImEarth className="text-gray-600 ml-2 mt-1 text-sm" />
+                  ) : visiability === 'private' ? (
+                    <ImLock className="text-gray-600 ml-2 mt-1 text-sm" />
+                  ) : (
+                    ''
+                  )}
+                </span>
+              )}
+            </div>
             {!sharedPost && userID === sharerId && (
-              <More
-                text={userID === sharerId ? 'Delete post' : 'Hide post'}
-                text2={userID === sharerId && 'Edit post'}
-                sharedPost={sharedPost}
-                containerClassName="dropdown absolute right-1 top-1 "
-                iconClassName={
-                  hideMore === true
-                    ? 'hidden'
-                    : `w-9 h-9 ${
-                        postsProfile && 'ml-24 md1:ml-0 lg:ml-5 2xl:ml-0'
-                      }`
-                }
-                liNum1={1}
-                liNum2={userID === sharerId ? 2 : false}
-                tooltipData="more"
-                sharedPostData={sharedPostData}
-                moreID={moreID || postId}
-                userID={userID}
-                sharerId={sharerId}
-                id={sharerId}
-                userData={userData}
-                moreFullScreenClassName={moreFullScreenClassName}
-                postData={postData}
-                // postId={postId}
+              <span className="absolute top-0 right-0">
+                <More
+                  text={userID === sharerId ? 'Delete post' : 'Hide post'}
+                  text2={userID === sharerId && 'Edit post'}
+                  sharedPost={sharedPost}
+                  containerClassName="dropdown absolute right-1 top-1 "
+                  iconClassName={
+                    hideMore === true
+                      ? 'hidden'
+                      : `w-9 h-9 ${
+                          postsProfile && 'ml-24 md1:ml-0 lg:ml-5 2xl:ml-0'
+                        }`
+                  }
+                  liNum1={1}
+                  liNum2={userID === sharerId ? 2 : false}
+                  tooltipData="more"
+                  sharedPostData={sharedPostData}
+                  moreID={moreID || postId}
+                  userID={userID}
+                  sharerId={sharerId}
+                  id={sharerId}
+                  userData={userData}
+                  moreFullScreenClassName={moreFullScreenClassName}
+                  postData={postData}
+                  // postId={postId}
 
-                // for edit and delete post:
-                sharededitPost={sharededitPost}
-              />
+                  // for edit and delete post:
+                  sharededitPost={sharededitPost}
+                />
+              </span>
             )}
           </div>
         </div>
@@ -92,11 +110,11 @@ const PostHalfTop = ({
       {
         // To open FullScreenOriginalPost modal onClick the PostImageGrid component (images):
       }
-      <button
+      <span
         type="button"
         data-bs-target={'#fullScreenModal' + postId}
         data-bs-toggle="modal"
-        className="w-full"
+        className="w-full cursor-pointer"
       >
         {!fullScreenContentClassName && (
           <PostImageGrid
@@ -105,7 +123,7 @@ const PostHalfTop = ({
             modalId={postId}
           />
         )}
-      </button>
+      </span>
     </div>
   );
 };

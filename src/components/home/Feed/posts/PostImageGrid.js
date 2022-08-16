@@ -29,7 +29,7 @@ const PostImageGrid = ({
             <img
               key={idx}
               src={img}
-              className={`grid grid-flow-row grid-cols-1 grid-rows-1 w-full ${
+              className={`grid grid-flow-row grid-cols-1 grid-rows-1 w-full h-full ${
                 reverseDirection && 'mb-3 -mt-4 rounded-t-lg'
               } ${fullScreenClassName}`}
               alt="img"

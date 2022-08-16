@@ -295,25 +295,22 @@ const PostMiddle = ({
                     </div>
                   ) : (
                     <div
-                      className="px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative"
+                      className={`px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative  ${
+                        postsProfile &&
+                        'max-w-[21rem] sm:max-w-full lg:max-w-[21rem] lg2:w-full'
+                      }`}
                       id={comment?.userId?._id}
                     >
-                      <span className="text-sm text-zinc-700 ">
-                        {comment?.userId?.firstName +
-                          ' ' +
-                          comment?.userId?.lastName}
-                      </span>
-                      <div
-                        className="max-w-xs md:max-w-sm break-words relative"
-                        id={comment?._id}
-                      >
-                        {comment.content}
-
-                        {
-                          // Show more options to comments
-                          // Need To Fix liNum2
-                        }
-                        {comment?.userId?._id === userData?._id && (
+                      {
+                        // Show more options to comments
+                        // Need To Fix liNum2
+                      }
+                      {comment?.userId?._id === userData?._id && (
+                        <span
+                          className={`absolute top-7 ${
+                            postsProfile && 'mr-3.5 sm:mr-0 lg:mr-3'
+                          } right-3`}
+                        >
                           <More
                             text={
                               comment?.userId?._id === userData?._id
@@ -338,7 +335,23 @@ const PostMiddle = ({
                             moreID={moreID}
                             moreFullScreenClassName={moreFullScreenClassName}
                           />
-                        )}
+                        </span>
+                      )}
+
+                      <span className="text-sm text-zinc-700 ">
+                        {comment?.userId?.firstName +
+                          ' ' +
+                          comment?.userId?.lastName}
+                      </span>
+                      <div
+                        className="max-w-xs md:max-w-sm break-words relative"
+                        id={comment?._id}
+                      >
+                        <span
+                          className={`block max-w-xs md:max-w-sm break-words max-h-16 overflow-auto`}
+                        >
+                          {comment.content}
+                        </span>
                       </div>
 
                       {
@@ -346,7 +359,7 @@ const PostMiddle = ({
                         // Not tested, waiting for DB:
                       }
                       {
-                        <span className="absolute -right-3 top-20 -mt-1.5 z-10">
+                        <span className="absolute -right-3 -bottom-5 -mt-1.5 z-10">
                           <PostMiddleCounters
                             reactions={comment?.reactions?.map(
                               reaction => reaction?.reaction
@@ -577,6 +590,8 @@ const PostMiddle = ({
                                   reaction?.userId?._id === userData?._id
                               ))[0]?.reaction
                             }
+                            // For max-w for replys:
+                            postsProfile={postsProfile}
                           />
                         </div>
                       )}

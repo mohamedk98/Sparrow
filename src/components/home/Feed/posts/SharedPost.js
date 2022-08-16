@@ -139,9 +139,8 @@ const SharedPost = ({ postsProfile }) => {
 
   return (
     <Fragment>
-      {loading && <PostSkeleton />}
-
       {posts?.map(post => {
+        // SharedPost:
         return post?.sharerId ? (
           <div
             className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7"
@@ -206,6 +205,7 @@ const SharedPost = ({ postsProfile }) => {
             }
           </div>
         ) : (
+          // RegularPost:
           <Post
             data={post}
             key={post._id}
@@ -226,6 +226,11 @@ const SharedPost = ({ postsProfile }) => {
           />
         );
       })}
+
+      {
+        // postSkeleton:
+      }
+      {loading && <PostSkeleton />}
     </Fragment>
   );
 };

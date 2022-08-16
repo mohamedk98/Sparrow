@@ -152,7 +152,11 @@ const LikeButton = ({
       }}
     >
       <div className="mt-0.5 mr-2 text-xl w-5">
-        <img className="w-full" src={reactTypeSRC} alt="" />
+        <img
+          className="w-full h-full"
+          src={reactTypeSRC}
+          alt={`${reactTypeSRC} reaction`}
+        />
       </div>
       {reactType ? reactType : 'Like'}
     </button>
