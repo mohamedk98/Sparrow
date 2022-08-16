@@ -78,7 +78,7 @@ const PostReactions = ({
                 react.name === 'Care'
                   ? `cursor-pointer ml-1 w-9/12 md:w-4/6 ${
                       postsProfile &&
-                      'lg:w-11/12 hover:lg:w-full w-9/12 md:w-6/12'
+                      'lg:w-[15rem] hover:lg:w-[16rem] lg1:w-[20rem] hover:lg1:w-[25rem] w-9/12 md:w-6/12'
                     } lg:w-6/12 -mt-0.5 hover:lg:w-8/12 hover:md:w-9/12 hover:w-11/12 md:max-h-20 ${
                       careReplyClassName &&
                       !reactionsFullScreenClassName &&

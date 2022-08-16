@@ -10,7 +10,7 @@ friendMenu, removeFriend, blockFriend, friend}) {
     const [block, setBlock] = useState(false);
     return (
         <>
-       {friendMenuId===id&&friendMenu&& <div id={id} className="bg-white dark:bg-zinc-700 dark:text-slate-100 transition duration-700 p-2 rounded-lg absolute top-16 right-12 lg:top-16 lg:right-12 w-56 shadow shadow-slate-400 dark:shadow-zinc-500 z-10">
+        {friendMenuId===id&&friendMenu&& <div id={id} className="bg-white dark:bg-zinc-700 dark:text-slate-100 transition duration-700 p-2 rounded-lg absolute top-16 right-12 lg:top-16 lg:right-12 w-56 shadow shadow-slate-400 dark:shadow-zinc-500 z-10">
             <div className="flex dark:hover:bg-zinc-600 items-center gap-2.5 p-3 cursor-pointer text-sm font-semibold rounded-lg hover:bg-slate-200"
                 onClick={()=>setUnfriend(true)}
             >

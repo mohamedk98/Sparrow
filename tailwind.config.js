@@ -5,6 +5,28 @@ module.exports = {
     './node_modules/tw-elements/dist/js/**/*.js',
   ],
   theme: {
+    screens: {
+      sm: '640px',
+      // => @media (min-width: 640px) { ... }
+
+      md: '768px',
+      // => @media (min-width: 768px) { ... }
+
+      md1: '875px',
+      // => @media (min-width: 845px) { ... }
+
+      lg: '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      lg1: '1260px',
+      // => @media (min-width: 1260px) { ... }
+
+      xl: '1280px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1536px',
+      // => @media (min-width: 1536px) { ... }
+    },
     extend: {
       colors: {
         facebook: {

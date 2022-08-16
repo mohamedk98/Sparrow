@@ -6,10 +6,13 @@ import EmojiPicker from './EmojiPicker';
 import { IoMdPhotos } from 'react-icons/io';
 import UploadPhoto from './UploadPhoto';
 import IsLoadingScreen from './IsLoadingScreen';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { alertHandler } from '../../../store/userSlice/NewsFeedSlice';
 
 const CreatePostModal = ({ showModal, setShowModal }) => {
+  // User data:
+  const user = useSelector(state => state.newsFeed.profileData);
+
   const dispatch = useDispatch();
 
   const [showPicker, setShowPicker] = useState(false);
@@ -60,7 +63,6 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               statusCode: 200,
             })
           );
-          // window.location.reload(false);
         }
       })
       .catch(err => {
@@ -84,15 +86,8 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
 
   return (
     <>
-      {showModal ? (
-        <div
-          className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-          id="exampleModalCenter"
-          tabIndex="-1"
-          aria-labelledby="exampleModalCenterTitle"
-          aria-modal="true"
-          role="dialog"
-        >
+      {showModal && (
+        <div className="fixed top-14 left-0 z-70 w-full h-full outline-none overflow-x-hidden overflow-y-auto">
           {/**Form */}
           <form
             method="post"
@@ -105,25 +100,23 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               ) : (
                 <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                   <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                    <h5
-                      className="text-xl font-bold leading-normal text-black"
-                      id="exampleModalScrollableLabel"
-                    >
+                    <h5 className="text-xl font-bold leading-normal text-black">
                       Create post
                     </h5>
 
                     <button
                       type="button"
                       className="btn-close box-content w-4 h-4 p-1 text-right text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
+                      onClick={() => {
+                        setShowModal(!showModal);
+                      }}
                     ></button>
                   </div>
 
                   <div className="modal-body container space-x-2 p-4">
                     <div className="grid grid-cols-10 w-full">
                       <img
-                        src={profileImg}
+                        src={user?.profileImage}
                         alt="profile-imag"
                         className="rounded-full"
                         width={40}
@@ -131,10 +124,12 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                         layout="fixed"
                       />
 
-                      <p className="font-bold text-sm ml-3">UserName</p>
+                      <p className="font-bold text-sm ml-3 w-max">
+                        {`${user?.firstName} ${user?.lastName}`}
+                      </p>
 
                       {/** Select Privacy Options */}
-                      <div className="absolute mt-5 left-[4.5rem]">
+                      <div className="absolute mt-6 left-[4.5rem]">
                         <select
                           name="visability"
                           onChange={e => setSelectedOption(e.target.value)}
@@ -172,7 +167,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               hover:bg-gray-100
             "
                           >
-                            Public
+                            &#127759; Public
                           </option>
                           <option
                             value="Private"
@@ -189,7 +184,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               hover:bg-gray-100
             "
                           >
-                            Private
+                            &#128274; Private
                           </option>
                         </select>
                       </div>
@@ -202,7 +197,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                           cols="35"
                           name="content"
                           className=" px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
-                          placeholder="What's on your mind, Sarah?"
+                          placeholder={`What's on your mind, ${user?.firstName}?`}
                           value={inputStr}
                           onChange={e => {
                             setInputStr(e.target.value);
@@ -237,7 +232,9 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                           onClick={() => setShowPicker(!showPicker)}
                         >
                           {' '}
-                          <VscSmiley />{' '}
+                          <VscSmiley
+                            className={`${showPicker && 'text-blue-400'}`}
+                          />
                         </button>
                         {showPicker ? (
                           <EmojiPicker
@@ -264,9 +261,8 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
             </div>
           </form>
         </div>
-      ) : (
-        ''
       )}
+      <div className="opacity-75 fixed inset-0 z-60 bg-black"></div>
     </>
   );
 };

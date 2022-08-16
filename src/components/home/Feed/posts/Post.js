@@ -125,7 +125,7 @@ const Post = ({
               commentTreeVerticalHiddenReplysClassName="rotate-90 absolute -top-12 -left-8  md:-top-11 md:left-7 ml-2.5 lg:left-7 md:-ml-12"
               commentTreeVerticalHiddenReplysShowInputClassName="rotate-90 absolute top-0 -left-8 -mt-1 md:top-4 md:left-4 md:-mt-2 lg:left-4 md:-ml-12"
               commentTreeVerticalShowReplysClassName="rotate-90 absolute -top-20 mt-4 ml-0.5 md:-top-20 -left-24 md:-left-24"
-              moreFullScreenClassName="-ml-24"
+              moreFullScreenClassName="md:-ml-24 lg1:ml-0"
               reactionsFullScreenClassName="true"
             />
           </Fragment>

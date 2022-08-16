@@ -15,7 +15,6 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
         relationship:"",
         mobile:""
     })
-    const [infos, setInfos] = useState("")
 
     const infosHandler = (e) =>{
         e.preventDefault();
@@ -23,14 +22,13 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
         .patch("/profile/about", {data:infosInput})
         .then((response) => {
             dispatch(addUserData(response.data))
-            //setBioInput(false);
             setUpdateInfos(false)
         })
         .catch(error => console.log(error));
     }
     return (
     <div className='fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
-        <div className='w-3/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700 dark:text-slate-100'>
+        <div className='lg:w-3/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700 dark:text-slate-100'>
             <div className='relative mb-3 text-black dark:text-slate-100'>
                 <div className='text-center text-xl font-semibold'>Update your Infos</div>
                 <button className='absolute right-2 top-0 text-xl' onClick={()=>setUpdateInfos(false)}>
@@ -117,8 +115,6 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                     </div>
                 </form>
             </div>
-            
-            
         </div>
     </div>
     )

@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AiOutlineClose } from 'react-icons/ai';
 import { axiosInstance } from '../../network/axiosInstance';
 import { addUserData } from '../../store/userSlice/UserDataSlice';
 
 function Hobbies({showHobbies, setShowHobbies}) {
-    const userState = useSelector((state) => state.userData.userData);
     const dispatch = useDispatch();
     const [hobbies, setHobbies] =useState([])
     const [music, setMusic] = useState(false)
@@ -24,14 +23,13 @@ function Hobbies({showHobbies, setShowHobbies}) {
         .patch("/profile/hobbies", {hobbies})
         .then((response) => {
             dispatch(addUserData(response.data))
-            //setBioInput(false);
             setShowHobbies(false)
         })
         .catch(error => console.log(error));
     }
     return (
     <div className='fixed dark:text-black top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
-        <div className='w-2/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700'>
+        <div className='lg:w-2/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700'>
             <div className='relative mb-3 text-black  dark:text-slate-100'>
                 <div className='text-center text-xl font-semibold'>Choose Hobbies</div>
                 <button className='absolute right-2 top-0 text-xl' onClick={()=>setShowHobbies(false)}>

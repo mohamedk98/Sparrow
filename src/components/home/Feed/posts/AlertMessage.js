@@ -41,7 +41,7 @@ function AlertMessage({ alert }) {
               focusable="false"
               data-prefix="fas"
               data-icon="exclamation-triangle"
-              class="w-4 h-4 mr-2 fill-current"
+              className="w-4 h-4 mr-2 fill-current"
               role="img"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 576 512"
@@ -56,7 +56,7 @@ function AlertMessage({ alert }) {
           {alert?.message}
           <button
             type="button"
-            class="btn-close box-content w-4 h-4 p-1 ml-auto text-yellow-900 border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-yellow-900 hover:opacity-75 hover:no-underline"
+            className="btn-close box-content w-4 h-4 p-1 ml-auto text-yellow-900 border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-yellow-900 hover:opacity-75 hover:no-underline"
             onClick={() => dispatch(alertHandler({ showAlert: false }))}
           ></button>
         </div>

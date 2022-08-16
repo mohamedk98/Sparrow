@@ -38,6 +38,7 @@ const More = ({
   // for edit and delete post:
   sharededitPost,
 }) => {
+  console.log(id, userID);
   // console.log(sharedPost);
   // console.log(text, text2, liNum1, liNum2);
   // console.log(id, userID);

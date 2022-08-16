@@ -4,8 +4,8 @@ import { AiOutlineClose } from 'react-icons/ai';
 function ConfirmBlock({setBlock, blockFriend, friend}) {
     return (
         <div className="fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto">
-            <div className="w-2/4 mx-auto my-32 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-500">
-                <div className="relative mb-3">
+            <div className="lg:w-2/5 w-4/5 mx-auto my-32 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-500">
+                <div className="relative mb-8">
                     <button className="absolute right-2 top-0 text-2xl rounded-lg hover:bg-slate-200"  
                         onClick={() => {
                             setBlock(false);

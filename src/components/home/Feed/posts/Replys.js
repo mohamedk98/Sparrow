@@ -64,6 +64,7 @@ const Replys = ({
                 reactionsMakers={reactions}
                 sharedPost={sharedPost}
                 reply={true}
+                data={{ reactions: reactions }}
               />
             </span>
           }
@@ -98,23 +99,25 @@ const Replys = ({
           <span className="text-gray-500 ml-3 text-xs">{date}</span>
         </div>
 
-        <More
-          text={userID === moreID ? 'Delete reply' : 'Hide reply'}
-          text2={userID === moreID && 'Edit reply'}
-          containerClassName="dropdown absolute left-40 -top-2 mt-4"
-          iconClassName="w-7 h-7 relative "
-          liNum1={1}
-          liNum2={userID === moreID ? 2 : false}
-          tooltipData="more"
-          postId={postId}
-          id={moreID}
-          userID={userID}
-          replyId={replyId}
-          commentId={commentId}
-          setEditReply={setEditReply}
-          moreFullScreenClassName={moreFullScreenClassName}
-          sharedPost={sharedPost}
-        />
+        {userID === moreID && (
+          <More
+            text={userID === moreID ? 'Delete reply' : 'Hide reply'}
+            text2={userID === moreID && 'Edit reply'}
+            containerClassName="dropdown absolute left-40 -top-2 mt-4"
+            iconClassName="w-7 h-7 relative "
+            liNum1={1}
+            liNum2={userID === moreID ? 2 : false}
+            tooltipData="more"
+            postId={postId}
+            id={moreID}
+            userID={userID}
+            replyId={replyId}
+            commentId={commentId}
+            setEditReply={setEditReply}
+            moreFullScreenClassName={moreFullScreenClassName}
+            sharedPost={sharedPost}
+          />
+        )}
       </div>
     </div>
   );

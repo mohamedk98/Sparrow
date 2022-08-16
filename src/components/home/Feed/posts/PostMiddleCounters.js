@@ -98,7 +98,7 @@ const postMiddleCounters = ({
     >
       {
         <div className="flex">
-          {reactions?.map((reaction, idx) => (
+          {[...new Set(reactions)]?.map((reaction, idx) => (
             <div
               key={idx}
               className="mt-1"
@@ -135,8 +135,12 @@ const postMiddleCounters = ({
           {
             // Check if there are reactions or reactions without empty string(""):
           }
-          {data?.reactions?.length !== 0 && reactionsLengthCheck && !reply && (
-            <span className="text-gray-500 ml-2 text-sm mt-0.5">
+          {data?.reactions?.length !== 0 && reactionsLengthCheck && (
+            <span
+              className={`text-gray-500 ${
+                reply && 'ml-0.5'
+              } ml-2 text-sm mt-0.5`}
+            >
               {
                 data?.reactions?.filter(reaction => reaction.reaction !== '')
                   .length
@@ -168,7 +172,7 @@ const postMiddleCounters = ({
             // Hide share button for shared Post:
           }
           {!sharedPost && (
-            <button className="text-gray-500 hover:border-b-2 border-gray-300">
+            <button className="text-gray-500 cursor-default  border-gray-300">
               {data?.sharesCount} {data?.sharesCount === 1 ? 'share' : 'shares'}
             </button>
           )}

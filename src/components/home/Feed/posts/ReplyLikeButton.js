@@ -89,6 +89,7 @@ const ReplyLikeButton = ({
 
   // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
   useEffect(() => {
+    console.log(curruntUserCommentReaction);
     // for comments:
     // Handle incoming reaction from Data Base:
     if (curruntUserCommentReaction && !reactionClicked) {
@@ -152,12 +153,12 @@ const ReplyLikeButton = ({
         onMouseOver={() => {
           setTimeout(() => {
             setVisible(true);
-          }, 500);
+          }, 800);
         }}
         onMouseLeave={() => {
           setTimeout(() => {
             setVisible(false);
-          }, 500);
+          }, 300);
         }}
         onClick={() => {
           setReactionClicked(false);

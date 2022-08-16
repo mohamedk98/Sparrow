@@ -113,7 +113,7 @@ const PostMiddle = ({
           sharedPost={sharedPost}
           setWriteComment={setWriteComment}
           writeComment={writeComment}
-          reactType={reactType}
+          // reactType={reactType}
         />
       )}
 
@@ -168,8 +168,8 @@ const PostMiddle = ({
           className={
             fullScreenCommentClassName ||
             `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 ${
-              postsProfile && 'lg:px-3 lg:hover:px-3 lg:mr-3'
-            } md:px-7 hover:lg:px-7 ml-3 md:ml-3 lg:ml-7 rounded-lg `
+              postsProfile ? 'lg:px-3 hover:lg:px-3' : 'hover:lg:px-7 lg:ml-7'
+            } md:px-7 ml-3 md:ml-3  rounded-lg `
           }
           onClick={() => {
             setWriteComment(!writeComment);
@@ -188,7 +188,7 @@ const PostMiddle = ({
           className={
             fullScreenShareClassName ||
             `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 ${
-              postsProfile && 'lg:px-5 lg:hover:px-5'
+              postsProfile && 'lg:px-5 hover:lg:px-5 hover:lg:mx-9'
             } lg:px-14 rounded-lg `
           }
           data-bs-toggle="modal"
@@ -313,30 +313,32 @@ const PostMiddle = ({
                           // Show more options to comments
                           // Need To Fix liNum2
                         }
-                        <More
-                          text={
-                            comment?.userId?._id === userData?._id
-                              ? 'Delete comment'
-                              : 'Hide comment'
-                          }
-                          sharedPost={sharedPost}
-                          deleteComment={true}
-                          containerClassName="dropdown absolute -right-14 -top-8"
-                          iconClassName="w-7 h-7"
-                          liNum1={1}
-                          // To show or hide liNum2:
-                          id={comment?.userId?._id}
-                          userID={userData?._id}
-                          // To show edit a comment input:
-                          setEditComment={setEditComment}
-                          commentId={comment?._id}
-                          liNum2={2}
-                          text2={'Edit comment'}
-                          tooltipData="more"
-                          postId={id}
-                          moreID={moreID}
-                          // moreFullScreenClassName={moreFullScreenClassName}
-                        />
+                        {comment?.userId?._id === userData?._id && (
+                          <More
+                            text={
+                              comment?.userId?._id === userData?._id
+                                ? 'Delete comment'
+                                : 'Hide comment'
+                            }
+                            sharedPost={sharedPost}
+                            deleteComment={true}
+                            containerClassName="dropdown absolute -right-14 -top-8"
+                            iconClassName="w-7 h-7"
+                            liNum1={1}
+                            // To show or hide liNum2:
+                            id={comment?.userId?._id}
+                            userID={userData?._id}
+                            // To show edit a comment input:
+                            setEditComment={setEditComment}
+                            commentId={comment?._id}
+                            liNum2={2}
+                            text2={'Edit comment'}
+                            tooltipData="more"
+                            postId={id}
+                            moreID={moreID}
+                            moreFullScreenClassName={moreFullScreenClassName}
+                          />
+                        )}
                       </div>
 
                       {
@@ -349,6 +351,7 @@ const PostMiddle = ({
                             reactions={comment?.reactions?.map(
                               reaction => reaction?.reaction
                             )}
+                            data={comment}
                             reactionsMakers={comment?.reactions}
                             sharedPost={sharedPost}
                             reply={true}
@@ -386,7 +389,7 @@ const PostMiddle = ({
                         curruntUserCommentReaction={
                           comment?.reactions?.length > 0 &&
                           (comment?.reactions?.filter(
-                            reaction => reaction?.userId === userData?._id
+                            reaction => reaction?.userId?._id === userData?._id
                           ))[0]?.reaction
                         }
                         // For the heart reaction size and position:
@@ -540,7 +543,7 @@ const PostMiddle = ({
                             content={reply.content}
                             date={dateCalcFunction(reply?.replyDate)}
                             reactions={reply?.reactions}
-                            userID={reply?.userId?._id}
+                            userID={userData._id}
                             moreID={reply?.userId?._id}
                             replyId={reply?._id}
                             // To show edit a reply input:
@@ -570,7 +573,8 @@ const PostMiddle = ({
                             curruntUserReplyReaction={
                               reply?.reactions?.length > 0 &&
                               (reply?.reactions?.filter(
-                                reaction => reaction?.userId === userData?._id
+                                reaction =>
+                                  reaction?.userId?._id === userData?._id
                               ))[0]?.reaction
                             }
                           />

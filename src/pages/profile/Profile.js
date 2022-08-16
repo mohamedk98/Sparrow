@@ -1,53 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from '../../network/axiosInstance';
-import Cover from '../../components/profile/Cover';
-import ProfilePic from '../../components/profile/ProfilePic';
-import ProfileMenu from '../../components/profile/ProfileMenu';
-import ProfilePhotos from '../../components/profile/ProfilePhotos';
-import ProfileFriends from '../../components/profile/ProfileFriends';
-import ProfileFooter from '../../components/profile/ProfileFooter';
-import PostView from '../../components/profile/PostView';
-// import Post from "../../components/home/Feed/posts/Post";
-import Intro from '../../components/profile/Intro';
-import Feed from '../../components/home/Feed/Feed';
 import { useSelector, useDispatch } from 'react-redux';
-import { addUserData } from '../../store/userSlice/UserDataSlice';
-import InputBox from '../../components/home/Feed/InputBox';
-import { Outlet, Route, Routes, useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import ProfileInfos from './ProfileInfos';
-import ProfilePosts from './ProfilePosts';
-import About from './About';
-import Friends from './Friends';
-import Photos from './Photos';
-import Chat from '../../components/chat/Chat';
-import useDarkMode from '../../hooks/useDarkMode';
 import Header from '../../components/home/Header/Header';
+import { addOtherUserData } from '../../store/userSlice/OtherUsersData';
 import EditPost from '../../components/home/Feed/posts/EditPost';
+import AlertMessage from '../../components/home/Feed/posts/AlertMessage';
 
 function Profile() {
-  const userState = useSelector(state => {
-    // console.log(state.userData.userData);
-  });
+  // To show and hide alerts:
+  const alert = useSelector(state => state.newsFeed.alert);
+
+  // To open edit post modal:
+  const [showModal, setShowModal] = useState(false);
+
+  // const otherUserState = useSelector(state =>
+  //   console.log(state.otherUserData.otherUserData)
+  // );
   const dispatch = useDispatch();
   const { username } = useParams();
-  // console.log(username)
-  // console.log(userState)
   useEffect(() => {
     axiosInstance
       .get(`/${username}`)
-      .then(res => dispatch(addUserData(res.data)))
+      .then(res => dispatch(addOtherUserData(res.data)))
       .catch(err => console.log(err));
-  }, [userState, dispatch, username]);
-  const [colorTheme, setTheme] = useDarkMode();
+  }, [dispatch, username]);
+
   return (
     <>
       <div className="dark:bg-zinc-800 transition duration-700">
-        {/* <button onClick={()=>setTheme(colorTheme)}>dark</button> */}
         <Header />
         <ProfileInfos />
         <Outlet />
-        {/* <Chat/> */}
-        <EditPost />
+
+        {
+          // Edit post:
+        }
+        {showModal && (
+          <EditPost showModal={showModal} setShowModal={setShowModal} />
+        )}
+
+        {
+          // Show alerts:
+        }
+        {alert.message && (
+          <div className="fixed bottom-0 left-2 ">
+            <AlertMessage alert={alert} />
+          </div>
+        )}
       </div>
     </>
   );

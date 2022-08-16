@@ -1,7 +1,7 @@
 import React from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
 
-function ConfirmUnfriend({setUnfriend, removeFriend, friend}) {
+function ConfirmUnfriendSingle({setUnfriend, removeFriend, friend}) {
     return (
         <div className="fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto">
             <div className="lg:w-2/5 w-4/5 mx-auto my-32 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-500">
@@ -18,7 +18,7 @@ function ConfirmUnfriend({setUnfriend, removeFriend, friend}) {
                     <div className="flex gap-2.5 w-3/4 justify-center m-auto mt-4">
                         <div className="bg-blue-500 dark:bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
                             <button type='submit' className="font-semibold ml-1" onClick={(e)=>{
-                                removeFriend(friend.userId._id);
+                                removeFriend(friend._id);
                                 setUnfriend(false)
                             }}>Unfriend</button>
                         </div>
@@ -37,4 +37,4 @@ function ConfirmUnfriend({setUnfriend, removeFriend, friend}) {
     )
 }
 
-export default ConfirmUnfriend
+export default ConfirmUnfriendSingle

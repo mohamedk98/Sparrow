@@ -56,7 +56,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="pt-3 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top">
+    <nav className="pt-3 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60">
       <div className="flex">
         <div className="flex">
           <FaFacebook
@@ -102,15 +102,15 @@ const Header = () => {
       </Link>
 
       <Link
-        to={'/profile/friends'}
+        to={`/${userState.username}/friends`}
         className={`${
-          location.pathname === '/profile/friends' &&
+          location.pathname === `/${userState.username}/friends` &&
           'border-b-2 border-b-blue-500'
         } w-20 -mx-10 md:-mx-20 mt-1.5`}
       >
         <RiGroupFill
           className={`${
-            location.pathname === '/profile/friends' &&
+            location.pathname === `/${userState.username}/friends` &&
             'text-facebook-blue hover:bg-inherit'
           } hover:text-facebook-blue text-3xl hover:bg-gray-200 px-5 py-3 w-full h-14 b -mt-3 `}
         />
@@ -136,7 +136,7 @@ const Header = () => {
             </span>
           </a>
           <ul
-            className="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
+            className="dropdown-menu min-w-max absolute hidden bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
     "
             aria-labelledby="dropdownMenuButton1"
           >
@@ -186,7 +186,7 @@ const Header = () => {
             </span>
           </a>
           <ul
-            className="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
+            className="dropdown-menu min-w-max absolute hidden bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0
     "
             aria-labelledby="dropdownMenuButton3"
           >
@@ -237,7 +237,7 @@ const Header = () => {
           </a>
           <ul
             className="
-          dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none left-auto right-0"
+          dropdown-menu min-w-max absolute hidden bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none left-auto right-0"
             aria-labelledby="dropdownMenuButton2"
           >
             <li>

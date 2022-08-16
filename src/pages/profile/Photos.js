@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import PhotoModal from '../../components/profile/PhotoModal';
 
 function Photos() {
-    const userState = useSelector(state =>state.userData.userData);
+    const otherUserState = useSelector(state =>state.otherUserData.otherUserData);
     const [openPhoto, setOpenPhoto] = useState("")
     return (
         <div className="mt-3 bg-slate-200 dark:bg-zinc-900 transition duration-700 shadow-md">
@@ -16,7 +16,7 @@ function Photos() {
                                     Photos
                                 </div>
                                 <div className='grid grid-col-1 md:grid-col-2 lg:grid-cols-4 gap-2.5 m-5'>
-                                {userState?.gallery?.map((photo, index)=>{
+                                {otherUserState?.gallery?.map((photo, index)=>{
                                     return(
                                         <div className='h-auto' key={index}>
                                             <img src={photo} alt="photos" 
@@ -26,7 +26,7 @@ function Photos() {
                                         </div>
                                     )
                                 })}
-                                {openPhoto&&<PhotoModal photo={openPhoto} gallery={userState.gallery} setOpenPhoto={setOpenPhoto}/>}
+                                {openPhoto&&<PhotoModal photo={openPhoto} gallery={otherUserState.gallery} setOpenPhoto={setOpenPhoto}/>}
                             </div>
                             </div>
                         </div>

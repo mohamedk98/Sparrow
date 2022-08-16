@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { axiosInstance } from '../../network/axiosInstance';
-import { addUserData } from '../../store/userSlice/UserDataSlice';
+import { addOtherUserData } from '../../store/userSlice/OtherUsersData';
 import Hobbies from './Hobbies';
 import UpdateInfos from './UpdateInfos';
 
 function Intro() {
-    const userState = useSelector(state =>state.userData.userData);
+    const otherUserState = useSelector(state =>state.otherUserData.otherUserData);
     const dispatch = useDispatch();
     const [bioInput, setBioInput] = useState(false);
     const [bio, setBio] = useState("");
@@ -18,7 +18,7 @@ function Intro() {
         axiosInstance
         .patch("/profile/intro", {intro:bio})
         .then((response) => {
-            dispatch(addUserData(response.data))
+            dispatch(addOtherUserData(response.data))
             setBioInput(false);
             setShowBioButton(true)
         })
@@ -30,13 +30,13 @@ function Intro() {
                 Intro
             </div>
             {showBioButton&&<div className='text-center m-3'>
-                {userState.intro}
+                {otherUserState.intro}
             </div>}
             {bioInput&&<div className='w-full'>
                     <div className='flex justify-center'>
                         <textarea rows="3" className="bg-slate-200 dark:bg-zinc-700 rounded-lg p-2 w-full border border-slate-400 resize-none hover:border-blue-500 focus:border-blue-500 focus:bg-white"
                                     onChange={(e)=>setBio(e.target.value)}
-                        >{userState.intro}</textarea>
+                        >{otherUserState.intro}</textarea>
                     </div>
                     <div className="flex gap-2.5 w-3/4 justify-center m-auto mt-4">
                         <div className="bg-slate-200 dark:bg-zinc-400 rounded-lg p-2 cursor-pointer hover:brightness-95" onClick={()=>{setBioInput(false);setShowBioButton(true)}}>
@@ -47,7 +47,7 @@ function Intro() {
                         </div>
                     </div>
             </div>}
-            { userState.currentLoginAccount&&<div>
+            { otherUserState.currentLoginAccount&&<div>
                 {showBioButton&&<div className="bg-slate-200 dark:bg-zinc-700 rounded-lg p-2 text-center my-5 cursor-pointer hover:brightness-95" onClick={()=>{setBioInput(true);setShowBioButton(false)}}>
                     <span className="font-semibold text-sm ml-1">Edit Bio</span>
                 </div>}

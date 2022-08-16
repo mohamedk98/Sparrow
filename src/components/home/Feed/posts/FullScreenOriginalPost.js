@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import AlertMessage from './AlertMessage';
 
 import PostImageGrid from './PostImageGrid';
 
@@ -7,6 +9,9 @@ const FullScreenOriginalPost = ({
   PostHalfTop,
   postMiddelAndBottom,
 }) => {
+  // To show and hide alerts:
+  const alert = useSelector(state => state.newsFeed.alert);
+
   return (
     <div
       className="modal fade fixed top-0 -left-0 justify-center align-middle text-center hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto md:overflow-y-hidden"
@@ -45,6 +50,11 @@ const FullScreenOriginalPost = ({
           </div>
         </div>
       </div>
+      {alert.message && (
+        <div className="fixed bottom-0 left-2 z-10 ">
+          <AlertMessage alert={alert} />
+        </div>
+      )}
     </div>
   );
 };

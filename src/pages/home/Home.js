@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUserData } from '../../store/userSlice/UserDataSlice';
 import Chat from '../../components/chat/Chat';
 import AlertMessage from '../../components/home/Feed/posts/AlertMessage';
+
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const Home = () => {
         <Feed />
         <RightSideBar setOpenChats={addChatHandler} />
       </div>
-      <div className=" z-50 fixed bottom-0 right-0 ">
+      <div className="  fixed bottom-0 right-0 ">
         {openChats.map(openChat => (
           <Chat
             key={openChat.id}
@@ -62,9 +63,11 @@ const Home = () => {
           />
         ))}
       </div>
-      <div className="fixed bottom-0 left-2 z-60">
-        <AlertMessage alert={alert} />
-      </div>
+      {alert.message && (
+        <div className="fixed bottom-0 left-2 ">
+          <AlertMessage alert={alert} />
+        </div>
+      )}
     </div>
   );
 };

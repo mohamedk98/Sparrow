@@ -130,7 +130,7 @@ const LikeButton = ({
       type="button"
       className={
         `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-8 md:px-11 ${
-          postsProfile && 'lg:px-5 lg:hover:px-5'
+          postsProfile && 'lg:px-5 hover:lg:px-5 hover:lg:mx-9'
         } lg:px-14 rounded-lg ` +
         reactClass +
         ' ' +

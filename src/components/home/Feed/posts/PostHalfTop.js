@@ -53,7 +53,7 @@ const PostHalfTop = ({
             <span className={'text-gray-600 text-sm block ' + dateClassName}>
               {postDate}
             </span>
-            {!sharedPost && (
+            {!sharedPost && userID === sharerId && (
               <More
                 text={userID === sharerId ? 'Delete post' : 'Hide post'}
                 text2={userID === sharerId && 'Edit post'}
@@ -62,7 +62,9 @@ const PostHalfTop = ({
                 iconClassName={
                   hideMore === true
                     ? 'hidden'
-                    : `w-9 h-9 ${postsProfile && 'ml-24'}`
+                    : `w-9 h-9 ${
+                        postsProfile && 'ml-24 md1:ml-0 lg:ml-5 2xl:ml-0'
+                      }`
                 }
                 liNum1={1}
                 liNum2={userID === sharerId ? 2 : false}

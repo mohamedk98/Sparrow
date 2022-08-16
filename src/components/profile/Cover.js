@@ -6,11 +6,11 @@ import { MdOutlineUpload } from "react-icons/md";
 import CoverSelectPhoto from "./CoverSelectPhoto";
 import { axiosInstance } from "../../network/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserData } from "../../store/userSlice/UserDataSlice";
 import PhotoModalSingle from "./PhotoModalSingle";
+import { addOtherUserData } from "../../store/userSlice/OtherUsersData";
 
 function Cover() {
-  const userState = useSelector((state) => state.userData.userData);
+  const otherUserState = useSelector(state =>state.otherUserData.otherUserData);
   const dispatch = useDispatch();
   const [openPhoto, setOpenPhoto] = useState(false);
   const [showCoverMenu, setShowCoverMenu] = useState(false);
@@ -18,7 +18,7 @@ function Cover() {
   const [coverPic, setCoverPic] = useState(cover);
   const [error, setError] = useState("");
   const refInput = useRef(null);
-  useEffect(()=>setCoverPic(userState.coverImage),[coverPic, dispatch, userState.coverImage])
+  useEffect(()=>setCoverPic(otherUserState.coverImage),[coverPic, dispatch, otherUserState.coverImage])
   
   const handleImage = (e) => {
     let file = e.target.files[0];
@@ -36,11 +36,7 @@ function Cover() {
       setShowCoverMenu(false);
       return;
     }
-    /* const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          setCoverPic(event.target.result)
-        } */
+
     let formData = new FormData();
     formData.append("coverImage", file);
     axiosInstance
@@ -50,8 +46,8 @@ function Cover() {
         },
       })
       .then((response) => {
-        dispatch(addUserData(response.data.newProfile))
-        setCoverPic(userState.coverImage)});
+        dispatch(addOtherUserData(response.data.newProfile))
+        setCoverPic(otherUserState.coverImage)});
     setShowCoverMenu(false);
     setError(null);
   };
@@ -71,7 +67,7 @@ function Cover() {
         }
         {openPhoto&&<PhotoModalSingle photo={coverPic} setOpenPhoto={setOpenPhoto}/>}
         {error && <div className="text-end text-red-600">{error}</div>}
-        {userState.currentLoginAccount&&<div className="absolute bottom-4 right-4">
+        {otherUserState.currentLoginAccount&&<div className="absolute bottom-4 right-4">
           <div
             className="bg-white p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer hover:brightness-95"
             onClick={() => {

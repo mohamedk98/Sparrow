@@ -20,7 +20,7 @@ const LeftSideBar = () => {
   };
 
   const profileHandler = () => {
-    navigate('/profile/friends');
+    navigate(`/${userState.username}/friends`);
   };
 
   //logout functionality
@@ -53,7 +53,7 @@ const LeftSideBar = () => {
   ];
 
   return (
-    <div className="hidden lg:flex fixed z-10">
+    <div className="hidden lg1:flex fixed z-10">
       <div
         className={`bg-facebook-grey h-screen p-5 pt-8 ${
           open ? 'w-38' : 'w-24'
