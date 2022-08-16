@@ -30,13 +30,17 @@ const SharedPost = ({ postsProfile }) => {
   // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
 
+  // Read loggedIn user data from store:
   const userData = useSelector(state => state.newsFeed.profileData);
+
+  // Read loggedIn friends user data from store:
   const otherUserState = useSelector(
     state => state?.otherUserData?.otherUserData
   );
+  // console.log(otherUserState?._id);
 
+  // store posts from DB in an array:
   const [posts, setPosts] = useState([]);
-  console.log(otherUserState?._id);
 
   // Infinte scroll:
   let pageNumber = useRef(1);
@@ -53,18 +57,21 @@ const SharedPost = ({ postsProfile }) => {
       )
       .then(response => {
         console.log(response);
-        response.data.allPosts.map(res => {
+
+        //Store page number in all posts:
+        response?.data?.allPosts?.map(res => {
           res.pageNum = response?.data?.page;
           onePage.push(res);
+
+          response.data.allPosts.length === 0 && setLoading(false);
         });
 
         // setPosts(prev => [...prev, ...onePage]);
-        setPosts(response.data.allPosts);
-        console.log(userData);
+        setPosts(onePage);
 
-        dispatch(forceUpdateHandler(0));
+        dispatch(forceUpdateHandler(100000));
         console.log(posts);
-        console.log(response.data.page);
+        // console.log(response.data.page);
 
         setLoading(false);
       })
@@ -72,7 +79,7 @@ const SharedPost = ({ postsProfile }) => {
         console.log(error);
       });
     pageNumber.current += 1;
-  }, [otherUserState]);
+  }, [otherUserState._id]);
 
   const handleScroll = useCallback(
     e => {
@@ -98,7 +105,7 @@ const SharedPost = ({ postsProfile }) => {
       .get('/profile')
       .then(response => {
         // console.log(response.data);
-        dispatch(profileDataHandler(response.data));
+        dispatch(profileDataHandler(response?.data));
       })
       .catch(error => {
         console.log(error);
@@ -124,11 +131,11 @@ const SharedPost = ({ postsProfile }) => {
           });
 
           setPosts(onePage);
-          console.log(userData);
+          // console.log(userData);
 
           // setPosts(onePage);
 
-          dispatch(forceUpdateHandler(0));
+          dispatch(forceUpdateHandler(100000));
           console.log(posts);
           console.log(response.data.page);
         })

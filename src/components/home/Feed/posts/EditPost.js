@@ -59,7 +59,7 @@ const EditPost = ({
 
   // Force rerender:
   const dispatch = useDispatch();
-  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
 
   // To get the value of textArea field:
   let caption = '';
@@ -124,7 +124,7 @@ const EditPost = ({
         setLoading(false);
 
         setTimeout(() => {
-          dispatch(forceUpdateHandler(!forceReRender));
+          dispatch(forceUpdateHandler(10000));
         }, 3000);
       })
       .catch(error => {
@@ -178,7 +178,7 @@ const EditPost = ({
         setLoading(false);
 
         setTimeout(() => {
-          dispatch(forceUpdateHandler(!forceReRender));
+          dispatch(forceUpdateHandler(1000));
         }, 3000);
       })
       .catch(error => {

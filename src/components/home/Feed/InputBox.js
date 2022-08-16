@@ -6,7 +6,6 @@ import CreatePostModal from './CreatePostModal';
 import { useSelector } from 'react-redux';
 
 const InputBox = ({ showModal, setShowModal }) => {
-  console.log(showModal);
   // User data:
   const user = useSelector(state => state.newsFeed.profileData);
 

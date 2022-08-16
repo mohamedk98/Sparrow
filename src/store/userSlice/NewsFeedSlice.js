@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   postsData: [],
   profileData: {},
-  forceUpdate: false,
+  forceUpdate: 10000000,
   alert: {},
 };
 

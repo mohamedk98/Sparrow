@@ -25,7 +25,7 @@ const ReplyLikeButton = ({
 }) => {
   // Rerender:
   const dispatch = useDispatch();
-  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
 
   // Reactions type set:
   const [reactType, setReactType] = useState('');
@@ -64,27 +64,18 @@ const ReplyLikeButton = ({
           headers: { 'Content-Type': 'application/json' },
         })
         .then(response => {
-          console.log(
-            `${postId}/${commentId}/${replyId}/${comment}/${reply}/${sharedPost}`
-          );
+          // console.log(
+          //   `${postId}/${commentId}/${replyId}/${comment}/${reply}/${sharedPost}`
+          // );
           // console.log(data._id);
           console.log(response);
-          dispatch(forceUpdateHandler(!forceReRender));
+          dispatch(forceUpdateHandler(200000));
         })
         .catch(error => {
           console.log(error);
         });
     },
-    [
-      comment,
-      commentId,
-      dispatch,
-      forceReRender,
-      postId,
-      reply,
-      replyId,
-      sharedPost,
-    ]
+    [comment, commentId, dispatch, postId, reply, replyId, sharedPost]
   );
 
   // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
@@ -92,7 +83,8 @@ const ReplyLikeButton = ({
     console.log(curruntUserCommentReaction);
     // for comments:
     // Handle incoming reaction from Data Base:
-    if (curruntUserCommentReaction && !reactionClicked) {
+    if (!reactionClicked) {
+      // if (curruntUserCommentReaction && !reactionClicked) {
       // Handle className and style for like button in post:
       ReactionClassHandler(curruntUserCommentReaction, setReactClass);
 
@@ -102,6 +94,7 @@ const ReplyLikeButton = ({
 
     // For replys:
     // Handle incoming reaction from Data Base:
+    // if (!reactionClicked) {
     if (curruntUserReplyReaction && !reactionClicked) {
       // Handle className and style for like button in post:
       ReactionClassHandler(curruntUserReplyReaction, setReactClass);

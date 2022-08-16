@@ -9,6 +9,8 @@ import wowSVG from '../../../../assets/reacts/wow.svg';
 import sadSVG from '../../../../assets/reacts/sad.svg';
 import angrySVG from '../../../../assets/reacts/angry.svg';
 import ReactionClassHandler from './ReactionClasses';
+import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import { useDispatch } from 'react-redux';
 
 const LikeButton = ({
   reactType,
@@ -27,6 +29,9 @@ const LikeButton = ({
   // For like button position in profile page:
   postsProfile,
 }) => {
+  // For rerender:
+  const dispatch = useDispatch();
+
   // Reaction from API for current user:
   const userReaction = (sharedPost ? sharedPostData : data)?.reactions?.filter(
     reaction => reaction?.userId?._id === userID
@@ -58,7 +63,8 @@ const LikeButton = ({
   // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
   useEffect(() => {
     // Handle incoming reaction from Data Base:
-    if (userReaction && !reactionClicked) {
+    if (!reactionClicked) {
+      // if (userReaction && !reactionClicked) {
       // Handle className and style for like button in post:
       ReactionClassHandler(userReaction, setReactClass);
 
@@ -112,8 +118,11 @@ const LikeButton = ({
       setBtnClicked(!btnClicked);
       reactHandler('', false);
     }
+
+    dispatch(forceUpdateHandler(100000));
   }, [
     btnClicked,
+    dispatch,
     reactClass,
     reactHandler,
     reactType,

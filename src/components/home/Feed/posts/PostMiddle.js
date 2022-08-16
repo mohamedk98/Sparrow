@@ -47,6 +47,9 @@ const PostMiddle = ({
   // For the middle three buttons position:
   postsProfile,
 }) => {
+  // Open share modal:
+  const [showModal, setShowModal] = useState(false);
+
   // Force Rerender:
   const dispatch = useDispatch();
 
@@ -196,6 +199,7 @@ const PostMiddle = ({
           onClick={() => {
             // console.log(data);
             // console.log(data?._id);
+            setShowModal(!showModal);
           }}
         >
           <RiShareForwardFill className="mt-0.5 mr-2 text-2xl" />
@@ -205,32 +209,39 @@ const PostMiddle = ({
         {
           // Share modal:
         }
-        <ShareModal
-          modelID={`sharemodal${data?._id}end`}
-          profileSRC={userData?.profileImage}
-          profileFName={userData?.firstName}
-          profileLName={userData?.lastName}
-          postDate={
-            sharedPost
-              ? data?.originalPostId?.createdAt?.slice(0, 10)
-              : data?.createdAt?.slice(0, 10)
-          }
-          hideMore={true}
-          postCreatorName={
-            sharedPost
-              ? `${data?.originalPostId?.userId?.firstName} ${data?.originalPostId?.userId?.lastName}`
-              : `${data?.userId?.firstName} ${data?.userId?.lastName}`
-          }
-          postCreatorProfileSRC={
-            sharedPost
-              ? data?.originalPostId?.userId?.profileImage
-              : data?.userId?.profileImage
-          }
-          postBody={sharedPost ? data?.originalPostId?.content : data?.content}
-          postImage={sharedPost ? data?.originalPostId?.media : data?.media}
-          reverseDirection={true}
-          postId={sharedPost ? data?.originalPostId?._id : data?._id}
-        />
+        {showModal && (
+          <ShareModal
+            // modelID={`sharemodal${data?._id}end`}
+            profileSRC={userData?.profileImage}
+            profileFName={userData?.firstName}
+            profileLName={userData?.lastName}
+            postDate={
+              sharedPost
+                ? data?.originalPostId?.createdAt?.slice(0, 10)
+                : data?.createdAt?.slice(0, 10)
+            }
+            hideMore={true}
+            postCreatorName={
+              sharedPost
+                ? `${data?.originalPostId?.userId?.firstName} ${data?.originalPostId?.userId?.lastName}`
+                : `${data?.userId?.firstName} ${data?.userId?.lastName}`
+            }
+            postCreatorProfileSRC={
+              sharedPost
+                ? data?.originalPostId?.userId?.profileImage
+                : data?.userId?.profileImage
+            }
+            postBody={
+              sharedPost ? data?.originalPostId?.content : data?.content
+            }
+            postImage={sharedPost ? data?.originalPostId?.media : data?.media}
+            reverseDirection={true}
+            postId={sharedPost ? data?.originalPostId?._id : data?._id}
+            // Open share modal:
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        )}
       </div>
 
       {

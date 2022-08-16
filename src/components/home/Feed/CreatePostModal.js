@@ -6,7 +6,10 @@ import { IoMdPhotos } from 'react-icons/io';
 import UploadPhoto from './UploadPhoto';
 import IsLoadingScreen from './IsLoadingScreen';
 import { useDispatch, useSelector } from 'react-redux';
-import { alertHandler } from '../../../store/userSlice/NewsFeedSlice';
+import {
+  alertHandler,
+  forceUpdateHandler,
+} from '../../../store/userSlice/NewsFeedSlice';
 
 const CreatePostModal = ({ showModal, setShowModal }) => {
   // User data:
@@ -62,6 +65,8 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               statusCode: 200,
             })
           );
+
+          dispatch(forceUpdateHandler(200000));
         }
       })
       .catch(err => {

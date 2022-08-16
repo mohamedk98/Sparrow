@@ -44,7 +44,7 @@ const TextArea = ({
 }) => {
   // Force rerender:
   const dispatch = useDispatch();
-  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
 
   // For textArea value:
   const textareaRef = useRef('');
@@ -293,7 +293,7 @@ const TextArea = ({
 
                 e.target.style.height = `${32}px`;
                 setTimeout(() => {
-                  dispatch(forceUpdateHandler(!forceReRender));
+                  dispatch(forceUpdateHandler(20000));
                 }, 100);
               }
             }

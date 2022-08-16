@@ -37,7 +37,7 @@ const More = ({
   // for edit and delete post:
   sharededitPost,
 }) => {
-  console.log(id, userID);
+  // console.log(id, userID);
   // console.log(sharedPost);
   // console.log(text, text2, liNum1, liNum2);
   // console.log(id, userID);
@@ -46,7 +46,7 @@ const More = ({
 
   // Rerender:
   const dispatch = useDispatch();
-  const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
+  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
   // console.log(editReply);
   // console.log(userID);
   // console.log(id, userID, sharedPostData);
@@ -382,7 +382,7 @@ const More = ({
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
-                      dispatch(forceUpdateHandler(!forceReRender));
+                      dispatch(forceUpdateHandler(1000000000));
                     }}
                   >
                     <MdDelete className="text-xl mx-3.5 " />
