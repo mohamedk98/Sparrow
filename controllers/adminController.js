@@ -25,7 +25,7 @@ const getAllUsers = (req, res,next) => {
   };
 
   const deleteUser = (req, res) => {
-    const userId = req.body.userId
+    const userId = req.params.userId
     userApi.deleteOne({_id:userId})
     .then(response => res.status(200).send("User is deleted successfully"))
     .catch(error => res.status(400).send(error))
@@ -38,7 +38,7 @@ const getAllUsers = (req, res,next) => {
   };
 
   const deletePost = async (req, res) => {
-    const postId = req.body.postId
+    const postId = req.params.postId
     postApi.findByIdAndDelete(postId)
     .then(response => res.status(200).send("Post is deleted successfully"))
     .catch(error => res.status(400).send(error))
