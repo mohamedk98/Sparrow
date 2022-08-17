@@ -52,6 +52,15 @@ const profileImagesStorage = multerS3({
   },
 });
 
+const adminImagesStorage = multerS3({
+  s3: s3,
+  bucket: "zombie-hat",
+  key: function (req, file, cb) {
+    const uniqueFileName = crypto.randomBytes(16).toString("hex");
+    cb(null, "admin_images/" + uniqueFileName + "-" + file.originalname);
+  },
+});
+
 //images filter
 const imagesFilter = (req, file, cb) => {
   if (
@@ -83,5 +92,11 @@ const profileImageUpload =multer({
   limits: { fileSize: 5000000 }, //max file size is 5 megabytes
 });
 
+const adminImageUpload =multer({
+  storage: adminImagesStorage,
+  fileFilter: imagesFilter,
+  limits: { fileSize: 5000000 }, //max file size is 5 megabytes
+});
 
-module.exports = { imagesUpload,coverImageUpload,profileImageUpload };
+
+module.exports = { imagesUpload,coverImageUpload,profileImageUpload,adminImageUpload };
