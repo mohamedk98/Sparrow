@@ -47,7 +47,7 @@ function Chat({ profileImage, name, id, closeChat }) {
   };
 
   return (
-    <div className="mx-2 w-80  rounded-t-xl bg-white shadow-lg shadow-gray-500">
+    <div className="mx-2 w-80  rounded-t-xl bg-white shadow-lg shadow-gray-500 z-auto">
       <div className="flex justify-between p-2 border-b-2 border-slate-200">
         <div className="flex">
           <img

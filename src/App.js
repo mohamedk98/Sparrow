@@ -15,11 +15,11 @@ import { addUserData } from './store/userSlice/UserDataSlice';
 // import Login from './pages/login/Login';
 // import Reset from './pages/reset/Reset';
 // import ResetPassword from './pages/reset/ResetPassword';
-// import Profile from './pages/profile/Profile';
-// import ProfilePosts from './pages/profile/ProfilePosts';
-// import About from './pages/profile/About';
-// import Friends from './pages/profile/Friends';
-// import Photos from './pages/profile/Photos';
+import Profile from './pages/profile/Profile';
+import ProfilePosts from './pages/profile/ProfilePosts';
+import About from './pages/profile/About';
+import Friends from './pages/profile/Friends';
+import Photos from './pages/profile/Photos';
 
 // Laze Loading for performance reasons:
 const Error = lazy(() => import('./pages/error/Error'));
@@ -27,11 +27,11 @@ const Home = lazy(() => import('./pages/home/Home'));
 const Login = lazy(() => import('./pages/login/Login'));
 const Reset = lazy(() => import('./pages/reset/Reset'));
 const ResetPassword = lazy(() => import('./pages/reset/ResetPassword'));
-const Profile = lazy(() => import('./pages/profile/Profile'));
-const ProfilePosts = lazy(() => import('./pages/profile/ProfilePosts'));
-const About = lazy(() => import('./pages/profile/About'));
-const Friends = lazy(() => import('./pages/profile/Friends'));
-const Photos = lazy(() => import('./pages/profile/Photos'));
+// const Profile = lazy(() => import('./pages/profile/Profile'));
+// const ProfilePosts = lazy(() => import('./pages/profile/ProfilePosts'));
+// const About = lazy(() => import('./pages/profile/About'));
+// const Friends = lazy(() => import('./pages/profile/Friends'));
+// const Photos = lazy(() => import('./pages/profile/Photos'));
 
 function App() {
   const navigate = useNavigate();
