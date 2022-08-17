@@ -50,8 +50,8 @@ app.use(
 const { connectToRedis } = require("./services/redisClient.service");
 
 //Routes
-const adminAuthenticationRouter = require("./routes/adminAuthentication")
-const adminRouter = require("./routes/admin")
+const adminAuthenticationRouter = require("./routes/adminAuthentication");
+const adminRouter = require("./routes/admin");
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
@@ -86,7 +86,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use(morgan("dev"));
 //Admin Routes
 app.use(adminAuthenticationRouter);
-app.use("/admin",adminRouter)
+app.use("/admin", adminRouter);
 
 app.use(authenticationRouter);
 
@@ -119,10 +119,8 @@ io.on("connection", async (socket) => {
     let room = await roomApi
       .findOne()
       .where("userIds")
-      .in(receiverId)
-      .and("userIds")
-      .in(socket.handshake.auth.userId );
-
+      .all([socket.handshake.auth.userId,receiverId]);
+    console.log(room)
     if (!room) {
       try {
         let newRoom = new roomApi();
