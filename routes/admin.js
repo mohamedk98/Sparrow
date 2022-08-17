@@ -18,7 +18,7 @@ router.use(authorization, (req,res,next)=>{
 /* Admin data router */
 router.post("/create-admin",createAdmin)
 router.post("/change-profile",adminImageUpload.single("media"),changeAdminImage)
-router.get("/profie",getAdminData)
+router.get("/profile",getAdminData)
 
 /* user data router */
 router.get("/users",getAllUsers)

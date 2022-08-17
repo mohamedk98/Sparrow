@@ -2,9 +2,12 @@ const userApi = require("../models/User");
 const postApi = require("../models/Posts");
 const adminApi = require("../models/Admin");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 const createAdmin = (req, res) => {
-  const username = req.body.username;
+  const username = `${req.body.fullName}-${crypto
+    .randomBytes(12)
+    .toString("hex")}`;
   const email = req.body.email;
   const password = req.body.password;
   const fullName = req.body.fullName;
