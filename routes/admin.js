@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {getAllUsers, deleteUser, getAllPosts, deletePost, createAdmin} = require("../controllers/adminController")
-const {changeAdminImage} = require("../controllers/adminAuthenticationController")
+const {changeAdminImage,getAdminData} = require("../controllers/adminAuthenticationController")
 const authorization = require("../middlwares/adminAuthorization");
 const { adminImageUpload } = require("../middlwares/fileUpload");
 
@@ -18,6 +18,7 @@ router.use(authorization, (req,res,next)=>{
 /* Admin data router */
 router.post("/create-admin",createAdmin)
 router.post("/change-profile",adminImageUpload.single("media"),changeAdminImage)
+router.get("/profie",getAdminData)
 
 /* user data router */
 router.get("/users",getAllUsers)

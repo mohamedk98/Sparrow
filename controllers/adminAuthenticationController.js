@@ -40,6 +40,15 @@ const adminLogout = async (req, res) => {
   res.status(200).send({ message: "Successfully logged out 😏 🍀" });
 };
 
+const getAdminData = async (req, res) => {
+  const adminId = req.id;
+
+  admin
+    .findById(adminId)
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error));
+};
+
 const changeAdminImage = async (req, res) => {
   const newAdminImage = req.file.location;
   const adminId = req.id;
@@ -48,4 +57,4 @@ const changeAdminImage = async (req, res) => {
     .then((response) => res.status(200).send("Image Changed Successfully"))
     .catch((error) => res.status(400).send(error));
 };
-module.exports = { adminLogin, adminLogout, changeAdminImage };
+module.exports = { adminLogin, adminLogout, changeAdminImage,getAdminData };
