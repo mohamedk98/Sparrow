@@ -79,7 +79,7 @@ const updatePost = async (req, res) => {
   const images = req.files;
   const content = req.body.content;
   const visiability = req.body.visiability;
-
+  // const currentMedia = req.body.currentMedia
   let media = images.map((image) => {
     return image.location;
   });

@@ -79,17 +79,17 @@ class UserApi {
     return userData;
   }
 
-  async getUserPosts(userId, page=1) {
-    // const limit = 5;
-    // let skip = page * limit;
-    // if (page === 1) {
-    //   skip = 1;
-    // }
+  async getUserPosts(userId, page) {
+    const limit = 5;
+    let skip = page * limit;
+    if (page === 1) {
+      skip = 1;
+    }
     //get user created posts
     const userPosts = await postApi
-      .find({ userId })
-      // .limit(limit)
-      // .skip(skip)
+      .find({userId})
+      .limit(limit)
+      .skip(skip)
       .populate({
         path: "comments.userId",
         select: "firstName lastName profileImage _id",
@@ -115,8 +115,8 @@ class UserApi {
     //get users shared post
     const userSharedPosts = await sharedPostApi
       .find({ sharerId: userId })
-      // .limit(limit)
-      // .skip(skip)
+      .limit(limit)
+      .skip(skip)
       .populate({
         path: "originalPostId",
         populate: {
