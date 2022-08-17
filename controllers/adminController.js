@@ -39,7 +39,7 @@ const getAllUsers = (req, res,next) => {
 
   const deletePost = async (req, res) => {
     const postId = req.body.postId
-    userApi.deleteOne({_id:postId})
+    postApi.findByIdAndDelete(postId)
     .then(response => res.status(200).send("Post is deleted successfully"))
     .catch(error => res.status(400).send(error))
   };
