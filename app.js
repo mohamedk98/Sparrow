@@ -139,16 +139,18 @@ io.on("connection", async (socket) => {
     socket.emit("sent messages", room.messages);
 
     //when sending a message,emit it to the room,add the message to the room then save it in DB
-    socket.on("message", async (message, senderId) => {
-      io.to(room._id.toString()).emit("message", { message, senderId });
-      room.messages.push({
-        sender: senderId,
-        receiverId: receiverId,
-        message: message,
-        timestamp: new Date().toISOString(),
-      });
-      await room.save();
+
+  });
+
+  socket.on("message", async (message, senderId) => {
+    io.to(room._id.toString()).emit("message", { message, senderId });
+    room.messages.push({
+      sender: socket.handshake.auth.userId,
+      receiverId: senderId,
+      message: message,
+      timestamp: new Date().toISOString(),
     });
+    await room.save();
   });
 
   socket.on("disconnect", () => {
