@@ -41,7 +41,6 @@ const getNewsfeed = (req, res) => {
 
 const getUserPosts = async (req, res) => {
   const userId = req.query.userId;
-  console.log(userId)
   const page = req.params.page
   await userApi
     .getUserPosts(userId,page)
