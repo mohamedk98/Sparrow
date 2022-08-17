@@ -40,7 +40,7 @@ const postSchema = new mongoose.Schema({
     },
   ],
   sharesCount: { type: Number, default: 0 },
-  visiability: { type: String, default: "public", required: true },
+  visiability: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Post", postSchema);
