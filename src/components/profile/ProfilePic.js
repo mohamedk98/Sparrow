@@ -78,7 +78,7 @@ function ProfilePic() {
                     ></img>
                 </div>
                 {openPhoto&&<PhotoModalSingle photo={otherUserState?.profileImage} setOpenPhoto={setOpenPhoto}/>}
-                {otherUserState.currentLoginAccount&&<div className="absolute w-9 h-9 lg:right-2 right-10 bottom-16 grid justify-center items-center cursor-pointer bg-slate-200 dark:bg-zinc-700 transition duration-700 dark:text-white rounded-full" onClick={()=>setChoosePic(true)}>
+                {otherUserState.currentLoginAccount&&<div className="absolute w-9 h-9 lg:right-2 right-10 bottom-16 grid justify-center items-center cursor-pointer bg-indigo-200 dark:bg-zinc-700 transition duration-700 dark:text-white rounded-full" onClick={()=>setChoosePic(true)}>
                     <AiFillCamera className='w-6 h-6' />
                 </div>}
                 {choosePic&&<PicUploadModal setChoosePic={setChoosePic} choosePic={choosePic}/>}
@@ -97,7 +97,7 @@ function ProfilePic() {
             </div>
             {otherUserState.currentLoginAccount
             ?<div className="flex gap-2.5 py-2.5 mb-2">
-                <div className="bg-blue-500 text-slate-100 dark:bg-zinc-700 rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95"
+                <div className="bg-indigo-500 text-slate-100 dark:bg-zinc-700 rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95"
                     onClick={()=>setEditProfile(true)}
                 >
                     <MdEdit className="w-5 h-5" />
@@ -133,7 +133,7 @@ function ProfilePic() {
                 </div>)}
             </div>:
             <div className="flex relative gap-2.5 py-2.5 mb-2">
-                <div className={`${otherUserState?.friendsRequests?.some(id=>id.userId===userState._id)?"bg-blue-400 dark:bg-zinc-500 text-white rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95":"bg-blue-600 dark:bg-zinc-700 text-white rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95"}`} 
+                <div className={`${otherUserState?.friendsRequests?.some(id=>id.userId===userState._id)?"bg-indigo-400 dark:bg-zinc-500 text-white rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95":"bg-indigo-600 dark:bg-zinc-700 text-white rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95"}`} 
                     onClick={()=>addFriend(otherUserState._id)}>
                     <AiOutlineUserAdd className="w-5 h-4" />
                     {otherUserState?.friendsRequests?.some(id=>id.userId===userState._id)?<span className="ml-1">Request Sent</span>:<span className="ml-1">Add Friend</span>}

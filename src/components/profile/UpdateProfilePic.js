@@ -103,10 +103,10 @@ function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChooseP
                 </div>
                 <div className='relative h-20'>
                     <div className='absolute right-2 flex justify-end gap-2.5 w-1/3'>
-                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer text-blue-500 rounded-lg hover:brightness-95' onClick={()=>setUpdate(false)}>
+                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer text-indigo-500 rounded-lg hover:brightness-95' onClick={()=>setUpdate(false)}>
                             <span>Cancel</span>
                         </div>
-                        <div className='flex justify-between items-center gap-2 my-3 py-2 px-8 cursor-pointer bg-blue-500 text-white rounded-lg hover:brightness-95'>
+                        <div className='flex justify-between items-center gap-2 my-3 py-2 px-8 cursor-pointer bg-indigo-500 text-white rounded-lg hover:brightness-95'>
                             <button onClick={()=>profilePicHandler(pic)}>Save</button>
                         </div>
                     </div>

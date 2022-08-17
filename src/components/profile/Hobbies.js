@@ -39,7 +39,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
             <hr></hr>
             <div className='my-4'>
                 <div className='flex flex-wrap gap-2.5 border my-3 rounded-lg p-3'>
-                    <div className={music?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={music?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setMusic(prev=>!prev);
                                 if(hobbies.includes("🎵 Listening to music")){
@@ -52,7 +52,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🎵 Listening to music</span>
                     </div>
-                    <div className={reading?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={reading?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setReading(prev=>!prev);
                                 if(hobbies.includes("📖 Reading")){
@@ -65,7 +65,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>📖 Reading</span>
                     </div>
-                    <div className={travelling?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={travelling?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setTravelling(prev=>!prev);
                                 if(hobbies.includes("🌍 Travelling")){
@@ -78,7 +78,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🌍 Travelling</span>
                     </div>
-                    <div className={movies?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={movies?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setMovies(prev=>!prev);
                                 if(hobbies.includes("🎥 Watch Movies")){
@@ -91,7 +91,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🎥 Watch Movies</span>
                     </div>
-                    <div className={cooking?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={cooking?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setCooking(prev=>!prev);
                                 if(hobbies.includes("🍳 Cooking")){
@@ -104,7 +104,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🍳 Cooking</span>
                     </div>
-                    <div className={art?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={art?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setArt(prev=>!prev);
                                 if(hobbies.includes("🎨 Art")){
@@ -117,7 +117,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🎨 Art</span>
                     </div>
-                    <div className={swimming?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={swimming?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setSwimming(prev=>!prev);
                                 if(hobbies.includes("🏊‍♀️ Swimming")){
@@ -130,7 +130,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🏊‍♀️ Swimming</span>
                     </div>
-                    <div className={eating?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={eating?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setEating(prev=>!prev);
                                 if(hobbies.includes("🍕 Eating")){
@@ -143,7 +143,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🍕 Eating</span>
                     </div>
-                    <div className={dance?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={dance?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setDance(prev=>!prev);
                                 if(hobbies.includes("🕺 Dance")){
@@ -156,7 +156,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             }}>
                         <span>🕺 Dance</span>
                     </div>
-                    <div className={singing?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-blue-100 text-blue-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
+                    <div className={singing?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
                                 setSinging(prev=>!prev);
                                 if(hobbies.includes("🎤 Singing")){
@@ -173,14 +173,14 @@ function Hobbies({showHobbies, setShowHobbies}) {
                 <div className='flex flex-wrap gap-2.5 border my-3 rounded-lg p-3'>
                     {hobbies.map((hobby, index)=>{
                         return (
-                            <div key={index} className='flex h-fit items-center text-base py-2 px-3 rounded-3xl w-fit border bg-blue-300 text-white'>
+                            <div key={index} className='flex h-fit items-center text-base py-2 px-3 rounded-3xl w-fit border bg-indigo-300 text-white'>
                                 <span>{hobby}</span>
                             </div>)
                     })}
                 </div>
                 <div className='mx-2 text-lg'>
                     <button  
-                            className='text-white bg-blue-500 p-2 rounded-lg m-2 hover:brightness-95'
+                            className='text-white bg-indigo-500 p-2 rounded-lg m-2 hover:brightness-95'
                             onClick={()=>{
                                 hobbiesHandler()
                             }}

@@ -60,7 +60,7 @@ function PicUploadModal({ setChoosePic,choosePic }) {
           />
         </div>
         <div className="flex justify-center gap-3 my-3">
-          <div className="bg-blue-100 text-blue-500 text-center w-2/4 rounded-lg p-3">
+          <div className="bg-indigo-100 text-indigo-500 text-center w-2/4 rounded-lg p-3">
             <AiOutlinePlus className="inline w-5 h-5" />
             <span
               className="font-semibold ml-1 cursor-pointer"
