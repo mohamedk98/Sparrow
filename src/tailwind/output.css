@@ -6596,7 +6596,7 @@ textarea.form-control.is-invalid {
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
-.text-facebook-blue {
+.text-indigo-500 {
   --tw-text-opacity: 1;
   color: rgb(24 119 242 / var(--tw-text-opacity));
 }
@@ -6976,7 +6976,7 @@ textarea.form-control.is-invalid {
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
-.hover\:text-facebook-blue:hover {
+.hover\:text-indigo-500:hover {
   --tw-text-opacity: 1;
   color: rgb(24 119 242 / var(--tw-text-opacity));
 }

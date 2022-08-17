@@ -11,9 +11,9 @@ import { BsToggle2Off } from "react-icons/bs";
 import SearchMenu from "./SearchMenu";
 import { axiosInstance } from "../../../network/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import useDarkMode from "../../../hooks/useDarkMode";
+import useDarkMode from '../../../hooks/useDarkMode';
 import { removeAuthentication } from "../../../store/userSlice/UserSlice";
-
+import facebook from '../../../assets/images/Rasma.png';
 const Header = () => {
   const navigate = useNavigate();
   // For home and friends icons active style:
@@ -25,7 +25,7 @@ const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [lang, setLang] = useState(false);
   const [showSearchMenu, setShowSearchMenu] = useState(false);
-
+  const [colorTheme, setTheme] = useDarkMode();
   // Search:
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
@@ -50,11 +50,12 @@ const Header = () => {
   };
 
   return (
-    <nav className="pt-3 px-6 bg-gray-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60">
+    <nav className="pt-3 px-6 bg-slate-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60">
       <div className="flex">
-        <div className="flex">
-          <FaFacebook
-            className="text-facebook-blue text-4xl mr-5"
+        <div className="flex items-center">
+          <img
+          src={facebook}
+            className="text-indigo-500 text-4xl mr-5 h-16 w-14  rounded-full hover:cursor-pointer"
             onClick={() => navigate("/")}
           />
           {/*Start Search Input */}
@@ -90,8 +91,8 @@ const Header = () => {
       >
         <TiHome
           className={`${
-            location.pathname === "/" && "text-facebook-blue hover:bg-inherit"
-          } hover:text-facebook-blue text-3xl mr-1 md:mr-10 hover:bg-gray-200 px-5 py-3 w-full h-14 -mt-3`}
+            location.pathname === "/" && "text-indigo-500 hover:bg-inherit"
+          } hover:text-indigo-500 text-3xl mr-1 md:mr-10 hover:bg-gray-200 px-5 py-3 w-full h-14 -mt-3`}
         />
       </Link>
 
@@ -105,13 +106,15 @@ const Header = () => {
         <RiGroupFill
           className={`${
             location.pathname === `/${userState.username}/friends` &&
-            "text-facebook-blue hover:bg-inherit"
-          } hover:text-facebook-blue text-3xl hover:bg-gray-200 px-5 py-3 w-full h-14 b -mt-3 `}
+            "text-indigo-500 hover:bg-inherit"
+          } hover:text-indigo-500 text-3xl hover:bg-gray-200 px-5 py-3 w-full h-14 b -mt-3 `}
         />
       </Link>
 
       <div className="flex">
-        <div className="dropdown relative mr-1 md:mr-10">
+        {/* Messanger Menu */}
+        
+        {/* <div className="dropdown relative mr-1 md:mr-10">
           <a
             className="text-gray-500 hover:text-gray-700 focus:text-gray-700 mr-4 dropdown-toggle hidden-arrow flex items-center
         "
@@ -122,7 +125,7 @@ const Header = () => {
             aria-expanded="false"
           >
             <div className="bg-gray-300 w-10 h-10 rounded-full flex justify-center items-center">
-              <FaFacebookMessenger className="hover:text-facebook-blue w-11/12 h-6" />
+              <FaFacebookMessenger className="hover:text-indigo-500 w-11/12 h-6" />
             </div>
 
             <span className="text-white bg-red-700 absolute rounded-full text-xs -mt-9 ml-7 py-0 px-1.5">
@@ -161,7 +164,7 @@ const Header = () => {
               </a>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Notifications */}
         <div className="dropdown relative mr-1 md:mr-10">
@@ -174,7 +177,7 @@ const Header = () => {
             aria-expanded="false"
           >
             <div className="bg-gray-300 w-10 h-10 rounded-full flex justify-center items-center">
-              <BsBellFill className="hover:text-facebook-blue w-11/12 h-6" />
+              <BsBellFill className="hover:text-indigo-500 w-11/12 h-6" />
             </div>
             <span className="text-white bg-red-700 absolute rounded-full text-xs -mt-9 ml-7 py-0 px-1.5">
               {userState?.notifcations?.length}
@@ -238,10 +241,10 @@ const Header = () => {
                 Dark mode{" "}
                 {darkMode && (
                   <BsToggleOn
-                    className="text-facebook-blue text-2xl ml-3 -mt-0.5"
+                    className="text-indigo-500 text-2xl ml-3 -mt-0.5"
                     onClick={() => {
                       setDarkMode(!darkMode);
-                      // setTheme(colorTheme);
+                      setTheme(colorTheme);
                     }}
                   />
                 )}
@@ -250,7 +253,7 @@ const Header = () => {
                     className="text-2xl ml-3 -mt-0.5"
                     onClick={() => {
                       setDarkMode(!darkMode);
-                      // setTheme(colorTheme);
+                      setTheme(colorTheme);
                     }}
                   />
                 )}
@@ -259,7 +262,7 @@ const Header = () => {
             <li>
               <button className="dropdown-item text-sm py-2 px-4 font-normal flex w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
                 <span
-                  className={!lang ? "text-facebook-blue" : ""}
+                  className={!lang ? "text-indigo-500" : ""}
                   onClick={() => {
                     setLang(!lang);
                   }}
@@ -268,7 +271,7 @@ const Header = () => {
                 </span>{" "}
                 {lang && (
                   <BsToggleOn
-                    className="text-facebook-blue text-2xl mx-3 -mt-0.5"
+                    className="text-indigo-500 text-2xl mx-3 -mt-0.5"
                     onClick={() => {
                       setLang(!lang);
                     }}
@@ -276,14 +279,14 @@ const Header = () => {
                 )}
                 {!lang && (
                   <BsToggle2Off
-                    className="text-facebook-blue text-2xl mx-3 -mt-0.5"
+                    className="text-indigo-500 text-2xl mx-3 -mt-0.5"
                     onClick={() => {
                       setLang(!lang);
                     }}
                   />
                 )}{" "}
                 <span
-                  className={lang ? "text-facebook-blue" : ""}
+                  className={lang ? "text-indigo-500" : ""}
                   onClick={() => {
                     setLang(!lang);
                   }}
@@ -296,7 +299,7 @@ const Header = () => {
               className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex cursor-pointer align-baseline justify-cente"
               onClick={() => logoutHandler()}
             >
-              {<BiLogOut className="text-xl text-facebook-blue mr-2" />}
+              {<BiLogOut className="text-xl text-indigo-500 mr-2" />}
               Logout
             </li>
           </ul>

@@ -3,7 +3,7 @@ const ReactionClassHandler = (name, setReactClass) => {
 
   switch (name) {
     case 'Like':
-      className += 'text-facebook-blue';
+      className += 'text-indigo-500';
       break;
 
     case 'Love':

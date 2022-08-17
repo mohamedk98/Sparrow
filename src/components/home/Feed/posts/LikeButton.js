@@ -103,7 +103,7 @@ const LikeButton = ({
     ) {
       setReactType('Like');
       setReactTypeSRC(likeSVG);
-      setReactClass('text-facebook-blue font-bold');
+      setReactClass('text-indigo-500 font-bold');
       setBtnClicked(!btnClicked);
       reactHandler('Like');
     }
