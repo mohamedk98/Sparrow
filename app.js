@@ -119,7 +119,9 @@ io.on("connection", async (socket) => {
     let room = await roomApi
       .findOne()
       .where("userIds")
-      .in([socket.handshake.auth.userId, receiverId]);
+      .in(receiverId)
+      .and("userIds")
+      .in(socket.handshake.auth.userId );
 
     if (!room) {
       try {
