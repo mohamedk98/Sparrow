@@ -17,7 +17,7 @@ const sendVerifyEmail = async (name, email, verificationCode) => {
     to: email,
     subject: "ZombieHat Verification Required",
     text: `Dear ${name}, Thank you for joining our family. To activate your account please lick the following link`,
-    substitutionWrappers: [':', ''],
+    substitutionWrappers: [":", ""],
     substitutions: {
       email: email,
       verificationCode: verificationCode,
@@ -26,14 +26,15 @@ const sendVerifyEmail = async (name, email, verificationCode) => {
   });
 };
 
-const sendResetPassword = (name, email,resetToken) => {
+const sendResetPassword = (name, email, resetToken) => {
   sendgridEmail.send({
     from: "zombie.hat.iti@gmail.com",
     to: email,
     subject: "ZombieHat Password Reset",
-    substitutionWrappers: [':', ''],
+    text: `Dear ${name}, Please find below a link to reset your password`,
+    substitutionWrappers: [":", ""],
     substitutions: {
-      name:name,
+      name: name,
       email: email,
       resetToken: resetToken,
     },

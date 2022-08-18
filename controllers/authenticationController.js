@@ -67,7 +67,7 @@ const verifyEmail = (req, res) => {
 
 const sendResetPasswordEmail = (req, res) => {
   const email = req.body.email;
-
+  
   AuthenticationApi.sendResetPasswordEmail(email)
     .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(403).send(error.message));

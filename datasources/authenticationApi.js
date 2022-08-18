@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const crypto = require("crypto");
+const { sendResetPassword } = require("../utils/emailSender");
 
 //Authentication data source
 class AuthenticationApi {
@@ -90,6 +91,7 @@ class AuthenticationApi {
     try {
       user.resetPasswordCode = resetToken;
       user.passwordResetMode = true;
+      sendResetPassword(user.firstName,email,resetToken)
       await user.save();
       return {
         message: `An email has sent to ${email} for steps to change password, please check your spam`,
