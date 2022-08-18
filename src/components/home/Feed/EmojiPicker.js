@@ -6,11 +6,11 @@ const EmojiPicker = ({ chosenEmoji, onEmojiClick, positionClass }) => {
   return (
     <div
       className={
-        'flex justify-center items-center shadow-2xl absolute bottom-24 ' +
+        'flex justify-center items-center  shadow-2xl absolute bottom-24 ' +
         positionClass
       }
     >
-      <div className="max-w-sm rounded bg-white text-sm">
+      <div className="max-w-sm rounded dark:bg-zinc-800 transition duration-700  bg-white text-sm">
         {
           <div className="py-1 px-5 w-fit mx-auto mt-3 mb-1 text-base border-2 shadow-sm shadow-current">
             {chosenEmoji

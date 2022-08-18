@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { axiosInstance } from './network/axiosInstance';
@@ -9,7 +9,6 @@ import {
   removeAuthentication,
 } from './store/userSlice/UserSlice';
 import { addUserData } from './store/userSlice/UserDataSlice';
-
 import Error from './pages/error/Error';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
@@ -20,10 +19,36 @@ import ProfilePosts from './pages/profile/ProfilePosts';
 import About from './pages/profile/About';
 import Friends from './pages/profile/Friends';
 import Photos from './pages/profile/Photos';
+import {useTranslation} from 'react-i18next';
 
+
+const languages=[
+  {
+    code:'en',
+    name:'English',
+    country_code: 'gb',
+
+  },
+  {
+    code :'ar',
+    name:'العربية',
+    country_code: 'sa',
+    dir:'rtl'
+  }
+];
 
 
 function App() {
+  const cookies=require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en'
+  const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
+  const { t } = useTranslation();
+  useEffect(() => {
+    console.log('Setting page stuff')
+    // document.body.dir = currentLanguage.dir || 'ltr'
+    document.title = t('app_title')
+  }, [currentLanguage, t])
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -54,22 +79,8 @@ function App() {
   }, []);
 
   return (
-    <Suspense
-    // fallback={
-    //   <div className="text-center mt-5">
-    //     <button className="btn btn-primary" type="button" disabled>
-    //       <span
-    //         className="spinner-border spinner-border-sm"
-    //         role="status"
-    //         aria-hidden="true"
-    //       ></span>
-    //       Loading...
-    //     </button>
-    //   </div>
-    // }
-    >
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home languages={languages} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
@@ -82,7 +93,7 @@ function App() {
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>
-    </Suspense>
+
   );
 }
 

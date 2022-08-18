@@ -6,6 +6,7 @@ import ReactionClassHandler from './ReactionClasses';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import { useTranslation } from 'react-i18next';
 
 const ReplyLikeButton = ({
   setReactionClicked,
@@ -23,6 +24,7 @@ const ReplyLikeButton = ({
   // For the heart reaction size and position:
   postsProfile,
 }) => {
+  const {t}=useTranslation();
   // Rerender:
   const dispatch = useDispatch();
   // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
@@ -45,7 +47,7 @@ const ReplyLikeButton = ({
       setReactType(name);
 
       // Handle className for like button in reply:
-      ReactionClassHandler(name, setReactClass);
+      ReactionClassHandler(name, setReactClass,t);
 
       // Send post reaction to DB:
       const reactBody = {
@@ -106,14 +108,14 @@ const ReplyLikeButton = ({
 
   useEffect(() => {
     if (reactType === '' && reactClass === '' && btnClicked) {
-      reactHandler('Like');
-      setReactType('Like');
+      reactHandler(`${t('reactName1')}`);
+      setReactType(`${t('reactName1')}`);
       setReactClass('text-facebook-blue font-bold');
       setBtnClicked(!btnClicked);
     }
 
     if (
-      (reactType === 'Like' && btnClicked) ||
+      (reactType === `${t('reactName1')}` && btnClicked) ||
       (reactType !== '' && btnClicked)
     ) {
       setReactType('');
@@ -158,7 +160,7 @@ const ReplyLikeButton = ({
           setBtnClicked(!btnClicked);
         }}
       >
-        {reactType ? reactType : 'Like'}
+        {reactType ? reactType : `${t('reactName1')}`}
       </button>
     </Fragment>
   );

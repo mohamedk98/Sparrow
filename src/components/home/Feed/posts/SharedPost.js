@@ -150,7 +150,7 @@ const SharedPost = ({ postsProfile }) => {
         // SharedPost:
         return post?.sharerId ? (
           <div
-            className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7"
+            className="rounded-lg shadow-lg dark:bg-zinc-800 transition duration-700 dark:text-white bg-white p-3 max-w-2xl mx-auto my-7"
             key={post?._id}
           >
             <PostHalfTop

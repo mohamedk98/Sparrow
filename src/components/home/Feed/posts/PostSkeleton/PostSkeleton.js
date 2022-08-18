@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const PostSkeleton = () => {
   return (
-    <div className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7">
+    <div className="rounded-lg shadow-lg dark:bg-zinc-800 bg-white p-3 max-w-2xl mx-auto my-7">
       <div className="card-body relative">
         <div className="flex mb-3">
           <div className="w-12 h-12">
@@ -15,7 +15,7 @@ const PostSkeleton = () => {
             />
           </div>
 
-          <div>
+          <div className='dark:bg-zinc-900'>
             <Skeleton className="ml-5 mt-2" count={1} width={150} />
             <Skeleton className="ml-5 mt-2" count={1} width={110} />
           </div>

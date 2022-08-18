@@ -8,6 +8,7 @@ import { axiosInstance } from "../../network/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import PhotoModalSingle from "./PhotoModalSingle";
 import { addOtherUserData } from "../../store/userSlice/OtherUsersData";
+import { t } from "i18next";
 
 function Cover() {
   const otherUserState = useSelector(state =>state.otherUserData.otherUserData);
@@ -75,7 +76,7 @@ function Cover() {
             }}
           >
             <AiFillCamera className="mr-2 w-5 h-5" />
-            Add Cover Photo
+          {t('Add Cover Photo')}
           </div>
           {showCoverMenu && (
             <div className="bg-white dark:bg-zinc-700 dark:text-slate-100 transition duration-700 p-2 rounded-lg absolute right-0 w-80 shadow shadow-slate-400 dark:shadow-zinc-500 z-10">
@@ -84,7 +85,7 @@ function Cover() {
                 onClick={openModal}
               >
                 <MdPhotoLibrary className="w-5 h-5" />
-                Select Photo
+                {t('select_a_photo')}
               </div>
               {choosePic && <CoverSelectPhoto choosePic={choosePic} setChoosePic={setChoosePic} />}
               <div
@@ -92,7 +93,7 @@ function Cover() {
                 onClick={() => refInput.current.click()}
               >
                 <MdOutlineUpload className="w-5 h-5" />
-                Upload Photo
+                {t('Upload Photo')}
                 <input
                   type="file"
                   ref={refInput}

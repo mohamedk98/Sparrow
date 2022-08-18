@@ -3,6 +3,7 @@ import defaultPic from '../../assets/images/default_pic.png';
 import { MdPhotoLibrary } from 'react-icons/md';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
 import { BsFillFlagFill } from 'react-icons/bs';
+import { t } from 'i18next';
 
 function CreatePost() {
   return (
@@ -20,18 +21,18 @@ function CreatePost() {
       </div>
       <hr className="my-3"></hr>
       <div className="flex justify-around my-0.5 p-4 h-auto">
-        <div className="text-gray-600 font-semibold rounded-xl hover:bg-slate-100 py-1 px-3 cursor-pointer">
+        {/* <div className="text-gray-600 font-semibold rounded-xl hover:bg-slate-100 py-1 px-3 cursor-pointer">
           <BsFillCameraVideoFill className="inline mx-2 text-red-500 text-3xl" />
           Live Video
-        </div>
+        </div> */}
         <div className="text-gray-600 font-semibold rounded-xl hover:bg-slate-100 py-1 px-3 cursor-pointer">
           <MdPhotoLibrary className="inline mx-2 text-green-500 text-3xl" />
-          Photo/Video
+          {t('Photo/Video_input')}
         </div>
-        <div className="text-gray-600 font-semibold rounded-xl hover:bg-slate-100 py-1 px-3 cursor-pointer">
+        {/* <div className="text-gray-600 font-semibold rounded-xl hover:bg-slate-100 py-1 px-3 cursor-pointer">
           <BsFillFlagFill className="inline mx-2 text-blue-500 text-2xl" />
           Life event
-        </div>
+        </div> */}
       </div>
     </div>
   );

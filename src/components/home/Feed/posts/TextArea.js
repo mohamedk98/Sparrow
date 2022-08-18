@@ -7,6 +7,8 @@ import More from './More';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
+import { languages } from '../../../languagesArray';
+
 
 const TextArea = ({
   rows,
@@ -42,6 +44,18 @@ const TextArea = ({
   // For edit a post:
   editPost,
 }) => {
+ //Start change Language
+ const cookies=require('js-cookie');
+  const currentLanguageCode=cookies.get('i18next') || 'en';  
+  const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+  let direction=currentLanguage.dir || 'ltr';
+  useEffect(() => {
+    document.getElementById(`${id}`).dir=currentLanguage.dir || 'ltr';
+
+}, [currentLanguage,direction]);
+
+//End change language
+
   // Force rerender:
   const dispatch = useDispatch();
   // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
@@ -245,6 +259,8 @@ const TextArea = ({
       )}
       <div className="w-full relative z-40">
         <textarea
+        dir='ltr'
+        id='textarea'
           // For sharing post:
           onFocus={() => shareAPost && !editPost && setEmptyTextArea(false)}
           onBlur={e => {
@@ -317,7 +333,7 @@ const TextArea = ({
           autoFocus={autoFocus}
           className={
             className ||
-            'bg-gray-100 rounded-3xl px-5 py-1 outline-none w-full resize-none'
+            'bg-gray-100 dark:text-zinc-800 rounded-3xl px-5 py-1 outline-none w-full resize-none'
           }
           onClick={() => setShowPicker(false)}
         />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { AiFillHome } from 'react-icons/ai';
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs';
 import { FaUserAlt } from 'react-icons/fa';
@@ -8,8 +8,22 @@ import { axiosInstance } from '../../../network/axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { languages } from '../../languagesArray';
 
 const LeftSideBar = () => {
+    //Start change 
+    const cookies=require('js-cookie');
+    const currentLanguageCode=cookies.get('i18next') || 'en';  
+    const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+    useEffect(() => {
+      document.getElementById('leftsideBar').dir=currentLanguage.dir || 'ltr';
+  }, [currentLanguage]);
+   //End change language
+  const { t } = useTranslation();
+
+
+
   const userState = useSelector(state => state.userData.userData);
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
@@ -34,28 +48,28 @@ const LeftSideBar = () => {
   const Menus = [
     {
       id: 1,
-      title: 'Home',
+      title:  <p>{t('Home_sidebar')}</p>,
       icon: { iconTitle: AiFillHome },
       handler: homeHandler,
     },
     {
       id: 2,
-      title: 'Friends',
+      title: <p>{t('friends_sidebar')}</p>,
       icon: { iconTitle: FaUserAlt },
       handler: profileHandler,
     },
     {
       id: 3,
-      title: 'Logout',
+      title:  <p>{t('logout_sidebar')}</p>,
       icon: { iconTitle: BiLogOut },
       handler: logoutHandler,
     },
   ];
 
   return (
-    <div className="hidden lg1:flex fixed z-10">
+    <div className="hidden lg1:flex fixed z-10" id="leftsideBar">
       <div
-        className={`bg-facebook-grey h-screen p-5 pt-8 ${
+        className={`bg-facebook-grey dark:bg-zinc-800 transition duration-700  h-screen p-5 pt-8 ${
           open ? 'w-38' : 'w-24'
         } duration-300  relative`}
       >
@@ -81,7 +95,7 @@ const LeftSideBar = () => {
             />
 
             <span
-              className={`text-black origin-left font-bold text-sm mt-3 ml-1 duration-300 ${
+              className={`text-black dark:text-white origin-left font-bold text-sm mt-3 ml-1 duration-300 ${
                 !open && 'scale-0 -mb-7'
               }`}
             >
@@ -101,7 +115,7 @@ const LeftSideBar = () => {
                 <menu.icon.iconTitle />
               </span>
               <span
-                className={`text-base font-medium text-black flex-1 ${
+                className={`text-base font-medium dark:text-white text-black flex-1 ${
                   !open && 'hidden'
                 }`}
               >

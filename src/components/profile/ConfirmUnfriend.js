@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
 
@@ -20,14 +21,14 @@ function ConfirmUnfriend({setUnfriend, removeFriend, friend}) {
                             <button type='submit' className="font-semibold ml-1" onClick={(e)=>{
                                 removeFriend(friend.userId._id);
                                 setUnfriend(false)
-                            }}>Unfriend</button>
+                            }}>{t('Unfriend')}</button>
                         </div>
                         <div className="bg-slate-200 dark:bg-zinc-400 rounded-lg p-2 cursor-pointer hover:brightness-95">
                             <button onClick={()=>{
                                 setUnfriend(false)
                                 }}
                                 className="font-semibold ml-1"
-                                >Cancel
+                                >{t('cancel')}
                             </button>
                         </div>
                     </div>

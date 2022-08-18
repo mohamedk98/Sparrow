@@ -8,6 +8,7 @@ import { AiFillEyeInvisible } from 'react-icons/ai';
 import { axiosInstance } from '../../network/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
+import { t } from 'i18next';
 
 const ResetPassword = () => {
   // To show form submition error if exists:
@@ -60,18 +61,18 @@ const ResetPassword = () => {
         </span>
 
         <span className="text-sky-700 font-bold md:text-lg mr-4">
-          Don't forget the real life
+         {t("Don't forget the real life")}
         </span>
       </nav>
 
       <div className="flex justify-center mt-28  ">
         <div className="block rounded-lg shadow-lg bg-white max-w-sm">
           <div className="py-3 px-6 border-b border-gray-300 text-xl font-bold">
-            Change your password
+            {t('Change your password')}
           </div>
           <div className="p-6">
             <p className="text-gray-700 text-base mb-4">
-              Make sure that the new password is different from the old one.
+              {t('Make sure that the new password is different from the old one.')}
             </p>
 
             <Formik

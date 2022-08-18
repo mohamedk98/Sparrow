@@ -41,8 +41,8 @@ const FullScreenOriginalPost = ({
                 />
               </div>
             </div>
-            <div className="relative md:bg-white md:col-span-4 -mt-4 rounded-lg -mr-4 -mb-1 md:-mb-4 text-left">
-              <div className="md:rounded-lg shadow-lg bg-white md:bg-transparent md:shadow-transparent p-3 h-full relative top-4 -mx-2 -left-2 md:left-0">
+            <div className="relative md:bg-white dark:bg-zinc-800 transition duration-700 md:col-span-4 -mt-4 rounded-lg -mr-4 -mb-1 md:-mb-4 text-left">
+              <div className="md:rounded-lg shadow-lg bg-white dark:bg-zinc-800 transition duration-700 md:bg-transparent md:shadow-transparent p-3 h-full relative top-4 -mx-2 -left-2 md:left-0">
                 {PostHalfTop}
                 {postMiddelAndBottom}
               </div>

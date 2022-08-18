@@ -3,6 +3,7 @@ import More from './More';
 
 import ReplyLikeButton from './ReplyLikeButton';
 import PostMiddleCounters from './PostMiddleCounters';
+import { useTranslation } from 'react-i18next';
 
 const Replys = ({
   profileImage,
@@ -36,6 +37,7 @@ const Replys = ({
   // For max-w for replys:
   postsProfile,
 }) => {
+  const {t}=useTranslation();
   // console.log(reactions);
   return (
     <div className="flex my-3 ml-10">
@@ -55,13 +57,13 @@ const Replys = ({
           // Name, content, and reactions for replyd user:
         }
         <div
-          className={`px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit max-w-xs md:max-w-sm lg:max-w-none relative ${
+          className={`px-3 py-3  bg-gray-100 rounded-3xl outline-none w-fit max-w-xs md:max-w-sm lg:max-w-none relative ${
             postsProfile &&
             'max-w-[17.5rem] md:max-w-full lg:max-w-[17.5rem] lg1:max-w-full'
           }`}
         >
           <span className="text-sm text-zinc-700">{name}</span>
-          <span className="block max-w-xs md:max-w-sm break-words max-h-10 overflow-auto">
+          <span className="block max-w-xs md:max-w-sm break-words dark:text-zinc-800 max-h-10 overflow-auto">
             {content}
           </span>
 
@@ -83,8 +85,8 @@ const Replys = ({
           {userID === moreID && (
             <span className="absolute top-0 right-0">
               <More
-                text={userID === moreID ? 'Delete reply' : 'Hide reply'}
-                text2={userID === moreID && 'Edit reply'}
+                text={userID === moreID ? `${t('Delete_reply')}` : `${t('hide_reply')}`}
+                text2={userID === moreID && `${t('Edit_reply')}`}
                 containerClassName="dropdown absolute left-8 lg:left-10 -top-2 mt-4"
                 iconClassName="w-7 h-7 relative "
                 liNum1={1}
@@ -129,7 +131,7 @@ const Replys = ({
             curruntUserReplyReaction={curruntUserReplyReaction}
           />
 
-          <span className="text-gray-500 ml-3 text-xs">{date}</span>
+          <span className=" text-gray-500 ml-3 text-xs">{date}</span>
         </div>
       </div>
     </div>

@@ -7,37 +7,8 @@ import wow from '../../../../assets/reacts/wow.gif';
 import sad from '../../../../assets/reacts/sad.gif';
 import angry from '../../../../assets/reacts/angry.gif';
 import care from '../../../../assets/reacts/care.gif';
+import { useTranslation } from 'react-i18next';
 
-const reactsArray = [
-  {
-    name: 'Like',
-    image: like,
-  },
-  {
-    name: 'Love',
-    image: love,
-  },
-  {
-    name: 'Care',
-    image: care,
-  },
-  {
-    name: 'Haha',
-    image: haha,
-  },
-  {
-    name: 'Wow',
-    image: wow,
-  },
-  {
-    name: 'Sad',
-    image: sad,
-  },
-  {
-    name: 'Angry',
-    image: angry,
-  },
-];
 
 const PostReactions = ({
   visible,
@@ -49,6 +20,38 @@ const PostReactions = ({
   // For the heart reaction size and position:
   postsProfile,
 }) => {
+  const {t}=useTranslation();
+  
+const reactsArray = [
+  {
+    name: `${t('reactName1')}`,
+    image: like,
+  },
+  {
+    name: `${t('reactName2')}`,
+    image: love,
+  },
+  {
+    name:`${t('reactName3')}`,
+    image: care,
+  },
+  {
+    name: `${t('reactName4')}`,
+    image: haha,
+  },
+  {
+    name: `${t('reactName5')}`,
+    image: wow,
+  },
+  {
+    name: `${t('reactName6')}`,
+    image: sad,
+  },
+  {
+    name:`${t('reactName7')}`,
+    image: angry,
+  },
+];
   return (
     <Fragment>
       {visible && (
@@ -75,7 +78,7 @@ const PostReactions = ({
           {reactsArray.map((react, idx) => (
             <div
               className={
-                react.name === 'Care'
+                react.name === `${t('reactName3')}`
                   ? `cursor-pointer ml-1 w-9/12 md:w-4/6 ${
                       postsProfile &&
                       'lg:w-[15rem] hover:lg:w-[16rem] lg1:w-[20rem] hover:lg1:w-[25rem] w-9/12 md:w-6/12'

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUserData } from "../../store/userSlice/UserDataSlice";
 import { AiOutlineClose } from 'react-icons/ai';
 import { axiosInstance } from '../../network/axiosInstance';
+import { t } from 'i18next';
 
 function UpdateInfos({updateInfo, setUpdateInfos}) {
     const userState = useSelector((state) => state.userData.userData);
@@ -30,7 +31,7 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
     <div className='fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
         <div className='lg:w-3/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700 dark:text-slate-100'>
             <div className='relative mb-3 text-black dark:text-slate-100'>
-                <div className='text-center text-xl font-semibold'>Update your Infos</div>
+                <div className='text-center text-xl font-semibold'>{t('Update your Infos')}</div>
                 <button className='absolute right-2 top-0 text-xl' onClick={()=>setUpdateInfos(false)}>
                     <AiOutlineClose/>
                 </button>
@@ -39,7 +40,7 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
             <div className='text-lg my-4'>
                 <form>
                     <div className='m-2'>
-                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Work</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>{t('Work')}</span>
                         <input
                         type="text"
                         defaultValue={userState.work}
@@ -49,7 +50,7 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                         />
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Major</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>{t('Major')}</span>
                         <input
                         type="text"
                         defaultValue={userState.major}
@@ -59,7 +60,7 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                         />
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>University</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>{t('University')}</span>
                         <input
                         type="text"
                         defaultValue={userState.university}
@@ -69,7 +70,7 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                         />
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Town</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>{t('Town')}</span>
                         <input
                         type="text"
                         defaultValue={userState.town}
@@ -85,17 +86,17 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                                 defaultValue={userState.relationship}
                                 id="relationship"
                                 onChange={(e)=>setInfosInput({...infosInput, relationship:e.target.value})}>
-                            <option value="" disabled defaultValue>Your Relationship</option>
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-                            <option value="In a Relationship">In a Relationship</option>
-                            <option value="It's Complicated">It's Complicated</option>
+                            <option value="" disabled defaultValue>{t('Your Relationship')}</option>
+                            <option value="Single">{t('Single')}</option>
+                            <option value="Married">{t('Married')}</option>
+                            <option value="Divorced">{t('Divorced')}</option>
+                            <option value="Widowed">{t('Widowed')}</option>
+                            <option value="In a Relationship">{t('In a Relationship')}</option>
+                            <option value="It's Complicated">{t("It's Complicated")}</option>
                         </select>
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Mobile</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>{t('Mobile')}</span>
                         <input
                         type="text"
                         defaultValue={userState.mobile}
@@ -108,10 +109,10 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                         <button  
                                 className='text-white bg-indigo-500 p-2 rounded-lg m-2 hover:brightness-95'
                                 onClick={(e)=>infosHandler(e)}
-                                >Save</button>
+                                >{t('save')}</button>
                         <button className=' dark:bg-zinc-500 dark:hover:brightness-95 hover:bg-slate-200 p-2 rounded-lg m-2'
                                 onClick={()=>setUpdateInfos(false)}
-                        >Cancel</button>
+                        >{t('cancel')}</button>
                     </div>
                 </form>
             </div>

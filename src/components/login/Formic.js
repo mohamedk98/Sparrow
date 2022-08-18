@@ -9,6 +9,7 @@ import LoginFormInput from './LoginFormInput';
 import LoginButton from './LoginButton';
 import { AiFillEye } from 'react-icons/ai';
 import { AiFillEyeInvisible } from 'react-icons/ai';
+import { useTranslation } from 'react-i18next';
 
 // User intial info:
 const loginInfo = {
@@ -17,6 +18,7 @@ const loginInfo = {
 };
 
 const Formic = ({ setShowModal }) => {
+  const {t}=useTranslation();
   const dispatch = useDispatch();
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
@@ -49,10 +51,10 @@ const Formic = ({ setShowModal }) => {
   // Validation schema:
   const loginValidation = Yup.object({
     email: Yup.string()
-      .required('Email address is required')
-      .email('Invalid email')
+      .required(`${t('Email address is required')}`)
+      .email(`${t('Invalid email')}`)
       .max(100),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string().required(`${t('Password is required')}`),
   });
 
   return (
@@ -95,6 +97,7 @@ const Formic = ({ setShowModal }) => {
             className="flex flex-col text-center"
           >
             <LoginFormInput
+        
               loginHandler={loginHandler}
               showPassword={showPassword}
               formic={formic}
@@ -118,7 +121,7 @@ const Formic = ({ setShowModal }) => {
                     role="status"
                   ></div>
                 ) : (
-                  'Log In'
+                  `${t('Log In')}`
                 )
               }
               type="submit"

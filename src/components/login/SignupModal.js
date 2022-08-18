@@ -8,6 +8,7 @@ const SignupModal = ({
   showModal,
   setShowModal,
 }) => {
+
   return (
     <Fragment>
       {showModal && (

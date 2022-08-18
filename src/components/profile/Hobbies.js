@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { AiOutlineClose } from 'react-icons/ai';
 import { axiosInstance } from '../../network/axiosInstance';
 import { addUserData } from '../../store/userSlice/UserDataSlice';
+import { t } from 'i18next';
 
 function Hobbies({showHobbies, setShowHobbies}) {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
     <div className='fixed dark:text-black top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
         <div className='lg:w-2/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700'>
             <div className='relative mb-3 text-black  dark:text-slate-100'>
-                <div className='text-center text-xl font-semibold'>Choose Hobbies</div>
+                <div className='text-center text-xl font-semibold'>{t('Choose Hobbies')}</div>
                 <button className='absolute right-2 top-0 text-xl' onClick={()=>setShowHobbies(false)}>
                     <AiOutlineClose/>
                 </button>
@@ -50,7 +51,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🎵 Listening to music</span>
+                        <span>🎵 {t('Listening to music')}</span>
                     </div>
                     <div className={reading?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -63,7 +64,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>📖 Reading</span>
+                        <span>📖 {t('Reading')}</span>
                     </div>
                     <div className={travelling?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -76,7 +77,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🌍 Travelling</span>
+                        <span>🌍 {t('Travelling')}</span>
                     </div>
                     <div className={movies?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -89,7 +90,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🎥 Watch Movies</span>
+                        <span>🎥 {t('Watch Movies')}</span>
                     </div>
                     <div className={cooking?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -102,7 +103,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🍳 Cooking</span>
+                        <span>🍳 {t('Cooking')}</span>
                     </div>
                     <div className={art?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -115,7 +116,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🎨 Art</span>
+                        <span>🎨 {t('Art')}</span>
                     </div>
                     <div className={swimming?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -128,7 +129,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🏊‍♀️ Swimming</span>
+                        <span>🏊‍♀️ {t('Swimming')}</span>
                     </div>
                     <div className={eating?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -141,7 +142,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🍕 Eating</span>
+                        <span>🍕 {t('Eating')}</span>
                     </div>
                     <div className={dance?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -154,7 +155,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🕺 Dance</span>
+                        <span>🕺 {t('Dance')}</span>
                     </div>
                     <div className={singing?"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-indigo-100 text-indigo-500 cursor-pointer hover:brightness-95":"flex items-center text-lg py-2 px-3 rounded-3xl w-fit border bg-slate-100 cursor-pointer hover:brightness-95"}
                             onClick={()=>{
@@ -167,7 +168,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
                                 
                                 console.log(hobbies)
                             }}>
-                        <span>🎤 Singing</span>
+                        <span>🎤 {t('Singing')}</span>
                     </div>
                 </div>
                 <div className='flex flex-wrap gap-2.5 border my-3 rounded-lg p-3'>
@@ -184,10 +185,10 @@ function Hobbies({showHobbies, setShowHobbies}) {
                             onClick={()=>{
                                 hobbiesHandler()
                             }}
-                            >Save</button>
+                            >{t('save')}</button>
                     <button className=' dark:text-slate-100 dark:bg-zinc-500 dark:hover:brightness-95 hover:bg-slate-200 p-2 rounded-lg m-2'
                             onClick={()=>setShowHobbies(false)}
-                    >Cancel</button>
+                    >{t('cancel')}</button>
                 </div>
             </div>
         </div>

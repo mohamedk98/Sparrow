@@ -11,6 +11,7 @@ import angrySVG from '../../../../assets/reacts/angry.svg';
 import ReactionClassHandler from './ReactionClasses';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const LikeButton = ({
   reactType,
@@ -29,6 +30,7 @@ const LikeButton = ({
   // For like button position in profile page:
   postsProfile,
 }) => {
+  const {t}=useTranslation();
   // For rerender:
   const dispatch = useDispatch();
 
@@ -45,13 +47,13 @@ const LikeButton = ({
 
   const reactTypeSVG = useMemo(
     () => [
-      { name: 'Like', svg: likeSVG },
-      { name: 'Love', svg: loveSVG },
-      { name: 'Care', svg: careSVG },
-      { name: 'Haha', svg: hahaSVG },
-      { name: 'Wow', svg: wowSVG },
-      { name: 'Sad', svg: sadSVG },
-      { name: 'Angry', svg: angrySVG },
+      { name: `${t('reactName1')}`, svg: likeSVG },
+      { name: `${t('reactName2')}`, svg: loveSVG },
+      { name: `${t('reactName3')}`, svg: careSVG },
+      { name: `${t('reactName4')}`, svg: hahaSVG },
+      { name: `${t('reactName5')}`, svg: wowSVG },
+      { name: `${t('reactName6')}`, svg: sadSVG },
+      { name: `${t('reactName7')}`, svg: angrySVG },
     ],
     []
   );
@@ -66,26 +68,26 @@ const LikeButton = ({
     if (!reactionClicked) {
       // if (userReaction && !reactionClicked) {
       // Handle className and style for like button in post:
-      ReactionClassHandler(userReaction, setReactClass);
+      ReactionClassHandler(userReaction, setReactClass,t);
 
       // Set name or type for the reaction:
       setReactType(userReaction);
 
       // set SVG for the reaction:
       setReactTypeSRC(
-        userReaction === 'Like'
+        userReaction === `${t('reactName1')}`
           ? likeSVG
-          : userReaction === 'Love'
+          : userReaction === `${t('reactName2')}`
           ? loveSVG
-          : userReaction === 'Care'
+          : userReaction === `${t('reactName3')}`
           ? careSVG
-          : userReaction === 'Haha'
+          : userReaction === `${t('reactName4')}`
           ? hahaSVG
-          : userReaction === 'Wow'
+          : userReaction ===  `${t('reactName5')}`
           ? wowSVG
-          : userReaction === 'Sad'
+          : userReaction === `${t('reactName6')}`
           ? sadSVG
-          : userReaction === 'Angry'
+          : userReaction === `${t('reactName7')}`
           ? angrySVG
           : likePNG
       );
@@ -101,15 +103,15 @@ const LikeButton = ({
       reactTypeSRC === likePNG &&
       btnClicked
     ) {
-      setReactType('Like');
+      setReactType( `${t('reactName1')}`);
       setReactTypeSRC(likeSVG);
       setReactClass('text-indigo-500 font-bold');
       setBtnClicked(!btnClicked);
-      reactHandler('Like');
+      reactHandler( `${t('reactName1')}`);
     }
 
     if (
-      (reactType === 'Like' && reactTypeSRC === likeSVG && btnClicked) ||
+      (reactType === `${t('reactName1')}` && reactTypeSRC === likeSVG && btnClicked) ||
       (reactType !== '' && reactTypeSRC === svgPicker?.svg && btnClicked)
     ) {
       setReactType('');
@@ -167,7 +169,7 @@ const LikeButton = ({
           alt={`${reactTypeSRC} reaction`}
         />
       </div>
-      {reactType ? reactType : 'Like'}
+      {reactType ? reactType : `${t('reactName1')}`}
     </button>
   );
 };
