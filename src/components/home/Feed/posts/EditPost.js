@@ -84,7 +84,7 @@ const EditPost = ({
 
     let formData = new FormData();
     formData.append(
-      'visability',
+      'visiability',
       selectedOption ? selectedOption : postData?.visiability
     );
     formData.append(

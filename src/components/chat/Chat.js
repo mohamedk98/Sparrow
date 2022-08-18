@@ -35,7 +35,7 @@ function Chat({ profileImage, name, id, closeChat }) {
     });
 
     scrollToBottom();
-  }, [socket]);
+  }, []);
 
   const minimizeChatHandler = () => {
     setMinimizeChat(!minimizeChat);

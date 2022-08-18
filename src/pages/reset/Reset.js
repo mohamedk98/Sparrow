@@ -18,6 +18,9 @@ const Reset = () => {
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
 
+  // For info:
+  const [info, setInfo] = useState('');
+
   // To redirect to home page after submitting form:
   let navigate = useNavigate();
 
@@ -87,12 +90,15 @@ const Reset = () => {
                     email: values.email,
                   })
                   .then(response => {
-                    console.log(response);
-                    if (response.data) setShowSpinner(showSinner);
+                    // console.log(response);
+                    if (response.data) {
+                      setInfo(response.data);
+                      setShowSpinner(showSinner);
+                    }
                     // navigate('/');
                   })
                   .catch(error => {
-                    console.log(error.response.data.message);
+                    // console.log(error.response.data.message);
                     setFormError(
                       error.response.data.message || `${t('Something went wrong')}`
                     );
@@ -117,9 +123,15 @@ const Reset = () => {
                       {errors.email}
                     </div>
                   ) : (
-                    formError && (
-                      <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mb-2">
-                        {formError}
+                    (formError || info) && (
+                      <div
+                        className={`${
+                          formError
+                            ? 'text-red-500 bg-red-200'
+                            : 'text-yellow-700 bg-yellow-100'
+                        } text-center font-bold  py-2 shadow-slate-400 shadow-md mb-2`}
+                      >
+                        {formError || info}
                       </div>
                     )
                   )}
