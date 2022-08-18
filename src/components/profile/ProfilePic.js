@@ -65,6 +65,8 @@ function ProfilePic() {
         .post(`/friends/friendRequest/${id}`)
         .then((response) => {
             dispatch(addOtherUserData(response.data))
+            navigate(`/${otherUserState.username}`)
+            window.location.reload();
         })
         .catch(error => console.log(error));
     }
