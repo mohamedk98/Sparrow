@@ -17,7 +17,7 @@ const { sendVerifyEmail } = require("../utils/emailSender");
  * it returns either success message or failure based on the error
  */
 const signup = async (req, res, next) => {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
