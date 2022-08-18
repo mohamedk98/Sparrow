@@ -60,17 +60,11 @@ const PostHalfTop = ({
          {postDate}
               </span>
               {visiability && (
-                <span data-title={visiability}>
+                <span data-title={'tooltipData'}>
                   {visiability === 'public' ? (
-<<<<<<< HEAD
                     <ImEarth className="text-gray-600 dark:text-white ml-2 mt-1 text-sm" />
                   ) : visiability === 'private' ? (
                     <ImLock className="text-gray-600 dark:text-white ml-2 mt-1 text-sm" />
-=======
-                    <ImEarth className="text-gray-600 ml-2 mt-1 text-sm" />
-                  ) : visiability === 'Private' ? (
-                    <ImLock className="text-gray-600 ml-2 mt-1 text-sm" />
->>>>>>> ea9003f2e4f55c8a1c5aa3a7b69c5962e18ee199
                   ) : (
                     ''
                   )}
