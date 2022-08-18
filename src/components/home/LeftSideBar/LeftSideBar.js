@@ -70,7 +70,7 @@ const LeftSideBar = () => {
             className={`flex items-center gap-x-4 cursor-pointer  hover:bg-facebook-greyHover rounded-md mt-2 ${
               open ? 'p-2' : 'p-'
             }`}
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate(`/${userState.username}`)}
           >
             <img
               src={userState.profileImage}

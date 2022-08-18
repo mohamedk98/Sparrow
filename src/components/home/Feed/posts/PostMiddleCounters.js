@@ -160,10 +160,10 @@ const postMiddleCounters = ({
             {
               // Hide comment counter for shared posts only if there is no comments:
             }
-            {sharedPost && data?.comments.length === 0
+            {sharedPost && data?.comments?.length === 0
               ? ''
-              : `${data?.comments.length} ${
-                  data?.comments.length < 2 ? 'comment' : 'comments'
+              : `${data?.comments?.length} ${
+                  data?.comments?.length < 2 ? 'comment' : 'comments'
                 }
               `}
           </button>

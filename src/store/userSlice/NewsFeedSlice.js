@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   postsData: [],
+  postsMineData: [],
   profileData: {},
   forceUpdate: 10000000,
   alert: {},
@@ -15,6 +16,10 @@ export const newsFeedSlice = createSlice({
   reducers: {
     postsDataHandler: (state, action) => {
       state.postsData = [...action.payload];
+    },
+
+    postsMineDataHandler: (state, action) => {
+      state.postsMineData = [...action.payload];
     },
 
     profileDataHandler: (state, action) => {
@@ -33,6 +38,7 @@ export const newsFeedSlice = createSlice({
 
 export const {
   postsDataHandler,
+  postsMineDataHandler,
   profileDataHandler,
   forceUpdateHandler,
   alertHandler,

@@ -62,13 +62,13 @@ const LoginForm = () => {
                 className="alert bg-yellow-100 rounded-lg py-5 px-6 mb-3 text-base text-yellow-700 items-center w-full alert-dismissible fade show mt-3 flex"
                 role="alert"
               >
-                <span className="flex items-center mx-auto ml-28">
+                <span className="flex items-center mx-auto">
                   <svg
                     aria-hidden="true"
                     focusable="false"
                     data-prefix="fas"
                     data-icon="exclamation-triangle"
-                    className="w-4 h-4 mr-2 fill-current"
+                    className="w-2/12 md:w-1/12 lg:w-1/12 mr-2 fill-current"
                     role="img"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 576 512"

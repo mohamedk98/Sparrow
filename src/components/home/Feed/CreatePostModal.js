@@ -38,7 +38,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
     e.preventDefault();
     let formData = new FormData();
 
-    formData.append('visability', selectedOption);
+    formData.append('visiability', selectedOption);
     formData.append('content', inputStr);
 
     selectedImages.forEach(selectedImage => {
@@ -56,6 +56,8 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
           console.log(response);
           // To close Modal after submitting data
           setShowModal(false);
+
+          // console.log(selectedOption);
 
           // Alert message:
           dispatch(
