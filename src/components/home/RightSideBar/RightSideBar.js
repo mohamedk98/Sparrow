@@ -39,7 +39,7 @@ const RightSideBar = ({ setOpenChats }) => {
       >
         <BsFillArrowRightCircleFill
           onClick={() => setOpen(!open)}
-          className={`bg-facebook-grey text-facebook-blue text-3xl rounded-full cursor-pointer ${
+          className={`bg-facebook-grey text-indigo-500 text-3xl rounded-full cursor-pointer ${
             !open && 'rotate-180'
           } absolute -left-3 top-9 border border-facebook-grey`}
         />
@@ -60,7 +60,7 @@ const RightSideBar = ({ setOpenChats }) => {
                   >
                     Show contacts
                     {showContacts && (
-                      <BsToggleOn className="text-facebook-blue text-2xl ml-3 -mt-0.5" />
+                      <BsToggleOn className="text-indigo-500 text-2xl ml-3 -mt-0.5" />
                     )}
                     {!showContacts && (
                       <BsToggle2Off className="text-2xl ml-3 -mt-0.5" />
@@ -76,7 +76,7 @@ const RightSideBar = ({ setOpenChats }) => {
                   >
                     Active Status
                     {showActiveContacts && (
-                      <BsToggleOn className="text-facebook-blue text-2xl ml-5 -mt-0.5" />
+                      <BsToggleOn className="text-indigo-500 text-2xl ml-5 -mt-0.5" />
                     )}
                     {!showActiveContacts && (
                       <BsToggle2Off className="text-2xl ml-5 -mt-0.5" />

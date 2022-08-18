@@ -125,7 +125,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
         <hr></hr>
         <div className="text-lg my-4 p-2">
           <div
-            className="flex gap-2.5 items-center text-blue-500 dark:text-slate-100 m-3 cursor-pointer hover:underline"
+            className="flex gap-2.5 items-center text-indigo-500 dark:text-slate-100 m-3 cursor-pointer hover:underline"
             onClick={() => setChangeName((prev) => !prev)}
           >
             <BiEditAlt />
@@ -135,13 +135,13 @@ function EditeProfile({ editProfile, setEditProfile }) {
             <div className="border rounded-lg p-3 m-2">
               <form>
                 <div className="m-2">
-                  <span className="ml-2 text-blue-300 dark:text-slate-100">
+                  <span className="ml-2 text-indigo-300 dark:text-slate-100">
                     First Name
                   </span>
                   <input
                     type="text"
                     defaultValue={userState.firstName}
-                    className="w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400"
+                    className="w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400"
                     placeholder="Your First Name"
                     onChange={(e) => {
                       setName({ ...name, firstName: e.target.value });
@@ -149,13 +149,13 @@ function EditeProfile({ editProfile, setEditProfile }) {
                   />
                 </div>
                 <div className="m-2">
-                  <span className="ml-2 text-blue-300 dark:text-slate-100">
+                  <span className="ml-2 text-indigo-300 dark:text-slate-100">
                     Last Name
                   </span>
                   <input
                     type="text"
                     defaultValue={userState.lastName}
-                    className="w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400"
+                    className="w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400"
                     placeholder="Your First Name"
                     onChange={(e) => {
                       setName({ ...name, lastName: e.target.value });
@@ -163,7 +163,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                   />
                 </div>
                 <div className="flex gap-2.5 w-3/4 justify-center m-auto mt-4">
-                  <div className="bg-blue-500 dark:bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
+                  <div className="bg-indigo-500 dark:bg-indigo-500 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
                     <button
                       type="submit"
                       className="font-semibold ml-1"
@@ -188,7 +188,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
             </div>
           )}
           <div
-            className="flex gap-2.5 items-center text-blue-500 dark:text-slate-100 m-3 cursor-pointer hover:underline"
+            className="flex gap-2.5 items-center text-indigo-500 dark:text-slate-100 m-3 cursor-pointer hover:underline"
             onClick={() => setChangePassword((prev) => !prev)}
           >
             <AiFillLock />
@@ -314,7 +314,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                         )
                       }
                       type="submit"
-                      className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-2 w-full mr-2"
+                      className="bg-indigo-500 text-white font-bold text-lg border-2 rounded-md border-indigo-500 hover:bg-indigo-500 py-2 w-full mr-2"
                     />
                   </div>
                   {formError && (
@@ -327,7 +327,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
             </Formik>
           )}
           <div
-            className="flex gap-2.5 items-center text-blue-500 dark:text-slate-100 m-3 cursor-pointer hover:underline"
+            className="flex gap-2.5 items-center text-indigo-500 dark:text-slate-100 m-3 cursor-pointer hover:underline"
             onClick={() => setBlockList((prev) => !prev)}
           >
             <AiOutlineSetting />
@@ -358,7 +358,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                           </Link>
                         </div>
                         <button
-                          className="p-2 rounded-lg bg-blue-500 text-white dark:bg-zinc-500 dark:text-slate-100 hover:brightness-95"
+                          className="p-2 rounded-lg bg-indigo-500 text-white dark:bg-zinc-500 dark:text-slate-100 hover:brightness-95"
                           onClick={(e) => setUnblock(true)}
                         >
                           Unblock
@@ -392,7 +392,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
           )}
           {/*  <div className='mx-2'>
                         <button  
-                                className='text-white bg-blue-500 p-2 rounded-lg m-2 hover:brightness-95'
+                                className='text-white bg-indigo-500 p-2 rounded-lg m-2 hover:brightness-95'
                                 onClick={(e)=>infosHandler(e)}
                                 >Save</button>
                         <button className=' dark:bg-zinc-500 dark:hover:brightness-95 hover:bg-slate-200 p-2 rounded-lg m-2'

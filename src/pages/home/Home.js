@@ -44,7 +44,7 @@ const Home = () => {
   const alert = useSelector(state => state.newsFeed.alert);
 
   return (
-    <div className=" h-full bg-gray-200">
+    <div className=" h-full bg-slate-200">
       <Header />
       <div className="flex ">
         <LeftSideBar />

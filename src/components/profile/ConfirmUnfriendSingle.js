@@ -16,7 +16,7 @@ function ConfirmUnfriendSingle({setUnfriend, removeFriend, friend}) {
                 <div className="mt-3">
                     <span className='m-2 p-2 text-lg font-semibold'>Are you sure you want to unfriend this person?</span>
                     <div className="flex gap-2.5 w-3/4 justify-center m-auto mt-4">
-                        <div className="bg-blue-500 dark:bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
+                        <div className="bg-indigo-500 dark:bg-indigo-500 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
                             <button type='submit' className="font-semibold ml-1" onClick={(e)=>{
                                 removeFriend(friend._id);
                                 setUnfriend(false)

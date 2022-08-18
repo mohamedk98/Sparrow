@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className="bg-white mt-16 mb-5 text-lg grid md:grid-cols-3 items-center">
       <div className="text-center md:-ml-12">
-        <p className="pt-4 pb-2 underline underline-offset-2 text-cyan-600">
+        <p className="pt-4 pb-2 underline underline-offset-2 text-indigo-500">
           Contact Us:
         </p>
         <div className="flex flex-col text-sm">
@@ -12,7 +12,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/mohamedk98"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-cyan-600"
+            className="hover:text-indigo-500"
           >
             Mohamed Khaled
           </a>
@@ -20,7 +20,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/abdelhameed-sayed-490545202"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-cyan-600"
+            className="hover:text-indigo-500"
           >
             AbdelHameed Sayed
           </a>
@@ -28,7 +28,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/rana-ahmed-k/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-cyan-600"
+            className="hover:text-indigo-500"
           >
             Rana Ahmed
           </a>
@@ -36,7 +36,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/ali-maher-84199823b"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-cyan-600"
+            className="hover:text-indigo-500"
           >
             Ali Maher
           </a>
@@ -44,19 +44,19 @@ const Footer = () => {
             href="https://www.linkedin.com/in/sarah-ahmed-s"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-cyan-600"
+            className="hover:text-indigo-500"
           >
             Sara Ahmed
           </a>
         </div>
       </div>
       <div className="flex justify-center text-sm mr-0 md:mr-11 lg:mr-10 mt-3">
-        <p className="hover:cursor-pointer my-4 mr-24 hover:text-cyan-600">
+        <p className="hover:cursor-pointer my-4 mr-24 hover:text-indigo-500">
           English
         </p>
-        <p className="hover:cursor-pointer my-4 hover:text-cyan-600">عربي</p>
+        <p className="hover:cursor-pointer my-4 hover:text-indigo-500">عربي</p>
       </div>
-      <div className="text-center mt-3 text-cyan-600 text-sm">
+      <div className="text-center mt-3 text-indigo-500 text-sm">
         Made by <span className="text-red-500">&hearts;</span>{' '}
         <a
           href="https://github.com/mohamedk98/Zombie-Hat-.git"

@@ -122,7 +122,7 @@ const Formic = ({ setShowModal }) => {
                 )
               }
               type="submit"
-              className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-2 mt-3"
+              className="bg-indigo-500 text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-indigo-500Hover py-2 mt-3"
             />
           </Form>
         )}

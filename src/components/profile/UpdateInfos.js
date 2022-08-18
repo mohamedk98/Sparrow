@@ -39,48 +39,48 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
             <div className='text-lg my-4'>
                 <form>
                     <div className='m-2'>
-                        <span className='ml-2 text-blue-300 dark:text-slate-100'>Work</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Work</span>
                         <input
                         type="text"
                         defaultValue={userState.work}
-                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400' 
+                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400' 
                         placeholder='Add work place'
                         onChange={(e)=>setInfosInput({...infosInput, work:e.target.value})}
                         />
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-blue-300 dark:text-slate-100'>Major</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Major</span>
                         <input
                         type="text"
                         defaultValue={userState.major}
-                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400' 
+                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400' 
                         placeholder='Add Major'
                         onChange={(e)=>setInfosInput({...infosInput, major:e.target.value})}
                         />
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-blue-300 dark:text-slate-100'>University</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>University</span>
                         <input
                         type="text"
                         defaultValue={userState.university}
-                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400' 
+                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400' 
                         placeholder='Add University'
                         onChange={(e)=>setInfosInput({...infosInput, university:e.target.value})}
                         />
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-blue-300 dark:text-slate-100'>Town</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Town</span>
                         <input
                         type="text"
                         defaultValue={userState.town}
-                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400' 
+                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400' 
                         placeholder='Add Town'
                         onChange={(e)=>setInfosInput({...infosInput, town:e.target.value})}
                         />
                     </div>
-                    <div className='m-2 text-blue-500'>
-                        <label className='block text-blue-300 dark:text-slate-100' htmlFor="relationship">Relationship</label>
-                        <select className='w-full dark:text-slate-100 dark:bg-zinc-500 text-black text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400'
+                    <div className='m-2 text-indigo-500'>
+                        <label className='block text-indigo-300 dark:text-slate-100' htmlFor="relationship">Relationship</label>
+                        <select className='w-full dark:text-slate-100 dark:bg-zinc-500 text-black text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400'
                                 name="relationship"
                                 defaultValue={userState.relationship}
                                 id="relationship"
@@ -95,18 +95,18 @@ function UpdateInfos({updateInfo, setUpdateInfos}) {
                         </select>
                     </div>
                     <div className='m-2'>
-                        <span className='ml-2 text-blue-300 dark:text-slate-100'>Mobile</span>
+                        <span className='ml-2 text-indigo-300 dark:text-slate-100'>Mobile</span>
                         <input
                         type="text"
                         defaultValue={userState.mobile}
-                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-blue-500 focus:placeholder:text-blue-500 hover:border-gray-400' 
+                        className='w-full text-black dark:text-slate-100 dark:bg-zinc-500 text-base my-2 p-4 border rounded-xl focus:outline outline-2 outline-offset-4 outline-indigo-500 focus:placeholder:text-indigo-500 hover:border-gray-400' 
                         placeholder='Add Mobile'
                         onChange={(e)=>setInfosInput({...infosInput, mobile:e.target.value})}
                         />
                     </div>
                     <div className='mx-2'>
                         <button  
-                                className='text-white bg-blue-500 p-2 rounded-lg m-2 hover:brightness-95'
+                                className='text-white bg-indigo-500 p-2 rounded-lg m-2 hover:brightness-95'
                                 onClick={(e)=>infosHandler(e)}
                                 >Save</button>
                         <button className=' dark:bg-zinc-500 dark:hover:brightness-95 hover:bg-slate-200 p-2 rounded-lg m-2'

@@ -22,7 +22,7 @@ function About() {
                                 <div className="flex gap-2.5 items-center justify-between font-bold text-xl">
                                     About
                                 </div>
-                                {otherUserState.currentLoginAccount&&(<div className='flex gap-2.5 items-center w-3/4 mx-auto mt-4 text-xl text-blue-500 cursor-pointer' onClick={()=>setUpdateInfos(true)}>
+                                {otherUserState.currentLoginAccount&&(<div className='flex gap-2.5 items-center w-3/4 mx-auto mt-4 text-xl text-indigo-500 cursor-pointer' onClick={()=>setUpdateInfos(true)}>
                                     <IoIosAddCircle className='text-2xl'/>
                                     <span className='hover:underline underline-offset-4'>Update your Details</span>
                                 </div>)}
@@ -67,7 +67,7 @@ function About() {
                                 <div className='flex flex-wrap gap-2.5 border my-3 rounded-lg p-3'>
                                     {otherUserState?.hobbies?.map((hobby, index)=>{
                                         return (
-                                            <div key={index} className='flex h-fit items-center text-base py-2 px-3 rounded-3xl w-fit border bg-blue-500 dark:bg-zinc-500 text-white'>
+                                            <div key={index} className='flex h-fit items-center text-base py-2 px-3 rounded-3xl w-fit border bg-indigo-500 dark:bg-zinc-500 text-white'>
                                                 <span>{hobby}</span>
                                             </div>)
                                     })}

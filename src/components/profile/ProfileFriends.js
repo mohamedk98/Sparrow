@@ -11,7 +11,7 @@ function ProfileFriends() {
     <div className="bg-white dark:bg-zinc-800 dark:text-slate-100 transition duration-700 my-3 p-4 rounded-xl shadow-md">
       <div className="flex gap-2.5 items-center justify-between font-bold text-xl">
         Friends
-        <div className="font-normal text-base text-blue-600 cursor-pointer py-1 px-2.5 rounded-lg hover:bg-slate-200 dark:hover:bg-zinc-700">
+        <div className="font-normal text-base text-indigo-600 cursor-pointer py-1 px-2.5 rounded-lg hover:bg-slate-200 dark:hover:bg-zinc-700">
           <Link to={`/${username}/friends`}>See all Friends</Link>
         </div>
       </div>

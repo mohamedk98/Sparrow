@@ -61,7 +61,7 @@ const LeftSideBar = () => {
       >
         <BsFillArrowLeftCircleFill
           onClick={() => setOpen(!open)}
-          className={`bg-facebook-grey text-facebook-blue text-3xl rounded-full cursor-pointer ${
+          className={`bg-facebook-grey text-indigo-500 text-3xl rounded-full cursor-pointer ${
             !open && 'rotate-180'
           } absolute -right-3 top-9 border border-facebook-grey`}
         />
@@ -97,7 +97,7 @@ const LeftSideBar = () => {
               className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md my-5"
               onClick={menu.handler}
             >
-              <span className="text-2xl block float-left text-facebook-blue">
+              <span className="text-2xl block float-left text-indigo-500">
                 <menu.icon.iconTitle />
               </span>
               <span

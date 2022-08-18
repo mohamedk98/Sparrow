@@ -10,7 +10,7 @@ function PhotoModalSingle({photo,setOpenPhoto}) {
                         onClick={() => {
                                 setOpenPhoto(false);
                             }}>
-                        <AiOutlineClose className='bg-slate-200 text-blue-500 dark:text-gray-500 rounded-lg mt-2'/>
+                        <AiOutlineClose className='bg-slate-200 text-indigo-500 dark:text-gray-500 rounded-lg mt-2'/>
                     </button>
                 </div>
                 <div className='flex justify-center'>

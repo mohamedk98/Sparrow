@@ -34,7 +34,7 @@ function Intro() {
             </div>}
             {bioInput&&<div className='w-full'>
                     <div className='flex justify-center'>
-                        <textarea rows="3" className="bg-slate-200 dark:bg-zinc-700 rounded-lg p-2 w-full border border-slate-400 resize-none hover:border-blue-500 focus:border-blue-500 focus:bg-white"
+                        <textarea rows="3" className="bg-slate-200 dark:bg-zinc-700 rounded-lg p-2 w-full border border-slate-400 resize-none hover:border-indigo-500 focus:border-indigo-500 focus:bg-white"
                                     onChange={(e)=>setBio(e.target.value)}
                         >{otherUserState.intro}</textarea>
                     </div>
@@ -42,7 +42,7 @@ function Intro() {
                         <div className="bg-slate-200 dark:bg-zinc-400 rounded-lg p-2 cursor-pointer hover:brightness-95" onClick={()=>{setBioInput(false);setShowBioButton(true)}}>
                             <button className="font-semibold ml-1">cancel</button>
                         </div>
-                        <div className="bg-blue-500 dark:bg-zinc-700 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
+                        <div className="bg-indigo-500 dark:bg-zinc-700 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
                             <button className="font-semibold ml-1" onClick={(e)=>introHandler(e)}>Save</button>
                         </div>
                     </div>
