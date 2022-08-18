@@ -13,7 +13,7 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
 
   return (
     <div
-      className="bg-white pt-1.5 px-4 absolute top-14 left-10 -mt-1 shadow-lg shadow-gray-500 items-start flex-col gap-1.5 rounded-lg  z-10 min-h-[400px] max-h-[70vh] overflow-y-auto p-10"
+      className="bg-white dark:bg-zinc-800 transition duration-700 dark:text-white pt-1.5 px-4 absolute top-14 left-10 -mt-1 shadow-lg shadow-gray-500 items-start flex-col gap-1.5 rounded-lg  z-10 min-h-[400px] max-h-[70vh] overflow-y-auto p-10"
       ref={menu}
     >
       <div className="flex items-center pt-2.5 pb-2 pl-2.5 pr-3 w-64 ">
@@ -23,11 +23,11 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
       </div>
       {/* Search History */}
 
-      {result &&
-        result.map(user => (
+      {result ?
+        result.map((user,index) => (
           <Link
             to={`/${user.username}`}
-            key={user.userId}
+            key={index}
             className="relative w-full flex items-center hover:bg-gray-100 gap-2 p-1 rounded-lg"
           >
             <div className="inline-flex w-full">
@@ -41,7 +41,12 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
               </span>
             </div>
           </Link>
-        ))}
+        )):
+        <div className="inline-flex w-full">
+           <span className="font-semibold text-sm mt-2 pl-2 ">No result</span>
+        </div>
+        }
+      
     </div>
   );
 };

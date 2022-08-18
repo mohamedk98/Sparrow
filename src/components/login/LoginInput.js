@@ -1,12 +1,25 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { useField } from 'formik';
+import { languages } from '../languagesArray';
 
-const LoginInput = ({ placeholder, className, ...props }) => {
+const LoginInput = ({ id,placeholder, className, ...props }) => {
   const [field, meta] = useField(props);
+
+     //Start change 
+     const cookies=require('js-cookie');
+     const currentLanguageCode=cookies.get('i18next') || 'en';  
+     const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+     useEffect(() => {
+       document.getElementById(`${id}`).dir=currentLanguage.dir || 'ltr';
+
+   }, [currentLanguage]);
+    //End change language
 
   return (
     <div className="flex flex-col">
       <input
+        dir='ltr'
+        id={id}
         type={field.type}
         name={field.name}
         placeholder={placeholder}

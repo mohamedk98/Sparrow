@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
 
@@ -14,20 +15,20 @@ function ConfirmUnblock({friend, unblockFriend, setUnblock}) {
                     </button>
                 </div>
                 <div className="mt-3">
-                    <span className='m-2 p-2 text-lg font-semibold'>Are you sure you want to unblock this person?</span>
+                    <span className='m-2 p-2 text-lg font-semibold'>{t('Are you sure you want to unblock this person')}{t('input_questionMark')}</span>
                     <div className="flex gap-2.5 w-3/4 justify-center m-auto mt-4">
                         <div className="bg-indigo-500 dark:bg-indigo-500 text-white rounded-lg p-2 cursor-pointer hover:brightness-95">
                             <button type='submit' className="font-semibold ml-1" onClick={(e)=>{
                                 unblockFriend(friend.userId._id,e);
                                 setUnblock(false)
-                            }}>Unblock</button>
+                            }}>{t('Unblock')}</button>
                         </div>
                         <div className="bg-slate-200 dark:bg-zinc-400 rounded-lg p-2 cursor-pointer hover:brightness-95">
                             <button onClick={(e)=>{
                                 setUnblock(false)
                                 }}
                                 className="font-semibold ml-1"
-                                >Cancel
+                                >{t('cancel')}
                             </button>
                         </div>
                     </div>

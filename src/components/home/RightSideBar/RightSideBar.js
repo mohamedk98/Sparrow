@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 import { BsFillArrowRightCircleFill } from 'react-icons/bs';
 import { BsToggle2Off } from 'react-icons/bs';
@@ -6,7 +6,20 @@ import { BsToggleOn } from 'react-icons/bs';
 import More from '../Feed/posts/More';
 import { useSelector } from 'react-redux';
 import { socket } from '../../chat/socket.service';
-const RightSideBar = ({ setOpenChats }) => {
+import { useTranslation } from 'react-i18next';
+import { languages } from '../../languagesArray';
+
+const RightSideBar = ({ setOpenChats  }) => {
+    //Start change 
+    const cookies=require('js-cookie');
+    const currentLanguageCode=cookies.get('i18next') || 'en';  
+    const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+    useEffect(() => {
+      document.getElementById('rightbar').dir=currentLanguage.dir || 'ltr';
+  }, [currentLanguage]);
+  const {t}=useTranslation();
+   //End change language
+
   const [open, setOpen] = useState(true);
   const [showContacts, setShowContacts] = useState(true);
   const [showActiveContacts, setShowActiveContacts] = useState(true);
@@ -31,22 +44,22 @@ const RightSideBar = ({ setOpenChats }) => {
   );
 
   return (
-    <div className="hidden lg1:flex fixed z-50 right-0 overflow-scroll ">
+    <div className="hidden lg1:flex fixed scrollbar-hide z-50 right-0 overflow-scroll" dir='ltr' id="rightbar">
       <div
-        className={`bg-facebook-grey h-screen p-5 pt-8 ml-3 ${
+        className={`bg-facebook-grey  dark:bg-zinc-800 transition duration-700  h-screen p-5 pt-8 ml-3 ${
           open ? 'w-64' : 'w-24 '
         } duration-300  relative`}
       >
         <BsFillArrowRightCircleFill
           onClick={() => setOpen(!open)}
-          className={`bg-facebook-grey text-indigo-500 text-3xl rounded-full cursor-pointer ${
+          className={`bg-facebook-grey  text-indigo-500 text-3xl rounded-full cursor-pointer ${
             !open && 'rotate-180'
           } absolute -left-3 top-9 border border-facebook-grey`}
         />
-        <ul>
+        <ul  dir='ltr'>
           <li className={open ? 'mt-10' : '-ml- mt-10 text-center'}>
-            <span className="font-bold text-sm ml-2 duration-300">
-              Contacts
+            <span className="font-bold dark:text-white text-sm ml-2 duration-300">
+            {t('contact_rightSideBar')}
             </span>
             {open && (
               <More
@@ -58,7 +71,8 @@ const RightSideBar = ({ setOpenChats }) => {
                       setShowContacts(!showContacts);
                     }}
                   >
-                    Show contacts
+                  
+                  {t('show_contacts')}
                     {showContacts && (
                       <BsToggleOn className="text-indigo-500 text-2xl ml-3 -mt-0.5" />
                     )}
@@ -69,12 +83,13 @@ const RightSideBar = ({ setOpenChats }) => {
                 }
                 text2={
                   <div
+                  
                     className="flex mr-0.5"
                     onClick={() => {
                       setShowActiveContacts(!showActiveContacts);
                     }}
                   >
-                    Active Status
+                  {t('active_status')}
                     {showActiveContacts && (
                       <BsToggleOn className="text-indigo-500 text-2xl ml-5 -mt-0.5" />
                     )}
@@ -92,10 +107,10 @@ const RightSideBar = ({ setOpenChats }) => {
           </li>
         </ul>
 
-        <ul className={showActiveContacts ? '' : 'bg-gray-100 opacity-40'}>
+        <ul  className={showActiveContacts ? '' : 'bg-gray-100 opacity-40 dark:bg-zinc-800 transition duration-700 dark:text-white'}>
           {!showContacts && (
             <li
-              className="cursor-pointer flex bg-gray-200 py-1 px-16 rounded-lg text-sm mt-5 btn hover:bg-gray-300 ml-5"
+              className="cursor-pointer flex  bg-gray-200 py-1 px-16 rounded-lg text-sm mt-5 btn hover:bg-gray-300 ml-5"
               onClick={() => {
                 setShowContacts(true);
               }}
@@ -118,7 +133,7 @@ const RightSideBar = ({ setOpenChats }) => {
                   className={`rounded-full w-12 h-12 ${!open && 'ml-2.5'}`}
                 />
                 <span
-                  className={`text-black origin-left text-sm mt-1 duration-300 ${
+                  className={`text-black dark:text-white origin-left text-sm mt-1 duration-300 ${
                     !open && 'scale-0 -mb-7'
                   }`}
                 >

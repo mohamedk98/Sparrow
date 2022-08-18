@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { FaFacebook, FaSearch, FaFacebookMessenger } from "react-icons/fa";
 import { TiHome } from "react-icons/ti";
 import { RiGroupFill } from "react-icons/ri";
 import { BsBellFill } from "react-icons/bs";
 import { BiLogOut } from "react-icons/bi";
-
+import {GrLanguage} from 'react-icons/gr';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsToggleOn } from "react-icons/bs";
 import { BsToggle2Off } from "react-icons/bs";
@@ -14,6 +14,23 @@ import { useDispatch, useSelector } from "react-redux";
 import useDarkMode from '../../../hooks/useDarkMode';
 import { removeAuthentication } from "../../../store/userSlice/UserSlice";
 import facebook from '../../../assets/images/Rasma.png';
+import i18next, { t } from 'i18next';
+
+const languages=[
+  {
+    code:'en',
+    name:'English',
+    country_code: 'gb',
+
+  },
+  {
+    code :'ar',
+    name:'العربية',
+    country_code: 'sa',
+    dir:'rtl'
+  }
+];
+
 const Header = () => {
   const navigate = useNavigate();
   // For home and friends icons active style:
@@ -39,6 +56,7 @@ const Header = () => {
     }
   };
 
+
   //logout functionality
   const dispatch = useDispatch();
 
@@ -49,8 +67,18 @@ const Header = () => {
     });
   };
 
+      //Start change Language
+      const cookies=require('js-cookie');
+      const currentLanguageCode=cookies.get('i18next') || 'en';
+      const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+      // useEffect(() => {
+      //     document.getElementById('search').dir=currentLanguage.dir || 'ltr';
+      // }, [currentLanguage]);
+     //End change language
+
   return (
-    <nav className="pt-3 px-6 bg-slate-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60">
+    <nav dir="ltr"
+    id="header"  className="pt-3 px-6 dark:bg-zinc-800 transition duration-700  bg-slate-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60">
       <div className="flex">
         <div className="flex items-center">
           <img
@@ -67,8 +95,8 @@ const Header = () => {
           >
             <input
               type="text"
-              className="px-3 py-1.5 text-gray-700 bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
-              placeholder="Search"
+              className="px-3 py-1.5 text-gray-700  bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
+              placeholder={`${t('Search')}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyUp={searchHandler}
@@ -100,14 +128,14 @@ const Header = () => {
         to={`/${userState.username}/friends`}
         className={`${
           location.pathname === `/${userState.username}/friends` &&
-          "border-b-2 border-b-blue-500"
+          " border-b-2 border-b-blue-500"
         } w-20 -mx-10 md:-mx-20 mt-1.5`}
       >
         <RiGroupFill
           className={`${
             location.pathname === `/${userState.username}/friends` &&
             "text-indigo-500 hover:bg-inherit"
-          } hover:text-indigo-500 text-3xl hover:bg-gray-200 px-5 py-3 w-full h-14 b -mt-3 `}
+          }  hover:text-indigo-500  text-indigo-500  text-3xl hover:bg-gray-200 px-5 py-3 w-full h-14 b -mt-3 `}
         />
       </Link>
 
@@ -184,7 +212,7 @@ const Header = () => {
             </span>
           </a>
           <ul
-            className="dropdown-menu min-w-max absolute hidden bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0 overflow-y-auto max-h-72
+            className="dropdown-menu min-w-max absolute hidden  bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0 overflow-y-auto max-h-72
     "
             aria-labelledby="dropdownMenuButton3"
           >
@@ -225,20 +253,20 @@ const Header = () => {
           </a>
           <ul
             className="
-          dropdown-menu min-w-max absolute hidden bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none left-auto right-0"
+          dropdown-menu min-w-max absolute hidden dark:bg-zinc-800 transition duration-700  bg-white text-base float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none left-auto right-0"
             aria-labelledby="dropdownMenuButton2"
           >
             <li>
               <Link
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                className="dropdown-item  text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:text-zinc-800"
                 to={`/${userState.username}`}
               >
-                My Profile
+              {t('profile')}
               </Link>
             </li>
             <li>
-              <button className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex">
-                Dark mode{" "}
+              <button className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 dark:hover:text-zinc-800  flex">
+              {t('Dark_mode')}
                 {darkMode && (
                   <BsToggleOn
                     className="text-indigo-500 text-2xl ml-3 -mt-0.5"
@@ -259,51 +287,48 @@ const Header = () => {
                 )}
               </button>
             </li>
-            <li>
-              <button className="dropdown-item text-sm py-2 px-4 font-normal flex w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100">
-                <span
-                  className={!lang ? "text-indigo-500" : ""}
-                  onClick={() => {
-                    setLang(!lang);
-                  }}
-                >
-                  En
-                </span>{" "}
-                {lang && (
-                  <BsToggleOn
-                    className="text-indigo-500 text-2xl mx-3 -mt-0.5"
-                    onClick={() => {
-                      setLang(!lang);
-                    }}
-                  />
-                )}
-                {!lang && (
-                  <BsToggle2Off
-                    className="text-indigo-500 text-2xl mx-3 -mt-0.5"
-                    onClick={() => {
-                      setLang(!lang);
-                    }}
-                  />
-                )}{" "}
-                <span
-                  className={lang ? "text-indigo-500" : ""}
-                  onClick={() => {
-                    setLang(!lang);
-                  }}
-                >
-                  Ar
-                </span>
-              </button>
-            </li>
             <li
-              className="dropdown-item text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex cursor-pointer align-baseline justify-cente"
+              className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 flex cursor-pointer align-baseline justify-center"
               onClick={() => logoutHandler()}
             >
-              {<BiLogOut className="text-xl text-indigo-500 mr-2" />}
+              {<BiLogOut className="text-xl  text-indigo-500 mr-2" />}
               Logout
             </li>
           </ul>
         </div>
+
+        <div className="dropdown  relative mr-1 pl-5 md:mr-10">
+          <a
+            className="text-gray-500 hover:text-gray-700 focus:text-gray-700 mr-4 dropdown-toggle hidden-arrow flex items-center
+        "
+            href="/"
+            id="dropdownMenuButton1"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <div className=" w-10 h-10  rounded-full flex justify-center items-center">
+            <GrLanguage className='text-facebook-blue w-11/12 h-6 font-bold text-2xl'/>
+            </div>
+          </a>
+          <ul
+            className="dropdown-menu min-w-max absolute hidden dark:bg-zinc-800 transition duration-150 bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0"
+            aria-labelledby="dropdownMenuButton1"
+          >
+            {languages.map(({code,name,country_code})=>(
+            <li key={country_code}>
+              <button
+                onClick={()=>i18next.changeLanguage(code)}
+                disabled={code === currentLanguageCode}
+                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+              >
+               {name}
+              </button>
+            </li>
+              ))}
+          </ul>
+        </div>
+
       </div>
     </nav>
   );

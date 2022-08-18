@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { AiFillEye } from "react-icons/ai";
 import LoginButton from "../../components/login/LoginButton";
+import { t } from "i18next";
 
 function EditeProfile({ editProfile, setEditProfile }) {
   const userState = useSelector((state) => state.userData.userData);
@@ -113,7 +114,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
       <div className="lg:w-3/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700 dark:text-slate-100">
         <div className="relative mb-3 text-black dark:text-slate-100">
           <div className="text-center text-xl font-semibold">
-            Update your Profile
+            {t('Update your Profile')}
           </div>
           <button
             className="absolute right-2 top-0 text-xl"
@@ -129,14 +130,14 @@ function EditeProfile({ editProfile, setEditProfile }) {
             onClick={() => setChangeName((prev) => !prev)}
           >
             <BiEditAlt />
-            <span>Change Your Name</span>
+            <span>{t('Change Your Name')}</span>
           </div>
           {changeName && (
             <div className="border rounded-lg p-3 m-2">
               <form>
                 <div className="m-2">
                   <span className="ml-2 text-indigo-300 dark:text-slate-100">
-                    First Name
+                    {t('First Name')}
                   </span>
                   <input
                     type="text"
@@ -150,7 +151,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                 </div>
                 <div className="m-2">
                   <span className="ml-2 text-indigo-300 dark:text-slate-100">
-                    Last Name
+                   {t('Last Name')}
                   </span>
                   <input
                     type="text"
@@ -169,7 +170,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                       className="font-semibold ml-1"
                       onClick={(e) => changeNameHandler(name, e)}
                     >
-                      Change
+                      {t('Change')}
                     </button>
                   </div>
                   <div className="bg-slate-200 dark:bg-zinc-400 rounded-lg p-2 cursor-pointer hover:brightness-95">
@@ -180,7 +181,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                       }}
                       className="font-semibold ml-1"
                     >
-                      Cancel
+                      {t('cancel')}
                     </button>
                   </div>
                 </div>
@@ -192,7 +193,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
             onClick={() => setChangePassword((prev) => !prev)}
           >
             <AiFillLock />
-            <span>Change Your Password</span>
+            <span>{t('Change Your Password')}</span>
           </div>
           {changePassword && (
             <Formik
@@ -220,7 +221,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                   .catch((error) => {
                     console.log(error.response.data.message);
                     setFormError(
-                      error.response.data.message || "Something went wrong"
+                      error.response.data.message || `${t('Something went wrong')}`
                     );
                     if (error.response) setShowSpinner(showSinner);
                   });
@@ -331,7 +332,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
             onClick={() => setBlockList((prev) => !prev)}
           >
             <AiOutlineSetting />
-            <span>Manage Block List</span>
+            <span>{t('Manage Block List')}</span>
           </div>
           {blockList && (
             <div>
@@ -361,7 +362,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                           className="p-2 rounded-lg bg-indigo-500 text-white dark:bg-zinc-500 dark:text-slate-100 hover:brightness-95"
                           onClick={(e) => setUnblock(true)}
                         >
-                          Unblock
+                          {t('Unblock')}
                         </button>
                         {unblock && (
                           <ConfirmUnblock
@@ -384,7 +385,7 @@ function EditeProfile({ editProfile, setEditProfile }) {
                     }}
                     className="font-semibold ml-1"
                   >
-                    Close
+                    {t('Close')}
                   </button>
                 </div>
               </div>

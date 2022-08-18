@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment,useEffect } from 'react';
 import { useState } from 'react';
 import { axiosInstance } from '../../../../network/axiosInstance';
 
@@ -11,6 +11,9 @@ import {
   forceUpdateHandler,
   alertHandler,
 } from '../../../../store/userSlice/NewsFeedSlice';
+import { t } from 'i18next';
+
+import { useTranslation } from 'react-i18next';
 
 const ShareModal = ({
   // modelID,
@@ -31,6 +34,8 @@ const ShareModal = ({
   setShowModal,
 }) => {
   // console.log(modelID, postId);
+
+  const {t}=useTranslation();
 
   // Force rerender:
   const dispatch = useDispatch();
@@ -72,16 +77,17 @@ const ShareModal = ({
         );
       });
   };
+   
 
   return (
     <Fragment>
       {showModal && (
         <div className="fixed top-0 left-0 sm:-mt-3.5 w-full h-full outline-none overflow-x-hidden overflow-y-auto z-70">
           <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
-            <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+            <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto dark:bg-zinc-800 transition duration-700 bg-white bg-clip-padding rounded-md outline-none text-current">
               <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                 <h5 className="text-xl font-bold leading-normal text-black">
-                  Share post
+                  {t('share_post')}
                 </h5>
 
                 <button
@@ -114,8 +120,8 @@ const ShareModal = ({
                     <TextArea
                       rows="3"
                       cols="35"
-                      className=" px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
-                      placeholder={`What's on your mind, ${profileFName}?`}
+                      className=" dark:bg-zinc-800 transition duration-700 dark:text-white px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
+                      placeholder={`${t('input_placeholder')} ${profileFName} ${t('input_questionMark')}`}
                       getInputTextValueHandler={getInputTextValueHandler}
                       setEmptyTextArea={setEmptyTextArea}
                       emptyTextArea={emptyTextArea}
@@ -148,7 +154,7 @@ const ShareModal = ({
                     setShowModal(!showModal);
                   }}
                 >
-                  Share
+                 {t('share')}
                 </button>
               </div>
             </div>

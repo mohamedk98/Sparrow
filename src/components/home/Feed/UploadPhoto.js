@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useTranslation } from "react-i18next";
+import { languages } from "../../languagesArray";
 
 const UploadPhoto = ({
   setShowUploadPic,
@@ -7,7 +9,17 @@ const UploadPhoto = ({
   setSelectedImages,
 }) => {
   const [imgType, setImgType] = useState("");
-
+ 
+  const {t}=useTranslation();
+    //Start change 
+    const cookies=require('js-cookie');
+    const currentLanguageCode=cookies.get('i18next') || 'en';  
+    const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+    useEffect(() => {
+      document.getElementById('addImg').dir=currentLanguage.dir || 'ltr';
+  }, [currentLanguage]);
+ 
+   //End change language
   
   //To Upload Multi Photo
   const selectedFileHandler = (e) => {
@@ -34,19 +46,19 @@ const UploadPhoto = ({
   };
   console.log(selectedImages);
   return (
-    <div className="flex justify-center w-full mt-8">
-      <div className="rounded-lg bg-gray-50 lg:w-full">
+    <div className="flex justify-center w-full mt-8 ">
+      <div className="rounded-lg bg-gray-50 dark:bg-zinc-800 lg:w-full">
         <button onClick={closeAddPhoto}>
           <AiFillCloseCircle className="text-4xl p-1 border-none rounded-none cursor-pointer hover:text-black hover:opacity-75" />
         </button>
         <div className="m-4">
-          <label className="inline-block mb-2 text-gray-500">
-            Add Image(jpg,png,gif,jpeg)
+          <label className="inline-block mb-2 text-gray-500" dir="ltr" id="addImg">
+          {t('add_image')}(jpg,png,gif,jpeg)
             <span className="text-red-700"> {imgType}</span>
           </label>
 
           <div className="flex items-center justify-center w-full">
-            <label className="flex flex-col w-full h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
+            <label className="flex flex-col w-full h-32 border-4 border-dashed dark:hover:bg-zinc-900 hover:bg-gray-100  dark:hover:border-zinc-800 hover:border-gray-300">
               <div className="flex flex-col items-center justify-center pt-7">
                 <svg
                   className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
@@ -60,7 +72,7 @@ const UploadPhoto = ({
                   />
                 </svg>
                 <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
-                  Select a photo , up to 5 photos
+                {t('select_a_photo')}
                 </p>
               </div>
 
@@ -78,7 +90,7 @@ const UploadPhoto = ({
         {selectedImages.length > 0 &&
           (selectedImages.length > 5 ? (
             <p className="text-red-700 text-center">
-              You can't upload more than 5 photos in a post
+              You can't upload more than 4 photos in a post
               <br />
               <span>
                 Please delete <b>{selectedImages.length - 5}</b> of them

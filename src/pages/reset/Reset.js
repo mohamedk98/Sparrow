@@ -7,6 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { axiosInstance } from '../../network/axiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { t } from 'i18next';
 const Reset = () => {
   // Show modal for LogIn:
   const [showLogInModal, setShowLogInModal] = useState(false);
@@ -37,7 +38,7 @@ const Reset = () => {
         </span>
 
         <span className="text-sky-700 font-bold md:text-lg mr-4 md:mr-0">
-          Don't forget the real life
+          {t("Don't forget the real life")}
         </span>
 
         <button
@@ -47,7 +48,7 @@ const Reset = () => {
             setShowLogInModal(!showLogInModal);
           }}
         >
-          Log In
+          {t('Log In')}
         </button>
 
         {showLogInModal && (
@@ -65,11 +66,11 @@ const Reset = () => {
       <div className="flex justify-center mt-28  ">
         <div className="block rounded-lg shadow-lg bg-white max-w-sm">
           <div className="py-3 px-6 border-b border-gray-300 text-xl font-bold">
-            Find Your Account
+            {t('Find Your Account')}
           </div>
           <div className="p-6">
             <p className="text-gray-700 text-base mb-4">
-              Please enter your email address to search for your account.
+              {t('Please enter your email address to search for your account.')}
             </p>
 
             <Formik
@@ -99,7 +100,7 @@ const Reset = () => {
                   .catch(error => {
                     // console.log(error.response.data.message);
                     setFormError(
-                      error.response.data.message || 'Something went wrong'
+                      error.response.data.message || `${t('Something went wrong')}`
                     );
                     if (error.response) setShowSpinner(showSinner);
                   });

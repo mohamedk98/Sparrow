@@ -22,6 +22,7 @@ import ConfirmBlock from './ConfirmBlock';
 import ConfirmUnfriend from './ConfirmUnfriend';
 import ConfirmUnfriendSingle from './ConfirmUnfriendSingle';
 import ConfirmBlockSingle from './ConfirmBlockSingle';
+import { t } from 'i18next';
 
 
 
@@ -101,7 +102,7 @@ function ProfilePic() {
                     onClick={()=>setEditProfile(true)}
                 >
                     <MdEdit className="w-5 h-5" />
-                    <span className="ml-1">Edit profile</span>
+                    <span className="ml-1">{t('Edit_profile')}</span>
                 </div>
                 {editProfile&&<EditeProfile editProfile={editProfile} setEditProfile={setEditProfile} />}
             </div>:
@@ -110,7 +111,7 @@ function ProfilePic() {
                 <div className="bg-slate-200 dark:bg-zinc-700 rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95" 
                     onClick={()=>setFriendMenu(prev=>!prev)}>
                     <FaUserAlt className="w-5 h-4" />
-                    <span className="ml-1">Friends</span>
+                    <span className="ml-1">{t('Friends')}</span>
                     <IoIosArrowDown className='m-1'/>
                 </div>
                 {friendMenu&&(<div className="bg-white dark:bg-zinc-700 dark:text-slate-100 transition duration-700 p-2 rounded-lg absolute top-14 right-28 lg:top-14 lg:right-28 w-56 shadow shadow-slate-400 dark:shadow-zinc-500 z-10">
@@ -119,7 +120,7 @@ function ProfilePic() {
                         onClick={()=>setUnfriend(true)}
                         >
                         <TbFriendsOff className="w-5 h-5" />
-                        Unfriend
+                        {t('Unfriend')}
                     </div>
                     {unfriend&&<ConfirmUnfriendSingle friend={otherUserState} removeFriend={removeFriend} setUnfriend={setUnfriend}/>}
                     <div
@@ -127,7 +128,7 @@ function ProfilePic() {
                         onClick={()=>setBlock(true)}
                         >
                         <BiBlock className="w-5 h-5" />
-                        Block
+                        {t('block')}
                     </div>
                     {block&&<ConfirmBlockSingle friend={otherUserState} blockFriend={blockFriend} setBlock={setBlock}/>}
                 </div>)}
@@ -136,7 +137,7 @@ function ProfilePic() {
                 <div className={`${otherUserState?.friendsRequests?.some(id=>id.userId===userState._id)?"bg-indigo-400 dark:bg-zinc-500 text-white rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95":"bg-indigo-600 dark:bg-zinc-700 text-white rounded-lg flex items-center p-2 cursor-pointer hover:brightness-95"}`} 
                     onClick={()=>addFriend(otherUserState._id)}>
                     <AiOutlineUserAdd className="w-5 h-4" />
-                    {otherUserState?.friendsRequests?.some(id=>id.userId===userState._id)?<span className="ml-1">Request Sent</span>:<span className="ml-1">Add Friend</span>}
+                    {otherUserState?.friendsRequests?.some(id=>id.userId===userState._id)?<span className="ml-1">{t('Request Sent')}</span>:<span className="ml-1">{t('Add Friend')}</span>}
                 </div>
             </div>
             }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState,useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { AiFillEye } from 'react-icons/ai';
@@ -8,6 +8,9 @@ import { axiosInstance } from '../../network/axiosInstance';
 import LoginButton from './LoginButton';
 import { useNavigate } from 'react-router-dom';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { useTranslation } from 'react-i18next';
+import { languages } from '../languagesArray';
+
 
 // user intial info:
 const userInfo = {
@@ -26,6 +29,15 @@ const SignupForm = ({
   setShowVerificationAlert,
 }) => {
   // const dispatch = useDispatch();
+
+
+  const cookies=require('js-cookie');
+  const currentLanguageCode=cookies.get('i18next') || 'en';  
+  const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+  let direction=currentLanguage.dir || 'ltr';
+  useEffect(() => {
+    document.getElementById('eye').dir=currentLanguage.dir || 'ltr';
+}, [currentLanguage,direction]);
 
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
@@ -94,7 +106,7 @@ const SignupForm = ({
 
     gender: Yup.string().required('Gender is required'),
   });
-
+const {t}=useTranslation();
   return (
     <Fragment>
       <Formik
@@ -158,9 +170,10 @@ const SignupForm = ({
           <Form onSubmit={formic.handleSubmit} className="flex flex-col">
             <div className="flex justify-between">
               <LoginInput
+                id="fname"
                 name="firstName"
                 type="text"
-                placeholder="First name"
+                placeholder={t('First Name')}
                 className="border-2 rounded-md p-3 mb-3 w-full"
                 onChange={signupHandler}
               />
@@ -175,9 +188,10 @@ const SignupForm = ({
               )}
 
               <LoginInput
+                id="lname"
                 name="lastName"
                 type="text"
-                placeholder="Last name"
+                placeholder={t('Last Name')}
                 className="border-2 rounded-md p-3 mb-3 w-full"
                 onChange={signupHandler}
               />
@@ -191,9 +205,10 @@ const SignupForm = ({
               )}
             </div>
             <LoginInput
+             id="em"
               name="email"
               type="text"
-              placeholder="Email address"
+              placeholder={t('Email address')}
               className="border-2 rounded-md p-3 mb-3 w-full"
               onChange={signupHandler}
             />
@@ -208,16 +223,19 @@ const SignupForm = ({
 
             <div className="relative">
               <LoginInput
+                id="pws"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder={t('Password')}
                 name="password"
                 className="border-2 rounded-md p-3 mb-2 w-full"
                 onChange={signupHandler}
               />
 
               <span
+                id="eye"
+                dir='ltr'
                 onClick={togglePassword}
-                className="absolute right-5 top-5 -mt-0.5 cursor-pointer"
+                className={` absolute ${direction==='ltr'?'right-5':'left-5'}  top-5 -mt-0.5 cursor-pointer`}
               >
                 {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </span>
@@ -235,7 +253,7 @@ const SignupForm = ({
             </div>
 
             <div className="text-xs my-1 relative">
-              Date of birth
+              {t('Date of birth')}
               {formic.errors.date && formic.touched.date && (
                 <Fragment>
                   <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit -left-44 top-3">
@@ -257,7 +275,7 @@ const SignupForm = ({
             </div>
 
             <div className="text-xs my-1 mb-5 relative">
-              Gender
+              {t('Gender')}
               {formic.errors.gender && formic.touched.gender && (
                 <Fragment>
                   <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit -right-48 -mr-1 top-5">
@@ -278,17 +296,17 @@ const SignupForm = ({
                     className="form-check-label inline-block text-gray-800"
                     htmlFor="male"
                   >
-                    Male
+                    {t('Male')}
                   </label>
                   <input
                     className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                     type="radio"
                     name="gender"
-                    id="male"
                     value="male"
                     onChange={signupHandler}
                   />
                 </div>
+
                 <div
                   className={`form-check form-check-inline border border-solid 00 w-1/3 py-2 flex justify-around rounded ${
                     formic.errors.gender && formic.touched.gender
@@ -300,13 +318,12 @@ const SignupForm = ({
                     className="form-check-label inline-block text-gray-800"
                     htmlFor="female"
                   >
-                    Female
+                    {t('Female')}
                   </label>
                   <input
                     className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                     type="radio"
                     name="gender"
-                    id="female"
                     value="female"
                     onChange={signupHandler}
                   />
@@ -322,7 +339,7 @@ const SignupForm = ({
                       role="status"
                     ></div>
                   ) : (
-                    'Sign Up'
+                   `${t('Sign Up')}`
                   )
                 }
                 type="submit"

@@ -22,6 +22,7 @@ import PostMiddleCounters from './PostMiddleCounters';
 import { useDispatch } from 'react-redux';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 import Replys from './Replys';
+import { useTranslation } from 'react-i18next';
 
 const PostMiddle = ({
   data,
@@ -47,6 +48,7 @@ const PostMiddle = ({
   // For the middle three buttons position:
   postsProfile,
 }) => {
+  const {t}=useTranslation();
   // Open share modal:
   const [showModal, setShowModal] = useState(false);
 
@@ -76,14 +78,14 @@ const PostMiddle = ({
 
   // Reactions className set:
   const [reactClass, setReactClass] = useState('');
-
+  
   const reactHandler = (name, reactionsClicked = true) => {
     setReactionClicked(reactionsClicked);
 
     setReactType(name);
 
     // Handle reacion className and style in runtime (while clicking on reaction):
-    ReactionClassHandler(name, setReactClass);
+    ReactionClassHandler(name, setReactClass,t);
 
     // Send post reaction to DB:
     const reactBody = { reaction: name };
@@ -170,7 +172,7 @@ const PostMiddle = ({
           type="button"
           className={
             fullScreenCommentClassName ||
-            `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-5 ${
+            `btn flex hover:bg-gray-100 justify-center dark:hover:text-zinc-800 py-2 my-1 px-5 ${
               postsProfile ? 'lg:px-3 hover:lg:px-3' : 'hover:lg:px-7 lg:ml-7'
             } md:px-7 ml-3 md:ml-3  rounded-lg `
           }
@@ -180,7 +182,7 @@ const PostMiddle = ({
           }}
         >
           <FaCommentAlt className="mt-1.5 mr-2" />
-          Comment
+          {t('commentbtn')}
         </button>
 
         {
@@ -190,7 +192,7 @@ const PostMiddle = ({
           type="button"
           className={
             fullScreenShareClassName ||
-            `btn flex hover:bg-gray-100 justify-center py-2 my-1 px-7 md:px-9 ${
+            `btn flex hover:bg-gray-100 dark:hover:text-zinc-800 justify-center py-2 my-1 px-7 md:px-9 ${
               postsProfile && 'lg:px-5 hover:lg:px-5 hover:lg:mx-9'
             } lg:px-14 rounded-lg `
           }
@@ -203,7 +205,7 @@ const PostMiddle = ({
           }}
         >
           <RiShareForwardFill className="mt-0.5 mr-2 text-2xl" />
-          Share
+          {t('sharebtn')}
         </button>
 
         {
@@ -250,8 +252,9 @@ const PostMiddle = ({
       {writeComment && (
         <div className={'relative ' + fullScreenCommentsClassName}>
           <TextArea
-            placeholder="Write a comment"
-            id={id}
+            dir='ltr'
+            id='textarea'
+            placeholder={t('Write a comment')}
             comment={true}
             // showMore={true}
             showProfileImage={true}
@@ -301,7 +304,7 @@ const PostMiddle = ({
                         onClick={() => setEditComment(false)}
                         className="text-xs absolute bottom-0 left-12 ml-1"
                       >
-                        Cancel
+                       {t('cancel')}
                       </button>
                     </div>
                   ) : (
@@ -325,8 +328,8 @@ const PostMiddle = ({
                           <More
                             text={
                               comment?.userId?._id === userData?._id
-                                ? 'Delete comment'
-                                : 'Hide comment'
+                                ? `${t('Delete_comment')}`
+                                : `${t('hide_comment')}`
                             }
                             sharedPost={sharedPost}
                             deleteComment={true}
@@ -340,7 +343,7 @@ const PostMiddle = ({
                             setEditComment={setEditComment}
                             commentId={comment?._id}
                             liNum2={2}
-                            text2={'Edit comment'}
+                            text2={t('Edit_comment')}
                             tooltipData="more"
                             postId={id}
                             moreID={moreID}
@@ -359,7 +362,7 @@ const PostMiddle = ({
                         id={comment?._id}
                       >
                         <span
-                          className={`block max-w-xs md:max-w-sm break-words max-h-16 overflow-auto`}
+                          className={`block dark:text-zinc-800 max-w-xs md:max-w-sm break-words max-h-16 overflow-auto`}
                         >
                           {comment.content}
                         </span>
@@ -370,7 +373,7 @@ const PostMiddle = ({
                         // Not tested, waiting for DB:
                       }
                       {
-                        <span className="absolute -right-3 -bottom-5 -mt-1.5 z-10">
+                        <span className="absolute -right-3 -bottom-5 -mt-1.5 dark:text-zinc-800 z-10">
                           <PostMiddleCounters
                             reactions={comment?.reactions?.map(
                               reaction => reaction?.reaction
@@ -431,7 +434,7 @@ const PostMiddle = ({
                           }
                         }}
                       >
-                        Reply
+                        {t('reply')}
                       </button>
 
                       <span className="text-gray-500 text-xs">
@@ -467,7 +470,7 @@ const PostMiddle = ({
                         }`}
                       />
                       {comment?.reply?.length}{' '}
-                      {comment?.reply?.length === 1 ? 'reply' : 'replies'}
+                      {comment?.reply?.length === 1 ? `${t('reply')}` : `${t('replies')}`}
                     </button>
 
                     {
@@ -552,7 +555,7 @@ const PostMiddle = ({
                             onClick={() => setEditReply(false)}
                             className="text-xs absolute bottom-3 left-32"
                           >
-                            Cancel
+                            {t('cancel')}
                           </button>
                         </div>
                       ) : (
@@ -639,7 +642,7 @@ const PostMiddle = ({
                 !editComment && (
                   <Fragment>
                     <TextArea
-                      placeholder={`Reply to ${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
+                      placeholder={`${t('Reply to')} ${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
                       id={comment?._id}
                       postId={id}
                       reply={true}
@@ -648,7 +651,7 @@ const PostMiddle = ({
                       // showMore={true}
                       replyClassName="ml-10"
                       // className="animation"
-                      showProfileImage={true}
+                      showProfileImage={ true}
                     />
 
                     {

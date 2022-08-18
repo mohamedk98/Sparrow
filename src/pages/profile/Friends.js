@@ -6,6 +6,7 @@ import { axiosInstance } from '../../network/axiosInstance';
 import { addUserData } from '../../store/userSlice/UserDataSlice';
 import FriendOptionsMenu from '../../components/profile/FriendOptionsMenu';
 import { addOtherUserData } from '../../store/userSlice/OtherUsersData';
+import { useTranslation } from 'react-i18next';
 
 function Friends() {
     const userState = useSelector((state) => state.userData.userData);
@@ -36,7 +37,7 @@ function Friends() {
         .catch(error => console.log(error));
         console.log(otherUserState.blockList)
     }
-    
+    const {t}=useTranslation();
     return (
         <div className="mt-3 bg-slate-200 dark:bg-zinc-900 transition duration-700 shadow-md">
             <div className="w-11/12 m-auto">
@@ -45,7 +46,7 @@ function Friends() {
                         <div className="lg:w-5/6 w-full mt-3 xl:ml-20 lg:ml-14">
                             <div className="bg-white my-3 p-4 rounded-xl dark:bg-zinc-800 dark:text-slate-100 transition duration-700">
                                 <div className="flex gap-2.5 items-center justify-between font-bold text-xl">
-                                    Friends
+                                    {t('Friends')}
                                 </div>
                                 <div className='grid lg:grid-cols-2 grid-col-1 gap-2.5 my-5'>
                                     {otherUserState?.friends?.data?.map((friend, index)=>{

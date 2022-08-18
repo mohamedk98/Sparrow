@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 function ProfileFriends() {
   const otherUserState = useSelector(
@@ -10,9 +11,9 @@ function ProfileFriends() {
   return (
     <div className="bg-white dark:bg-zinc-800 dark:text-slate-100 transition duration-700 my-3 p-4 rounded-xl shadow-md">
       <div className="flex gap-2.5 items-center justify-between font-bold text-xl">
-        Friends
+       {t('Friends')}
         <div className="font-normal text-base text-indigo-600 cursor-pointer py-1 px-2.5 rounded-lg hover:bg-slate-200 dark:hover:bg-zinc-700">
-          <Link to={`/${username}/friends`}>See all Friends</Link>
+          <Link to={`/${username}/friends`}>{t('see_all_friends')}</Link>
         </div>
       </div>
       <div>

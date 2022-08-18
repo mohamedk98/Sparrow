@@ -9,6 +9,7 @@ import {
   forceUpdateHandler,
 } from '../../../../store/userSlice/NewsFeedSlice';
 import EditPost from './EditPost';
+import { useTranslation } from 'react-i18next';
 
 const More = ({
   text,
@@ -44,6 +45,7 @@ const More = ({
   // console.log(postId);
   // console.log(userID, sharerId);
 
+  const {t}=useTranslation();
   // Rerender:
   const dispatch = useDispatch();
   // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
@@ -267,7 +269,7 @@ const More = ({
       {
         <div className={showMore ? 'block' : 'hidden'}>
           <ul
-            className={`dropdown-menu min-w-max absolute bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
+            className={`dropdown-menu min-w-max absolute dark:bg-zinc-800 transition duration-150 dark:text-white bg-white text-base z-50 py-2 px-3 rounded-lg shadow-lg mt-1 m-0 left-auto right-auto ${moreFullScreenClassName}`}
           >
             {
               // For Text Number 1:
@@ -302,7 +304,7 @@ const More = ({
                     setEditReply(replyId);
                   }
 
-                  if (text2 === 'Edit post') {
+                  if (text2 === `${t('Edit post')}`) {
                     setShowEditPostModal(true);
                     // setShowMore(!showMore);
                   }
@@ -331,7 +333,7 @@ const More = ({
             {confirmDeleteComment && (
               <div className=" bg-white max-w-sm p-0.5">
                 <h5 className="text-gray-900 text-sm leading-tight font-medium mb-2 ml-1">
-                  Confirm deletion
+                  {t('Confirm deletion')}
                 </h5>
                 <div className="flex justify-between">
                   <button

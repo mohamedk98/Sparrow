@@ -17,6 +17,7 @@ import PostImageGrid from './PostImageGrid';
 import UploadPhoto from '../UploadPhoto';
 import IsLoadingScreen from '../IsLoadingScreen';
 import { IoMdPhotos } from 'react-icons/io';
+import { t } from 'i18next';
 
 const EditPost = ({
   showModal,
@@ -216,7 +217,7 @@ const EditPost = ({
                 {/*header*/}
                 <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                   <h5 className="text-xl font-bold leading-normal text-black">
-                    Edit post
+                    {t('edit_post')}
                   </h5>
                   <button
                     className="btn-close box-content w-4 h-4 p-1 text-right text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
@@ -256,13 +257,13 @@ const EditPost = ({
                         value="Public"
                         className="text-xs py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                       >
-                        &#127759; Public
+                        &#127759; {t('public')}
                       </option>
                       <option
                         value="Private"
                         className="text-xs py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                       >
-                        &#128274; Private
+                        &#128274; {t('private')}
                       </option>
                     </select>
                   </div>
@@ -354,7 +355,7 @@ const EditPost = ({
                       sharedPost ? editSharedPostHandler() : editPostHandler();
                     }}
                   >
-                    Save
+                    {t('save')}
                   </button>
                 </div>
               </div>

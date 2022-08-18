@@ -3,6 +3,7 @@ import More from './More';
 import PostImageGrid from './PostImageGrid';
 import { ImEarth } from 'react-icons/im';
 import { ImLock } from 'react-icons/im';
+import { useTranslation } from 'react-i18next';
 
 const PostHalfTop = ({
   profileSRC,
@@ -32,6 +33,7 @@ const PostHalfTop = ({
   // for edit and delete post:
   sharededitPost,
 }) => {
+  const {t} =useTranslation();
   // console.log(postBody);
   let visiability = postData?.visiability;
   return (
@@ -51,18 +53,18 @@ const PostHalfTop = ({
           )}
 
           <div>
-            <strong>{profileName}</strong>
+            <strong className='dark:text-white'>{profileName}</strong>
 
             <div className="flex">
-              <span className={'text-gray-600 text-sm block ' + dateClassName}>
-                {postDate}
+              <span className={'text-gray-600 text-sm block dark:text-white ' + dateClassName}>
+         {postDate}
               </span>
               {visiability && (
-                <span data-title={visiability}>
+                <span data-title={'tooltipData'}>
                   {visiability === 'public' ? (
-                    <ImEarth className="text-gray-600 ml-2 mt-1 text-sm" />
-                  ) : visiability === 'Private' ? (
-                    <ImLock className="text-gray-600 ml-2 mt-1 text-sm" />
+                    <ImEarth className="text-gray-600 dark:text-white ml-2 mt-1 text-sm" />
+                  ) : visiability === 'private' ? (
+                    <ImLock className="text-gray-600 dark:text-white ml-2 mt-1 text-sm" />
                   ) : (
                     ''
                   )}
@@ -72,8 +74,8 @@ const PostHalfTop = ({
             {!sharedPost && userID === sharerId && (
               <span className="absolute top-0 right-0">
                 <More
-                  text={userID === sharerId ? 'Delete post' : 'Hide post'}
-                  text2={userID === sharerId && 'Edit post'}
+                  text={userID === sharerId ? `${t('delete_post')}` : `${t('hide_post')}`}
+                  text2={userID === sharerId && `${t('Edit post')}`}
                   sharedPost={sharedPost}
                   containerClassName="dropdown absolute right-1 top-1 "
                   iconClassName={

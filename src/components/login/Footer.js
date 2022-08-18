@@ -1,6 +1,22 @@
 import React from 'react';
+import i18next, { t } from 'i18next';
 
 const Footer = () => {
+ const languages=[
+    {
+      code:'en',
+      name:'English',
+      country_code: 'gb',
+  
+    },
+    {
+      code :'ar',
+      name:'العربية',
+      country_code: 'sa',
+      dir:'rtl'
+    }
+  ];
+
   return (
     <div className="bg-white mt-16 mb-5 text-lg grid md:grid-cols-3 items-center">
       <div className="text-center md:-ml-12">
@@ -51,10 +67,14 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex justify-center text-sm mr-0 md:mr-11 lg:mr-10 mt-3">
-        <p className="hover:cursor-pointer my-4 mr-24 hover:text-indigo-500">
-          English
+      {languages.map(({code,name,country_code})=>(
+        <p
+        key={country_code}
+        onClick={()=>i18next.changeLanguage(code)} 
+        className="hover:cursor-pointer my-4 mr-24 hover:text-indigo-500">
+          {name}
         </p>
-        <p className="hover:cursor-pointer my-4 hover:text-indigo-500">عربي</p>
+      ))}
       </div>
       <div className="text-center mt-3 text-indigo-500 text-sm">
         Made by <span className="text-red-500">&hearts;</span>{' '}

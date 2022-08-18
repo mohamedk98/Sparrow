@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { axiosInstance } from '../../../network/axiosInstance';
 import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from './EmojiPicker';
@@ -10,10 +10,38 @@ import {
   alertHandler,
   forceUpdateHandler,
 } from '../../../store/userSlice/NewsFeedSlice';
+import { useTranslation } from 'react-i18next';
+
+const languages=[
+  {
+    code:'en',
+    name:'English',
+    country_code: 'gb',
+
+  },
+  {
+    code :'ar',
+    name:'العربية',
+    country_code: 'sa',
+    dir:'rtl'
+  }
+];
+
+
 
 const CreatePostModal = ({ showModal, setShowModal }) => {
   // User data:
   const user = useSelector(state => state.newsFeed.profileData);
+
+  const {t}=useTranslation();
+  //Start change Language
+  const cookies=require('js-cookie');
+  const currentLanguageCode=cookies.get('i18next') || 'en';
+  const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+  useEffect(() => {
+      document.getElementById('textbox').dir=currentLanguage.dir || 'ltr';
+  }, [currentLanguage]);
+//End change language
 
   const dispatch = useDispatch();
 
@@ -104,9 +132,9 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               {loading ? (
                 <IsLoadingScreen />
               ) : (
-                <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+                <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto dark:bg-zinc-800 transition duration-700 dark:text-white bg-white bg-clip-padding rounded-md outline-none text-current">
                   <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                    <h5 className="text-xl font-bold leading-normal text-black">
+                    <h5 className="text-xl font-bold leading-normal dark:text-white text-black">
                       Create post
                     </h5>
 
@@ -173,7 +201,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               hover:bg-gray-100
             "
                           >
-                            &#127759; Public
+                            &#127759;  {t('public')}
                           </option>
                           <option
                             value="Private"
@@ -190,7 +218,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               hover:bg-gray-100
             "
                           >
-                            &#128274; Private
+                            &#128274; {t('private')}
                           </option>
                         </select>
                       </div>
@@ -199,11 +227,13 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                     <div className="grid grid-cols-1 w-12/13">
                       <div className="flex flex-wrap">
                         <textarea
+                          dir='ltr'
+                          id="textbox"
                           rows="3"
                           cols="35"
                           name="content"
-                          className=" px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
-                          placeholder={`What's on your mind, ${user?.firstName}?`}
+                          className="dark:bg-zinc-800 transition duration-700  dark:text-white px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
+                          placeholder={`${t('input_placeholder')}  ${user.firstName}`}
                           value={inputStr}
                           onChange={e => {
                             setInputStr(e.target.value);
@@ -259,7 +289,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                       }
                       className="inline-block px-6 w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                     >
-                      Post
+                   {t('Post')}
                     </button>
                   </div>
                 </div>

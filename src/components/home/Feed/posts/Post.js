@@ -10,6 +10,8 @@ import PostMiddle from './PostMiddle';
 import dateCalcFunction from './DateCalculations';
 
 import PostMiddleCounters from './PostMiddleCounters';
+import { useTranslation } from 'react-i18next';
+import { languages } from '../../../languagesArray';
 
 const Post = ({
   data,
@@ -29,10 +31,11 @@ const Post = ({
   // Hide and show comments:
   const [writeComment, setWriteComment] = useState(false);
 
+
   console.log();
   return (
     <div
-      className={`rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7 ${
+      className={`rounded-lg shadow-lg bg-white dark:bg-zinc-800 dark:text-white transition duration-700 p-3 max-w-2xl mx-auto my-7 ${
         className && className
       }`}
       key={data?._id}
@@ -62,6 +65,7 @@ const Post = ({
       <div className="">
         {!sharedPost && (
           <PostMiddleCounters
+            languages={languages}
             data={data}
             reactions={reactions}
             reactionsMakers={reactionsMakers}
