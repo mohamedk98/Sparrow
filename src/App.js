@@ -20,8 +20,7 @@ import ProfilePosts from './pages/profile/ProfilePosts';
 import About from './pages/profile/About';
 import Friends from './pages/profile/Friends';
 import Photos from './pages/profile/Photos';
-
-
+import VerifiyEmail from './pages/verifyEmail/VerifiyEmail';
 
 function App() {
   const navigate = useNavigate();
@@ -41,7 +40,10 @@ function App() {
       .catch(error => {
         // console.log(error);
         dispatch(removeAuthentication());
-        if (location.pathname !== '/resetPassword') {
+        if (
+          location.pathname !== '/resetPassword' &&
+          location.pathname !== '/verifyEmail'
+        ) {
           navigate('/login');
         }
       });
@@ -54,35 +56,21 @@ function App() {
   }, []);
 
   return (
-    <Suspense
-    // fallback={
-    //   <div className="text-center mt-5">
-    //     <button className="btn btn-primary" type="button" disabled>
-    //       <span
-    //         className="spinner-border spinner-border-sm"
-    //         role="status"
-    //         aria-hidden="true"
-    //       ></span>
-    //       Loading...
-    //     </button>
-    //   </div>
-    // }
-    >
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/reset" element={<Reset />} />
-        <Route path="/resetPassword" element={<ResetPassword />} />
-        <Route path="/:username" element={<Profile />}>
-          <Route index element={<ProfilePosts />} />
-          <Route path="posts" element={<ProfilePosts />} />
-          <Route path="about" element={<About />} />
-          <Route path="friends" element={<Friends />} />
-          <Route path="photos" element={<Photos />} />
-        </Route>
-        <Route path="*" element={<Error />} />
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/reset" element={<Reset />} />
+      <Route path="/resetPassword" element={<ResetPassword />} />
+      <Route path="/verifyEmail" element={<VerifiyEmail />} />
+      <Route path="/:username" element={<Profile />}>
+        <Route index element={<ProfilePosts />} />
+        <Route path="posts" element={<ProfilePosts />} />
+        <Route path="about" element={<About />} />
+        <Route path="friends" element={<Friends />} />
+        <Route path="photos" element={<Photos />} />
+      </Route>
+      <Route path="*" element={<Error />} />
+    </Routes>
   );
 }
 
