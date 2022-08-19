@@ -260,7 +260,7 @@ const TextArea = ({
       <div className="w-full relative z-40">
         <textarea
         dir='ltr'
-        id='textarea'
+        id={id}
           // For sharing post:
           onFocus={() => shareAPost && !editPost && setEmptyTextArea(false)}
           onBlur={e => {

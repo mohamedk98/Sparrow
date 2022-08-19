@@ -253,7 +253,7 @@ const PostMiddle = ({
         <div className={'relative ' + fullScreenCommentsClassName}>
           <TextArea
             dir='ltr'
-            id='textarea'
+            id={data._id}
             placeholder={t('Write a comment')}
             comment={true}
             // showMore={true}
@@ -284,6 +284,7 @@ const PostMiddle = ({
                     // Show and hide edit comment input:
                   }
                   {editComment && comment?._id === editComment ? (
+                   
                     <div className="relative">
                       <TextArea
                         value={comment?.content}
@@ -540,6 +541,7 @@ const PostMiddle = ({
                           <TextArea
                             value={reply?.content}
                             replyId={reply?._id}
+                            id={id}
                             commentId={comment?._id}
                             postId={data?._id}
                             editReply={true}

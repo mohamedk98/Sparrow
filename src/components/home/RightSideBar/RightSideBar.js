@@ -44,7 +44,7 @@ const RightSideBar = ({ setOpenChats  }) => {
   );
 
   return (
-    <div className="hidden lg1:flex fixed scrollbar-hide z-50 right-0 overflow-scroll" dir='ltr' id="rightbar">
+    <div className="hidden lg1:flex fixed scrollbar-hide z-0 right-0 overflow-scroll" dir='ltr' id="rightbar">
       <div
         className={`bg-facebook-grey  dark:bg-zinc-800 transition duration-700  h-screen p-5 pt-8 ml-3 ${
           open ? 'w-64' : 'w-24 '

@@ -343,7 +343,7 @@ const More = ({
                       // console.log(postId, commentId);
                       if (
                         deleteComment &&
-                        text === 'Delete comment' &&
+                        text === `${t('Delete_comment')}` &&
                         !sharedPost
                       ) {
                         deleteCommentHandler();
@@ -353,7 +353,7 @@ const More = ({
 
                       if (
                         deleteComment &&
-                        text === 'Delete comment' &&
+                        text === `${t('Delete_comment')}` &&
                         sharedPost
                       ) {
                         deleteSharedCommentHandler();
@@ -361,25 +361,25 @@ const More = ({
                         setShowMore(!showMore);
                       }
 
-                      if (text === 'Delete post' && !sharededitPost) {
+                      if (text === `${t('delete_post')}` && !sharededitPost) {
                         deletePostHandler();
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
 
-                      if (text === 'Delete post' && sharededitPost) {
+                      if (text === `${t('delete_post')}` && sharededitPost) {
                         deleteSharedPostHandler();
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
 
-                      if (text === 'Delete reply' && !sharedPost) {
+                      if (text === `${t('Delete_reply')}` && !sharedPost) {
                         deleteReplyHandler();
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
 
-                      if (text === 'Delete reply' && sharedPost) {
+                      if (text === `${t('Delete_reply')}` && sharedPost) {
                         deleteSharedReplyHandler();
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);

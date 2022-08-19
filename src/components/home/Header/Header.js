@@ -1,34 +1,33 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaFacebook, FaSearch, FaFacebookMessenger } from "react-icons/fa";
 import { TiHome } from "react-icons/ti";
 import { RiGroupFill } from "react-icons/ri";
 import { BsBellFill } from "react-icons/bs";
 import { BiLogOut } from "react-icons/bi";
-import {GrLanguage} from 'react-icons/gr';
+import { GrLanguage } from "react-icons/gr";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsToggleOn } from "react-icons/bs";
 import { BsToggle2Off } from "react-icons/bs";
 import SearchMenu from "./SearchMenu";
 import { axiosInstance } from "../../../network/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import useDarkMode from '../../../hooks/useDarkMode';
+import useDarkMode from "../../../hooks/useDarkMode";
 import { removeAuthentication } from "../../../store/userSlice/UserSlice";
-import facebook from '../../../assets/images/Rasma.png';
-import i18next, { t } from 'i18next';
+import logo from "../../../assets/images/Sparrow_Sub.png";
+import i18next, { t } from "i18next";
 
-const languages=[
+const languages = [
   {
-    code:'en',
-    name:'English',
-    country_code: 'gb',
-
+    code: "en",
+    name: "English",
+    country_code: "gb",
   },
   {
-    code :'ar',
-    name:'العربية',
-    country_code: 'sa',
-    dir:'rtl'
-  }
+    code: "ar",
+    name: "العربية",
+    country_code: "sa",
+    dir: "rtl",
+  },
 ];
 
 const Header = () => {
@@ -56,7 +55,6 @@ const Header = () => {
     }
   };
 
-
   //logout functionality
   const dispatch = useDispatch();
 
@@ -67,23 +65,28 @@ const Header = () => {
     });
   };
 
-      //Start change Language
-      const cookies=require('js-cookie');
-      const currentLanguageCode=cookies.get('i18next') || 'en';
-      const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
-      // useEffect(() => {
-      //     document.getElementById('search').dir=currentLanguage.dir || 'ltr';
-      // }, [currentLanguage]);
-     //End change language
+  //Start change Language
+  const cookies = require("js-cookie");
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const currentLanguage = languages.find(
+    (lan) => lan.code === currentLanguageCode
+  );
+  // useEffect(() => {
+  //     document.getElementById('search').dir=currentLanguage.dir || 'ltr';
+  // }, [currentLanguage]);
+  //End change language
 
   return (
-    <nav dir="ltr"
-    id="header"  className="pt-3 px-6 dark:bg-zinc-800 transition duration-700  bg-slate-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60">
+    <nav
+      dir="ltr"
+      id="header"
+      className="pt-3 px-6 dark:bg-zinc-800 transition duration-700  bg-slate-100 text-gray-500 shadow-md flex align-baseline justify-between sticky-top z-60"
+    >
       <div className="flex">
         <div className="flex items-center">
           <img
-          src={facebook}
-            className="text-indigo-500 text-4xl mr-5 h-16 w-14  rounded-full hover:cursor-pointer"
+            src={logo}
+            className="text-indigo-500 text-4xl mr-5 h-14 w-14 -mt-5  rounded-full hover:cursor-pointer"
             onClick={() => navigate("/")}
           />
           {/*Start Search Input */}
@@ -96,7 +99,7 @@ const Header = () => {
             <input
               type="text"
               className="px-3 py-1.5 text-gray-700  bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
-              placeholder={`${t('Search')}`}
+              placeholder={`${t("Search")}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyUp={searchHandler}
@@ -141,7 +144,7 @@ const Header = () => {
 
       <div className="flex">
         {/* Messanger Menu */}
-        
+
         {/* <div className="dropdown relative mr-1 md:mr-10">
           <a
             className="text-gray-500 hover:text-gray-700 focus:text-gray-700 mr-4 dropdown-toggle hidden-arrow flex items-center
@@ -223,7 +226,10 @@ const Header = () => {
                   to={"/profile"}
                 >
                   <div className="flex flex-row items-center ">
-                    <img src={singleNotification.notificationId.from.profileImage} className="h-12 w-12 rounded-full mx-2"/>
+                    <img
+                      src={singleNotification.notificationId.from.profileImage}
+                      className="h-12 w-12 rounded-full mx-2"
+                    />
                     {` ${singleNotification.notificationId.from.firstName} 
                     ${singleNotification.notificationId.from.lastName} ${singleNotification.notificationId.message}`}
                   </div>
@@ -261,12 +267,12 @@ const Header = () => {
                 className="dropdown-item  text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:text-zinc-800"
                 to={`/${userState.username}`}
               >
-              {t('profile')}
+                {t("profile")}
               </Link>
             </li>
             <li>
               <button className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 dark:hover:text-zinc-800  flex">
-              {t('Dark_mode')}
+                {t("Dark_mode")}
                 {darkMode && (
                   <BsToggleOn
                     className="text-indigo-500 text-2xl ml-3 -mt-0.5"
@@ -308,27 +314,26 @@ const Header = () => {
             aria-expanded="false"
           >
             <div className=" w-10 h-10  rounded-full flex justify-center items-center">
-            <GrLanguage className='text-facebook-blue w-11/12 h-6 font-bold text-2xl'/>
+              <GrLanguage className="text-facebook-blue w-11/12 h-6 font-bold text-2xl" />
             </div>
           </a>
           <ul
             className="dropdown-menu min-w-max absolute hidden dark:bg-zinc-800 transition duration-150 bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 m-0 bg-clip-padding border-none left-auto right-0"
             aria-labelledby="dropdownMenuButton1"
           >
-            {languages.map(({code,name,country_code})=>(
-            <li key={country_code}>
-              <button
-                onClick={()=>i18next.changeLanguage(code)}
-                disabled={code === currentLanguageCode}
-                className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-              >
-               {name}
-              </button>
-            </li>
-              ))}
+            {languages.map(({ code, name, country_code }) => (
+              <li key={country_code}>
+                <button
+                  onClick={() => i18next.changeLanguage(code)}
+                  disabled={code === currentLanguageCode}
+                  className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                >
+                  {name}
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
-
       </div>
     </nav>
   );

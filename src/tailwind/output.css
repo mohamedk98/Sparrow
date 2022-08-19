@@ -4656,16 +4656,16 @@ textarea.form-control.is-invalid {
   z-index: 10;
 }
 
-.z-50 {
-  z-index: 50;
-}
-
 .z-70 {
   z-index: 70;
 }
 
 .z-60 {
   z-index: 60;
+}
+
+.z-50 {
+  z-index: 50;
 }
 
 .z-40 {
@@ -6017,11 +6017,6 @@ textarea.form-control.is-invalid {
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
-.bg-green-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
-}
-
 .bg-facebook-grey {
   --tw-bg-opacity: 1;
   background-color: rgb(240 242 245 / var(--tw-bg-opacity));
@@ -6049,6 +6044,11 @@ textarea.form-control.is-invalid {
 .bg-red-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.bg-green-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
 }
 
 .bg-slate-50 {
@@ -6558,11 +6558,6 @@ textarea.form-control.is-invalid {
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
-.text-green-700 {
-  --tw-text-opacity: 1;
-  color: rgb(21 128 61 / var(--tw-text-opacity));
-}
-
 .text-facebook-green {
   --tw-text-opacity: 1;
   color: rgb(66 183 42 / var(--tw-text-opacity));
@@ -6596,6 +6591,11 @@ textarea.form-control.is-invalid {
 .text-facebook-blue {
   --tw-text-opacity: 1;
   color: rgb(24 119 242 / var(--tw-text-opacity));
+}
+
+.text-green-700 {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity));
 }
 
 .text-gray-900 {

@@ -79,12 +79,12 @@ const Footer = () => {
       <div className="text-center mt-3 text-indigo-500 text-sm">
         Made by <span className="text-red-500">&hearts;</span>{' '}
         <a
-          href="https://github.com/mohamedk98/Zombie-Hat-.git"
+          href="https://github.com/mohamedk98/Sparrow"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline underline-offset-2"
         >
-          RASMA Team
+          Sparrow Team
         </a>{' '}
         &copy; 2022
       </div>

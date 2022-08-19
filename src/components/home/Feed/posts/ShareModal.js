@@ -120,6 +120,7 @@ const ShareModal = ({
                     <TextArea
                       rows="3"
                       cols="35"
+                      id={postId}
                       className=" dark:bg-zinc-800 transition duration-700 dark:text-white px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
                       placeholder={`${t('input_placeholder')} ${profileFName} ${t('input_questionMark')}`}
                       getInputTextValueHandler={getInputTextValueHandler}

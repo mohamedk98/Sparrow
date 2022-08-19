@@ -1,33 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AiOutlineMinus } from 'react-icons/ai';
-import { AiOutlineClose } from 'react-icons/ai';
-import { socket } from './socket.service';
-import SenderMessage from './SenderMessage';
-import ReceiverMessage from './ReceiverMessage';
-import TextArea from '../home/Feed/posts/TextArea';
-import { Fragment } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import { AiOutlineMinus } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
+import { socket } from "./socket.service";
+import SenderMessage from "./SenderMessage";
+import ReceiverMessage from "./ReceiverMessage";
+import TextArea from "../home/Feed/posts/TextArea";
+import { Fragment } from "react";
 function Chat({ profileImage, name, id, closeChat }) {
   const [minimizeChat, setMinimizeChat] = useState(false);
   const [currentMessages, setCurrentMessages] = useState([]);
   const messagesEndRef = useRef();
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   useEffect(() => {
-    socket.on('message', newMessage => {
-      setCurrentMessages(previousMessages => [
+    socket.on("message", (newMessage) => {
+      setCurrentMessages((previousMessages) => [
         ...previousMessages,
         { message: newMessage.message, senderId: newMessage.senderId },
       ]);
       scrollToBottom();
     });
 
-    socket.on('sent messages', oldMessages => {
-      const savedMessages = oldMessages.map(savedMessage => ({
+    socket.on("sent messages", (oldMessages) => {
+      const savedMessages = oldMessages.map((savedMessage) => ({
         message: savedMessage.message,
         senderId: savedMessage.sender,
       }));
-      setCurrentMessages(previousMessages => [
+      setCurrentMessages((previousMessages) => [
         ...previousMessages,
         ...savedMessages,
       ]);
@@ -41,13 +41,13 @@ function Chat({ profileImage, name, id, closeChat }) {
     setMinimizeChat(!minimizeChat);
   };
 
-  const sendMessageHandler = message => {
+  const sendMessageHandler = (message) => {
     console.log(message);
-    socket.emit('message', message, id);
+    socket.emit("message", message, id);
   };
 
   return (
-    <div className="mx-2 w-80  rounded-t-xl bg-white shadow-lg shadow-gray-500 z-auto">
+    <div className="mx-2 w-80  rounded-t-xl bg-white shadow-lg shadow-gray-500 z-50">
       <div className="flex justify-between p-2 border-b-2 border-slate-200">
         <div className="flex">
           <img
@@ -73,7 +73,7 @@ function Chat({ profileImage, name, id, closeChat }) {
         </div>
       </div>
 
-      <div className={minimizeChat ? 'hidden' : 'block h-72 overflow-y-auto'}>
+      <div className={minimizeChat ? "hidden" : "block h-72 overflow-y-auto"}>
         {currentMessages &&
           currentMessages.map((message, idx) => {
             return (
@@ -91,12 +91,13 @@ function Chat({ profileImage, name, id, closeChat }) {
       <div
         className={
           minimizeChat
-            ? 'hidden'
-            : 'flex justify-between p-1.5 border-t-2 border-slate-200'
+            ? "hidden"
+            : "flex justify-between p-1.5 border-t-2 border-slate-200"
         }
       >
         <div className="flex mx-2 -mb-3.5 w-full ">
           <TextArea
+            id={"chatBox"}
             placeholder="Type a message..."
             chat={true}
             sendMessageHandler={sendMessageHandler}

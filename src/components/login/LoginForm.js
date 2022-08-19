@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import facebook from '../../assets/images/Rasma.png';
+import facebook from '../../assets/images/Sparrow_pic.png';
 import LoginButton from './LoginButton';
 import Formic from './Formic';
 import SignupModal from './SignupModal';
@@ -18,14 +18,14 @@ const LoginForm = () => {
   const [showVerificationAlert, setShowVerificationAlert] = useState(false);
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1">
-      <div className="lg:mt-16 -mt-20 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto justify-center">
+      <div className=" text-2xl text-center lg:text-left px-12 flex flex-col mx-auto justify-center">
         <img
-          className="max-w-xs lg:ml-14 mx-auto"
+          className="max-w-md lg:ml-14 mx-auto "
           src={facebook}
           alt="rasma logo"
         />
         <span className="lg:ml-20 whitespace-nowrap">
-          {t('Rasma helps you connect and share with the people in your life.')}
+          {t('Sparrow helps you connect and share with the people in your life.')}
         </span>
       </div>
       <div className="lg:ml-24 mx-auto mt-10 w-3/4 text-center">
