@@ -4,7 +4,7 @@ const adminApi = require("../models/Admin");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
-const createAdmin = (req, res) => {
+const createAdmin = async (req, res) => {
   const username = `${req.body.fullName}-${crypto
     .randomBytes(12)
     .toString("hex")}`;
@@ -12,7 +12,7 @@ const createAdmin = (req, res) => {
   const password = req.body.password;
   const fullName = req.body.fullName;
 
-  const hashedPassword = bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, 12);
 
   new adminApi({
     username,
