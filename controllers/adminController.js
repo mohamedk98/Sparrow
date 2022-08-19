@@ -14,6 +14,10 @@ const createAdmin = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
+  const existAdmin = await adminApi.findOne({email:email})
+  if (existAdmin){
+    return res.status(400).send("Admin already exists")
+  }
   new adminApi({
     username,
     email,
