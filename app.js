@@ -120,7 +120,6 @@ io.on("connection", async (socket) => {
       .findOne()
       .where("userIds")
       .all([socket.handshake.auth.userId,receiverId]);
-    console.log(room)
     if (!room) {
       try {
         let newRoom = new roomApi();
@@ -138,20 +137,22 @@ io.on("connection", async (socket) => {
     //send the stored messsages to this room
     socket.emit("sent messages", room.messages);
 
+
+    socket.on("message", async (message, senderId) => {
+      io.to(room._id.toString()).emit("message", { message, senderId });
+      room.messages.push({
+        sender: socket.handshake.auth.userId,
+        receiverId: senderId,
+        message: message,
+        timestamp: new Date().toISOString(),
+      });
+      await room.save();
+    });
     //when sending a message,emit it to the room,add the message to the room then save it in DB
 
   });
 
-  socket.on("message", async (message, senderId) => {
-    io.to(room._id.toString()).emit("message", { message, senderId });
-    room.messages.push({
-      sender: socket.handshake.auth.userId,
-      receiverId: senderId,
-      message: message,
-      timestamp: new Date().toISOString(),
-    });
-    await room.save();
-  });
+
 
   socket.on("disconnect", () => {
     console.log(`Use with ID of ${socket.id} Disconnected`);
