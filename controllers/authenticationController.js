@@ -67,7 +67,7 @@ const verifyEmail = (req, res) => {
 
 const sendResetPasswordEmail = (req, res) => {
   const email = req.body.email;
-  
+
   AuthenticationApi.sendResetPasswordEmail(email)
     .then((response) => res.status(200).send(response.message))
     .catch((error) => res.status(403).send(error.message));
@@ -79,8 +79,6 @@ const resetPassword = async (req, res) => {
   const password = req.body.password;
   const repassword = req.body.repassword;
 
-  console.log(email)
-  console.log(resetToken)
   if (password !== repassword) {
     const error = new Error("Password and Retyped password are not matching");
     return res.status(400).send(error.message);
