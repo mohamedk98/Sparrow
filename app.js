@@ -70,6 +70,7 @@ app.use(
       "http://localhost:3001",
       "https://zombie-hat.herokuapp.com",
       "http://localhost:3000",
+      "https://sparrow-36abc.web.app"
     ],
     credentials: true,
   })
