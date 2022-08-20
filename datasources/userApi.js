@@ -349,12 +349,12 @@ class UserApi {
     userData.gallery.push(coverImageUrl);
     try {
       let newProfile = await userData.save();
-      await s3
-        .deleteObject({
-          Bucket: "zombie-hat",
-          Key: `cover_images/${currentCoverImage}`,
-        })
-        .promise();
+      // await s3
+      //   .deleteObject({
+      //     Bucket: "zombie-hat",
+      //     Key: `cover_images/${currentCoverImage}`,
+      //   })
+      //   .promise();
       return {
         newProfile,
         httpStatusCode: 200,
@@ -377,12 +377,12 @@ class UserApi {
     userData.gallery.push(profileImageUrl);
 
     try {
-      await s3
-        .deleteObject({
-          Bucket: "zombie-hat",
-          Key: `profile_images/${currentProfileImage}`,
-        })
-        .promise();
+      // await s3
+      //   .deleteObject({
+      //     Bucket: "zombie-hat",
+      //     Key: `profile_images/${currentProfileImage}`,
+      //   })
+      //   .promise();
       let newProfile = await userData.save();
       return {
         newProfile,
