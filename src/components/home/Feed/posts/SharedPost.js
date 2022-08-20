@@ -176,7 +176,10 @@ const SharedPost = ({ postsProfile }) => {
       {
         // postSkeleton:
       }
-      {loading && <PostSkeleton />}
+
+      {(loading || (profilePosts?.length === 0 && posts?.length === 0)) && (
+        <PostSkeleton />
+      )}
     </Fragment>
   );
 };
