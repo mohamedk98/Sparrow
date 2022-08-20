@@ -15,6 +15,9 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
+  // Show response message:
+  const [response, setResponse] = useState(false);
+
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -48,9 +51,8 @@ const ResetPassword = () => {
 
   const [searchParams] = useSearchParams();
 
-  const all = searchParams.get('email');
-  const email = all?.split('?')[0];
-  const resetToken = all?.split('?')[1]?.split('=')[1];
+  const email = searchParams.get('email');
+  const resetToken = searchParams.get('resetToken');
 
   return (
     <div className="bg-gray-200 h-screen">
@@ -97,16 +99,18 @@ const ResetPassword = () => {
 
                 axiosInstance
                   .post(
-                    `http://localhost:3000/resetPassword`,
+                    `/resetpassword`,
                     {
                       password: values.password,
-                      rePassword: values.rePassword,
+                      repassword: values.rePassword,
                     },
                     { params: { email: email, resetToken: resetToken } }
                   )
                   .then(response => {
                     if (response.data) setShowSpinner(showSinner);
-                    navigate('/login');
+                    setResponse(response?.data);
+
+                    setTimeout(() => navigate('/login'), 5000);
                   })
                   .catch(error => {
                     setFormError(
@@ -188,9 +192,18 @@ const ResetPassword = () => {
                       className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-2 w-full mr-2"
                     />
                   </div>
-                  {formError && (
-                    <div className="text-red-500 text-center font-bold bg-red-200 py-2 shadow-slate-400 shadow-md mt-5 mb-2">
-                      {formError}
+                  {(formError || response) && (
+                    <div
+                      className={`${
+                        response
+                          ? 'text-yellow-600 bg-yellow-100'
+                          : 'text-red-500 bg-red-200'
+                      }  text-center font-bold  py-2 shadow-slate-400 shadow-md mt-5 mb-2`}
+                    >
+                      {formError || response}
+                      {', '}
+                      {response &&
+                        'You will be redirected to log in page in 3 seconds'}
                     </div>
                   )}
                 </Form>
