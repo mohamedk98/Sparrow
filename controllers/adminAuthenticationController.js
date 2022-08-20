@@ -1,7 +1,7 @@
 const admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
+const crypto = require("crypto")
 const adminLogin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -44,7 +44,7 @@ const getAdminData = async (req, res) => {
   const adminId = req.id;
 
   admin
-    .findById(adminId)
+    .findById(adminId, "-password")
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error));
 };
@@ -53,8 +53,59 @@ const changeAdminImage = async (req, res) => {
   const newAdminImage = req.file.location;
   const adminId = req.id;
   admin
-    .findByIdAndUpdate(adminId, { adminImage: newAdminImage })
-    .then((response) => res.status(200).send("Image Changed Successfully"))
+    .findByIdAndUpdate(adminId, { adminImage: newAdminImage }, { new: true })
+    .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error));
 };
-module.exports = { adminLogin, adminLogout, changeAdminImage,getAdminData };
+
+const changeAdminName = async (req, res) => {
+  const adminId = req.id;
+  const newFullName = req.body.fullName;
+
+  const adminData = admin.findById(adminId, "-password");
+  if (!adminData) {
+    return res.status(400).send(adminData);
+  }
+
+  try {
+    adminData.fullName = newFullName;
+    adminData.username = `${req.body.fullName}-${crypto
+      .randomBytes(12)
+      .toString("hex")}`;
+    const newAdminData = await adminData.save();
+    return res.status(200).send(newAdminData);
+  } catch {
+    return res.status(400).send("An Error has Occured");
+  }
+};
+
+const changeAdminPassword = async (req, res) => {
+  const adminId = req.id;
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+
+  const adminData = admin.findById(adminId);
+  if (!adminData) {
+    return res.status(400).send(adminData);
+  }
+  const passwordMatch = await bcrypt.compare(oldPassword, adminData.password);
+  if (!passwordMatch) {
+    return res.status(400).send("Incorrect Password");
+  }
+  try {
+    const newHashedPassword = await bcrypt.hash(newPassword, 12);
+    adminData.password = newHashedPassword;
+    const newAdminData = await adminData.save();
+    return res.status(200).send(newAdminData);
+  } catch {
+    return res.status(400).send("An Error has Occured");
+  }
+};
+module.exports = {
+  adminLogin,
+  adminLogout,
+  changeAdminImage,
+  changeAdminName,
+  changeAdminPassword,
+  getAdminData,
+};
