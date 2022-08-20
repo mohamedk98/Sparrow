@@ -33,9 +33,11 @@ const PostHalfTop = ({
   // for edit and delete post:
   sharededitPost,
 }) => {
-  const {t} =useTranslation();
-  // console.log(postBody);
-  let visiability = postData?.visiability;
+  const { t } = useTranslation();
+  let visiability = sharededitPost
+    ? sharedPostData?.visiability
+    : postData?.visiability;
+
   return (
     <div
       className={`${
@@ -53,17 +55,21 @@ const PostHalfTop = ({
           )}
 
           <div>
-            <strong className='dark:text-white'>{profileName}</strong>
+            <strong className="dark:text-white">{profileName}</strong>
 
             <div className="flex">
-              <span className={'text-gray-600 text-sm block dark:text-white ' + dateClassName}>
-         {postDate}
+              <span
+                className={
+                  'text-gray-600 text-sm block dark:text-white ' + dateClassName
+                }
+              >
+                {postDate}
               </span>
               {visiability && (
-                <span data-title={'tooltipData'}>
-                  {visiability === 'public' ? (
+                <span data-title={visiability}>
+                  {visiability?.toLowerCase() === 'public' ? (
                     <ImEarth className="text-gray-600 dark:text-white ml-2 mt-1 text-sm" />
-                  ) : visiability === 'private' ? (
+                  ) : visiability?.toLowerCase() === 'private' ? (
                     <ImLock className="text-gray-600 dark:text-white ml-2 mt-1 text-sm" />
                   ) : (
                     ''
@@ -72,9 +78,13 @@ const PostHalfTop = ({
               )}
             </div>
             {!sharedPost && userID === sharerId && (
-              <span className="absolute top-0 right-0">
+              <span className="absolute top-0 right-0 z-40">
                 <More
-                  text={userID === sharerId ? `${t('delete_post')}` : `${t('hide_post')}`}
+                  text={
+                    userID === sharerId
+                      ? `${t('delete_post')}`
+                      : `${t('hide_post')}`
+                  }
                   text2={userID === sharerId && `${t('Edit post')}`}
                   sharedPost={sharedPost}
                   containerClassName="dropdown absolute right-1 top-1 "
@@ -96,8 +106,6 @@ const PostHalfTop = ({
                   userData={userData}
                   moreFullScreenClassName={moreFullScreenClassName}
                   postData={postData}
-                  // postId={postId}
-
                   // for edit and delete post:
                   sharededitPost={sharededitPost}
                 />

@@ -10,7 +10,6 @@ import angrySVG from '../../../../assets/reacts/angry.svg';
 import { useTranslation } from 'react-i18next';
 
 const PostMiddleCounters = ({
-  languages,
   data,
   reactions,
   reactionsMakers,
@@ -19,9 +18,6 @@ const PostMiddleCounters = ({
   writeComment,
   reply,
 }) => {
-
-  // console.log(reactions);
-  // console.log(reactionsMakers);
   const { t } = useTranslation();
   // Handle Tooltip reactionsMakers groups:
   let likeMakers = [];
@@ -33,37 +29,37 @@ const PostMiddleCounters = ({
   let angryMakers = [];
 
   reactionsMakers?.filter(maker => {
-    if (maker?.reaction === `${t('reactName1')}`) {
+    if (maker?.reaction === `Like`) {
       likeMakers?.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return likeMakers;
     }
 
-    if (maker?.reaction === `${t('reactName2')}`) {
+    if (maker?.reaction === `Love`) {
       loveMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return loveMakers;
     }
 
-    if (maker?.reaction === `${t('reactName3')}`) {
+    if (maker?.reaction === `Care`) {
       careMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return careMakers;
     }
 
-    if (maker?.reaction === `${t('reactName4')}`) {
+    if (maker?.reaction === `Haha`) {
       hahaMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return hahaMakers;
     }
 
-    if (maker?.reaction === `${t('reactName5')}`) {
+    if (maker?.reaction === `Wow`) {
       wowMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return wowMakers;
     }
 
-    if (maker?.reaction === `${t('reactName6')}`) {
+    if (maker?.reaction === `Sad`) {
       sadMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return sadMakers;
     }
 
-    if (maker?.reaction === `${t('reactName7')}`) {
+    if (maker?.reaction === `Angry`) {
       angryMakers.push(`${maker?.userId?.firstName}${maker?.userId?.lastName}`);
       return angryMakers;
     }
@@ -83,7 +79,7 @@ const PostMiddleCounters = ({
   let reactionsLengthCheck =
     data?.reactions?.length !== 0 &&
     data?.reactions?.filter(reaction => reaction.reaction !== '').length !== 0;
-    
+
   return (
     <div
       className={`flex justify-between pb-3 px-3 ${
@@ -108,28 +104,44 @@ const PostMiddleCounters = ({
               className="mt-1"
               data-title={
                 // reaction makers:
-                reaction +
-                ': ' +
-                reactionMakersArray
-                  ?.map(maker => maker[reaction])
-                  ?.join('')
-                  ?.split(',')
-                  ?.join(', ')
+                ` ${
+                  reaction === 'Like'
+                    ? `${t('reactName1')}`
+                    : reaction === 'Love'
+                    ? `${t('reactName2')}`
+                    : reaction === 'Care'
+                    ? `${t('reactName3')}`
+                    : reaction === 'Haha'
+                    ? `${t('reactName4')}`
+                    : reaction === 'Wow'
+                    ? `${t('reactName5')}`
+                    : reaction === 'Sad'
+                    ? `${t('reactName6')}`
+                    : reaction === 'Angry'
+                    ? `${t('reactName7')}`
+                    : ''
+                } 
+                    : 
+                    ${reactionMakersArray
+                      ?.map(maker => maker[reaction])
+                      ?.join('')
+                      ?.split(',')
+                      ?.join(', ')}`
               }
             >
-              {reaction === `${t('reactName1')}` ? (
+              {reaction === 'Like' ? (
                 <img className="w-4 h-4" src={likeSVG} alt="like face" />
-              ) : reaction === `${t('reactName2')}` ? (
+              ) : reaction === 'Love' ? (
                 <img className="w-4 h-4" src={loveSVG} alt="love face" />
-              ) : reaction === `${t('reactName3')}` ? (
+              ) : reaction === 'Care' ? (
                 <img className="w-4 h-4" src={careSVG} alt="care face" />
-              ) : reaction === `${t('reactName4')}` ? (
+              ) : reaction === 'Haha' ? (
                 <img className="w-4 h-4" src={hahaSVG} alt="haha face" />
-              ) : reaction === `${t('reactName5')}` ? (
+              ) : reaction === 'Wow' ? (
                 <img className="w-4 h-4" src={wowSVG} alt="wow face" />
-              ) : reaction === `${t('reactName6')}` ? (
+              ) : reaction === 'Sad' ? (
                 <img className="w-4 h-4" src={sadSVG} alt="sad face" />
-              ) : reaction === `${t('reactName7')}` ? (
+              ) : reaction === 'Angry' ? (
                 <img className="w-4 h-4" src={angrySVG} alt="angry face" />
               ) : (
                 ''
@@ -167,7 +179,9 @@ const PostMiddleCounters = ({
             {sharedPost && data?.comments.length === 0
               ? ''
               : `${data?.comments.length} ${
-                  data?.comments.length < 2 ? `${t('Onecomment')}` : `${t('noOfcomments')}`
+                  data?.comments.length < 2
+                    ? `${t('Onecomment')}`
+                    : `${t('noOfcomments')}`
                 }
               `}
           </button>
@@ -177,7 +191,10 @@ const PostMiddleCounters = ({
           }
           {!sharedPost && (
             <button className="text-gray-500 cursor-default  border-gray-300">
-              {data?.sharesCount} {data?.sharesCount === 1 ?  `${t('oneShare')}` : `${t('noOfShares')}`}
+              {data?.sharesCount}{' '}
+              {data?.sharesCount === 1
+                ? `${t('oneShare')}`
+                : `${t('noOfShares')}`}
             </button>
           )}
         </div>

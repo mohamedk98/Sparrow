@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import facebook from '../../assets/icons/facebook.svg';
+import facebook from '../../assets/images/Sparrow_pic.png';
 import LoginButton from '../../components/login/LoginButton';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -33,46 +33,55 @@ const ResetPassword = () => {
 
   const ResetSchema = Yup.object().shape({
     password: Yup.string()
-      .required('Password is required')
-      // .min(8, 'Password length must be 8 at least')
-      // .max(36, 'Password length max. is 36')
+      .required(t('Password is required'))
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        'Password length must be eight at least, composed of at least one uppercase, one lowercase letters, one number and one special charcter (! @ # $ % ^ & *)'
+        t(
+          'Password length must be eight at least, composed of at least one uppercase, one lowercase letters, one number and one special charcter (! @ # $ % ^ & *)'
+        )
       ),
 
     rePassword: Yup.string()
-      .required('Password is required')
-      .oneOf([Yup.ref('password'), null], 'Passwords does not match'),
+      .required(t('Password is required'))
+      .oneOf([Yup.ref('password'), null], t('Passwords does not match')),
   });
 
   const [searchParams] = useSearchParams();
 
-  const email = searchParams.get('email');
-  const resetToken = searchParams.get('resetToken');
-
-  console.log(email, resetToken);
+  const all = searchParams.get('email');
+  const email = all?.split('?')[0];
+  const resetToken = all?.split('?')[1]?.split('=')[1];
 
   return (
     <div className="bg-gray-200 h-screen">
       <nav className="relative w-full flex justify-between items-center bg-white shadow">
         <span className="container-fluid">
-          <img className="h-14 mb-2" src={facebook} alt="facebook logo" />
+          <img
+            className="h-14 mb-2 ml-2.5 w-full"
+            src={facebook}
+            alt="facebook logo"
+          />
         </span>
 
         <span className="text-sky-700 font-bold md:text-lg mr-4">
-         {t("Don't forget the real life")}
+          {t("Don't forget the real life")}
         </span>
       </nav>
 
-      <div className="flex justify-center mt-28  ">
+      <div className="flex justify-center mt-28 ">
         <div className="block rounded-lg shadow-lg bg-white max-w-sm">
-          <div className="py-3 px-6 border-b border-gray-300 text-xl font-bold">
-            {t('Change your password')}
+          <div
+            className={`py-3 px-6 border-b  border-gray-300 text-xl font-bold ${
+              t('Change Your Password') === 'تغيير كلمة السر' && 'text-right'
+            }`}
+          >
+            {t('Change Your Password')}
           </div>
           <div className="p-6">
             <p className="text-gray-700 text-base mb-4">
-              {t('Make sure that the new password is different from the old one.')}
+              {t(
+                'Make sure that the new password is different from the old one.'
+              )}
             </p>
 
             <Formik
@@ -82,13 +91,9 @@ const ResetPassword = () => {
               }}
               validationSchema={ResetSchema}
               onSubmit={values => {
-                // console.log(values);
-
                 setFormError('');
 
                 setShowSpinner(!showSinner);
-
-                // ?email=${email}?resetToken=${resetToken}
 
                 axiosInstance
                   .post(
@@ -100,12 +105,10 @@ const ResetPassword = () => {
                     { params: { email: email, resetToken: resetToken } }
                   )
                   .then(response => {
-                    console.log(response);
                     if (response.data) setShowSpinner(showSinner);
                     navigate('/login');
                   })
                   .catch(error => {
-                    console.log(error.response.data.message);
                     setFormError(
                       error.response.data.message || 'Something went wrong'
                     );
@@ -119,7 +122,7 @@ const ResetPassword = () => {
                     <Field
                       name="password"
                       type={`${showPassword ? 'text' : 'password'}`}
-                      placeholder="Password"
+                      placeholder={t('Password')}
                       className={` border-2 rounded-md p-3 mb-3 w-full ${
                         errors.password && touched.password
                           ? 'outline-red-500 border-red-500'
@@ -145,7 +148,7 @@ const ResetPassword = () => {
                     <Field
                       name="rePassword"
                       type={`${showRePassword ? 'text' : 'password'}`}
-                      placeholder="confirm password"
+                      placeholder={t('confirm password')}
                       className={`border-2 rounded-md p-3 mb-3 w-full ${
                         errors.rePassword && touched.rePassword
                           ? 'outline-red-500 border-red-500'
@@ -178,7 +181,7 @@ const ResetPassword = () => {
                             role="status"
                           ></div>
                         ) : (
-                          'Change'
+                          `${t('Change')}`
                         )
                       }
                       type="submit"

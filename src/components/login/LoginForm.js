@@ -7,10 +7,7 @@ import SignupModal from './SignupModal';
 import SignupForm from './SignupForm';
 import { t } from 'i18next';
 
-
 const LoginForm = () => {
-
-
   // Show modal for SignUp:
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
@@ -18,21 +15,26 @@ const LoginForm = () => {
   const [showVerificationAlert, setShowVerificationAlert] = useState(false);
   return (
     <div className="grid lg:grid-cols-2 grid-cols-1">
-      <div className=" text-2xl text-center lg:text-left px-12 flex flex-col mx-auto justify-center">
+      <div className="lg:-mt-16 -mt-20 text-2xl text-center lg:text-left px-12 flex flex-col mx-auto justify-center">
         <img
-          className="max-w-md lg:ml-14 mx-auto "
+          className="max-w-xs lg:ml-14 mx-auto"
           src={facebook}
           alt="rasma logo"
         />
-        <span className="lg:ml-20 whitespace-nowrap">
-          {t('Sparrow helps you connect and share with the people in your life.')}
+        <span className="lg:ml-20 whitespace-normal -mt-7">
+          {t(
+            'Sparrow helps you connect and share with the people in your life.'
+          )}
         </span>
       </div>
       <div className="lg:ml-24 mx-auto mt-10 w-3/4 text-center">
         <div className="block rounded-lg shadow-lg bg-white p-4">
           <Formic />
           <div className="text-indigo-500 mt-4 mb-5 hover:underline">
-            <Link to="/reset">{t('Forgot password')}{t('input_questionMark')}</Link>
+            <Link to="/reset">
+              {t('Forgot password')}
+              {t('input_questionMark')}
+            </Link>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
             <LoginButton
@@ -45,7 +47,6 @@ const LoginForm = () => {
             />
             {showSignUpModal && (
               <SignupModal
-                
                 showModal={showSignUpModal}
                 setShowModal={setShowSignUpModal}
                 SignupOrResetLoginFormComponent={

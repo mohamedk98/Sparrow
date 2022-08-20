@@ -6,7 +6,7 @@ import './../Tooltip.module.css';
 import PostHalfTop from './PostHalfTop';
 import TextArea from './TextArea';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   alertHandler,
   forceUpdateHandler,
@@ -26,7 +26,6 @@ const EditPost = ({
   sharedPostData,
   postData,
 }) => {
-  // console.log(postData);
   let sharedPost;
   sharedPostData ? (sharedPost = true) : (sharedPost = false);
 
@@ -60,7 +59,6 @@ const EditPost = ({
 
   // Force rerender:
   const dispatch = useDispatch();
-  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
 
   // To get the value of textArea field:
   let caption = '';
@@ -78,8 +76,6 @@ const EditPost = ({
   const [loading, setLoading] = useState(false);
 
   const editPostHandler = () => {
-    // console.log(postID, caption, textValue);
-
     setLoading(true);
 
     let formData = new FormData();
@@ -91,26 +87,13 @@ const EditPost = ({
       'content',
       caption.length > 0 ? caption : postData?.content
     );
-    console.log(formData);
     selectedImages?.forEach(image => {
       formData.append('media', image);
     });
-    console.log(formData);
 
     axiosInstance
-      .patch(
-        `/posts/${postID}`,
-        formData
-        // // {
-        // //     content: caption,
-        // //     visiability: selectedOption,
-        // //     media: [],
-        // //   }
-      )
+      .patch(`/posts/${postID}`, formData)
       .then(response => {
-        // console.log(postID);
-        console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -125,12 +108,10 @@ const EditPost = ({
         setLoading(false);
 
         setTimeout(() => {
-          dispatch(forceUpdateHandler(10000));
+          dispatch(forceUpdateHandler(50000));
         }, 3000);
       })
       .catch(error => {
-        console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -148,8 +129,6 @@ const EditPost = ({
   };
 
   const editSharedPostHandler = () => {
-    // console.log(postID, caption, textValue);
-
     setLoading(true);
     axiosInstance
       .patch(`/share/${postID}`, {
@@ -162,9 +141,6 @@ const EditPost = ({
           : sharedPostData?.visiability,
       })
       .then(response => {
-        // console.log(postID);
-        console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -179,12 +155,10 @@ const EditPost = ({
         setLoading(false);
 
         setTimeout(() => {
-          dispatch(forceUpdateHandler(1000));
+          dispatch(forceUpdateHandler(4000));
         }, 3000);
       })
       .catch(error => {
-        console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -200,8 +174,6 @@ const EditPost = ({
         setLoading(false);
       });
   };
-
-  //   console.log(sharedPost);
 
   return (
     <Fragment>
@@ -275,8 +247,11 @@ const EditPost = ({
                         className=" px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
                         value={textValue}
                         getInputTextValueHandler={getInputTextValueHandler}
-                        // shareAPost={true}
                         editPost={true}
+                        // Translation:
+                        dir="ltr"
+                        // Translation
+                        idtranslate="textarea"
                       />
                     </div>
 
@@ -312,7 +287,6 @@ const EditPost = ({
                               }}
                             ></button>
                             <PostImageGrid
-                              // reverseDirection={reverseDirection}
                               postImage={postData?.media}
                               modalId={postID}
                             />

@@ -8,7 +8,7 @@ const PostImageGrid = ({
   containerClassName,
   imageContainerClassName,
 }) => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   return (
     <div
       className={
@@ -24,9 +24,7 @@ const PostImageGrid = ({
         postImage?.length === 1 ? (
           <div
             key={idx}
-            className={' ' + imageContainerClassName && imageContainerClassName}
-            // data-mdb-ripple="true"
-            // data-mdb-ripple-color="primary"
+            className={imageContainerClassName && imageContainerClassName}
           >
             <img
               key={idx}

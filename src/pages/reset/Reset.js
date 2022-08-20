@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import facebook from '../../assets/icons/facebook.svg';
+import facebook from '../../assets/images/Sparrow_pic.png';
 import Formic from '../../components/login/Formic';
 import LoginButton from '../../components/login/LoginButton';
 import SignupModal from '../../components/login/SignupModal';
@@ -26,15 +26,19 @@ const Reset = () => {
 
   const ResetSchema = Yup.object().shape({
     email: Yup.string()
-      .email('Invalid email')
-      .required('Email address is required'),
+      .email(t('Invalid email'))
+      .required(t('Email address is required')),
   });
 
   return (
     <div className="bg-gray-200 h-screen">
       <nav className="relative w-full flex justify-between items-center bg-white shadow">
         <span className="container-fluid">
-          <img className="h-14 mb-2" src={facebook} alt="facebook logo" />
+          <img
+            className="h-16 mb-2 ml-2.5 w-full"
+            src={facebook}
+            alt="facebook logo"
+          />
         </span>
 
         <span className="text-sky-700 font-bold md:text-lg mr-4 md:mr-0">
@@ -79,8 +83,6 @@ const Reset = () => {
               }}
               validationSchema={ResetSchema}
               onSubmit={values => {
-                // console.log(values);
-
                 setFormError('');
 
                 setShowSpinner(!showSinner);
@@ -90,7 +92,6 @@ const Reset = () => {
                     email: values.email,
                   })
                   .then(response => {
-                    // console.log(response);
                     if (response.data) {
                       setInfo(response.data);
                       setShowSpinner(showSinner);
@@ -98,9 +99,9 @@ const Reset = () => {
                     // navigate('/');
                   })
                   .catch(error => {
-                    // console.log(error.response.data.message);
                     setFormError(
-                      error.response.data.message || `${t('Something went wrong')}`
+                      error.response.data.message ||
+                        `${t('Something went wrong')}`
                     );
                     if (error.response) setShowSpinner(showSinner);
                   });
@@ -111,7 +112,7 @@ const Reset = () => {
                   <Field
                     name="email"
                     type="email"
-                    placeholder="Email address"
+                    placeholder={t('Email address')}
                     className={`border-2 rounded-md p-3 mb-3 w-full ${
                       errors.email && touched.email
                         ? 'outline-red-500 border-red-500'
@@ -146,14 +147,14 @@ const Reset = () => {
                             role="status"
                           ></div>
                         ) : (
-                          'Search'
+                          `${t('Search')}`
                         )
                       }
                       type="submit"
                       className="bg-facebook-blue text-white font-bold text-lg border-2 rounded-md border-facebook-blue hover:bg-facebook-blueHover py-2 w-full mr-2"
                     />
                     <LoginButton
-                      name="Cancel"
+                      name={t('Cancel')}
                       type="button"
                       className="bg-gray-300 text-white font-bold text-lg border-2 rounded-md border-gray-300  hover:bg-gray-400 py-2 w-full ml-2"
                       onClick={() => {

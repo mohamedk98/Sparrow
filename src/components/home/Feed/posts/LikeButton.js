@@ -9,7 +9,6 @@ import wowSVG from '../../../../assets/reacts/wow.svg';
 import sadSVG from '../../../../assets/reacts/sad.svg';
 import angrySVG from '../../../../assets/reacts/angry.svg';
 import ReactionClassHandler from './ReactionClasses';
-import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -30,7 +29,11 @@ const LikeButton = ({
   // For like button position in profile page:
   postsProfile,
 }) => {
-  const {t}=useTranslation();
+  // Language:
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const { t } = useTranslation();
+
   // For rerender:
   const dispatch = useDispatch();
 
@@ -47,13 +50,13 @@ const LikeButton = ({
 
   const reactTypeSVG = useMemo(
     () => [
-      { name: `${t('reactName1')}`, svg: likeSVG },
-      { name: `${t('reactName2')}`, svg: loveSVG },
-      { name: `${t('reactName3')}`, svg: careSVG },
-      { name: `${t('reactName4')}`, svg: hahaSVG },
-      { name: `${t('reactName5')}`, svg: wowSVG },
-      { name: `${t('reactName6')}`, svg: sadSVG },
-      { name: `${t('reactName7')}`, svg: angrySVG },
+      { name: `Like`, svg: likeSVG },
+      { name: `Love`, svg: loveSVG },
+      { name: `Care`, svg: careSVG },
+      { name: `Haha`, svg: hahaSVG },
+      { name: `Wow`, svg: wowSVG },
+      { name: `Sad`, svg: sadSVG },
+      { name: `Angry`, svg: angrySVG },
     ],
     []
   );
@@ -61,33 +64,31 @@ const LikeButton = ({
   const svgPicker = reactTypeSVG.filter(react => {
     return react.name === reactType;
   })[0];
-
   // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
   useEffect(() => {
     // Handle incoming reaction from Data Base:
-    if (!reactionClicked) {
-      // if (userReaction && !reactionClicked) {
+    if (!reactionClicked && userReaction) {
       // Handle className and style for like button in post:
-      ReactionClassHandler(userReaction, setReactClass,t);
+      ReactionClassHandler(userReaction, setReactClass);
 
       // Set name or type for the reaction:
       setReactType(userReaction);
 
       // set SVG for the reaction:
       setReactTypeSRC(
-        userReaction === `${t('reactName1')}`
+        userReaction === 'Like'
           ? likeSVG
-          : userReaction === `${t('reactName2')}`
+          : userReaction === 'Love'
           ? loveSVG
-          : userReaction === `${t('reactName3')}`
+          : userReaction === 'Care'
           ? careSVG
-          : userReaction === `${t('reactName4')}`
+          : userReaction === 'Haha'
           ? hahaSVG
-          : userReaction ===  `${t('reactName5')}`
+          : userReaction === 'Wow'
           ? wowSVG
-          : userReaction === `${t('reactName6')}`
+          : userReaction === 'Sad'
           ? sadSVG
-          : userReaction === `${t('reactName7')}`
+          : userReaction === 'Angry'
           ? angrySVG
           : likePNG
       );
@@ -103,15 +104,15 @@ const LikeButton = ({
       reactTypeSRC === likePNG &&
       btnClicked
     ) {
-      setReactType( `${t('reactName1')}`);
+      setReactType(`Like`);
       setReactTypeSRC(likeSVG);
-      setReactClass('text-indigo-500 font-bold');
+      setReactClass('text-facebook-blue font-bold');
       setBtnClicked(!btnClicked);
-      reactHandler( `${t('reactName1')}`);
+      reactHandler('Like');
     }
 
     if (
-      (reactType === `${t('reactName1')}` && reactTypeSRC === likeSVG && btnClicked) ||
+      (reactType === `Like` && reactTypeSRC === likeSVG && btnClicked) ||
       (reactType !== '' && reactTypeSRC === svgPicker?.svg && btnClicked)
     ) {
       setReactType('');
@@ -120,8 +121,6 @@ const LikeButton = ({
       setBtnClicked(!btnClicked);
       reactHandler('', false);
     }
-
-    dispatch(forceUpdateHandler(100000));
   }, [
     btnClicked,
     dispatch,
@@ -135,6 +134,47 @@ const LikeButton = ({
     svgPicker?.svg,
     userReaction,
   ]);
+
+  // For translation purpose only:
+  let reactTypeTranslation;
+  switch (reactType) {
+    case 'Likes':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'اعجبنى' : 'Like';
+      break;
+
+    case 'Love':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'احببته' : 'Love';
+
+      break;
+
+    case 'Care':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'ادعمه' : 'Care';
+
+      break;
+
+    case 'Haha':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'هاهاها' : 'Haha';
+
+      break;
+
+    case 'Wow':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'واااو' : 'Wow';
+
+      break;
+
+    case 'Sad':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'احزننى' : 'Sad';
+
+      break;
+
+    case 'Angry':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'اغضبنى' : 'Angry';
+
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <button
@@ -160,6 +200,7 @@ const LikeButton = ({
       onClick={() => {
         setReactionClicked(false);
         setBtnClicked(!btnClicked);
+        setVisible(false);
       }}
     >
       <div className="mt-0.5 mr-2 text-xl w-5">
@@ -169,7 +210,7 @@ const LikeButton = ({
           alt={`${reactTypeSRC} reaction`}
         />
       </div>
-      {reactType ? reactType : `${t('reactName1')}`}
+      {reactTypeTranslation ? reactTypeTranslation : `${t('reactName1')}`}
     </button>
   );
 };

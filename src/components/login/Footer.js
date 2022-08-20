@@ -1,90 +1,58 @@
 import React from 'react';
-import i18next, { t } from 'i18next';
+import i18next from 'i18next';
 
 const Footer = () => {
- const languages=[
+  // Language:
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const languages = [
     {
-      code:'en',
-      name:'English',
+      code: 'en',
+      name: 'English',
       country_code: 'gb',
-  
     },
     {
-      code :'ar',
-      name:'العربية',
+      code: 'ar',
+      name: 'العربية',
       country_code: 'sa',
-      dir:'rtl'
-    }
+      dir: 'rtl',
+    },
   ];
 
   return (
-    <div className="bg-white mt-16 mb-5 text-lg grid md:grid-cols-3 items-center">
-      <div className="text-center md:-ml-12">
-        <p className="pt-4 pb-2 underline underline-offset-2 text-indigo-500">
+    <div className="bg-white mt-20 pt-2.5 mb-5 text-lg grid md:grid-cols-3 items-center">
+      <div className="text-center md:-ml-20">
+        <p className="pt-5 underline underline-offset-2 text-indigo-500">
           Contact Us:
         </p>
-        <div className="flex flex-col text-sm">
-          <a
-            href="https://www.linkedin.com/in/mohamedk98"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-indigo-500"
-          >
-            Mohamed Khaled
-          </a>
-          <a
-            href="https://www.linkedin.com/in/abdelhameed-sayed-490545202"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-indigo-500"
-          >
-            AbdelHameed Sayed
-          </a>
-          <a
-            href="https://www.linkedin.com/in/rana-ahmed-k/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-indigo-500"
-          >
-            Rana Ahmed
-          </a>
-          <a
-            href="https://www.linkedin.com/in/ali-maher-84199823b"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-indigo-500"
-          >
-            Ali Maher
-          </a>
-          <a
-            href="https://www.linkedin.com/in/sarah-ahmed-s"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-indigo-500"
-          >
-            Sara Ahmed
-          </a>
-        </div>
+        <span className="text-xs hover:text-sky-500">
+          <a href="mailto:zombie.hat.iti@gmail.com">zombie.hat.iti@gmail.com</a>
+        </span>
       </div>
-      <div className="flex justify-center text-sm mr-0 md:mr-11 lg:mr-10 mt-3">
-      {languages.map(({code,name,country_code})=>(
-        <p
-        key={country_code}
-        onClick={()=>i18next.changeLanguage(code)} 
-        className="hover:cursor-pointer my-4 mr-24 hover:text-indigo-500">
-          {name}
-        </p>
-      ))}
+      <div className="flex justify-around text-sm mt-5 md:-ml-12">
+        {languages.map(({ code, name, country_code }) => (
+          <p
+            key={country_code}
+            onClick={() => {
+              i18next.changeLanguage(code);
+            }}
+            className={`hover:cursor-pointer my-5  hover:text-indigo-500 ${
+              code === currentLanguageCode && 'text-sky-500'
+            }`}
+          >
+            {name}
+          </p>
+        ))}
       </div>
-      <div className="text-center mt-3 text-indigo-500 text-sm">
-        Made by <span className="text-red-500">&hearts;</span>{' '}
+      <div className="text-center mt-5 text-indigo-500 text-sm">
+        Made by <span className="text-red-500"> &hearts; </span>
         <a
-          href="https://github.com/mohamedk98/Sparrow"
+          href="https://github.com/mohamedk98/Zombie-Hat-.git"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:underline underline-offset-2"
+          className="hover:underline underline-offset-2 hover:text-sky-500"
         >
-          Sparrow Team
+          RASMA Team
         </a>{' '}
         &copy; 2022
       </div>

@@ -1,39 +1,39 @@
-import React, { useState ,useEffect} from 'react';
-import profileImg from '../../../assets/images/default_profile.png';
+import React, { useEffect } from 'react';
 import { IoMdHappy } from 'react-icons/io';
 import { AiFillCamera } from 'react-icons/ai';
 import CreatePostModal from './CreatePostModal';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-const languages=[
+const languages = [
   {
-    code:'en',
-    name:'English',
+    code: 'en',
+    name: 'English',
     country_code: 'gb',
-
   },
   {
-    code :'ar',
-    name:'العربية',
+    code: 'ar',
+    name: 'العربية',
     country_code: 'sa',
-    dir:'rtl'
-  }
+    dir: 'rtl',
+  },
 ];
 
-const InputBox = ({ showModal, setShowModal}) => {
+const InputBox = ({ showModal, setShowModal }) => {
   // User data:
   const user = useSelector(state => state.newsFeed.profileData);
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
-     //Start change Language
-     const cookies=require('js-cookie');
-     const currentLanguageCode=cookies.get('i18next') || 'en';
-     const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
-     useEffect(() => {
-         document.getElementById('textInput').dir=currentLanguage.dir || 'ltr';
-     }, [currentLanguage]);
-    //End change language
+  //Start change Language
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const currentLanguage = languages.find(
+    lan => lan.code === currentLanguageCode
+  );
+  useEffect(() => {
+    document.getElementById('textInput').dir = currentLanguage.dir || 'ltr';
+  }, [currentLanguage]);
+  //End change language
   return (
     <>
       <div className="bg-white dark:bg-zinc-800 transition duration-700 dark:text-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6">
@@ -48,12 +48,14 @@ const InputBox = ({ showModal, setShowModal}) => {
           />
           <form className="flex flex-1">
             <input
-             dir='ltr'
-             id="textInput"
+              dir="ltr"
+              id="textInput"
               type="text"
               readOnly
               className="rounded-full h-12 bg-gray-100 flex-grow px-5 focus:outline-none cursor-pointer"
-              placeholder={`${t('input_placeholder')} ${user.firstName} ${t('input_questionMark')}`}
+              placeholder={`${t('input_placeholder')} ${user.firstName} ${t(
+                'input_questionMark'
+              )}`}
               onClick={() => {
                 setShowModal(!showModal);
               }}
@@ -68,7 +70,9 @@ const InputBox = ({ showModal, setShowModal}) => {
             }}
           >
             <AiFillCamera className="h-7 xl:w-10 md:w-6 text-green-400" />
-            <p className="text-xs sm:text-sm xl:text-base">{t('Photo/Video_input')}</p>
+            <p className="text-xs sm:text-sm xl:text-base">
+              {t('Photo/Video_input')}
+            </p>
           </div>
           <div
             className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer"
@@ -77,7 +81,9 @@ const InputBox = ({ showModal, setShowModal}) => {
             }}
           >
             <IoMdHappy className="h-7 xl:w-10 md:w-6 text-yellow-300" />
-            <p className="text-xs sm:text-sm xl:text-base">{t('Feeling/Activity_input')}</p>
+            <p className="text-xs sm:text-sm xl:text-base">
+              {t('Feeling/Activity_input')}
+            </p>
           </div>
         </div>
       </div>

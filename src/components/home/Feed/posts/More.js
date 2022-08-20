@@ -3,7 +3,7 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
 import { MdCancel } from 'react-icons/md';
 import { axiosInstance } from '../../../../network/axiosInstance';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   alertHandler,
   forceUpdateHandler,
@@ -38,23 +38,11 @@ const More = ({
   // for edit and delete post:
   sharededitPost,
 }) => {
-  // console.log(id, userID);
-  // console.log(sharedPost);
-  // console.log(text, text2, liNum1, liNum2);
-  // console.log(id, userID);
-  // console.log(postId);
-  // console.log(userID, sharerId);
+  // For translation
+  const { t } = useTranslation();
 
-  const {t}=useTranslation();
   // Rerender:
   const dispatch = useDispatch();
-  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
-  // console.log(editReply);
-  // console.log(userID);
-  // console.log(id, userID, sharedPostData);
-  // let sharedPostID = sharedPost && sharedPostData?._id;
-  // console.log(sharedPost);
-  // console.log(sharedPost);
 
   // Show modal for edit post:
   const [showEditPostModal, setShowEditPostModal] = useState(false);
@@ -69,9 +57,6 @@ const More = ({
     axiosInstance
       .delete(`/comment/${postId}/${commentId}`)
       .then(response => {
-        // console.log(id);
-        // console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -82,8 +67,6 @@ const More = ({
         );
       })
       .catch(error => {
-        // console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -96,14 +79,9 @@ const More = ({
   };
 
   const deleteSharedCommentHandler = () => {
-    // console.log(postId,commentId);
     axiosInstance
       .delete(`/comment/sharedpost/${postId}/${commentId}`)
       .then(response => {
-        // console.log(id);
-        // console.log(response);
-        // console.log(sharedPostData);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -114,8 +92,6 @@ const More = ({
         );
       })
       .catch(error => {
-        // console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -128,14 +104,9 @@ const More = ({
   };
 
   const deletePostHandler = () => {
-    console.log(moreID);
-
     axiosInstance
       .delete(`/posts/${moreID}`)
       .then(response => {
-        // console.log(id);
-        console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -146,8 +117,6 @@ const More = ({
         );
       })
       .catch(error => {
-        // console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -160,14 +129,9 @@ const More = ({
   };
 
   const deleteSharedPostHandler = () => {
-    console.log(moreID);
-
     axiosInstance
       .delete(`/share/${moreID}`)
       .then(response => {
-        // console.log(id);
-        console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -178,8 +142,6 @@ const More = ({
         );
       })
       .catch(error => {
-        // console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -195,8 +157,6 @@ const More = ({
     axiosInstance
       .delete(`/reply/post/${postId}/${commentId}/${replyId}`)
       .then(response => {
-        // console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -207,8 +167,6 @@ const More = ({
         );
       })
       .catch(error => {
-        // console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -221,13 +179,9 @@ const More = ({
   };
 
   const deleteSharedReplyHandler = () => {
-    console.log(postId, commentId, replyId, sharedPost);
     axiosInstance
       .delete(`/reply/sharedPost/${postId}/${commentId}/${replyId}`)
       .then(response => {
-        // console.log(id);
-        // console.log(response);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -238,8 +192,6 @@ const More = ({
         );
       })
       .catch(error => {
-        // console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -262,7 +214,10 @@ const More = ({
         }}
       >
         <BiDotsHorizontalRounded
-          className={'hover:bg-zinc-100 rounded-full p-1 z-50 ' + iconClassName}
+          className={
+            'hover:bg-zinc-100 rounded-full p-1 z-50 dark:hover:bg-zinc-500 dark:text-white dark:hover:text-zinc-800  ' +
+            iconClassName
+          }
         />
       </span>
 
@@ -278,7 +233,8 @@ const More = ({
               <li
                 className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer"
                 onClick={() => {
-                  text?.slice(0, 6) === 'Delete' &&
+                  (text?.slice(0, 6) === 'Delete' ||
+                    text?.slice(0, 3) === 'مسح') &&
                     setConfirmDeleteComment(true);
                 }}
               >
@@ -293,7 +249,6 @@ const More = ({
               <li
                 className="dropdown-item text-sm py-2 px-4 hover:bg-gray-100 rounded cursor-pointer"
                 onClick={() => {
-                  // console.log(commentId, replyId);
                   // To show edit a comment input:
                   if (setEditComment) {
                     setEditComment(commentId);
@@ -340,7 +295,6 @@ const More = ({
                     type="button"
                     className=" inline-block px-1 mr-0.5 py-1 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow- hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
                     onClick={() => {
-                      // console.log(postId, commentId);
                       if (
                         deleteComment &&
                         text === `${t('Delete_comment')}` &&
@@ -384,7 +338,7 @@ const More = ({
                         setConfirmDeleteComment(false);
                         setShowMore(!showMore);
                       }
-                      dispatch(forceUpdateHandler(1000000000));
+                      dispatch(forceUpdateHandler(8000000000));
                     }}
                   >
                     <MdDelete className="text-xl mx-3.5 " />

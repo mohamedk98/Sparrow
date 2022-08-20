@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { AiFillEye } from 'react-icons/ai';
@@ -6,11 +6,9 @@ import { AiFillEyeInvisible } from 'react-icons/ai';
 import LoginInput from './LoginInput';
 import { axiosInstance } from '../../network/axiosInstance';
 import LoginButton from './LoginButton';
-import { useNavigate } from 'react-router-dom';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../languagesArray';
-
 
 // user intial info:
 const userInfo = {
@@ -28,22 +26,20 @@ const SignupForm = ({
   // For Verification Alert
   setShowVerificationAlert,
 }) => {
-  // const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-
-  const cookies=require('js-cookie');
-  const currentLanguageCode=cookies.get('i18next') || 'en';  
-  const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
-  let direction=currentLanguage.dir || 'ltr';
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const currentLanguage = languages.find(
+    lan => lan.code === currentLanguageCode
+  );
+  let direction = currentLanguage.dir || 'ltr';
   useEffect(() => {
-    document.getElementById('eye').dir=currentLanguage.dir || 'ltr';
-}, [currentLanguage,direction]);
+    document.getElementById('eye').dir = currentLanguage.dir || 'ltr';
+  }, [currentLanguage, direction]);
 
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
-
-  // To redirect to home page after submitting form:
-  let navigate = useNavigate();
 
   // To show form submition error if exists:
   const [formError, setFormError] = useState('');
@@ -52,7 +48,6 @@ const SignupForm = ({
   const [user, setUser] = useState(userInfo);
 
   const { firstName, lastName, email, password, date, gender } = user;
-  //   console.log(firstName, lastName, email, password);
 
   // To show form submition error if exists:
   const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +58,6 @@ const SignupForm = ({
 
   // To get input data:
   const signupHandler = e => {
-    // console.log(e.target.name, e.target.value);
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
@@ -71,46 +65,48 @@ const SignupForm = ({
   // Validation schema:
   const loginValidation = Yup.object({
     firstName: Yup.string()
-      .required('First Name is required')
-      .min(3, 'First Name length is 3 characters at least 🤨')
-      .max(16, 'First Name length is 16 characters as max 🤨')
+      .required(t('First Name is required'))
+      .min(3, t('First Name length is 3 characters at least 🤨'))
+      .max(16, t('First Name length is 16 characters as max 🤨'))
       .matches(
         /^[a-z]+$/i,
-        'Numbers and special characters are not allowed 🤨'
+        t('Numbers and special characters are not allowed 🤨')
       ),
 
     lastName: Yup.string()
-      .required('Last Name is required')
-      .min(3, 'Last Name length is 3 characters at least 🤨')
-      .max(16, 'Last Name length is 16 characters as max.🤨')
-      .matches(/^[a-z ]+$/i, 'Numbers and special characters are not allowed'),
+      .required(t('Last Name is required'))
+      .min(3, t('Last Name length is 3 characters at least 🤨'))
+      .max(16, t('Last Name length is 16 characters as max.🤨'))
+      .matches(
+        /^[a-z ]+$/i,
+        t('Numbers and special characters are not allowed 🤨')
+      ),
     email: Yup.string()
 
-      .required('Email address is required while resetting password')
+      .required(t('Email address is required while resetting password'))
       .matches(
         /\w+@\w+.(com|net|org)$/gi,
-        'Enter a valid email with the end of (com | net | org)'
+        t('Enter a valid email with the end of (com | net | org)')
       )
       .max(100),
 
     password: Yup.string()
-      .required('Password is required')
-      // .min(8, 'Password length must be 8 at least')
-      // .max(36, 'Password length max. is 36')
+      .required(t('Password is required'))
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        'Password length must be eight at least, composed of at least one uppercase, one lowercase letters, one number and one special charcter (! @ # $ % ^ & *)'
+        t(
+          'Password length must be eight at least, composed of at least one uppercase, one lowercase letters, one number and one special charcter (! @ # $ % ^ & *)'
+        )
       ),
 
-    date: Yup.string().required('Date is required'),
+    date: Yup.string().required(t('Date is required')),
 
-    gender: Yup.string().required('Gender is required'),
+    gender: Yup.string().required(t('Gender is required')),
   });
-const {t}=useTranslation();
   return (
     <Fragment>
       <Formik
-        enableReinitialize // To inforce it to teset form input values when initialValues changes.
+        enableReinitialize // To inforce it to reset form input values when initialValues changes.
         initialValues={{
           firstName,
           lastName,
@@ -121,8 +117,6 @@ const {t}=useTranslation();
         }}
         validationSchema={loginValidation}
         onSubmit={values => {
-          // console.log(values);
-
           setFormError('');
 
           setShowSpinner(true);
@@ -130,7 +124,7 @@ const {t}=useTranslation();
 
           //Check if the user age is less than 18 years
           if (userAge < 18) {
-            setFormError(' Your age cannot be less than 18 years ');
+            setFormError(t('Your age cannot be less than 18 years'));
             setShowSpinner(false);
             return;
           }
@@ -154,11 +148,10 @@ const {t}=useTranslation();
               // navigate('/');
             })
             .catch(error => {
-              // console.log(error, error.message);
               setFormError(
                 error?.response?.data?.message ||
                   (error?.message === 'Request failed with status code 400' &&
-                    'Acount already exists') ||
+                    t('Acount already exists')) ||
                   'Something went wrong'
               );
 
@@ -205,7 +198,7 @@ const {t}=useTranslation();
               )}
             </div>
             <LoginInput
-             id="em"
+              id="em"
               name="email"
               type="text"
               placeholder={t('Email address')}
@@ -233,9 +226,11 @@ const {t}=useTranslation();
 
               <span
                 id="eye"
-                dir='ltr'
+                dir="ltr"
                 onClick={togglePassword}
-                className={` absolute ${direction==='ltr'?'right-5':'left-5'}  top-5 -mt-0.5 cursor-pointer`}
+                className={` absolute ${
+                  direction === 'ltr' ? 'right-5' : 'left-5'
+                }  top-5 -mt-0.5 cursor-pointer`}
               >
                 {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </span>
@@ -256,7 +251,11 @@ const {t}=useTranslation();
               {t('Date of birth')}
               {formic.errors.date && formic.touched.date && (
                 <Fragment>
-                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit -left-44 top-3">
+                  <span
+                    className={`text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit ${
+                      direction === 'ltr' ? '-left-44' : '-left-40 ml-0.5'
+                    }  top-3`}
+                  >
                     {formic.errors.date}
                     <span className="absolute h-0 w-0 border-y-8 border-y-transparent border-l-[14px] border-l-red-800 -right-3 top-3"></span>
                   </span>
@@ -278,7 +277,11 @@ const {t}=useTranslation();
               {t('Gender')}
               {formic.errors.gender && formic.touched.gender && (
                 <Fragment>
-                  <span className="text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit -right-48 -mr-1 top-5">
+                  <span
+                    className={`text-center text-white absolute bg-red-800 opacity-80 rounded-lg py-2 px-6 text-base w-fit shadow-lg h-fit ${
+                      direction === 'ltr' ? '-right-48' : '-right-28 -mr-2.5'
+                    } -mr-1 top-5`}
+                  >
                     {formic.errors.gender}
                     <span className="absolute h-0 w-0 border-y-8 border-y-transparent border-r-[14px] border-r-red-800 -left-3 top-3"></span>
                   </span>
@@ -339,7 +342,7 @@ const {t}=useTranslation();
                       role="status"
                     ></div>
                   ) : (
-                   `${t('Sign Up')}`
+                    `${t('Sign Up')}`
                   )
                 }
                 type="submit"

@@ -18,7 +18,7 @@ const loginInfo = {
 };
 
 const Formic = ({ setShowModal }) => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   // Spineer:
   const [showSinner, setShowSpinner] = useState(false);
@@ -39,11 +39,9 @@ const Formic = ({ setShowModal }) => {
   // For form validation:
   const [login, setLogin] = useState(loginInfo);
   const { email, password } = login;
-  // console.log(email, password);
 
   // To get input data:
   const loginHandler = e => {
-    // console.log(e.target.name, e.target.value);
     const { name, value } = e.target;
     setLogin({ ...login, [name]: value });
   };
@@ -64,8 +62,6 @@ const Formic = ({ setShowModal }) => {
         initialValues={{ email, password }}
         validationSchema={loginValidation}
         onSubmit={values => {
-          // console.log(values);
-
           setFormError('');
 
           setShowSpinner(!showSinner);
@@ -76,14 +72,12 @@ const Formic = ({ setShowModal }) => {
               password: values.password,
             })
             .then(response => {
-              // console.log(response);
               if (response.data) setShowSpinner(showSinner);
               dispatch(addAuthentication(response.data));
               setShowModal && setShowModal(false);
               navigate('/');
             })
             .catch(error => {
-              // console.log(error.response.data.message);
               setFormError(
                 error?.response?.data?.message || 'Something went wrong'
               );
@@ -97,7 +91,6 @@ const Formic = ({ setShowModal }) => {
             className="flex flex-col text-center"
           >
             <LoginFormInput
-        
               loginHandler={loginHandler}
               showPassword={showPassword}
               formic={formic}

@@ -6,7 +6,7 @@ function AlertMessage({ alert }) {
 
   const dispatch = useDispatch();
 
-  setTimeout(() => dispatch(alertHandler({ showAlert: false })), 10000);
+  setTimeout(() => dispatch(alertHandler({ showAlert: false })), 3000);
 
   return (
     <Fragment>

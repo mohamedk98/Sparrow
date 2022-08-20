@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  Fragment,
-} from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { axiosInstance } from '../../../../network/axiosInstance';
 import Post from './Post';
 import profileImg from '../../../../assets/images/default_profile.png';
@@ -12,8 +6,6 @@ import PostHalfTop from './PostHalfTop';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   forceUpdateHandler,
-  postsDataHandler,
-  postsMineDataHandler,
   profileDataHandler,
 } from '../../../../store/userSlice/NewsFeedSlice';
 import PostMiddle from './PostMiddle';
@@ -39,198 +31,65 @@ const SharedPost = ({ postsProfile }) => {
   const otherUserState = useSelector(
     state => state?.otherUserData?.otherUserData
   );
-  // console.log(otherUserState?._id);
 
   // store posts from DB in an array:
-  // const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [profilePosts, setProfilePosts] = useState([]);
 
-  // const [myposts, setMyPosts] = useState([]);
-
-  const posts = useSelector(state => state.newsFeed.postsData);
-  const myposts = useSelector(state => state.newsFeed.postsMineData);
-
-  // Infinte scroll:
-  let pageNumber = useRef(1);
-  const loadMorePosts = useCallback(() => {
-    console.log(pageNumber.current);
-    setLoading(true);
-
-    let onePage = [];
-    let onePageMine = [];
-    axiosInstance
-      .post(
-        `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${
-          pageNumber.current
-        }?userId=${otherUserState._id}`
-        // `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${pageNumber.current}`
-      )
-      .then(response => {
-        console.log(response);
-        if (response.data.allPosts.length === 0) {
-          return setLoading(false);
-        } else {
-          setLoading(false);
-          //Store page number in all posts:
-          response.data.allPosts.map(res => {
-            res.pageNum = response?.data?.page;
-
-            if (postsProfile && otherUserState._id) {
-              onePageMine.push(res);
-              console.log(otherUserState?._id);
-
-              // setPosts(prev => [...prev, ...onePage]);
-              // dispatch(postsMineDataHandler([...myposts, ...onePageMine]));
-            } else {
-              onePage.push(res);
-              // setMyPosts(prev => [...prev, ...onePageMine]);
-              // dispatch(postsDataHandler([...posts, ...onePage]));
-            }
-
-            // response.data.allPosts.length < 1 && setLoading(false);
-          });
-
-          if (postsProfile) {
-            // setPosts(prev => [...prev, ...onePage]);
-            dispatch(postsMineDataHandler([...myposts, ...onePageMine]));
-          } else {
-            // setMyPosts(prev => [...prev, ...onePageMine]);
-
-            dispatch(
-              postsDataHandler(
-                [...posts, ...onePage].filter(post => post._id !== post._id)
-              )
-            );
-          }
-          pageNumber.current += 1;
-        }
-
-        // setPosts(onePage);
-
-        // dispatch(forceUpdateHandler(100000));
-        console.log(posts);
-        // console.log(response.data.page);
-
-        // setLoading(false);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, [otherUserState?._id]);
-
-  const handleScroll = useCallback(
-    e => {
-      const scrollHeight = e.target.documentElement.scrollHeight;
-      const currentHeight = Math.ceil(
-        e.target.documentElement.scrollTop + window.innerHeight
-      );
-      // console.log(currentHeight);
-      if (currentHeight + 1 >= scrollHeight) {
-        setLoading(false);
-
-        loadMorePosts();
-      }
-    },
-    [loadMorePosts]
-  );
+  // To show skeleton only in the first load:
+  useEffect(() => setLoading(true), []);
 
   useEffect(() => {
-    // Fetching NewsFeed data:
-    loadMorePosts();
-
-    window.addEventListener('scroll', handleScroll);
-
     // Fetching user Data:
     axiosInstance
       .get('/profile')
       .then(response => {
-        if (response.data.length === 0) {
-          return setLoading(false);
-        } else {
-          dispatch(profileDataHandler(response?.data));
-        }
-        // console.log(response.data);
+        dispatch(profileDataHandler(response?.data));
       })
-      .catch(error => {
-        console.log(error);
-      });
-  }, [dispatch, handleScroll, loadMorePosts]);
+      .catch(error => {});
 
-  // Force rercall api upon change in component:
-  useEffect(() => {
+    // Fetching post data for home and profile:
     let onePage = [];
-    let onePageMine = [];
-    forceReRender &&
-      axiosInstance
-        .post(
-          // `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${forceReRender}`,
-          `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${
-            pageNumber.current
-          }?userId=${otherUserState._id}`
-        )
-        .then(response => {
-          if (response.data?.allPosts?.length === 0) {
-            console.log('res148', response);
-            return setLoading(false);
+    let profileOnePage = [];
+
+    axiosInstance
+      .post(
+        `/${postsProfile ? 'profile/posts' : 'newsfeed'}/${1}?userId=${
+          otherUserState._id
+        }`
+      )
+      .then(response => {
+        setLoading(false);
+
+        response.data.allPosts.map(res => {
+          res.pageNum = response?.data?.page;
+
+          if (postsProfile) {
+            profileOnePage.push(res);
           } else {
-            response.data.allPosts.map(res => {
-              res.pageNum = response?.data?.page;
-
-              if (postsProfile && otherUserState._id) {
-                onePageMine.push(res);
-                // setPosts(prev => [...prev, ...onePage]);
-                // dispatch(postsMineDataHandler([...myposts, ...onePageMine]));
-              } else {
-                onePage.push(res);
-                // setMyPosts(prev => [...prev, ...onePageMine]);
-                // dispatch(postsDataHandler([...posts, ...onePage]));
-              }
-            });
-            // response.pageNum = response?.data?.page;
-
-            if (postsProfile && otherUserState._id) {
-              console.log('res154', response);
-              // onePageMine.push(response);
-              // setMyPosts(prev => [...prev, ...onePageMine]);
-              dispatch(postsMineDataHandler(onePageMine));
-            } else {
-              // onePage.push(response);
-              // setPosts(prev => [...prev, ...onePage]);
-              console.log(posts);
-              console.log(onePage);
-              dispatch(postsDataHandler(onePage));
-
-              console.log('res158', response);
-              console.log(myposts);
-            }
-            // } else {
-            // response.data.allPosts.map(res => {
-            //   console.log(response);
-            //   res.pageNum = response?.data?.page;
-            //   onePage.push(res);
-            // });
-            // setPosts(onePage);
+            onePage.push(res);
           }
-
-          // console.log(userData);
-
-          // setPosts(onePage);
-
-          // dispatch(forceUpdateHandler(100000));
-          // console.log(posts);
-          // console.log(response.data.page);
-        })
-        .catch(error => {
-          console.log(error);
         });
-  }, [dispatch, forceReRender]);
+
+        if (postsProfile) {
+          setProfilePosts(profileOnePage);
+        } else {
+          setPosts(onePage);
+        }
+
+        // Force rercall api upon change in component:
+        dispatch(forceUpdateHandler(1200000));
+      })
+      .catch(error => {});
+  }, [dispatch, forceReRender, otherUserState._id]);
 
   return (
     <Fragment>
-      {(postsProfile ? myposts : posts)?.map(post => {
+      {(postsProfile ? profilePosts : posts)?.map(post => {
         // SharedPost:
         return post?.sharerId ? (
           <div
-            className="rounded-lg shadow-lg dark:bg-zinc-800 transition duration-700 dark:text-white bg-white p-3 max-w-2xl mx-auto my-7"
+            className="rounded-lg shadow-lg bg-white p-3 max-w-2xl mx-auto my-7 dark:bg-zinc-800 dark:text-white "
             key={post?._id}
           >
             <PostHalfTop

@@ -51,7 +51,7 @@ const Home = () => {
         <Feed />
         <RightSideBar setOpenChats={addChatHandler} />
       </div>
-      <div className="  fixed bottom-0 right-0 ">
+      <div className=" fixed bottom-0 right-0 z-50">
         {openChats.map(openChat => (
           <Chat
             key={openChat.id}
@@ -64,7 +64,7 @@ const Home = () => {
         ))}
       </div>
       {alert.message && (
-        <div className="fixed bottom-0 left-2 ">
+        <div className="fixed bottom-0 left-2 z-50">
           <AlertMessage alert={alert} />
         </div>
       )}

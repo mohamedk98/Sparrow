@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { axiosInstance } from '../../../network/axiosInstance';
 import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from './EmojiPicker';
@@ -12,36 +12,35 @@ import {
 } from '../../../store/userSlice/NewsFeedSlice';
 import { useTranslation } from 'react-i18next';
 
-const languages=[
+const languages = [
   {
-    code:'en',
-    name:'English',
+    code: 'en',
+    name: 'English',
     country_code: 'gb',
-
   },
   {
-    code :'ar',
-    name:'العربية',
+    code: 'ar',
+    name: 'العربية',
     country_code: 'sa',
-    dir:'rtl'
-  }
+    dir: 'rtl',
+  },
 ];
-
-
 
 const CreatePostModal = ({ showModal, setShowModal }) => {
   // User data:
   const user = useSelector(state => state.newsFeed.profileData);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   //Start change Language
-  const cookies=require('js-cookie');
-  const currentLanguageCode=cookies.get('i18next') || 'en';
-  const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const currentLanguage = languages.find(
+    lan => lan.code === currentLanguageCode
+  );
   useEffect(() => {
-      document.getElementById('textbox').dir=currentLanguage.dir || 'ltr';
+    document.getElementById('textbox').dir = currentLanguage.dir || 'ltr';
   }, [currentLanguage]);
-//End change language
+  //End change language
 
   const dispatch = useDispatch();
 
@@ -81,11 +80,9 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
         if (response.status === 200) {
           setLoading(false);
           setPost(response.data);
-          console.log(response);
+
           // To close Modal after submitting data
           setShowModal(false);
-
-          // console.log(selectedOption);
 
           // Alert message:
           dispatch(
@@ -100,8 +97,6 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
         }
       })
       .catch(err => {
-        console.log('error :( ' + err);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -121,7 +116,11 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
   return (
     <>
       {showModal && (
-        <div className="fixed top-14 left-0 z-70 w-full h-full outline-none overflow-x-hidden overflow-y-auto">
+        <div
+          className={`fixed ${
+            showUploadPic ? '-top-5' : 'top-14'
+          } left-0 z-70 w-full h-full outline-none overflow-x-hidden overflow-y-auto`}
+        >
           {/**Form */}
           <form
             method="post"
@@ -201,7 +200,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
               hover:bg-gray-100
             "
                           >
-                            &#127759;  {t('public')}
+                            &#127759; {t('public')}
                           </option>
                           <option
                             value="Private"
@@ -227,13 +226,15 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                     <div className="grid grid-cols-1 w-12/13">
                       <div className="flex flex-wrap">
                         <textarea
-                          dir='ltr'
+                          dir="ltr"
                           id="textbox"
                           rows="3"
                           cols="35"
                           name="content"
                           className="dark:bg-zinc-800 transition duration-700  dark:text-white px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
-                          placeholder={`${t('input_placeholder')}  ${user.firstName}`}
+                          placeholder={`${t('input_placeholder')}  ${
+                            user.firstName
+                          }`}
                           value={inputStr}
                           onChange={e => {
                             setInputStr(e.target.value);
@@ -289,7 +290,7 @@ const CreatePostModal = ({ showModal, setShowModal }) => {
                       }
                       className="inline-block px-6 w-full py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                     >
-                   {t('Post')}
+                      {t('Post')}
                     </button>
                   </div>
                 </div>

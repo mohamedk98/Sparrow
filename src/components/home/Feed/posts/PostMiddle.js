@@ -48,12 +48,15 @@ const PostMiddle = ({
   // For the middle three buttons position:
   postsProfile,
 }) => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   // Open share modal:
   const [showModal, setShowModal] = useState(false);
 
   // Force Rerender:
   const dispatch = useDispatch();
+
+  // For tree styling:
+  const [hover, setHover] = useState(false);
 
   // Edit a Comment:
   const [editComment, setEditComment] = useState(false);
@@ -78,14 +81,14 @@ const PostMiddle = ({
 
   // Reactions className set:
   const [reactClass, setReactClass] = useState('');
-  
+
   const reactHandler = (name, reactionsClicked = true) => {
     setReactionClicked(reactionsClicked);
 
     setReactType(name);
 
     // Handle reacion className and style in runtime (while clicking on reaction):
-    ReactionClassHandler(name, setReactClass,t);
+    ReactionClassHandler(name, setReactClass, t);
 
     // Send post reaction to DB:
     const reactBody = { reaction: name };
@@ -97,12 +100,9 @@ const PostMiddle = ({
         headers: { 'Content-Type': 'application/json' },
       })
       .then(response => {
-        // console.log(response);
         dispatch(forceUpdateHandler(data?.pageNum));
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   // Post _id for regular and shared post:
@@ -118,7 +118,6 @@ const PostMiddle = ({
           sharedPost={sharedPost}
           setWriteComment={setWriteComment}
           writeComment={writeComment}
-          // reactType={reactType}
         />
       )}
 
@@ -178,7 +177,6 @@ const PostMiddle = ({
           }
           onClick={() => {
             setWriteComment(!writeComment);
-            // console.log(data);
           }}
         >
           <FaCommentAlt className="mt-1.5 mr-2" />
@@ -196,11 +194,7 @@ const PostMiddle = ({
               postsProfile && 'lg:px-5 hover:lg:px-5 hover:lg:mx-9'
             } lg:px-14 rounded-lg `
           }
-          data-bs-toggle="modal"
-          data-bs-target={`#sharemodal${data?._id}end`}
           onClick={() => {
-            // console.log(data);
-            // console.log(data?._id);
             setShowModal(!showModal);
           }}
         >
@@ -213,7 +207,6 @@ const PostMiddle = ({
         }
         {showModal && (
           <ShareModal
-            // modelID={`sharemodal${data?._id}end`}
             profileSRC={userData?.profileImage}
             profileFName={userData?.firstName}
             profileLName={userData?.lastName}
@@ -252,14 +245,15 @@ const PostMiddle = ({
       {writeComment && (
         <div className={'relative ' + fullScreenCommentsClassName}>
           <TextArea
-            dir='ltr'
-            id={data._id}
+            id={id}
             placeholder={t('Write a comment')}
             comment={true}
-            // showMore={true}
             showProfileImage={true}
             sharedPost={sharedPost}
             userImage={userData?.profileImage}
+            // Translation
+            dir="ltr"
+            idtranslate="textarea"
           />
 
           {
@@ -284,7 +278,6 @@ const PostMiddle = ({
                     // Show and hide edit comment input:
                   }
                   {editComment && comment?._id === editComment ? (
-                   
                     <div className="relative">
                       <TextArea
                         value={comment?.content}
@@ -292,25 +285,27 @@ const PostMiddle = ({
                         commentId={comment?._id}
                         postId={id}
                         editComment={true}
-                        // showMore={true}
                         showProfileImage={false}
                         autoFocus={true}
                         sharedCommentID={comment?._id}
                         userImage={userData?.profileImage}
                         sharedPost={sharedPost}
                         setEditComment={setEditComment}
+                        // Translation
+                        dir="ltr"
+                        idtranslate="textarea"
                       />
 
                       <button
                         onClick={() => setEditComment(false)}
                         className="text-xs absolute bottom-0 left-12 ml-1"
                       >
-                       {t('cancel')}
+                        {t('cancel')}
                       </button>
                     </div>
                   ) : (
                     <div
-                      className={`px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative  ${
+                      className={`px-3 py-3 bg-gray-100 rounded-3xl outline-none w-fit relative dark:bg-zinc-500 dark:text-white  ${
                         postsProfile &&
                         'max-w-[21rem] sm:max-w-full lg:max-w-[21rem] lg2:w-full'
                       }`}
@@ -318,13 +313,12 @@ const PostMiddle = ({
                     >
                       {
                         // Show more options to comments
-                        // Need To Fix liNum2
                       }
                       {comment?.userId?._id === userData?._id && (
                         <span
                           className={`absolute top-7 ${
                             postsProfile && 'mr-3.5 sm:mr-0 lg:mr-3'
-                          } right-3`}
+                          } right-3 z-50`}
                         >
                           <More
                             text={
@@ -353,7 +347,7 @@ const PostMiddle = ({
                         </span>
                       )}
 
-                      <span className="text-sm text-zinc-700 ">
+                      <span className="text-sm text-zinc-700 dark:text-zinc-300">
                         {comment?.userId?.firstName +
                           ' ' +
                           comment?.userId?.lastName}
@@ -363,7 +357,7 @@ const PostMiddle = ({
                         id={comment?._id}
                       >
                         <span
-                          className={`block dark:text-zinc-800 max-w-xs md:max-w-sm break-words max-h-16 overflow-auto`}
+                          className={`block dark:text-gray-300 max-w-xs md:max-w-sm break-words max-h-16 overflow-auto`}
                         >
                           {comment.content}
                         </span>
@@ -371,7 +365,6 @@ const PostMiddle = ({
 
                       {
                         // Show reactions SVGs for comments:
-                        // Not tested, waiting for DB:
                       }
                       {
                         <span className="absolute -right-3 -bottom-5 -mt-1.5 dark:text-zinc-800 z-10">
@@ -430,8 +423,8 @@ const PostMiddle = ({
                         id={comment?._id}
                         onClick={e => {
                           if (comment?._id === e.target.id) {
-                            // console.log(e.target.id);
                             setWriteReply(e.target.id);
+                            setHover(e.target.id);
                           }
                         }}
                       >
@@ -455,23 +448,29 @@ const PostMiddle = ({
                   <div className="relative">
                     <button
                       id={comment?._id}
-                      className={`text-sm flex ${
+                      className={`text-sm flex hover:text-blue-500 ${
                         showReplyComments === comment?._id && 'text-blue-500'
                       } z-20 
                       `}
-                      onClick={() =>
-                        comment?.reply?.length > 0
-                          ? setShowReplyComments(comment?._id)
-                          : ''
-                      }
+                      onClick={() => {
+                        if (comment?.reply?.length > 0) {
+                          setShowReplyComments(comment?._id);
+                        }
+
+                        setHover(comment?._id);
+                      }}
+                      onMouseEnter={() => setHover(comment?._id)}
+                      onMouseLeave={() => setHover(false)}
                     >
                       <BiShare
                         className={`rotate-180 ml-12 mr-1 mt-0.5 z-10 ${
-                          showReplyComments === comment?._id && 'text-blue-500'
+                          showReplyComments === comment?._id && 'text-blue-500 '
                         }`}
                       />
                       {comment?.reply?.length}{' '}
-                      {comment?.reply?.length === 1 ? `${t('reply')}` : `${t('replies')}`}
+                      {comment?.reply?.length === 1
+                        ? `${t('reply')}`
+                        : `${t('replies')}`}
                     </button>
 
                     {
@@ -483,7 +482,11 @@ const PostMiddle = ({
                         {
                           // For horizontal lines and replys are hidden:
                         }
-                        <div className="relative -mt-3 md:mt-0.5 -top-4 md:-top-7 left-4 md:left-4 z-0 w-3">
+                        <div
+                          className={`relative -mt-3 md:mt-0.5 -top-4 md:-top-7 left-4 md:left-4 z-0 w-3 ${
+                            hover === comment?._id && 'text-blue-500'
+                          }`}
+                        >
                           .....
                         </div>
 
@@ -492,8 +495,9 @@ const PostMiddle = ({
                         }
                         <div
                           className={
-                            commentTreeVerticalHiddenReplysClassName ||
-                            'rotate-90 absolute -top-11 -mt-0.5 md:top-3 md:-mt-14 lg:top-3 -left-5 -ml-0.5 md:left-3.5 lg:left-3.5 md:-ml-9'
+                            `${hover === comment?._id && 'text-blue-500'} ` +
+                            (commentTreeVerticalHiddenReplysClassName ||
+                              `rotate-90 absolute -top-11 -mt-0.5 md:top-3 md:-mt-14 lg:top-3 -left-5 -ml-0.5 md:left-3.5 lg:left-3.5 md:-ml-9 `)
                           }
                         >
                           ...................
@@ -506,20 +510,23 @@ const PostMiddle = ({
                           <Fragment>
                             <div
                               className={
-                                commentTreeVerticalHiddenReplysShowInputClassName ||
-                                'rotate-90 absolute -mt- -top-1 md:top-2 lg:top-3 lg:-mb-5 -left-8 -ml-0.5 md:left-0.5 lg:left-0.5 md:-ml-9'
+                                `${
+                                  hover === comment?._id && 'text-blue-500'
+                                } ` +
+                                (commentTreeVerticalHiddenReplysShowInputClassName ||
+                                  `rotate-90 absolute -mt- -top-1 md:top-2 lg:top-3 lg:-mb-5 -left-8 -ml-0.5 md:left-0.5 lg:left-0.5 md:-ml-9 `)
                               }
-                              // className={
-                              //   commentTreeVerticalHiddenReplysShowInputClassName ||
-                              //   'rotate-90 relative -mt-2 top-36 md:top-48 lg:top-64 lg:-mb-5 -left-48 md:-left-52 lg:-left-72 md:-ml-9'
-                              // }
                             >
                               ........................
                             </div>
                             {
                               // For horizontal lines, replys are hidden, and reply textInput is visable:
                             }
-                            <div className="relative -mt-3 top-6 md:top-6 left-4 md:left-4">
+                            <div
+                              className={`relative -mt-3 top-6 md:top-6 left-4 md:left-4 ${
+                                hover === comment?._id && 'text-blue-500'
+                              }`}
+                            >
                               .....
                             </div>
                           </Fragment>
@@ -541,7 +548,6 @@ const PostMiddle = ({
                           <TextArea
                             value={reply?.content}
                             replyId={reply?._id}
-                            id={id}
                             commentId={comment?._id}
                             postId={data?._id}
                             editReply={true}
@@ -549,9 +555,11 @@ const PostMiddle = ({
                             showProfileImage={true}
                             autoFocus={true}
                             userImage={userData?.profileImage}
-                            // sharedCommentID={data?.comments?._id}
                             sharedPost={sharedPost}
                             setEditReply={setEditReply}
+                            // Translation
+                            dir="ltr"
+                            idtranslate="textarea"
                           />
                           <button
                             onClick={() => setEditReply(false)}
@@ -561,7 +569,7 @@ const PostMiddle = ({
                           </button>
                         </div>
                       ) : (
-                        <div key={reply?._id} className="relative -mb-14">
+                        <div key={reply?._id} className="relative -mb-14 ">
                           <Replys
                             profileImage={reply?.userId?.profileImage}
                             name={
@@ -617,14 +625,19 @@ const PostMiddle = ({
                       }
                       {!editComment && (
                         <div className="relative">
-                          <div className="relative -mt-3 md:-mt-0 -top-16 md:-top-16 left-4 md:left-4">
+                          <div
+                            className={`relative -mt-3 md:-mt-0 -top-16 md:-top-16 left-4 md:left-4 ${
+                              hover === comment?._id && 'text-blue-500'
+                            }`}
+                          >
                             .....
                           </div>
 
                           <div
                             className={
-                              commentTreeVerticalShowReplysClassName ||
-                              'rotate-90 absolute -top-16 -left-24 ml-0.5 md:-left-24 lg:-left-24 md:ml-0.5'
+                              `${hover === comment?._id && 'text-blue-500'} ` +
+                              (commentTreeVerticalShowReplysClassName ||
+                                `rotate-90 absolute -top-16 -left-24 ml-0.5 md:-left-24 lg:-left-24 md:ml-0.5`)
                             }
                           >
                             ...................................................
@@ -644,23 +657,32 @@ const PostMiddle = ({
                 !editComment && (
                   <Fragment>
                     <TextArea
-                      placeholder={`${t('Reply to')} ${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
+                      placeholder={`${t('Reply to')} ${
+                        comment?.userId?.firstName
+                      } ${comment?.userId?.lastName}`}
                       id={comment?._id}
                       postId={id}
                       reply={true}
                       sharedPost={sharedPost}
                       userImage={userData?.profileImage}
-                      // showMore={true}
                       replyClassName="ml-10"
-                      // className="animation"
-                      showProfileImage={ true}
+                      showProfileImage={true}
+                      // Translation
+                      dir="ltr"
+                      idtranslate="textarea"
+                      // Tree styling:
+                      setHover={setHover}
                     />
 
                     {
                       // continue making a line connection:
                     }
                     {showReplyComments === comment?._id && (
-                      <div className="relative -top-12 md:-top-11 left-4 md:left-5 md:-mt-2 md:-ml-1">
+                      <div
+                        className={`relative -top-12 md:-top-11 left-4 md:left-5 md:-mt-2 md:-ml-1 ${
+                          hover === comment?._id && 'text-blue-500'
+                        }`}
+                      >
                         .....
                       </div>
                     )}

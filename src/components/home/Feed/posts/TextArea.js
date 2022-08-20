@@ -5,10 +5,9 @@ import { VscSmiley } from 'react-icons/vsc';
 import EmojiPicker from '../EmojiPicker';
 import More from './More';
 import { axiosInstance } from '../../../../network/axiosInstance';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 import { languages } from '../../../languagesArray';
-
 
 const TextArea = ({
   rows,
@@ -43,18 +42,26 @@ const TextArea = ({
 
   // For edit a post:
   editPost,
+
+  // Translation
+  idtranslate,
+
+  // Tree styling:
+  setHover,
 }) => {
- //Start change Language
- const cookies=require('js-cookie');
-  const currentLanguageCode=cookies.get('i18next') || 'en';  
-  const currentLanguage=languages.find((lan)=>lan.code === currentLanguageCode);
-  let direction=currentLanguage.dir || 'ltr';
+  //Start change Language
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const currentLanguage = languages.find(
+    lan => lan.code === currentLanguageCode
+  );
+  let direction = currentLanguage.dir || 'ltr';
   useEffect(() => {
-    document.getElementById(`${id}`).dir=currentLanguage.dir || 'ltr';
+    document.querySelector(`textarea[idtranslate]`).dir =
+      currentLanguage.dir || 'ltr';
+  }, [currentLanguage, direction]);
 
-}, [currentLanguage,direction]);
-
-//End change language
+  //End change language
 
   // Force rerender:
   const dispatch = useDispatch();
@@ -87,12 +94,10 @@ const TextArea = ({
 
     // index to placein the emoji:
     const emojiStart = text.slice(0, refTxtAreaField.selectionStart);
-    // console.log(start);
 
     const emojiEnd = text.slice(refTxtAreaField.selectionStart);
 
     const newText = emojiStart + emojiObject.emoji + emojiEnd;
-    // console.log(newText);
 
     setText(newText);
 
@@ -109,13 +114,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        // console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const addreplyHandler = () => {
@@ -127,13 +127,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        // console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const editCommentHandler = () => {
@@ -145,13 +140,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const editReplyHandler = () => {
@@ -163,13 +153,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const addSharedCommentHandler = () => {
@@ -181,13 +166,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const addSharedReplyHandler = () => {
@@ -199,18 +179,11 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const editSharedCommentHandler = () => {
-    console.log(id);
-    console.log(sharedCommentID);
     axiosInstance
       .patch(
         `/comment/sharedPost/${id}/${sharedCommentID}`,
@@ -219,13 +192,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   const editSharedReplyHandler = () => {
@@ -237,13 +205,8 @@ const TextArea = ({
           headers: { 'Content-Type': 'application/json' },
         }
       )
-      .then(response => {
-        console.log(id);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(response => {})
+      .catch(error => {});
   };
 
   return (
@@ -259,10 +222,15 @@ const TextArea = ({
       )}
       <div className="w-full relative z-40">
         <textarea
-        dir='ltr'
-        id={id}
+          dir={direction}
+          idtranslate="textarea"
           // For sharing post:
-          onFocus={() => shareAPost && !editPost && setEmptyTextArea(false)}
+          onFocus={() => {
+            shareAPost && !editPost && setEmptyTextArea(false);
+
+            // Tree styling:
+            setHover(id);
+          }}
           onBlur={e => {
             (shareAPost || editPost) && getInputTextValueHandler(text);
           }}
@@ -284,7 +252,6 @@ const TextArea = ({
                 }
 
                 if (reply) {
-                  console.log(reply, sharedPost);
                   sharedPost ? addSharedReplyHandler() : addreplyHandler();
                 }
 
@@ -302,14 +269,13 @@ const TextArea = ({
 
                 if (chat) {
                   sendMessageHandler(text);
-                  console.log(text);
                 }
 
                 setText('');
 
                 e.target.style.height = `${32}px`;
                 setTimeout(() => {
-                  dispatch(forceUpdateHandler(20000));
+                  dispatch(forceUpdateHandler(110000));
                 }, 100);
               }
             }
@@ -333,7 +299,10 @@ const TextArea = ({
           autoFocus={autoFocus}
           className={
             className ||
-            'bg-gray-100 dark:text-zinc-800 rounded-3xl px-5 py-1 outline-none w-full resize-none'
+            `bg-gray-100  dark:bg-zinc-700 dark:text-white rounded-3xl px-5 py-1 outline-none w-full resize-none ${
+              direction === 'rtl' &&
+              'px-12 placeholder:absolute placeholder:right-12'
+            }`
           }
           onClick={() => setShowPicker(false)}
         />

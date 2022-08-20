@@ -14,13 +14,13 @@ export const newsFeedSlice = createSlice({
 
   //   add posts data to the store/redux:
   reducers: {
-    postsDataHandler: (state, action) => {
-      state.postsData = [...action.payload];
-    },
+    // postsDataHandler: (state, action) => {
+    //   state.postsData = [...action.payload];
+    // },
 
-    postsMineDataHandler: (state, action) => {
-      state.postsMineData = [...action.payload];
-    },
+    // postsMineDataHandler: (state, action) => {
+    //   state.postsMineData = [...action.payload];
+    // },
 
     profileDataHandler: (state, action) => {
       state.profileData = { ...action.payload };
@@ -37,8 +37,8 @@ export const newsFeedSlice = createSlice({
 });
 
 export const {
-  postsDataHandler,
-  postsMineDataHandler,
+  // postsDataHandler,
+  // postsMineDataHandler,
   profileDataHandler,
   forceUpdateHandler,
   alertHandler,

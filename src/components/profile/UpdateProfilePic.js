@@ -63,7 +63,7 @@ function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChooseP
 
     return (
         <div className='fixed top-0 left-0 w-full h-full modal backdrop-blur-md cursor-auto outline-none overflow-x-hidden overflow-y-auto'>
-            <div className='lg:w-3/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white'>
+            <div className='lg:w-3/5 w-4/5 mx-auto mt-5 p-5 shadow-lg shadow-slate-400 rounded-lg bg-white dark:bg-zinc-700 dark:text-slate-100'>
                 <div className='relative mb-3'>
                     <div className='text-center text-xl'>{t('Update Picture')}</div>
                     <button className='absolute right-2 top-0 text-xl'>
@@ -96,7 +96,7 @@ function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChooseP
                         </div>
                     </div>
                     <div className='flex justify-center gap-2.5 w-1/3 m-auto'>
-                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer bg-slate-200 rounded-lg hover:brightness-95' onClick={()=>getCroppedImage()}>
+                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer bg-slate-200 rounded-lg hover:brightness-95 dark:bg-zinc-500 dark:hover:brightness-95' onClick={()=>getCroppedImage()}>
                             <BiCrop className='text-lg'/>
                             <span>{t('Crop Photo')}</span>
                         </div>
@@ -104,10 +104,10 @@ function UpdateProfilePic({pic, newImage,setPic, formData, setUpdate, setChooseP
                 </div>
                 <div className='relative h-20'>
                     <div className='absolute right-2 flex justify-end gap-2.5 w-1/3'>
-                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer text-indigo-500 rounded-lg hover:brightness-95' onClick={()=>setUpdate(false)}>
+                        <div className='flex justify-between items-center gap-2 my-3 p-2 cursor-pointer text-indigo-500 dark:text-slate-100 rounded-lg hover:brightness-95' onClick={()=>setUpdate(false)}>
                             <span>{t('cancel')}</span>
                         </div>
-                        <div className='flex justify-between items-center gap-2 my-3 py-2 px-8 cursor-pointer bg-indigo-500 text-white rounded-lg hover:brightness-95'>
+                        <div className='flex justify-between items-center gap-2 my-3 py-2 px-8 cursor-pointer bg-indigo-500 text-white rounded-lg hover:brightness-95 dark:bg-zinc-500 dark:hover:brightness-95'>
                             <button onClick={()=>profilePicHandler(pic)}>{t('save')}</button>
                         </div>
                     </div>

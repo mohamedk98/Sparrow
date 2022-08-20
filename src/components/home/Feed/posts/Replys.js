@@ -37,10 +37,9 @@ const Replys = ({
   // For max-w for replys:
   postsProfile,
 }) => {
-  const {t}=useTranslation();
-  // console.log(reactions);
+  const { t } = useTranslation();
   return (
-    <div className="flex my-3 ml-10">
+    <div className="flex my-3 ml-10 ">
       {
         // Profile image for replyd user:
       }
@@ -57,13 +56,15 @@ const Replys = ({
           // Name, content, and reactions for replyd user:
         }
         <div
-          className={`px-3 py-3  bg-gray-100 rounded-3xl outline-none w-fit max-w-xs md:max-w-sm lg:max-w-none relative ${
+          className={`px-3 py-3  bg-gray-100 rounded-3xl outline-none w-fit max-w-xs md:max-w-sm lg:max-w-none relative dark:bg-zinc-500 dark:text-white ${
             postsProfile &&
             'max-w-[17.5rem] md:max-w-full lg:max-w-[17.5rem] lg1:max-w-full'
           }`}
         >
-          <span className="text-sm text-zinc-700">{name}</span>
-          <span className="block max-w-xs md:max-w-sm break-words dark:text-zinc-800 max-h-10 overflow-auto">
+          <span className="text-sm text-zinc-700 dark:text-zinc-300">
+            {name}
+          </span>
+          <span className="block max-w-xs md:max-w-sm break-words dark:text-gray-300 max-h-10 overflow-auto">
             {content}
           </span>
 
@@ -83,9 +84,13 @@ const Replys = ({
             // More options:
           }
           {userID === moreID && (
-            <span className="absolute top-0 right-0">
+            <span className="absolute top-0 right-0 z-50">
               <More
-                text={userID === moreID ? `${t('Delete_reply')}` : `${t('hide_reply')}`}
+                text={
+                  userID === moreID
+                    ? `${t('Delete_reply')}`
+                    : `${t('hide_reply')}`
+                }
                 text2={userID === moreID && `${t('Edit_reply')}`}
                 containerClassName="dropdown absolute left-8 lg:left-10 -top-2 mt-4"
                 iconClassName="w-7 h-7 relative "

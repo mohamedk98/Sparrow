@@ -1,4 +1,4 @@
-import React, { Fragment,useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { useState } from 'react';
 import { axiosInstance } from '../../../../network/axiosInstance';
 
@@ -11,7 +11,6 @@ import {
   forceUpdateHandler,
   alertHandler,
 } from '../../../../store/userSlice/NewsFeedSlice';
-import { t } from 'i18next';
 
 import { useTranslation } from 'react-i18next';
 
@@ -33,9 +32,7 @@ const ShareModal = ({
   showModal,
   setShowModal,
 }) => {
-  // console.log(modelID, postId);
-
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // Force rerender:
   const dispatch = useDispatch();
@@ -52,8 +49,7 @@ const ShareModal = ({
     axiosInstance
       .post(`/share/${postId}`, { caption: caption })
       .then(response => {
-        console.log(response);
-        dispatch(forceUpdateHandler(10000000000));
+        dispatch(forceUpdateHandler(90000000000));
 
         // Alert message:
         dispatch(
@@ -65,8 +61,6 @@ const ShareModal = ({
         );
       })
       .catch(error => {
-        console.log(error);
-
         // Alert message:
         dispatch(
           alertHandler({
@@ -77,7 +71,6 @@ const ShareModal = ({
         );
       });
   };
-   
 
   return (
     <Fragment>
@@ -120,13 +113,18 @@ const ShareModal = ({
                     <TextArea
                       rows="3"
                       cols="35"
-                      id={postId}
                       className=" dark:bg-zinc-800 transition duration-700 dark:text-white px-4 py-3 w-full scrollbar-hide resize-none h-auto focus:outline-none"
-                      placeholder={`${t('input_placeholder')} ${profileFName} ${t('input_questionMark')}`}
+                      placeholder={`${t(
+                        'input_placeholder'
+                      )} ${profileFName} ${t('input_questionMark')}`}
                       getInputTextValueHandler={getInputTextValueHandler}
                       setEmptyTextArea={setEmptyTextArea}
                       emptyTextArea={emptyTextArea}
                       shareAPost={true}
+                      // Translation:
+                      dir="ltr"
+                      // Translation
+                      idTranslate="textarea"
                     />
                   </div>
 
@@ -155,7 +153,7 @@ const ShareModal = ({
                     setShowModal(!showModal);
                   }}
                 >
-                 {t('share')}
+                  {t('share')}
                 </button>
               </div>
             </div>

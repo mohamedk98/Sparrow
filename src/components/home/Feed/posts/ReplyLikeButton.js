@@ -4,7 +4,7 @@ import { axiosInstance } from '../../../../network/axiosInstance';
 import PostReactions from './PostReactions';
 import ReactionClassHandler from './ReactionClasses';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { forceUpdateHandler } from '../../../../store/userSlice/NewsFeedSlice';
 import { useTranslation } from 'react-i18next';
 
@@ -24,10 +24,13 @@ const ReplyLikeButton = ({
   // For the heart reaction size and position:
   postsProfile,
 }) => {
-  const {t}=useTranslation();
+  // Language:
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
+  const { t } = useTranslation();
+
   // Rerender:
   const dispatch = useDispatch();
-  // const forceReRender = useSelector(state => state.newsFeed.forceUpdate);
 
   // Reactions type set:
   const [reactType, setReactType] = useState('');
@@ -47,7 +50,7 @@ const ReplyLikeButton = ({
       setReactType(name);
 
       // Handle className for like button in reply:
-      ReactionClassHandler(name, setReactClass,t);
+      ReactionClassHandler(name, setReactClass);
 
       // Send post reaction to DB:
       const reactBody = {
@@ -66,26 +69,18 @@ const ReplyLikeButton = ({
           headers: { 'Content-Type': 'application/json' },
         })
         .then(response => {
-          // console.log(
-          //   `${postId}/${commentId}/${replyId}/${comment}/${reply}/${sharedPost}`
-          // );
-          // console.log(data._id);
-          console.log(response);
-          dispatch(forceUpdateHandler(200000));
+          dispatch(forceUpdateHandler(700000));
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch(error => {});
     },
     [comment, commentId, dispatch, postId, reply, replyId, sharedPost]
   );
 
   // used to render reactions from DB, and it's put in a separate useEffect cause of problems related to dependencies:
   useEffect(() => {
-    console.log(curruntUserCommentReaction);
     // for comments:
     // Handle incoming reaction from Data Base:
-    if (!reactionClicked) {
+    if (!reactionClicked && curruntUserCommentReaction) {
       // if (curruntUserCommentReaction && !reactionClicked) {
       // Handle className and style for like button in post:
       ReactionClassHandler(curruntUserCommentReaction, setReactClass);
@@ -96,8 +91,7 @@ const ReplyLikeButton = ({
 
     // For replys:
     // Handle incoming reaction from Data Base:
-    // if (!reactionClicked) {
-    if (curruntUserReplyReaction && !reactionClicked) {
+    if (!reactionClicked && curruntUserReplyReaction) {
       // Handle className and style for like button in post:
       ReactionClassHandler(curruntUserReplyReaction, setReactClass);
 
@@ -108,14 +102,14 @@ const ReplyLikeButton = ({
 
   useEffect(() => {
     if (reactType === '' && reactClass === '' && btnClicked) {
-      reactHandler(`${t('reactName1')}`);
-      setReactType(`${t('reactName1')}`);
+      reactHandler(`Like`);
+      setReactType(`Like`);
       setReactClass('text-facebook-blue font-bold');
       setBtnClicked(!btnClicked);
     }
 
     if (
-      (reactType === `${t('reactName1')}` && btnClicked) ||
+      (reactType === `Like` && btnClicked) ||
       (reactType !== '' && btnClicked)
     ) {
       setReactType('');
@@ -123,7 +117,55 @@ const ReplyLikeButton = ({
       setBtnClicked(!btnClicked);
       reactHandler('', false);
     }
-  }, [btnClicked, reactClass, reactHandler, reactType]);
+  }, [btnClicked, reactClass, reactHandler, reactType, t]);
+
+  // For translation purpose only:
+  let reactTypeTranslation;
+  switch (reactType) {
+    case 'Likes':
+    case 'اعجبنى':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'اعجبنى' : 'Like';
+      break;
+
+    case 'Love':
+    case 'احببته':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'احببته' : 'Love';
+
+      break;
+
+    case 'Care':
+    case 'ادعمه':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'ادعمه' : 'Care';
+
+      break;
+
+    case 'Haha':
+    case 'هاهاها':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'هاهاها' : 'Haha';
+
+      break;
+
+    case 'Wow':
+    case 'واااو':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'واااو' : 'Wow';
+
+      break;
+
+    case 'Sad':
+    case 'احزننى':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'احزننى' : 'Sad';
+
+      break;
+
+    case 'Angry':
+    case 'اغضبنى':
+      reactTypeTranslation = currentLanguageCode === 'ar' ? 'اغضبنى' : 'Angry';
+
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <Fragment>
@@ -158,9 +200,10 @@ const ReplyLikeButton = ({
         onClick={() => {
           setReactionClicked(false);
           setBtnClicked(!btnClicked);
+          setVisible(false);
         }}
       >
-        {reactType ? reactType : `${t('reactName1')}`}
+        {reactTypeTranslation ? reactTypeTranslation : `${t('reactName1')}`}
       </button>
     </Fragment>
   );

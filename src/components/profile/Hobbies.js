@@ -4,7 +4,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { axiosInstance } from '../../network/axiosInstance';
 import { addUserData } from '../../store/userSlice/UserDataSlice';
 import { t } from 'i18next';
-import { addOtherUserData } from '../../store/userSlice/OtherUsersData';
 
 function Hobbies({showHobbies, setShowHobbies}) {
     const dispatch = useDispatch();
@@ -24,7 +23,7 @@ function Hobbies({showHobbies, setShowHobbies}) {
         axiosInstance
         .patch("/profile/hobbies", {hobbies})
         .then((response) => {
-            dispatch(addOtherUserData(response.data))
+            dispatch(addUserData(response.data))
             setShowHobbies(false)
         })
         .catch(error => console.log(error));

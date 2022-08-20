@@ -70,7 +70,7 @@ function Cover() {
         {error && <div className="text-end text-red-600">{error}</div>}
         {otherUserState.currentLoginAccount&&<div className="absolute bottom-4 right-4">
           <div
-            className="bg-white p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer hover:brightness-95"
+            className="bg-white dark:bg-zinc-700 dark:text-slate-100 p-2 flex items-center text-sm font-semibold rounded-lg cursor-pointer hover:brightness-95"
             onClick={() => {
               setShowCoverMenu((prev) => !prev);
             }}
@@ -85,7 +85,7 @@ function Cover() {
                 onClick={openModal}
               >
                 <MdPhotoLibrary className="w-5 h-5" />
-                {t('Add Cover Photo')}
+                {t('select_a_photo')}
               </div>
               {choosePic && <CoverSelectPhoto choosePic={choosePic} setChoosePic={setChoosePic} />}
               <div

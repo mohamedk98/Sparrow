@@ -23,8 +23,8 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
       </div>
       {/* Search History */}
 
-      {result ?
-        result.map((user,index) => (
+      {result ? (
+        result.map((user, index) => (
           <Link
             to={`/${user.username}`}
             key={index}
@@ -41,12 +41,12 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
               </span>
             </div>
           </Link>
-        )):
+        ))
+      ) : (
         <div className="inline-flex w-full">
-           <span className="font-semibold text-sm mt-2 pl-2 ">No result</span>
+          <span className="font-semibold text-sm mt-2 pl-2 ">No result</span>
         </div>
-        }
-      
+      )}
     </div>
   );
 };

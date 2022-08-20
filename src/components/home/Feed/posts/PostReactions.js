@@ -9,7 +9,6 @@ import angry from '../../../../assets/reacts/angry.gif';
 import care from '../../../../assets/reacts/care.gif';
 import { useTranslation } from 'react-i18next';
 
-
 const PostReactions = ({
   visible,
   setVisible,
@@ -20,38 +19,38 @@ const PostReactions = ({
   // For the heart reaction size and position:
   postsProfile,
 }) => {
-  const {t}=useTranslation();
-  
-const reactsArray = [
-  {
-    name: `${t('reactName1')}`,
-    image: like,
-  },
-  {
-    name: `${t('reactName2')}`,
-    image: love,
-  },
-  {
-    name:`${t('reactName3')}`,
-    image: care,
-  },
-  {
-    name: `${t('reactName4')}`,
-    image: haha,
-  },
-  {
-    name: `${t('reactName5')}`,
-    image: wow,
-  },
-  {
-    name: `${t('reactName6')}`,
-    image: sad,
-  },
-  {
-    name:`${t('reactName7')}`,
-    image: angry,
-  },
-];
+  const { t } = useTranslation();
+
+  const reactsArray = [
+    {
+      name: `Like`,
+      image: like,
+    },
+    {
+      name: `Love`,
+      image: love,
+    },
+    {
+      name: `Care`,
+      image: care,
+    },
+    {
+      name: `Haha`,
+      image: haha,
+    },
+    {
+      name: `Wow`,
+      image: wow,
+    },
+    {
+      name: `Sad`,
+      image: sad,
+    },
+    {
+      name: `Angry`,
+      image: angry,
+    },
+  ];
   return (
     <Fragment>
       {visible && (
@@ -71,6 +70,7 @@ const reactsArray = [
               setVisible(false);
             }, 500);
           }}
+          onClick={() => setVisible(false)}
         >
           {
             // For floating reactions:
@@ -78,7 +78,7 @@ const reactsArray = [
           {reactsArray.map((react, idx) => (
             <div
               className={
-                react.name === `${t('reactName3')}`
+                react?.name === `Care`
                   ? `cursor-pointer ml-1 w-9/12 md:w-4/6 ${
                       postsProfile &&
                       'lg:w-[15rem] hover:lg:w-[16rem] lg1:w-[20rem] hover:lg1:w-[25rem] w-9/12 md:w-6/12'
@@ -99,14 +99,30 @@ const reactsArray = [
                     }`
               }
               key={idx}
-              onClick={() => reactHandler(react.name)}
-              data-title={react.name}
+              onClick={() => reactHandler(react?.name)}
+              data-title={
+                react?.name === 'Like'
+                  ? `${t('reactName1')}`
+                  : react?.name === 'Love'
+                  ? `${t('reactName2')}`
+                  : react?.name === 'Care'
+                  ? `${t('reactName3')}`
+                  : react?.name === 'Haha'
+                  ? `${t('reactName4')}`
+                  : react?.name === 'Wow'
+                  ? `${t('reactName5')}`
+                  : react?.name === 'Sad'
+                  ? `${t('reactName6')}`
+                  : react?.name === 'Angry'
+                  ? `${t('reactName7')}`
+                  : ''
+              }
             >
               <img
                 width="100%"
                 height="100%"
-                src={react.image}
-                alt={react.name}
+                src={react?.image}
+                alt={react?.name}
               />
             </div>
           ))}

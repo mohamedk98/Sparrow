@@ -12,30 +12,46 @@ const PostSkeleton = () => {
               circle
               height="100%"
               containerClassName="avatar-skeleton"
+              className="dark:bg-zinc-700"
+              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
             />
           </div>
 
-          <div className='dark:bg-zinc-900'>
-            <Skeleton className="ml-5 mt-2" count={1} width={150} />
-            <Skeleton className="ml-5 mt-2" count={1} width={110} />
+          <div className="">
+            <Skeleton
+              className="ml-5 mt-2 dark:bg-zinc-700"
+              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+              count={1}
+              width={150}
+            />
+            <Skeleton
+              className="ml-5 mt-2 dark:bg-zinc-700"
+              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+              count={1}
+              width={110}
+            />
           </div>
         </div>
         <div className="mb-3">
-          <Skeleton className="mb-1" count={3} />
+          <Skeleton
+            className="mb-1 dark:bg-zinc-700"
+            count={3}
+            highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+          />
         </div>
       </div>
 
       <div className="">
         <Skeleton
-          className="h-56"
-          //   highlightColor="red"
-          //   style={{ backgroundColor: 'red' }}
+          className="h-56 dark:bg-zinc-700"
+          highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
         />
       </div>
 
       <div className="flex justify-around mt-3 mb-2">
         <Skeleton
-          className="mx-2 md:mx-5 lg:mx-10"
+          className="mx-2 md:mx-5 lg:mx-10 dark:bg-zinc-700"
+          highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
           count={3}
           inline
           width={120}
