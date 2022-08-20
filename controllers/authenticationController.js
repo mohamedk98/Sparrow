@@ -74,11 +74,13 @@ const sendResetPasswordEmail = (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const email = req.params.email;
-  const resetToken = req.params.resetToken;
+  const email = req.query.email;
+  const resetToken = req.query.resetToken;
   const password = req.body.password;
   const repassword = req.body.repassword;
 
+  console.log(email)
+  console.log(resetToken)
   if (password !== repassword) {
     const error = new Error("Password and Retyped password are not matching");
     return res.status(400).send(error.message);

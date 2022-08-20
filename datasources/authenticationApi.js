@@ -103,7 +103,7 @@ class AuthenticationApi {
   }
 
   async resetPassword (email,resetToken,newPassword){
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
     if (!user) {
       const error = new Error("Email or account doesn't exists");
       return error;
