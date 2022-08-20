@@ -23,7 +23,7 @@ const SearchMenu = ({ setShowSearchMenu, result }) => {
       </div>
       {/* Search History */}
 
-      {result ? (
+      {result && result.length>0 ? (
         result.map((user, index) => (
           <Link
             to={`/${user.username}`}

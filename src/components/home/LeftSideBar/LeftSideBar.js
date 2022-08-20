@@ -10,6 +10,9 @@ import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../../languagesArray';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
 
 const LeftSideBar = () => {
     //Start change 
@@ -26,6 +29,7 @@ const LeftSideBar = () => {
 
   const userState = useSelector(state => state.userData.userData);
   const [open, setOpen] = useState(true);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,27 +49,35 @@ const LeftSideBar = () => {
     });
   };
 
+
+
   const Menus = [
     {
       id: 1,
       title:  <p>{t('Home_sidebar')}</p>,
       icon: { iconTitle: AiFillHome },
       handler: homeHandler,
+      
+
     },
     {
       id: 2,
       title: <p>{t('friends_sidebar')}</p>,
       icon: { iconTitle: FaUserAlt },
       handler: profileHandler,
+   
+
     },
     {
       id: 3,
       title:  <p>{t('logout_sidebar')}</p>,
       icon: { iconTitle: BiLogOut },
       handler: logoutHandler,
+
+
     },
   ];
-
+ 
   return (
     <div className="hidden lg1:flex fixed z-10" id="leftsideBar">
       <div
@@ -86,26 +98,43 @@ const LeftSideBar = () => {
             }`}
             onClick={() => navigate(`/${userState.username}`)}
           >
-            <img
+            {userState?.profileImage?(
+              
+              <img
               src={userState.profileImage}
               alt="profile"
               className={`rounded-full ${
                 open ? 'w-12 h-12' : 'w-11 h-11 ml-1.5 px-0.5'
               }`}
             />
+            ): <Skeleton circle
+                className="dark:bg-zinc-700 w-12 h-12"
+                highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+          />
+          }
+          
 
+        {userState?.firstName?(
             <span
               className={`text-black dark:text-white origin-left font-bold text-sm mt-3 ml-1 duration-300 ${
                 !open && 'scale-0 -mb-7'
               }`}
             >
+              
               {userState.firstName} {userState.lastName}
             </span>
+        ):<Skeleton className="ml-5 mt-2 dark:bg-zinc-700"
+            highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+            count={1}
+            width={150}
+            />
+         }
           </li>
         </ul>
 
         <ul className={`pt-2 ${!open && 'ml-1.5'}`}>
           {Menus.map(menu => (
+              
             <li
               key={menu.id}
               className=" text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-facebook-greyHover rounded-md my-5"
@@ -114,6 +143,7 @@ const LeftSideBar = () => {
               <span className="text-2xl block float-left text-indigo-500">
                 <menu.icon.iconTitle />
               </span>
+        
               <span
                 className={`text-base font-medium dark:text-white text-black flex-1 ${
                   !open && 'hidden'
@@ -121,8 +151,14 @@ const LeftSideBar = () => {
               >
                 {menu.title}
               </span>
+      
+              
             </li>
+        
           ))}
+   
+        
+        
         </ul>
       </div>
     </div>

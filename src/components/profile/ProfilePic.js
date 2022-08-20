@@ -23,7 +23,8 @@ import ConfirmUnfriend from './ConfirmUnfriend';
 import ConfirmUnfriendSingle from './ConfirmUnfriendSingle';
 import ConfirmBlockSingle from './ConfirmBlockSingle';
 import { t } from 'i18next';
-
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 function ProfilePic() {
@@ -76,9 +77,17 @@ function ProfilePic() {
             <div className="flex lg:flex-row flex-col gap-4 pt-4 pl-3 pb-0 pr-3">
                 <div className="relative">
                 <div className="w-44 h-44 rounded-full border-4 ml-5 border-white dark:border-zinc-800 hover:brightness-95 -translate-y-16" style={{backgroundImage:"url("+defaultPic+")", backgroundSize: 'cover'}}>
-                    <img className="w-44 h-44 rounded-full cursor-pointer" src={otherUserState?.profileImage} alt="profilePic"
+                    {otherUserState?.profileImage?(
+                    <img className="w-44 h-44 rounded-full cursor-pointer" src={otherUserState.profileImage} alt="profilePic"
                         onClick={()=>setOpenPhoto(true)}
                     ></img>
+                    ):<Skeleton
+                    circle
+                    containerClassName="avatar-skeleton"
+                    className="dark:bg-zinc-700 w-44 h-44"
+                    highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+                  />
+                   }
                 </div>
                 {openPhoto&&<PhotoModalSingle photo={otherUserState?.profileImage} setOpenPhoto={setOpenPhoto}/>}
                 {otherUserState.currentLoginAccount&&<div className="absolute w-9 h-9 lg:right-2 right-10 bottom-16 grid justify-center items-center cursor-pointer bg-indigo-200 dark:bg-zinc-700 transition duration-700 dark:text-white rounded-full" onClick={()=>setChoosePic(true)}>
@@ -88,13 +97,37 @@ function ProfilePic() {
                 </div>
                 <div className="ml-4">
                     <div className="flex items-center gap-2.5 font-bold text-3xl">
+                        {otherUserState?.firstName?(
                         <span>{otherUserState.firstName} {otherUserState.lastName}</span>
+                        ):
+                        <Skeleton className="flex items-center gap-2.5 text-3xl dark:bg-zinc-700"
+                        highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+                        count={1}
+                        width={150}
+                        />
+                        }
                     </div>
                     <div>
+                        {otherUserState?.friends?.data?.length?(
                         <span>{otherUserState.friends?.data?.length} {otherUserState.friends?.data?.length<2?"friend":"friends"}</span>
-                    </div>
+                        ):
+                        <Skeleton className="dark:bg-zinc-700"
+                        highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+                        count={1}
+                        width={80}
+                        />
+                        }
+                        </div>
                     <div className='my-8 text-lg font-mono'>
+                        {otherUserState?.intro?(
                         <span>{otherUserState?.intro}</span>
+                        )
+                        :  <Skeleton className="dark:bg-zinc-700"
+                            highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+                            count={1}
+                            width={80}
+                        />
+                        }
                     </div>
                 </div>
             </div>

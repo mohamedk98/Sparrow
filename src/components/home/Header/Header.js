@@ -15,6 +15,8 @@ import useDarkMode from '../../../hooks/useDarkMode';
 import { removeAuthentication } from '../../../store/userSlice/UserSlice';
 import logo from '../../../assets/images/Sparrow_Sub.png';
 import i18next, { t } from 'i18next';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const languages = [
   {
@@ -105,7 +107,7 @@ const Header = () => {
             <FaSearch className="absolute top-1/4 right-3 md:right-5" />
           </div>
         </div>
-        {result.length > 0 && showSearchMenu && (
+        {showSearchMenu && (
           <SearchMenu setShowSearchMenu={setShowSearchMenu} result={result} />
         )}
       </div>
@@ -197,12 +199,20 @@ const Header = () => {
             aria-expanded="false"
           >
             <div className="w-10">
+              {userState?.profileImage?(
               <img
                 src={userState.profileImage}
                 className="rounded-full w-10 h-10"
                 alt="profile img"
                 loading="lazy"
               />
+              ): <Skeleton
+              circle
+              containerClassName="avatar-skeleton"
+              className="dark:bg-zinc-700 w-10 h-10"
+              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+            />
+              }
             </div>
           </a>
           <ul

@@ -8,8 +8,11 @@ import { useSelector } from 'react-redux';
 import { socket } from '../../chat/socket.service';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../../languagesArray';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const RightSideBar = ({ setOpenChats }) => {
+
   //Start change
   const cookies = require('js-cookie');
   const currentLanguageCode = cookies.get('i18next') || 'en';
@@ -135,11 +138,16 @@ const RightSideBar = ({ setOpenChats }) => {
                 key={contact._id}
                 onClick={() => chatHeadHandler(contact)}
               >
-                <img
-                  src={contact.profileImage}
-                  alt="profile"
-                  className={`rounded-full w-12 h-12 ${!open && 'ml-2.5'}`}
-                />
+                {contact.profileImage &&(
+                    <img
+                    src={contact.profileImage}
+                    alt="profile"
+                    className={`rounded-full w-12 h-12 ${!open && 'ml-2.5'}`}
+                  />
+                )}
+           
+            
+              
                 <span
                   className={`text-black dark:text-white origin-left text-sm mt-1 duration-300 ${
                     !open && 'scale-0 -mb-7'
@@ -147,8 +155,10 @@ const RightSideBar = ({ setOpenChats }) => {
                 >
                   {`${contact.firstName} ${contact.lastName}`}
                 </span>
+            
               </li>
             ))}
+          
         </ul>
       </div>
     </div>

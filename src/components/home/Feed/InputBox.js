@@ -4,6 +4,8 @@ import { AiFillCamera } from 'react-icons/ai';
 import CreatePostModal from './CreatePostModal';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const languages = [
   {
@@ -38,6 +40,7 @@ const InputBox = ({ showModal, setShowModal }) => {
     <>
       <div className="bg-white dark:bg-zinc-800 transition duration-700 dark:text-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6">
         <div className="flex space-x-4 p-4 items-center">
+          {user?.profileImage?(
           <img
             src={user?.profileImage}
             alt="profile-imag"
@@ -46,6 +49,14 @@ const InputBox = ({ showModal, setShowModal }) => {
             height={40}
             layout="fixed"
           />
+          )
+          :<Skeleton
+          circle
+          containerClassName="avatar-skeleton"
+          className="dark:bg-zinc-700 w-10 h-10"
+          highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+        />
+          }
           <form className="flex flex-1">
             <input
               dir="ltr"
@@ -74,17 +85,7 @@ const InputBox = ({ showModal, setShowModal }) => {
               {t('Photo/Video_input')}
             </p>
           </div>
-          <div
-            className="flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer"
-            onClick={() => {
-              setShowModal(!showModal);
-            }}
-          >
-            <IoMdHappy className="h-7 xl:w-10 md:w-6 text-yellow-300" />
-            <p className="text-xs sm:text-sm xl:text-base">
-              {t('Feeling/Activity_input')}
-            </p>
-          </div>
+        
         </div>
       </div>
 
