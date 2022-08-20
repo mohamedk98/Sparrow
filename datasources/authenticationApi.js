@@ -109,7 +109,7 @@ class AuthenticationApi {
       return error;
     }
 
-    if (user.resetPasswordCode !== resetToken) {
+    if (user.resetPasswordCode.toString() !== resetToken.toString()) {
       const error = new Error("Could not change your password, please try again later ");
       return error;
     }
