@@ -114,7 +114,7 @@ class AuthenticationApi {
       return error;
     }
 
-    if (user.passwordResetMode !== false || user.resetPasswordCode === "") {
+    if (user.passwordResetMode === false || user.resetPasswordCode === "") {
       const error = new Error("Could not change your password, please try again later");
       return error;
     }
