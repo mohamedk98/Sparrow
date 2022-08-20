@@ -9,8 +9,18 @@ const userSchema = new mongoose.Schema({
   age: { type: String, requried: true },
   gender: { type: String, required: true },
   address: { type: String, required: false },
-  profileImage: { type: String, required: false, default: "" },
-  coverImage: { type: String, required: false, default: "" },
+  profileImage: {
+    type: String,
+    required: false,
+    default:
+      "https://zombie-hat.s3.eu-central-1.amazonaws.com/defaults/default-profile-image.jpg",
+  },
+  coverImage: {
+    type: String,
+    required: false,
+    default:
+      "https://zombie-hat.s3.eu-central-1.amazonaws.com/defaults/default-cover-image.png",
+  },
   intro: { type: String, required: false, default: "Hello" },
   relationship: { type: String, required: false, default: "" },
   mobile: { type: String, required: false, default: "" },

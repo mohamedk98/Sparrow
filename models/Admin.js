@@ -4,7 +4,11 @@ const adminSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   fullName: { type: String, required: true },
-  adminImage: { type: String},
+  adminImage: {
+    type: String,
+    default:
+      "https://zombie-hat.s3.eu-central-1.amazonaws.com/defaults/default-profile-image.jpg",
+  },
 });
 
 module.exports = mongoose.model("Admin", adminSchema);
