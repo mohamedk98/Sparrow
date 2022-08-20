@@ -271,8 +271,8 @@ const Header = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <div className=" w-10 h-10  rounded-full flex justify-center items-center">
-              <GrLanguage className="text-facebook-blue w-11/12 h-6 font-bold text-2xl" />
+            <div className=" w-10 h-10 dark:bg-slate-100 rounded-full flex justify-center items-center">
+              <GrLanguage className="w-11/12 h-6 font-bold text-2xl" />
             </div>
           </a>
           <ul
