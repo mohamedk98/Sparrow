@@ -1,7 +1,7 @@
 const admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto")
+const crypto = require("crypto");
 
 const adminLogin = async (req, res, next) => {
   const email = req.body.email;
@@ -52,31 +52,38 @@ const getAdminData = async (req, res) => {
 
 const changeAdminImage = async (req, res) => {
   const newAdminImage = req.file;
-  console.log("img:",newAdminImage)
+  console.log("img:", newAdminImage);
   const adminId = req.id;
-  admin
-    .findByIdAndUpdate(adminId, { adminImage: newAdminImage.location }, { new: true })
-    .then((response) => res.status(200).send(response))
-    .catch((error) => res.status(400).send(error));
+  try {
+    admin
+      .findByIdAndUpdate(
+        adminId,
+        { adminImage: newAdminImage.location },
+        { new: true }
+      )
+      .then((response) => res.status(200).send(response));
+  } catch (error) {
+    return res.status(400).send(error);
+  }
 };
 
 const changeAdminName = async (req, res) => {
   const adminId = req.id;
   const newFullName = req.body.fullName;
 
-  let adminData = await admin.findById(adminId, "-password")
+  let adminData = await admin.findById(adminId, "-password");
   if (!adminData) {
     return res.status(400).send("no data");
-  } 
+  }
 
   try {
     adminData.fullName = newFullName;
-    adminData.username =  `${newFullName}-${crypto
+    adminData.username = `${newFullName}-${crypto
       .randomBytes(12)
       .toString("hex")}`;
-    const newAdminData = await adminData.save()
+    const newAdminData = await adminData.save();
     return res.status(200).send(newAdminData);
-  } catch  {
+  } catch {
     return res.status(400).send("An Error has Occured");
   }
 };
