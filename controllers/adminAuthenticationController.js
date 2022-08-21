@@ -62,7 +62,7 @@ const changeAdminName = async (req, res) => {
   const adminId = req.id;
   const newFullName = req.body.fullName;
 
-  const adminData = admin.findById(adminId, "-password");
+  let adminData = admin.findById(adminId, "-password");
   if (!adminData) {
     return res.status(400).send(adminData);
   } 
