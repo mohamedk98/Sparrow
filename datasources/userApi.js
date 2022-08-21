@@ -501,6 +501,10 @@ class UserApi {
             select: "_id username firstName lastName profileImage",
           },
         },
+        {
+          path: "friendsRequests.userId",
+          select: "firstName lastName profileImage _id username",
+        }
       ]);
       return updatedUserData;
     } catch {
@@ -555,6 +559,11 @@ class UserApi {
             select: "_id username firstName lastName profileImage",
           },
         },
+        {
+          path: "friendsRequests.userId",
+          select: "firstName lastName profileImage _id username",
+        },
+        
       ]);
       return updatedUserData;
     } catch {
@@ -605,6 +614,10 @@ class UserApi {
             select: "_id username firstName lastName profileImage",
           },
         },
+        {
+          path: "friendsRequests.userId",
+          select: "firstName lastName profileImage _id username",
+        }
       ]);
       return updatedUserData;
     } catch {
@@ -655,6 +668,10 @@ class UserApi {
             select: "_id username firstName lastName profileImage",
           },
         },
+        {
+          path: "friendsRequests.userId",
+          select: "firstName lastName profileImage _id username",
+        }
       ]);
       return updatedUserData;
     } catch (error) {
@@ -705,6 +722,10 @@ class UserApi {
             select: "_id username firstName lastName profileImage",
           },
         },
+        {
+          path: "friendsRequests.userId",
+          select: "firstName lastName profileImage _id username",
+        }
       ]);
       return updatedUserData;
     } catch {
@@ -735,7 +756,7 @@ class UserApi {
       .findById(userId, "friendsRequests")
       .populate(
         "friendsRequests.userId",
-        "firstName lastName profileImage _id"
+        "firstName lastName profileImage _id username"
       );
     if (!userFriendsRequests) {
       const error = new Error("User not found");
