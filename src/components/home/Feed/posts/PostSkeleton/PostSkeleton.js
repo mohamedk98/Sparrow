@@ -13,20 +13,26 @@ const PostSkeleton = () => {
               height="100%"
               containerClassName="avatar-skeleton"
               className="dark:bg-zinc-700"
-              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+              highlightColor={`${
+                localStorage.theme === 'dark' ? '#3f3f46' : '#f5f5f5'
+              }`}
             />
           </div>
 
           <div className="">
             <Skeleton
               className="ml-5 mt-2 dark:bg-zinc-700"
-              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+              highlightColor={`${
+                localStorage.theme === 'dark' ? '#3f3f46' : '#f5f5f5'
+              }`}
               count={1}
               width={150}
             />
             <Skeleton
               className="ml-5 mt-2 dark:bg-zinc-700"
-              highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+              highlightColor={`${
+                localStorage.theme === 'dark' ? '#3f3f46' : '#f5f5f5'
+              }`}
               count={1}
               width={110}
             />
@@ -36,7 +42,9 @@ const PostSkeleton = () => {
           <Skeleton
             className="mb-1 dark:bg-zinc-700"
             count={3}
-            highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+            highlightColor={`${
+              localStorage.theme === 'dark' ? '#3f3f46' : '#f5f5f5'
+            }`}
           />
         </div>
       </div>
@@ -44,14 +52,18 @@ const PostSkeleton = () => {
       <div className="">
         <Skeleton
           className="h-56 dark:bg-zinc-700"
-          highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+          highlightColor={`${
+            localStorage.theme === 'dark' ? '#3f3f46' : '#f5f5f5'
+          }`}
         />
       </div>
 
       <div className="flex justify-around mt-3 mb-2">
         <Skeleton
           className="mx-2 md:mx-5 lg:mx-10 dark:bg-zinc-700"
-          highlightColor={`${localStorage.theme === 'dark' && '#3f3f46'}`}
+          highlightColor={`${
+            localStorage.theme === 'dark' ? '#3f3f46' : '#f5f5f5'
+          }`}
           count={3}
           inline
           width={120}

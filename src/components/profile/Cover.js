@@ -85,7 +85,7 @@ function Cover() {
                 onClick={openModal}
               >
                 <MdPhotoLibrary className="w-5 h-5" />
-                {t('Add Cover Photo')}
+                {t('Select Photo')}
               </div>
               {choosePic && <CoverSelectPhoto choosePic={choosePic} setChoosePic={setChoosePic} />}
               <div
