@@ -75,6 +75,7 @@ const changeAdminName = async (req, res) => {
     const newAdminData = await adminData.save();
     return res.status(200).send(newAdminData);
   } catch (error) {
+    console.log(error)
     return res.status(400).send(error);
   }
 };
