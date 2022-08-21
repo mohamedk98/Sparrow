@@ -91,12 +91,12 @@ const UploadPhoto = ({
           </div>
         </div>
         {selectedImages.length > 0 &&
-          (selectedImages.length > 5 ? (
+          (selectedImages.length > 4 ? (
             <p className="text-red-700 text-center">
               You can't upload more than 4 photos in a post
               <br />
               <span>
-                Please delete <b>{selectedImages.length - 5}</b> of them
+                Please delete <b>{selectedImages.length - 4}</b> of them
               </span>
             </p>
           ) : (
