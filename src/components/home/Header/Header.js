@@ -189,11 +189,11 @@ const Header = () => {
                 <div className="flex flex-row items-center ">
                   <img
                     alt="notifications"
-                    src={friendRequest?.userId.profileImage}
+                    src={friendRequest?.userId?.profileImage}
                     className="h-12 w-12 rounded-full mx-2"
                   />
                   <span className="font-bold">
-                    {` ${friendRequest.userId.firstName} 
+                    {` ${friendRequest?.userId?.firstName} 
                     ${friendRequest.userId.lastName}`}
                     <span className="font-normal">
                       {" "}
