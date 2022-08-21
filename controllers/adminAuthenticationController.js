@@ -2,6 +2,7 @@ const admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto")
+
 const adminLogin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -62,9 +63,9 @@ const changeAdminName = async (req, res) => {
   const adminId = req.id;
   const newFullName = req.body.fullName;
 
-  let adminData = admin.findById(adminId, "-password");
+  let adminData = await admin.findById(adminId, "-password")
   if (!adminData) {
-    return res.status(400).send(adminData);
+    return res.status(400).send("no data");
   } 
 
   try {
@@ -72,11 +73,10 @@ const changeAdminName = async (req, res) => {
     adminData.username =  `${newFullName}-${crypto
       .randomBytes(12)
       .toString("hex")}`;
-    const newAdminData = await adminData.save();
+    const newAdminData = await adminData.save()
     return res.status(200).send(newAdminData);
-  } catch (error) {
-    console.log(error)
-    return res.status(400).send(error);
+  } catch  {
+    return res.status(400).send("An Error has Occured");
   }
 };
 
@@ -85,7 +85,7 @@ const changeAdminPassword = async (req, res) => {
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;
 
-  const adminData = admin.findById(adminId);
+  const adminData = await admin.findById(adminId);
   if (!adminData) {
     return res.status(400).send(adminData);
   }
