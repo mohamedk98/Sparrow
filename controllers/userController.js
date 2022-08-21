@@ -89,7 +89,7 @@ const deleteSharedPost = async (req, res) => {
     .then((response) => {
       res.status(200).send(response.message);
     })
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const updateSharedPost = async (req, res) => {
@@ -115,7 +115,7 @@ const uploadCoverPhoto = async (req, res) => {
     .then((response) => {
       res.status(200).send(response);
     })
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 const uploadProfilePhoto = async (req, res) => {
   const profileImage = req.file;
@@ -155,7 +155,7 @@ const removePostReaction = async (req, res) => {
   await reactionApi
     .removePostReaction(postId, userId)
     .then((response) => res.status(200).send(response.message))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const addSharedPostReaction = async (req, res) => {
@@ -176,7 +176,7 @@ const removeSharedPostReaction = async (req, res) => {
   await reactionApi
     .removePostReaction(sharedPostId, userId)
     .then((response) => res.status(200).send(response.message))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const addCommentReaction = (req, res) => {
@@ -209,7 +209,7 @@ const removeCommentReaction = async (req, res) => {
   reactionApi
     .removeCommentReaction(postId, userId, commentId)
     .then((response) => res.status(200).send(response.message))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const getAllFriendsRequest = async (req, res) => {
@@ -234,8 +234,8 @@ const sendFriendRequest = async (req, res) => {
 
   await userApi
     .sendFriendRequest(userId, friendRequestId)
-    .then((response) => res.status(200).send(response.message))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const acceptFriendRequest = async (req, res) => {
@@ -244,8 +244,8 @@ const acceptFriendRequest = async (req, res) => {
 
   await userApi
     .acceptFriendRequest(userId, friendRequestId)
-    .then((response) => res.status(200).send(response.message))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const removeFriendRequest = async (req, res) => {
@@ -254,8 +254,8 @@ const removeFriendRequest = async (req, res) => {
 
   await userApi
     .removeFriendRequest(userId, friendRequestId)
-    .then((response) => res.status(200).send(response.message))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .then((response) => res.status(200).send(response))
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const removeFriend = async (req, res) => {
@@ -275,7 +275,7 @@ const blockFriend = async (req, res) => {
   await userApi
     .blockFriend(userId, friendId)
     .then((response) => res.status(200).send(response))
-    .catch((error) => res.status(error.httpStatusCode).send(error));
+    .catch((error) => res.status(400).send(error));
 };
 
 const unblockFriend = async (req, res) => {
@@ -294,7 +294,7 @@ const searchForPeople = async (req, res) => {
   await userApi
     .search(keyword)
     .then((response) => res.status(200).send(response))
-    .catch((error) => res.status(error.httpStatusCode).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 };
 
 const updateIntro = async (req, res) => {
