@@ -114,7 +114,9 @@ const PostHalfTop = ({
           </div>
         </div>
 
-        <p className={`mb-1 ${fullScreenContentClassName}`}>{postBody}</p>
+        <p className={`mb-1 break-all ${fullScreenContentClassName}`}>
+          {postBody}
+        </p>
       </div>
 
       {
