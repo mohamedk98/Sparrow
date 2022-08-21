@@ -67,6 +67,10 @@ class UserApi {
               select: "_id username firstName lastName profileImage",
             },
           },
+          {
+            path:"friendsRequests.userId",
+            select:"_id profileImage firstName lastName username"
+          }
         ]);
       });
 
