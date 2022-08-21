@@ -65,11 +65,11 @@ const changeAdminName = async (req, res) => {
   const adminData = admin.findById(adminId, "-password");
   if (!adminData) {
     return res.status(400).send(adminData);
-  }
+  } 
 
   try {
     adminData.fullName = newFullName;
-    adminData.username = `${req.body.fullName}-${crypto
+    adminData.username = await `${req.body.fullName}-${crypto
       .randomBytes(12)
       .toString("hex")}`;
     const newAdminData = await adminData.save();
