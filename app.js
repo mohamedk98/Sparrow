@@ -142,8 +142,8 @@ io.on("connection", async (socket) => {
     socket.on("message", async (message, senderId) => {
       io.to(room._id.toString()).emit("message", { message, senderId });
       room.messages.push({
-        sender: socket.handshake.auth.userId,
-        receiverId: senderId,
+        sender: senderId,
+        receiverId: receiverId,
         message: message,
         timestamp: new Date().toISOString(),
       });
@@ -155,10 +155,7 @@ io.on("connection", async (socket) => {
 
 
 
-  socket.on("disconnect", () => {
-    console.log(`Use with ID of ${socket.id} Disconnected`);
-    socket.broadcast.emit("user disconnected", socket.id);
-  });
+
 });
 
 socketIoServer.listen(PORT, async () => {
