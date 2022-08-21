@@ -18,7 +18,7 @@ const { adminImageUpload } = require("../middlwares/fileUpload");
 router.use(authorization)
 /* Admin data router */
 router.post("/create-admin",createAdmin)
-router.post("/changeImage",adminImageUpload.single("media"),changeAdminImage)
+router.post("/changeImage",adminImageUpload.single("admin"),changeAdminImage)
 router.post("/changePassword",changeAdminPassword)
 router.post("/changeName",changeAdminName)
 router.get("/profile",getAdminData)

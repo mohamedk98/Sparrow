@@ -51,10 +51,11 @@ const getAdminData = async (req, res) => {
 };
 
 const changeAdminImage = async (req, res) => {
-  const newAdminImage = req.file.location;
+  const newAdminImage = req.file;
+  console.log("img:",newAdminImage)
   const adminId = req.id;
   admin
-    .findByIdAndUpdate(adminId, { adminImage: newAdminImage }, { new: true })
+    .findByIdAndUpdate(adminId, { adminImage: newAdminImage.location }, { new: true })
     .then((response) => res.status(200).send(response))
     .catch((error) => res.status(400).send(error));
 };
