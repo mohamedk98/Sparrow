@@ -69,13 +69,13 @@ const changeAdminName = async (req, res) => {
 
   try {
     adminData.fullName = newFullName;
-    adminData.username = await `${req.body.fullName}-${crypto
+    adminData.username =  `${newFullName}-${crypto
       .randomBytes(12)
       .toString("hex")}`;
     const newAdminData = await adminData.save();
     return res.status(200).send(newAdminData);
-  } catch {
-    return res.status(400).send("An Error has Occured");
+  } catch (error) {
+    return res.status(400).send(error);
   }
 };
 
