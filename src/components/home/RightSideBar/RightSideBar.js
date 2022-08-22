@@ -12,7 +12,6 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 const RightSideBar = ({ setOpenChats }) => {
-
   //Start change
   const cookies = require('js-cookie');
   const currentLanguageCode = cookies.get('i18next') || 'en';
@@ -130,35 +129,31 @@ const RightSideBar = ({ setOpenChats }) => {
             </li>
           )}
           {showContacts &&
-            availableContacts?.map(contact => (
+            availableContacts?.map((contact, idx) => (
               <li
                 className={`flex items-center gap-x-4 cursor-pointer p-2 my-2 ${
                   !open && 'w-screen'
                 }`}
-                key={contact._id}
+                key={contact?._id || idx}
                 onClick={() => chatHeadHandler(contact)}
               >
-                {contact.profileImage &&(
-                    <img
-                    src={contact.profileImage}
+                {contact?.profileImage && (
+                  <img
+                    src={contact?.profileImage}
                     alt="profile"
                     className={`rounded-full w-12 h-12 ${!open && 'ml-2.5'}`}
                   />
                 )}
-           
-            
-              
+
                 <span
                   className={`text-black dark:text-white origin-left text-sm mt-1 duration-300 ${
                     !open && 'scale-0 -mb-7'
                   }`}
                 >
-                  {`${contact.firstName} ${contact.lastName}`}
+                  {`${contact?.firstName} ${contact?.lastName}`}
                 </span>
-            
               </li>
             ))}
-          
         </ul>
       </div>
     </div>

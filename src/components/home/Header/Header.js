@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import { TiHome } from "react-icons/ti";
-import { RiGroupFill } from "react-icons/ri";
-import { BsBellFill } from "react-icons/bs";
-import { BiLogOut } from "react-icons/bi";
-import { GrLanguage } from "react-icons/gr";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BsToggleOn } from "react-icons/bs";
-import { BsToggle2Off } from "react-icons/bs";
-import SearchMenu from "./SearchMenu";
-import { axiosInstance } from "../../../network/axiosInstance";
-import { useDispatch, useSelector } from "react-redux";
-import useDarkMode from "../../../hooks/useDarkMode";
-import { removeAuthentication } from "../../../store/userSlice/UserSlice";
-import logo from "../../../assets/images/Sparrow_Sub.png";
-import i18next, { t } from "i18next";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { addUserData } from "../../../store/userSlice/UserDataSlice";
+import React, { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import { TiHome } from 'react-icons/ti';
+import { RiGroupFill } from 'react-icons/ri';
+import { BsBellFill } from 'react-icons/bs';
+import { BiLogOut } from 'react-icons/bi';
+import { GrLanguage } from 'react-icons/gr';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { BsToggleOn } from 'react-icons/bs';
+import { BsToggle2Off } from 'react-icons/bs';
+import SearchMenu from './SearchMenu';
+import { axiosInstance } from '../../../network/axiosInstance';
+import { useDispatch, useSelector } from 'react-redux';
+import useDarkMode from '../../../hooks/useDarkMode';
+import { removeAuthentication } from '../../../store/userSlice/UserSlice';
+import logo from '../../../assets/images/Sparrow_Sub.png';
+import i18next, { t } from 'i18next';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { addUserData } from '../../../store/userSlice/UserDataSlice';
 
 const languages = [
   {
-    code: "en",
-    name: "English",
-    country_code: "gb",
+    code: 'en',
+    name: 'English',
+    country_code: 'gb',
   },
   {
-    code: "ar",
-    name: "العربية",
-    country_code: "sa",
-    dir: "rtl",
+    code: 'ar',
+    name: 'العربية',
+    country_code: 'sa',
+    dir: 'rtl',
   },
 ];
 
@@ -39,18 +39,18 @@ const Header = () => {
   const location = useLocation();
 
   // get loggedInUserData:
-  const userState = useSelector((state) => state.userData.userData);
+  const userState = useSelector(state => state.userData.userData);
 
   const [darkMode, setDarkMode] = useState(false);
   const [showSearchMenu, setShowSearchMenu] = useState(false);
   const [colorTheme, setTheme] = useDarkMode();
   // Search:
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [result, setResult] = useState([]);
 
   const searchHandler = async () => {
-    if (searchTerm === "") {
-      setResult("");
+    if (searchTerm === '') {
+      setResult('');
     } else {
       const res = await axiosInstance.get(`/search/:${searchTerm}`);
       setResult(res.data);
@@ -62,30 +62,28 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(removeAuthentication());
-    axiosInstance.post("/logout").then(() => {
-      navigate("/login");
+    axiosInstance.post('/logout').then(() => {
+      navigate('/login');
     });
   };
 
-  const acceptFriendRequest = (friendId) => {
-    axiosInstance
-      .patch(`/friends/friendRequest/${friendId}`)
-      .then((response) => {
-        dispatch(addUserData(response.data));
-      });
+  const acceptFriendRequest = friendId => {
+    axiosInstance.patch(`/friends/friendRequest/${friendId}`).then(response => {
+      dispatch(addUserData(response.data));
+    });
   };
 
-  const removeFriendRequest = (friendId) => {
+  const removeFriendRequest = friendId => {
     axiosInstance
       .delete(`/friends/friendRequest/${friendId}`)
-      .then((response) => {
+      .then(response => {
         dispatch(addUserData(response.data));
       });
   };
 
   //Start change Language
-  const cookies = require("js-cookie");
-  const currentLanguageCode = cookies.get("i18next") || "en";
+  const cookies = require('js-cookie');
+  const currentLanguageCode = cookies.get('i18next') || 'en';
 
   //End change language
 
@@ -102,8 +100,8 @@ const Header = () => {
             src={logo}
             className="text-indigo-500 text-4xl mr-5 h-14 w-14 -mt-5  rounded-full hover:cursor-pointer"
             onClick={() => {
-              window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-              navigate("/");
+              window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+              navigate('/');
             }}
           />
           {/*Start Search Input */}
@@ -116,9 +114,9 @@ const Header = () => {
             <input
               type="text"
               className="px-3 py-1.5 text-gray-700  bg-white border border-solid border-gray-300 rounded-full focus:text-gray-700 focus:bg-white focus:outline-none w-24 md:w-full"
-              placeholder={`${t("Search")}`}
+              placeholder={`${t('Search')}`}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               onKeyUp={searchHandler}
             />
             <FaSearch className="absolute top-1/4 right-3 md:right-5" />
@@ -131,16 +129,16 @@ const Header = () => {
       {/*End of Search Input */}
 
       <Link
-        to={"/"}
-        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })}
+        to={'/'}
+        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })}
         className={`${
-          location.pathname === "/" && "border-b-2 border-b-blue-500"
+          location.pathname === '/' && 'border-b-2 border-b-blue-500'
         }
         } w-20 -mx-10 md:-mx-20 mt-1.5`}
       >
         <TiHome
           className={`${
-            location.pathname === "/" && "text-indigo-500 hover:bg-inherit"
+            location.pathname === '/' && 'text-indigo-500 hover:bg-inherit'
           } hover:text-indigo-500 text-3xl mr-1 md:mr-10 hover:bg-gray-200 px-5 py-3 w-full h-14 -mt-3`}
         />
       </Link>
@@ -174,7 +172,7 @@ const Header = () => {
           />
           <span className="text-white bg-red-700 absolute rounded-full text-xs -mt-5 ml-12 py-0 px-1.5">
             {userState?.friendsRequests?.length === 0
-              ? ""
+              ? ''
               : userState?.friendsRequests?.length}
           </span>
         </a>
@@ -183,46 +181,50 @@ const Header = () => {
     "
           aria-labelledby="friendRequests"
         >
-          {userState?.friendsRequests?.length > 0 ? userState?.friendsRequests?.map((friendRequest, idx) => (
-            <li key={idx}>
-              <div className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 ">
-                <div className="flex flex-row items-center ">
-                  <img
-                    alt="notifications"
-                    src={friendRequest?.userId?.profileImage}
-                    className="h-12 w-12 rounded-full mx-2"
-                  />
-                  <span className="font-bold">
-                    {` ${friendRequest?.userId?.firstName} 
+          {userState?.friendsRequests?.length > 0 ? (
+            userState?.friendsRequests?.map((friendRequest, idx) => (
+              <li key={idx}>
+                <div className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 ">
+                  <div className="flex flex-row items-center ">
+                    <img
+                      alt="notifications"
+                      src={friendRequest?.userId?.profileImage}
+                      className="h-12 w-12 rounded-full mx-2"
+                    />
+                    <span className="font-bold">
+                      {` ${friendRequest?.userId?.firstName} 
                     ${friendRequest.userId.lastName}`}
-                    <span className="font-normal">
-                      {" "}
-                      has sent you a friend request
+                      <span className="font-normal">
+                        {' '}
+                        has sent you a friend request
+                      </span>
                     </span>
-                  </span>
-                </div>
+                  </div>
 
-                <div className="flex flex-row items-center justify-center space-x-4">
-                  <button
-                    className="bg-indigo-500 py-2 px-4 rounded-lg text-white"
-                    onClick={() =>
-                      acceptFriendRequest(friendRequest.userId._id)
-                    }
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="bg-gray-200 py-2 px-4 rounded-lg text-black"
-                    onClick={() =>
-                      removeFriendRequest(friendRequest.userId._id)
-                    }
-                  >
-                    Remove
-                  </button>
+                  <div className="flex flex-row items-center justify-center space-x-4">
+                    <button
+                      className="bg-indigo-500 py-2 px-4 rounded-lg text-white"
+                      onClick={() =>
+                        acceptFriendRequest(friendRequest?.userId?._id)
+                      }
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className="bg-gray-200 py-2 px-4 rounded-lg text-black"
+                      onClick={() =>
+                        removeFriendRequest(friendRequest.userId._id)
+                      }
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </li>
-          )):<li className="p-5 font-bold">No Friends requests available</li>}
+              </li>
+            ))
+          ) : (
+            <li className="p-5 font-bold">No Friends requests available</li>
+          )}
         </ul>
       </div>
       {/* Friends Request */}
@@ -244,7 +246,7 @@ const Header = () => {
             </div>
             <span className="text-white bg-red-700 absolute rounded-full text-xs -mt-9 ml-7 py-0 px-1.5">
               {userState?.notifcations?.length === 0
-                ? ""
+                ? ''
                 : userState?.notifcations?.length}
             </span>
           </a>
@@ -253,24 +255,30 @@ const Header = () => {
     "
             aria-labelledby="dropdownMenuButton3"
           >
-            {userState?.notifcations?.length > 0 ? userState?.notifcations?.map((singleNotification, idx) => (
-              <li key={idx}>
-                <Link
-                  className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 "
-                  to={"/profile"}
-                >
-                  <div className="flex flex-row items-center ">
-                    <img
-                      alt="notifications"
-                      src={singleNotification.notificationId.from.profileImage}
-                      className="h-12 w-12 rounded-full mx-2"
-                    />
-                    {` ${singleNotification.notificationId.from.firstName} 
+            {userState?.notifcations?.length > 0 ? (
+              userState?.notifcations?.map((singleNotification, idx) => (
+                <li key={idx}>
+                  <Link
+                    className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 "
+                    to={'/profile'}
+                  >
+                    <div className="flex flex-row items-center ">
+                      <img
+                        alt="notifications"
+                        src={
+                          singleNotification.notificationId.from.profileImage
+                        }
+                        className="h-12 w-12 rounded-full mx-2"
+                      />
+                      {` ${singleNotification.notificationId.from.firstName} 
                     ${singleNotification.notificationId.from.lastName} ${singleNotification.notificationId.message}`}
-                  </div>
-                </Link>
-              </li>
-            )):<li className="p-5 font-bold">No Notifications available</li>}
+                    </div>
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <li className="p-5 font-bold">No Notifications available</li>
+            )}
           </ul>
         </div>
         {/* Notifications */}
@@ -297,7 +305,7 @@ const Header = () => {
                   containerClassName="avatar-skeleton"
                   className="dark:bg-zinc-700 w-10 h-10"
                   highlightColor={`${
-                    localStorage.theme === "dark" && "#3f3f46"
+                    localStorage.theme === 'dark' && '#3f3f46'
                   }`}
                 />
               )}
@@ -313,17 +321,17 @@ const Header = () => {
                 className="dropdown-item  text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:text-zinc-800"
                 to={`/${userState.username}`}
               >
-                {t("profile")}
+                {t('profile')}
               </Link>
             </li>
             <li>
               <button className="dropdown-item dark:text-white text-sm py-2 px-4 font-normal w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 dark:hover:text-zinc-800  flex">
-                {t("Dark_mode")}
+                {t('Dark_mode')}
                 {darkMode && (
                   <BsToggleOn
                     className="text-indigo-500 text-2xl ml-3 -mt-0.5"
                     onClick={() => {
-                      localStorage.theme === "dark" && setDarkMode(!darkMode);
+                      localStorage.theme === 'dark' && setDarkMode(!darkMode);
                       setTheme(colorTheme);
                     }}
                   />
